@@ -1,0 +1,3 @@
+{% load i18n %}
+
+{% blocktrans %}I agree to the terms stated in the Subscription <a href="https://www.hutoma.ai/Hutoma_WebPlatformSaaSAgreement.pdf" target="_blank">Agreement.</a>.{% endblocktrans %}

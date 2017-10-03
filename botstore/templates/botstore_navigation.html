@@ -1,0 +1,13 @@
+{% load botstore_tags %}
+
+<ul>
+  <ul class="treeview-menu {% if not botstore %}collapse{% endif %}" id="categorie">
+
+    <li{% if active == 'All' %} class="active"{% endif %}><a href="{% url 'botstore' %}"><i class="fa fa-globe text-gray text-center"></i>All</a></li>
+
+    {% for category, bots in categories.items %}
+      <li{% if active == category|lower %} class="active"{% endif %}><a href="{% url 'botstore_category' category=category|lower|urlencode %}"><i class="fa {{ icons|lookup:category }} text-gray text-center"></i> {{ category|title }}</a></li>
+    {% endfor %}
+
+  </ul>
+</ul>

@@ -1,0 +1,69 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: django
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        service: django
+    spec:
+      containers:
+        - name: django
+          workingDir: /usr/src/app
+          command:
+            - kubernetes/deployments/start.sh
+          image: $CONTAINER:$DJANGO_TAG
+          imagePullPolicy: "Always"
+          env:
+            - name: ENVIRONMENT
+              value: "production"
+            - name: DATABASE_NAME
+              value: "console_db"
+            - name: DATABASE_HOST
+              value: "127.0.0.1"
+            - name: DATABASE_PORT
+              value: "3306"
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql
+                  key: username
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql
+                  key: password
+            - name: STATIC_HOST
+              value: /
+            - name: OPBEAT_APP_ID
+              value: ac7e006f6e
+          envFrom:
+            - secretRef:
+                name: django-secret
+          ports:
+            - containerPort: 8000
+        - image: b.gcr.io/cloudsql-docker/gce-proxy:1.10
+          imagePullPolicy: "Always"
+          name: cloudsql-proxy
+          command: [
+            "/cloud_sql_proxy",
+            "--dir=/cloudsql",
+            "-instances=playground-project-01:europe-west1:hutoma-console-development=tcp:3306",
+            "-credential_file=/secrets/cloudsql/credentials.json"
+          ]
+          volumeMounts:
+            - name: cloudsql-oauth-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs
+      volumes:
+        - name: cloudsql-oauth-credentials
+          secret:
+            secretName: cloudsql-oauth-credentials
+        - name: ssl-certs
+          hostPath:
+            path: /etc/ssl/certs

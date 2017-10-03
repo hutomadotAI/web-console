@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    service: redis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        service: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:3.2
+        command:
+          - redis-server
+        args:
+          - '--requirepass'
+          - '$(CACHE_SERVICE_PASSWORD)'
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        envFrom:
+          - secretRef:
+              name: django-secret
+        ports:
+        - containerPort: 6379

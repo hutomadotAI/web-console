@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-02 20:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: studio/models.py:13
+msgid "Female"
+msgstr "Żeński"
+
+#: studio/models.py:13
+msgid "Male"
+msgstr "Męski"
+
+#: studio/templates/ai_form.html:5
+msgid "Add bot"
+msgstr "Dodaj bota"
+
+#: studio/templates/ai_form.html:26
+msgid "Basic Bot Settings"
+msgstr "Podstawowe informacje"
+
+#: studio/templates/ai_form.html:35
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: studio/templates/ai_form.html:36
+msgid "Next"
+msgstr "Dalej"
+
+#: studio/templates/console_footer.html:5
+msgid ""
+"Copyright &copy; 2017 <a href=\"https://www.hutoma.ai\" tabindex=\"-1\">Hu:"
+"toma</a>.</strong> All rights reserved."
+msgstr ""
+
+#: studio/templates/summary.html:5
+msgid "Summary"
+msgstr "Podsumowanie"
+
+#: studio/templates/summary.html:28
+msgid "Video Tutorial: Create Your First Bot"
+msgstr "Video: Stwórz pierwszego Bota"
+
+#: studio/templates/summary.html:30 studio/templates/summary.html:72
+msgid "more info"
+msgstr "więcej"
+
+#: studio/templates/summary.html:43
+msgid ""
+"This video will guide you through using the Hu:toma platform and have you "
+"building your first bot in no time.  In this example we create a bot "
+"designed to help attendees navigate Mobile World Congress. We advise joining "
+"our Slack Community channel so that you can ask questions if you need to."
+msgstr ""
+"Ten film pokarzę ci platformę Hu:toma i w jaki sposób możesz stworzyć "
+"pierwszego bota w krótkim czasie. Jeśli masz jakieś pytania radzimy dołączyć "
+"do naszej gruypy na Slacku Slack Community, aby móc zadawać pytania, jeśli "
+"potrzebujesz. "
+
+#: studio/templates/summary.html:70
+#, fuzzy
+#| msgid "Welcome to Hu:toma.ai — the marketplace for your bots"
+msgid "Welcome to Hu:toma.ai — the marketplace for your bots"
+msgstr "Witaj w Hu:toma.ai — marketplace dla twoich botów"
+
+#: studio/templates/summary.html:79
+msgid ""
+"You're amongst the very first people to have access to our platform! Thanks "
+"for your support! We're in beta, so your feedback and patience would be "
+"incredibly helpful."
+msgstr ""
+"Jesteś jedną z pierwszych osób  na naszej platformie! Dziękujemy za wsparcie "
+"Serwis jest w wersji beta więc twoja cierpliwość i uwagi będą niesłychanie "
+"pomocne."
+
+#: studio/templates/summary.html:81
+msgid "Create New Bot"
+msgstr "Stwórz bota"
+
+#: studio/templates/summary.html:89
+msgid ""
+"To create a bot, click the <b>Create New Bot</b> button or check the video "
+"tutorial for more info."
+msgstr ""
+"Aby stworzyć bota, kliknij guzik <b>Stwórz bota</b> więcej informacji "
+"znajdziesz w krótkim filmie."
+
+#: studio/templates/summary.html:99
+#, python-format
+msgid ""
+"If you’re stuck check out our <a data-toggle=\"collapse\" href="
+"\"#collapseCreateBotVideoTutorial\">video tutorial</a> or email <a "
+"href='mailto:support@hutoma.ai?subject=Invite%%20to%%20slack%%20channel' "
+"tabindex=\"-1\">support@hutoma.ai</a> for an invite to our slack channel."
+msgstr ""
+"Jeśli masz problem obejrzyj <a data-toggle=\"collapse\" href="
+"\"#collapseCreateBotVideoTutorial\">krótki film</a> napisz do nas <a "
+"href='mailto:support@hutoma.ai?subject=Invite%%20to%%20slack%%20channel' "
+"tabindex=\"-1\">support@hutoma.ai</a> aby skorzystać z kanału Slackowego."

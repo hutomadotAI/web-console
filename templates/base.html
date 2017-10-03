@@ -1,0 +1,71 @@
+{% load i18n static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+
+<html lang="{{ LANGUAGE_CODE }}">
+
+  <head>
+
+    <!-- Prefetch DNS for Third-party files -->
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+    <meta charset="utf-8">
+
+    <title>{% block title %}console{% endblock title %} • Hu:toma AI</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="keywords" content="Deep learning, AI, Hutoma, Artificial Intelligence, Machine Learning, Siri, Cortana, Deep Learning API, AI Marketplace, Chatbots">
+
+    <meta name="description" content="Hu:toma helps developers around the world build and monetize deep learning chatbots by providing free access to a proprietary platform offering both the tools and the channels to create and share conversational AIs.">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://www.hutoma.ai/css/main.css">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/skin-blue.css' %}">
+
+    {% block extra_head %}{% endblock %}
+
+    {% block gtm.head %}{% endblock %}
+
+  </head>
+
+  <body{% block body.attributes %}{% endblock body.attributes %}>
+
+    {% block gtm.iframe %}{% endblock %}
+
+    {% block body %}
+
+      {% block header %}
+        {% include 'header.html' %}
+      {% endblock %}
+
+      {% block navigation %}{% endblock %}
+
+      {% block messages %}
+        {% include 'messages.html' %}
+      {% endblock %}
+
+      {% block content %}{% endblock %}
+
+      {% block footer %}
+        {% include 'footer.html' %}
+      {% endblock footer %}
+
+    {% endblock %}
+
+    {% block extra_body %}{% endblock %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+
+  </body>
+
+</html>

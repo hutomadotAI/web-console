@@ -1,0 +1,26 @@
+{% load i18n %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="carousel-box">
+
+      <div class="carousel-title">{{ category|title }}</div>
+
+      <div class="row carousel-row no-margin carousel-overflow">
+        {% for bot in bots %}
+          {% include 'box-card.html' with developer=bot.developer bot=bot.metadata %}
+        {% empty %}
+          <div class="carousel-title">No bots yet</div>
+        {% endfor %}
+      </div>
+
+      {% if more %}
+        <div class="carousel-see-more">
+          <a class="btn btn-primary flat pull-right" href="{% url 'botstore_category' category=category|lower|urlencode %}"><b>see more</b></a>
+        </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+</div>

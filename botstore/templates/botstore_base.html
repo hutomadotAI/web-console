@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Botstore' %}{% endblock %}
+
+{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+  {% include 'navigation.html' with botstore=True %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="content-wrapper">
+    <section class="content">
+
+      {% include 'botstore_info.html' %}
+
+    </section>
+  </div>
+
+{% endblock %}

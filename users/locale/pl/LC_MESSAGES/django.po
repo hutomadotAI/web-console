@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-02 20:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: users/forms.py:27
+msgid "Password"
+msgstr "Hasło"
+
+#: users/templates/account/login.html:5 users/templates/account/login.html:27
+msgid "Log in"
+msgstr "Zaloguj"
+
+#: users/templates/account/login.html:14
+msgid "Login to Hu:toma"
+msgstr "Zaloguj do Hu:toma"
+
+#: users/templates/account/login.html:32
+msgid "I forgot my password"
+msgstr "Zapomniałem hsała"
+
+#: users/templates/account/login.html:33
+msgid "Register a new account"
+msgstr "Załóż konto"
+
+#: users/templates/account/password_reset.html:5
+#: users/templates/account/password_reset.html:14
+#: users/templates/account/password_reset_done.html:5
+#: users/templates/account/password_reset_done.html:14
+#, fuzzy
+#| msgid "I forgot my password"
+msgid "Reset your password"
+msgstr "Zapomniałem hsała"
+
+#: users/templates/account/password_reset.html:19
+#, fuzzy
+#| msgid "Password"
+msgid "Reset My Password"
+msgstr "Hasło"
+
+#: users/templates/account/password_reset_from_key.html:5
+#: users/templates/account/password_reset_from_key.html:14
+#, fuzzy
+#| msgid "I forgot my password"
+msgid "Change your password"
+msgstr "Zapomniałem hsała"
+
+#: users/templates/account/password_reset_from_key.html:19
+#, fuzzy
+#| msgid "I forgot my password"
+msgid "Change my Password"
+msgstr "Zapomniałem hsała"
+
+#: users/templates/account/signup.html:5
+#, fuzzy
+#| msgid "Sign Up"
+msgid "Signup"
+msgstr "Dołącz"
+
+#: users/templates/account/signup.html:14
+msgid "Sign up and start creating awesomeness"
+msgstr "Zarejestruj się i zacznij tworzyć niesamowitość"
+
+#: users/templates/account/signup.html:27
+msgid "Sign Up"
+msgstr "Dołącz"
+
+#: users/templates/account/signup.html:32
+msgid "I already have an account"
+msgstr "Mam już konto"
+
+#: users/templates/account/verification_sent.html:5
+#: users/templates/account/verification_sent.html:14
+msgid "Verify Your E-mail Address"
+msgstr "Potwierdź swój adres email"
+
+#: users/templates/account/verification_sent.html:16
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+"Na twój adres email wysł…aiśmy widomość, Kliknij link by dokończyć proces "
+"rejestracji. Prosimy daj nam znać jeśli wiadomość nie dotrze w ciągu kilku "
+"minut."
+
+#: users/templates/messages/signup_form_agree_label.txt:3
+msgid ""
+"I agree to the terms stated in the Subscription <a href=\"https://www.hutoma."
+"ai/Hutoma_WebPlatformSaaSAgreement.pdf\" target=\"_blank\">Agreement.</a>."
+msgstr ""
+"Akceptuję <a href=\"https://www.hutoma."
+"ai/Hutoma_WebPlatformSaaSAgreement.pdf\" target=\"_blank\">Regulamin.</a>."
+
+#~ msgid "About"
+#~ msgstr "O nas"
+
+#, fuzzy
+#~| msgid "Login to Hu:toma"
+#~ msgid "About Hu:toma"
+#~ msgstr "Zaloguj do Hu:toma"
+
+#~ msgid "Privacy Policy"
+#~ msgstr "Polityka prywatności"
+
+#~ msgid "Terms and Conditions"
+#~ msgstr "Regulamin"
+
+#~ msgid "Get in Touch"
+#~ msgstr "Obserwuj nas"
+
+#~ msgid "Enterprise Customers"
+#~ msgstr "Klient biznesowy"
+
+#~ msgid "Schedule Demo"
+#~ msgstr "Poproś o demo"
+
+#~ msgid "Toggle navigation"
+#~ msgstr "Nawigacja"
+
+#~ msgid "Change E-mail"
+#~ msgstr "Zmień adres email"
+
+#~ msgid "Sign Out"
+#~ msgstr "Wyloguj"
+
+#~ msgid "Features"
+#~ msgstr "Funkcje"
+
+#~ msgid "Login"
+#~ msgstr "Zaloguj"

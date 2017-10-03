@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-18 16:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/header.html:9
+msgid "Toggle navigation"
+msgstr ""
+
+#: templates/header.html:23
+msgid "Change E-mail"
+msgstr ""
+
+#: templates/header.html:24
+msgid "Sign Out"
+msgstr ""
+
+#: templates/header.html:26
+msgid "Features"
+msgstr ""
+
+#: templates/header.html:27
+msgid "About"
+msgstr ""
+
+#: templates/header.html:28 users/templates/account/signup.html:27
+msgid "Sign Up"
+msgstr ""
+
+#: templates/header.html:29
+msgid "Login"
+msgstr ""
+
+#: users/forms.py:31
+msgid "Password"
+msgstr ""
+
+#: users/templates/account/login.html:5 users/templates/account/login.html:27
+#: users/templates/account/signup.html:5
+msgid "Log in"
+msgstr ""
+
+#: users/templates/account/login.html:14
+msgid "Login to Hu:toma"
+msgstr ""
+
+#: users/templates/account/login.html:32
+msgid "I forgot my password"
+msgstr ""
+
+#: users/templates/account/login.html:33
+msgid "Register a new account"
+msgstr ""
+
+#: users/templates/account/signup.html:14
+msgid "Sign up and start creating awesomeness"
+msgstr ""
+
+#: users/templates/account/signup.html:32
+msgid "I already have an account"
+msgstr ""

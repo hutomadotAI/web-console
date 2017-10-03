@@ -1,0 +1,23 @@
+{% extends 'botstore_base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Botstore {{ category }}' %}{% endblock %}
+
+{% block navigation %}
+  {% include 'navigation.html' with botstore=True category=category  %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="content-wrapper">
+    <section class="content">
+
+      {% include 'botstore_info.html' %}
+
+      {% include 'category.html' with category=category bots=bots more=False %}
+
+    </section>
+  </div>
+
+{% endblock %}

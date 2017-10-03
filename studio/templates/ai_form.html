@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load i18n crispy_forms_tags %}
+
+{% block title %}{% trans 'Add bot' %}{% endblock %}
+
+{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <section class="content">
+      <div class="box box-solid box-clean flat no-shadow" id="newAicontent">
+        <div class="box-header with-border">
+          <div class="box-title"><b>{% trans 'Basic Bot Settings' %}</b></div>
+        </div>
+
+        <form action="" method="post">
+          {% csrf_token %}
+
+          {{ form | crispy }}
+
+          <div class="box-footer">
+              <a href="{% url 'index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
+              <button style="width:100px" type="submit" id="btnNext" class="btn btn-success flat pull-right" alt="next step"><b>{% trans 'Next' %}</b></button>
+          </div>
+
+        </form>
+      </div>
+    </section>
+  </div>
+{% endblock %}
