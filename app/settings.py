@@ -513,13 +513,17 @@ elif ENVIRONMENT == 'test':
 
     # Debug
     #
-    # Turn debug off so tests run faster
+    # Turn debug off so tests run faster, set Log level to Warning
 
     DEBUG = False
-
     DJANGO_LOG_LEVEL = 'WARNING'
-
     TEMPLATES[0]['OPTIONS']['debug'] = False
+
+    # Statics
+    #
+    # Use built-in Django storage
+    #
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
     # --------------------------------------------------------------------------
     #

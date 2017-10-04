@@ -3,16 +3,16 @@
 <aside class="main-sidebar ">
   <section class="sidebar">
 
-    <ul class="sidebar-menu" id="console-menu" style="padding-bottom: 65px;">
-      <li class="header unselectable" style="text-align: center;color:#8A8A8A;">{% trans 'CONSOLE' %}</li>
+    <ul class="sidebar-menu" style="padding-bottom: 65px;">
+      <li class="header" style="text-align: center;color:#8A8A8A;">{% trans 'CONSOLE' %}</li>
 
-      <li id="menu_home"><a href="{% url 'index' %}"><i class="fa fa-home text-light-blue active" id="level0"> </i><span>{% trans 'Home' %}</span></a></li>
+      <li><a href="{% url 'index' %}"><i class="fa fa-home text-light-blue active" id="level0"> </i><span>{% trans 'Home' %}</span></a></li>
 
-      <li><a data-toggle="collapse" data-target="#categorie"><i class="fa fa-shopping-cart text-green"></i> <span>{% trans 'Botstore' %}</span><i class="fa fa-ellipsis-v pull-right"></i></a>
+      <li><a data-toggle="collapse" data-target="#categories"><i class="fa fa-shopping-cart text-green"></i> <span>{% trans 'Botstore' %}</span><i class="fa fa-ellipsis-v pull-right"></i></a>
 
       {% botstore_navigation user category botstore %}
 
-      </li><li id="menu_documentation" class="unselectable"><a href="https://docs.hutoma.ai" id="link_documentation" target="_blank"><i class="fa fa-book text-purple"></i> <span>{% trans 'Documentation' %}</span></a></li>
+      </li><li><a href="https://docs.hutoma.ai" target="_blank"><i class="fa fa-book text-purple"></i> <span>{% trans 'Documentation' %}</span></a></li>
     </ul>
 
     <ul class="sidebar-menu" id="account-menu" style="position: absolute; bottom: 0px; width: 230px; min-height: 85px;">

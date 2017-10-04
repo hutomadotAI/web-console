@@ -6,20 +6,9 @@ from django.contrib.auth.models import AnonymousUser, User
 
 from django.conf import settings
 
-from users.models import Users
+from app.services import set_headers
 
 logger = logging.getLogger(__name__)
-
-
-def get_headers(user):
-    if user.is_anonymous():
-        headers = {}
-    else:
-        legacy_user = Users.objects.get(user=user)
-        headers = {
-            'Authorization': 'Bearer %s' % legacy_user.token
-        }
-    return headers
 
 
 def get_categories(user, start=0, offset=8):
@@ -37,7 +26,7 @@ def get_categories(user, start=0, offset=8):
 
     responsJSON = requests.get(
         url,
-        headers=get_headers(user),
+        headers=set_headers(user),
         timeout=settings.API_TIMEOUT
     ).json()
 
@@ -64,7 +53,7 @@ def get_bots(user, category, start=0, offset=24):
 
     responsJSON = requests.get(
         url,
-        headers=get_headers(user),
+        headers=set_headers(user),
         timeout=settings.API_TIMEOUT
     ).json()
 
@@ -87,7 +76,7 @@ def get_bot(user, pk):
 
     responsJSON = requests.get(
         url,
-        headers=get_headers(user),
+        headers=set_headers(user),
         timeout=settings.API_TIMEOUT
     ).json()
 

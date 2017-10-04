@@ -1,0 +1,49 @@
+{% load i18n %}
+
+<tr role="row" class="even">
+
+    <td class="text-gray" style="padding-top: 15px;">{{ ai.name }}</td>
+    <td style="padding-top: 15px;">{{ ai.description }}</td>
+    <td class="text-center" style="padding-top: 15px;">{{ ai.linked_bots|length }}</td>
+    <td class="text-center" style="padding-top: 15px;">
+    {% if ai.ai_status == 'ai_training_complete' %}
+        <span class="text-olive">{% trans 'Completed' %}</span>
+    {% elif ai.ai_status == 'ai_undefined' or ai.ai_status == 'ai_ready_to_train' %}
+        <span class="text-darkgray">{% trans 'Not Started' %}</span>
+    {% elif ai.ai_status == 'ai_training_queued' %}
+        <span class="text-gray">{% trans 'Queued' %}</span>
+    {% elif ai.ai_status == 'ai_training' %}
+        <span class="text-orange">{% trans 'In Progress' %}</span>
+    {% elif ai.ai_status == 'ai_training_stopped' %}
+        <span class="text-red">{% trans 'Stopped' %}</span>
+    {% elif ai.ai_status == 'ai_error' %}
+        <span class="text-red flat">{% trans 'Error' %}</span>
+    {% endif %}</td>
+
+    <td style="padding-top: 8px;padding-right: 0;">
+
+        {% if ai.publishing_state == 'PUBLISHED' %}
+            <a class="btn btn-success disabled flat pull-right" style="margin-right: 0; width: 115px;"><b>Published</b></a>
+        {% elif ai.publishing_state == 'SUBMITTED' %}
+            <a class="btn btn-info disabled flat pull-right" style="margin-right: 0; width: 115px;"><b>Request Sent</b></a>
+        {% elif ai.publishing_state == 'NOT_PUBLISHED' %}
+            {% if ai.ai_status != 'ai_training_complete' %}
+                {# Bot need to be trained before being published #}
+                <span class="btn btn-warning flat pull-right" style="margin-right: 0" data-toggle="tooltip" title="{% trans 'The bot needs to be fully trained before being published.' %}"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></span>
+            {% elif ai.linked_bots|length > 1 %}
+                {# We don't support linked bots in Bot store, yet #}
+                <span class="btn btn-primary disabled flat pull-right" style="margin-right: 0" data-toggle="tooltip" title="{% trans 'We do not currently support publishing bots with linked skills. Please remove them if you’d like your bot to be published.' %}"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></span>
+            {% else %}
+                {# Everything is 👍, you can publish. Are you 😀? #}
+                <a href="{% url 'publish_bot' ai.aiid %}" class="btn btn-primary flat pull-right" style="margin-right: 0"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></a>
+            {% endif %}
+
+        {% endif %}
+
+    </td>
+
+    <td style="padding-top: 8px;padding-right: 0;">
+        <a href="{% url 'edit_bot' ai.aiid %}" class="btn btn-primary flat pull-right" style="margin-right: 0"><b> <span class="fa fa-search"></span> {% trans 'View Bot' %}</b></a>
+    </td>
+
+</tr>

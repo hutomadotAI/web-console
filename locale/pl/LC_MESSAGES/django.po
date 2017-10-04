@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 20:59+0000\n"
+"POT-Creation-Date: 2017-10-03 15:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,18 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: templates/base.html:17
+msgid "console"
+msgstr "konsola"
+
+#: templates/base.html:23
+msgid ""
+"Hu:toma helps developers around the world build and monetize deep learning "
+"chatbots by providing free access to a proprietary platform offering both "
+"the tools and the channels to create and share conversational AIs."
+msgstr ""
+"Hu:toma pomaga developerom budować Chatboty "
 
 #: templates/footer.html:10 templates/header.html:27
 msgid "About"

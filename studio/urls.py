@@ -21,36 +21,38 @@
 
 from django.conf.urls import url
 
-from django.contrib.auth.decorators import login_required
-from django.views.generic.base import RedirectView, TemplateView
+from django.views.generic.base import RedirectView
 
-from studio.views import AiCreate
+from studio.views import AICreateView, AIListView
 
 urlpatterns = [
 
     # Always use a path, explicit is better than implicit
     url(
         r'^$',
-        login_required(
-            RedirectView.as_view(pattern_name='summary')
-        ),
+        RedirectView.as_view(pattern_name='summary'),
         name='index'
     ),
 
     # Summary page of studio app
     url(
         r'^summary/?$',
-        login_required(
-            TemplateView.as_view(template_name='summary.html')
-        ),
+        AIListView.as_view(),
         name='summary'
     ),
 
-    # Summary page of studio app
+    # Creat a new AI
     url(
         r'^bots/add/?$',
-        AiCreate.as_view(),
+        AICreateView.as_view(),
         name='add_bot'
+    ),
+
+    # Edit an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/?$',
+        AICreateView.as_view(),
+        name='edit_bot'
     ),
 
 ]

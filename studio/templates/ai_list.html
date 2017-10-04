@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Summary' %}{% endblock %}
+
+{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="content-wrapper">
+    <section class="content">
+
+      {% if not ais|length %}
+
+        {% include 'welcome_video.html' %}
+
+      {% endif %}
+
+      {% include 'create_new_bot.html' %}
+
+      {% if ais|length %}
+        {% include 'ais.html' %}
+      {% endif %}
+
+    </section>
+  </div>
+
+
+
+{% endblock %}

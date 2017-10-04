@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 20:59+0000\n"
+"POT-Creation-Date: 2017-10-03 15:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,9 +28,52 @@ msgstr "Żeński"
 msgid "Male"
 msgstr "Męski"
 
+#: studio/templates/ai.html:10
+msgid "Completed"
+msgstr "Ukończony"
+
+#: studio/templates/ai.html:12
+msgid "Not Started"
+msgstr "Nie rozpoczęty"
+
+#: studio/templates/ai.html:14
+msgid "Queued"
+msgstr "Oczekuje"
+
+#: studio/templates/ai.html:16
+msgid "In Progress"
+msgstr "W trakcie"
+
+#: studio/templates/ai.html:18
+msgid "Stopped"
+msgstr "Wstrzymany"
+
+#: studio/templates/ai.html:20
+msgid "Error"
+msgstr "Błąd"
+
+#: studio/templates/ai.html:32
+msgid "The bot needs to be fully trained before being published."
+msgstr "Bot musi być wytrenowany aby go opublikować"
+
+#: studio/templates/ai.html:32 studio/templates/ai.html:35
+#: studio/templates/ai.html:38
+msgid "Publish Bot"
+msgstr "Publikuj bota"
+
+#: studio/templates/ai.html:35
+msgid ""
+"We do not currently support publishing bots with linked skills. Please "
+"remove them if you’d like your bot to be published."
+msgstr ""
+
+#: studio/templates/ai.html:46
+msgid "View Bot"
+msgstr "Zobacz Bota"
+
 #: studio/templates/ai_form.html:5
 msgid "Add bot"
-msgstr "Dodaj bota"
+msgstr "Dodaj Bota"
 
 #: studio/templates/ai_form.html:26
 msgid "Basic Bot Settings"
@@ -44,43 +87,48 @@ msgstr "Anuluj"
 msgid "Next"
 msgstr "Dalej"
 
+#: studio/templates/ai_list.html:5
+msgid "Summary"
+msgstr "Podsumowanie"
+
+#: studio/templates/ais.html:5
+msgid "Your Bots"
+msgstr "Twoje Boty"
+
+#: studio/templates/ais.html:12
+msgid "Bot Name"
+msgstr "Nazwa"
+
+#: studio/templates/ais.html:13
+msgid "Description"
+msgstr "Opis"
+
+#: studio/templates/ais.html:14
+msgid "# Skills Linked"
+msgstr "Liczba umiejętności"
+
+#: studio/templates/ais.html:15
+msgid "Status"
+msgstr ""
+
 #: studio/templates/console_footer.html:5
 msgid ""
 "Copyright &copy; 2017 <a href=\"https://www.hutoma.ai\" tabindex=\"-1\">Hu:"
 "toma</a>.</strong> All rights reserved."
 msgstr ""
 
-#: studio/templates/summary.html:5
-msgid "Summary"
-msgstr "Podsumowanie"
-
-#: studio/templates/summary.html:28
-msgid "Video Tutorial: Create Your First Bot"
-msgstr "Video: Stwórz pierwszego Bota"
-
-#: studio/templates/summary.html:30 studio/templates/summary.html:72
-msgid "more info"
-msgstr "więcej"
-
-#: studio/templates/summary.html:43
-msgid ""
-"This video will guide you through using the Hu:toma platform and have you "
-"building your first bot in no time.  In this example we create a bot "
-"designed to help attendees navigate Mobile World Congress. We advise joining "
-"our Slack Community channel so that you can ask questions if you need to."
-msgstr ""
-"Ten film pokarzę ci platformę Hu:toma i w jaki sposób możesz stworzyć "
-"pierwszego bota w krótkim czasie. Jeśli masz jakieś pytania radzimy dołączyć "
-"do naszej gruypy na Slacku Slack Community, aby móc zadawać pytania, jeśli "
-"potrzebujesz. "
-
-#: studio/templates/summary.html:70
+#: studio/templates/create_new_bot.html:6
 #, fuzzy
 #| msgid "Welcome to Hu:toma.ai — the marketplace for your bots"
 msgid "Welcome to Hu:toma.ai — the marketplace for your bots"
 msgstr "Witaj w Hu:toma.ai — marketplace dla twoich botów"
 
-#: studio/templates/summary.html:79
+#: studio/templates/create_new_bot.html:8
+#: studio/templates/welcome_video.html:8
+msgid "more info"
+msgstr "więcej"
+
+#: studio/templates/create_new_bot.html:15
 msgid ""
 "You're amongst the very first people to have access to our platform! Thanks "
 "for your support! We're in beta, so your feedback and patience would be "
@@ -90,11 +138,11 @@ msgstr ""
 "Serwis jest w wersji beta więc twoja cierpliwość i uwagi będą niesłychanie "
 "pomocne."
 
-#: studio/templates/summary.html:81
+#: studio/templates/create_new_bot.html:18
 msgid "Create New Bot"
-msgstr "Stwórz bota"
+msgstr "Stwórz Bota"
 
-#: studio/templates/summary.html:89
+#: studio/templates/create_new_bot.html:26
 msgid ""
 "To create a bot, click the <b>Create New Bot</b> button or check the video "
 "tutorial for more info."
@@ -102,7 +150,7 @@ msgstr ""
 "Aby stworzyć bota, kliknij guzik <b>Stwórz bota</b> więcej informacji "
 "znajdziesz w krótkim filmie."
 
-#: studio/templates/summary.html:99
+#: studio/templates/create_new_bot.html:36
 #, python-format
 msgid ""
 "If you’re stuck check out our <a data-toggle=\"collapse\" href="
@@ -114,3 +162,19 @@ msgstr ""
 "\"#collapseCreateBotVideoTutorial\">krótki film</a> napisz do nas <a "
 "href='mailto:support@hutoma.ai?subject=Invite%%20to%%20slack%%20channel' "
 "tabindex=\"-1\">support@hutoma.ai</a> aby skorzystać z kanału Slackowego."
+
+#: studio/templates/welcome_video.html:6
+msgid "Video Tutorial: Create Your First Bot"
+msgstr "Video: Stwórz pierwszego Bota"
+
+#: studio/templates/welcome_video.html:21
+msgid ""
+"This video will guide you through using the Hu:toma platform and have you "
+"building your first bot in no time.  In this example we create a bot "
+"designed to help attendees navigate Mobile World Congress. We advise joining "
+"our Slack Community channel so that you can ask questions if you need to."
+msgstr ""
+"Ten film pokarzę ci platformę Hu:toma i w jaki sposób możesz stworzyć "
+"pierwszego bota w krótkim czasie. Jeśli masz jakieś pytania radzimy dołączyć "
+"do naszej gruypy na Slacku Slack Community, aby móc zadawać pytania, jeśli "
+"potrzebujesz. "

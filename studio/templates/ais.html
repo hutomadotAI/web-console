@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<div class="box box-solid box-clean flat no-shadow">
+    <div class="box-header with-border">
+        <div class="box-title"><b>{% trans 'Your Bots' %}</b></div>
+    </div>
+
+    <div class="box-body table-responsive no-border" style="padding-top:0;">
+        <table class="table dataTable" id="tableAi">
+            <thead>
+            <tr disabled="">
+                <th class="text-left" style="border:0; width:20%">{% trans 'Bot Name' %}</th>
+                <th class="text-left" style="border:0; width:25%">{% trans 'Description' %}</th>
+                <th class="text-center" style="border:0; width:15%">{% trans '# Skills Linked' %}</th>
+                <th class="text-center" style="border:0; width:15%">{% trans 'Status' %}</th>
+                <th style="border:0; width:5%"></th>
+                <th style="border:0; width:5%"></th>
+            </tr>
+            </thead>
+            <tbody id="tableAiList">
+                {% for ai in ais %}
+                  {% include 'ai.html' with ai=ai %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
