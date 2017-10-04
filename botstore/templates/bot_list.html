@@ -2,7 +2,7 @@
 
 {% load i18n %}
 
-{% block title %}{% trans 'Botstore {{ category }}' %}{% endblock %}
+{% block title %}{% trans 'Botstore' %} {{ category }}{% endblock %}
 
 {% block navigation %}
   {% include 'navigation.html' with botstore=True category=category  %}

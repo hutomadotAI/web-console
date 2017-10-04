@@ -79,7 +79,7 @@ class Users(models.Model):
         dt = datetime.now() + settings.JWT_EXPIRATION_DELTA
 
         token = jwt.encode({
-            'sub':  self.dev_id,
+            'sub':  str(self.dev_id),
             'ROLE': 'ROLE_FREE',
             'exp': int(dt.strftime('%s'))
         }, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)

@@ -34,21 +34,23 @@ def user_logged_out(sender, user, request, **kwargs):
         )
 
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=User, dispatch_uid='update_legacy_tables')
 def update_legacy_tables(sender, instance, created, **kwargs):
     """
     Updates legacy `user` and `user_info` tables.
     """
+
     if created:
 
         user, created = Users.objects.update_or_create(
             email=instance.email,
+            username=instance.username,
             defaults={
                 'user': instance
             }
         )
 
-        logger.warning(
+        logger.info(
             '{0} has been {1}'.format(
                 user,
                 'created' if created else 'updated'

@@ -516,6 +516,9 @@ elif ENVIRONMENT == 'test':
     # Turn debug off so tests run faster
 
     DEBUG = False
+
+    DJANGO_LOG_LEVEL = 'WARNING'
+
     TEMPLATES[0]['OPTIONS']['debug'] = False
 
     # --------------------------------------------------------------------------

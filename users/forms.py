@@ -37,9 +37,9 @@ class SignupForm(forms.Form):
         label=label.render(),
         widget=forms.CheckboxInput
     )
-    # captcha = ReCaptchaField(label='', attrs={
-    #     'theme': 'dark',
-    # })
+    captcha = ReCaptchaField(label='', attrs={
+        'theme': 'dark',
+    })
 
     def __init__(self, *args, **kwargs):
 
@@ -48,10 +48,6 @@ class SignupForm(forms.Form):
         self.fields["email"] = self.fields["emailAddress"]
         self.fields["password1"] = self.fields["password"]
         del self.fields["password"], self.fields["emailAddress"]
-
-        if kwargs['initial'] and kwargs['initial']['hidden_fields']:
-            for field in kwargs['initial']['hidden_fields']:
-                self.fields[field].widget = forms.HiddenInput()
 
     def signup(self, request, user):
         user.save()

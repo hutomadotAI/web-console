@@ -19,7 +19,12 @@
 
       <li class="header" style="color:#8A8A8A;text-align: center;"><b>{% trans 'MY ACCOUNT' %}</b></li>
 
-      <li id="menu_logout"><a href="{% url 'account_logout' %}" id="link_logout"><i class="fa fa-power-off text-red"></i> <span>{% trans 'LOGOUT' %}</span></a></li>
+      {% if user.is_authenticated %}
+        <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off text-red"></i> {% trans 'Logout' %}</a></li>
+      {% else %}
+        <li><a href="{% url 'account_login' %}">{% trans 'Login' %}</a></li>
+        <li><a href="{% url 'account_signup' %}">{% trans 'Sign Up' %}</a></li>
+      {% endif %}
 
     </ul>
   </section>

@@ -41,7 +41,6 @@ services:
     environment:
       ENVIRONMENT: production
       DJANGO_STATIC_HOST: //0.0.0.0.xip.io
-      OPBEAT_APP_ID: ac7e006f6e
     volumes:
       - .:/usr/src/app
     ports:
@@ -75,6 +74,21 @@ services:
     image: mailhog/mailhog
     ports:
       - 8025:8025
+
+  #
+  # Container to perform tests locally
+  #
+  test:
+    build:
+      context: .
+      args:
+        ENVIRONMENT: test
+    env_file: secrets.env
+    environment:
+      ENVIRONMENT: test
+    command: python manage.py test --pattern="*_spec.py"
+    volumes:
+      - .:/usr/src/app
 
   #
   # Redis for caching
