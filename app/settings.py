@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     # Third party apps:
     'allauth',          # For user registration, either via email or social
     'allauth.account',  # For user registration, either via email or social
-    'allauth.socialaccount',  # For user registration, either via email or social
     'crispy_forms',     # The best way to have Django DRY forms
     'captcha',          # Django reCAPTCHA form field/widget integration app.
     'reversion',        # Provides version control for model instances

@@ -44,8 +44,8 @@ def update_legacy_tables(sender, instance, created, **kwargs):
 
         user, created = Users.objects.update_or_create(
             email=instance.email,
-            username=instance.username,
             defaults={
+                'username': instance.username,
                 'user': instance
             }
         )
