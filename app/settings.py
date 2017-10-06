@@ -598,6 +598,8 @@ elif ENVIRONMENT == 'production':
     # attacks, which are possible even under many seemingly-safe web server
     # configurations.
     ALLOWED_HOSTS = [
+        'localhost',
+        'dev.hutoma.com',
         'console.hutoma.ai',
         'development-console.hutoma.ai'
     ]
@@ -605,7 +607,7 @@ elif ENVIRONMENT == 'production':
     # Whether to use a secure cookie for the session cookie. If this is set to
     # True, the cookie will be marked as “secure,” which means browsers may
     # ensure that the cookie is only sent under an HTTPS connection.
-    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = False
 
     # Password validation
     #

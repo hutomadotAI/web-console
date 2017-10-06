@@ -24,9 +24,12 @@ RUN apt-get update && apt-get install -y \
 
 COPY requirements.ini /usr/src/app
 COPY $ENVIRONMENT.ini /usr/src/app
-COPY . /usr/src/app
 
 # Install dependencies
 RUN pip install -r $ENVIRONMENT.ini
+
+# Copy the code
+COPY . /usr/src/app
+
 
 
