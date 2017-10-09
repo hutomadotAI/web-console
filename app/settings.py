@@ -518,6 +518,7 @@ elif ENVIRONMENT == 'test':
     DJANGO_LOG_LEVEL = 'WARNING'
     TEMPLATES[0]['OPTIONS']['debug'] = False
 
+
     # Statics
     #
     # Use built-in Django storage
@@ -552,7 +553,8 @@ elif ENVIRONMENT == 'test':
     #
     # Testing
 
-    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+    TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+    TEST_OUTPUT_DIR = './test_output'
 
     # --------------------------------------------------------------------------
     #
@@ -578,6 +580,21 @@ elif ENVIRONMENT == 'test':
         ]),
     ]
 
+    # ------------------------------------------------------------------------------
+    #
+    # Cache configuration - use in-memory for testing
+    #
+    # A dictionary containing the settings for all caches to be used with Django.
+    #
+    # https://docs.djangoproject.com/en/1.11/ref/settings/#std:setting-CACHES
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+        },
+        'sessions': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+        }
+    }
 elif ENVIRONMENT == 'production':
 
     """

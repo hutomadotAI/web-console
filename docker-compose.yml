@@ -79,17 +79,23 @@ services:
   # Container to perform tests locally
   #
   test:
+    image: hu_console_v2_test
     build:
       context: .
-      args:
+      args:  
         ENVIRONMENT: test
-    env_file: secrets.env
+        USERID: ${USERID:-1000}
+        GROUPID: ${GROUPID:-1000}
     environment:
+      # dummy variables for required values
       ENVIRONMENT: test
+      SECRET_KEY: YWJjZGVm
+      LEGACY_SALT: YWJjZGVm
+      JWT_SECRET_KEY: YWJjZGVm
+      MEDIA_URL: aHR0cDovL2V4YW1wbGUuY29tLw==
+      API_URL: http://no_api
     command: python manage.py test --pattern="*_spec.py"
-    volumes:
-      - .:/usr/src/app
-
+    
   #
   # Redis for caching
   #
