@@ -26,3 +26,39 @@ class AiFactory(factory.Factory):
     linked_bots = [
         1
     ]
+
+
+class AIImportJSON(factory.Factory):
+    name = 'Foo IIss4'
+    description = ''
+    isPrivate = False
+    personality = 0
+    confidence = 0.4
+    voice = 1
+    language = 'en_US'
+    timezone = 'Europe/London'
+    intents = []
+    trainingFile = 'Some content'
+    entities = []
+    version = 1
+
+
+class UnauthorizedFactory(factory.Factory):
+    status = {
+        'code': 401,
+        'info': 'Requires authentication'
+    }
+
+
+class NameExistsFactory(factory.Factory):
+    status = {
+        'code': 400,
+        'info': 'A bot with that name already exists'
+    }
+
+
+class SuccessFactory(factory.Factory):
+    status = {
+        'code': 201,
+        'info': 'OK'
+    }

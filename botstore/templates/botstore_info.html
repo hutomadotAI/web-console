@@ -11,7 +11,7 @@
         <div class="alert alert-dismissable flat alert-info no-margin" id="containerMsgAlertNewAiBotstore" style="padding-bottom: 25px;">
           <span id="msgAlertNewAiBotstore">
             <dd>
-              {% url 'add_bot' as link %}
+              {% url 'studio:add_bot' as link %}
                {% blocktrans with link=link %}The Hu:toma botstore allows you to purchase skills that you can then transfer to your bot. Mix and match bots together to create new functionalities. Bots purchased here will appear in the skill section when you <a href="{{ link }}">create a new bot</a>.{% endblocktrans %}
                <br/>
             </dd>

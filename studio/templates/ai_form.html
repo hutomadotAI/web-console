@@ -21,22 +21,41 @@
 {% block content %}
   <div class="content-wrapper">
     <section class="content">
-      <div class="box box-solid box-clean flat no-shadow" id="newAicontent">
+      <div class="box box-solid box-clean flat no-shadow">
         <div class="box-header with-border">
           <div class="box-title"><b>{% trans 'Basic Bot Settings' %}</b></div>
         </div>
 
-        <form action="" method="post">
+        <form method="post" class="form-add" id="add_form">
           {% csrf_token %}
 
-          {{ form | crispy }}
+          {{ add_form | crispy }}
 
-          <div class="box-footer">
-              <a href="{% url 'index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
-              <button style="width:100px" type="submit" id="btnNext" class="btn btn-success flat pull-right" alt="next step"><b>{% trans 'Next' %}</b></button>
+        </form>
+
+        <div class="box-footer">
+            <a href="{% url 'studio:index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
+            <button style="min-width:100px" type="submit" form="add_form" class="btn btn-success flat pull-right"><b>{% trans 'Next' %}</b></button>
+        </div>
+
+      </div>
+
+      <div class="box box-solid box-clean flat no-shadow">
+        <div class="box-header with-border">
+          <div class="box-title"><b>{% trans 'Import a bot' %}</b></div>
+        </div>
+
+        <form method="post" class="form-import" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {{ import_form | crispy }}
+
+          <div class="form-group">
+            <button style="width:100px" type="submit" class="btn btn-success flat pull-right"><b>{% trans 'Import' %}</b></button>
           </div>
 
         </form>
+
       </div>
     </section>
   </div>

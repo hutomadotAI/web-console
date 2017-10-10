@@ -33,7 +33,7 @@ urlpatterns = [
 
     url(
         r'^',
-        include('studio.urls')
+        include('studio.urls', namespace='studio')
     ),
 
     url(

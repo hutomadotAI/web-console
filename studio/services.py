@@ -18,18 +18,80 @@ def get_ai_list(user):
 
     logger.debug(url)
 
-    respons = requests.get(
+    response = requests.get(
         url,
         headers=set_headers(user),
         timeout=settings.API_TIMEOUT
     )
 
-    if respons.status_code == 200:
-        responsJSON = respons.json()
-        ai_list = responsJSON['ai_list']
+    if response.status_code == 200:
+        responseJSON = response.json()
+        ai_list = responseJSON['ai_list']
     else:
         ai_list = None
 
     logger.debug(ai_list)
 
     return ai_list
+
+
+def post_ai(user, ai_data):
+    """
+    Post an AI instance
+    """
+
+    ai_default = {
+        'is_private': False,
+        'personality': 0,
+        'confidence': 0.4,
+        'locale': 'en-US',
+    }
+
+    path = '/ai'
+    url = settings.API_URL + path
+
+    logger.debug(url)
+
+    response = requests.post(
+        url,
+        headers=set_headers(user),
+        timeout=settings.API_TIMEOUT,
+        data={**ai_default, **ai_data}
+    )
+
+    logger.debug(response)
+
+    ai = response.json()
+
+    logger.debug(ai)
+
+    return ai
+
+
+def post_import_ai(user, ai_data):
+    """
+    Post an AI import JSON
+    """
+
+    path = '/ai/import'
+    url = settings.API_URL + path
+
+    logger.debug(url)
+
+    headers = set_headers(user)
+    headers['Content-type'] = 'application/json'
+
+    response = requests.post(
+        url,
+        headers=headers,
+        timeout=settings.API_TIMEOUT,
+        data=ai_data
+    )
+
+    logger.debug(response)
+
+    ai = response.json()
+
+    logger.debug(ai)
+
+    return ai

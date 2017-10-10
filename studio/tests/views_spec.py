@@ -10,7 +10,7 @@ from users.tests.factories import UserFactory
 from studio.tests.factories import AiFactory
 
 
-class QuestionIndexViewTests(TestCase):
+class TestSummaryView(TestCase):
 
     def setUp(self):
         """
@@ -22,7 +22,7 @@ class QuestionIndexViewTests(TestCase):
         """
         For anonymous user summary should redirect to login
         """
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response.url,
@@ -38,7 +38,7 @@ class QuestionIndexViewTests(TestCase):
 
         # We mock ai_list
         mock_get.return_value.json.return_value = []
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertEqual(response.status_code, 200)
 
     @patch('studio.views.get_ai_list')
@@ -51,7 +51,7 @@ class QuestionIndexViewTests(TestCase):
 
         # We mock ai_list
         mock_get.return_value = []
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
             'Welcome to Hu:toma.ai — the marketplace for your bots'
@@ -74,7 +74,7 @@ class QuestionIndexViewTests(TestCase):
         mock_get.return_value = [
             factory.build(dict, FACTORY_CLASS=AiFactory)
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
             'Welcome to Hu:toma.ai — the marketplace for your bots'
@@ -100,7 +100,7 @@ class QuestionIndexViewTests(TestCase):
                 ai_status='ai_training_complete'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Completed')
 
     @patch('studio.views.get_ai_list')
@@ -118,7 +118,7 @@ class QuestionIndexViewTests(TestCase):
                 ai_status='ai_undefined'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Not Started')
 
     @patch('studio.views.get_ai_list')
@@ -136,7 +136,7 @@ class QuestionIndexViewTests(TestCase):
                 ai_status='ai_training_queued'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Queued')
 
     @patch('studio.views.get_ai_list')
@@ -154,7 +154,7 @@ class QuestionIndexViewTests(TestCase):
                 ai_status='ai_training'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'In Progress')
 
     @patch('studio.views.get_ai_list')
@@ -172,7 +172,7 @@ class QuestionIndexViewTests(TestCase):
                 ai_status='ai_training_stopped'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Stopped')
 
     @patch('studio.views.get_ai_list')
@@ -190,7 +190,7 @@ class QuestionIndexViewTests(TestCase):
                 ai_status='ai_error'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Error')
 
     @patch('studio.views.get_ai_list')
@@ -208,7 +208,7 @@ class QuestionIndexViewTests(TestCase):
                 ai_status='ai_error'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Error')
 
     @patch('studio.views.get_ai_list')
@@ -226,7 +226,7 @@ class QuestionIndexViewTests(TestCase):
                 publishing_state='PUBLISHED'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Published')
 
     @patch('studio.views.get_ai_list')
@@ -244,7 +244,7 @@ class QuestionIndexViewTests(TestCase):
                 publishing_state='SUBMITTED'
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Request Sent')
 
     @patch('studio.views.get_ai_list')
@@ -260,10 +260,10 @@ class QuestionIndexViewTests(TestCase):
                 dict,
                 FACTORY_CLASS=AiFactory,
                 ai_status='ai_training_complete',
-                linked_bots=0,
+                linked_bots=[],
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertNotContains(
             response,
             'The bot needs to be fully trained before being published.'
@@ -286,10 +286,13 @@ class QuestionIndexViewTests(TestCase):
                 dict,
                 FACTORY_CLASS=AiFactory,
                 ai_status='ai_training_complete',
-                linked_bots=1,
+                linked_bots=[
+                    1
+                ]
             )
         ]
-        response = self.client.get(reverse('summary'))
+
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
             'We do not currently support publishing bots with linked skills. Please remove them if you’d like your bot to be published.'
@@ -309,8 +312,37 @@ class QuestionIndexViewTests(TestCase):
                 FACTORY_CLASS=AiFactory,
             )
         ]
-        response = self.client.get(reverse('summary'))
+        response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
             'The bot needs to be fully trained before being published.'
         )
+
+
+class TestAICreateView(TestCase):
+    def setUp(self):
+        """
+        Create a user to test response as registered user
+        """
+        self.user = UserFactory()
+
+    def test_summary_anonymous(self):
+        """
+        Anonymous can't access create view
+        """
+        response = self.client.get(reverse('studio:add_bot'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('account_login') + '?next=/bots/add'
+        )
+
+    def test_summary_registred(self):
+        """
+        Logged-in users can access create view
+        """
+        self.client.force_login(self.user)
+
+        # We mock ai_list
+        response = self.client.get(reverse('studio:add_bot'))
+        self.assertEqual(response.status_code, 200)

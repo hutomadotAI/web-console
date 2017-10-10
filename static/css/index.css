@@ -53,6 +53,67 @@ body {
   color: #333;
 }
 
+.form-add {
+  display: flex;
+  margin: 2rem 0 4rem;
+}
+
+.form-add .form-group {
+  margin: 0 1rem 1rem;
+}
+
+.form-add #div_id_description {
+  flex-grow: 2;
+}
+
+.form-add #div_id_name .help-block {
+  position: absolute;
+}
+
+#error_1_id_name {
+  background-color: #d73925;
+  border-radius: .2rem;
+  color: #fff;
+  padding: .5rem 1rem;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .form-add {
+    flex-direction: column;
+  }
+
+  .form-add #div_id_name {
+    margin-bottom: 4rem;
+  }
+}
+
+.form-import {
+  display: flex;
+  padding: 1rem;
+}
+
+.form-import .form-group:first-of-type {
+  flex-grow: 2;
+  margin-right: 2rem;
+}
+
+.form-import .form-group:last-of-type {
+  align-self: flex-end;
+}
+
+.messages {
+  bottom: 0;
+  margin-left: 26rem;
+  position: relative;
+  right: 1.5rem;
+  top: 6.75rem;
+}
+
+.messages .alert {
+  color: #fff;
+}
+
 #div_id_email, #div_id_password1, #div_id_submit {
   width: 100%;
 }
@@ -1550,10 +1611,7 @@ a:focus {
     opacity: 1;
 }
 
-.form-control:not(select) {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+.form-control {
     background-color: #515151;
     border: none;
     color: #ADADAD;
