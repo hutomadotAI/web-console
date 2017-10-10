@@ -45,13 +45,14 @@ def run_test(src_path: Path, clean_images: bool):
     try:
         # run test - it will return non-zero if a test fails, which we will throw later
         cmdline = ["docker-compose", "run", "--name={}".format(container_name), "test"]
-        result_run = subprocess.run(cmdline, cwd=str(src_path))
+        completed_process = subprocess.run(cmdline, cwd=str(src_path))
         cmdline = ["docker", "cp", 
             "{}:/usr/src/app/test_output".format(container_name), 
             "{}/test_output".format(src_path)]
         print(cmdline)
-        result_copy = subprocess.run(cmdline, cwd=str(src_path))
-        if result_run != 0:
+        subprocess.run(cmdline, cwd=str(src_path))
+        
+        if completed_process.returncode != 0:
             raise DockerRunError("docker-compose run failed")
     finally:
         # clean up the docker artifacts, even on failure
