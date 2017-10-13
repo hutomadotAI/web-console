@@ -8,7 +8,7 @@ from app.services import set_headers
 logger = logging.getLogger(__name__)
 
 
-def get_ai_list(user):
+def get_ai_list(token):
     """
     Returnes a list of all bots created by a user
     """
@@ -20,7 +20,7 @@ def get_ai_list(user):
 
     response = requests.get(
         url,
-        headers=set_headers(user),
+        headers=set_headers(token),
         timeout=settings.API_TIMEOUT
     )
 
@@ -35,7 +35,7 @@ def get_ai_list(user):
     return ai_list
 
 
-def post_ai(user, ai_data):
+def post_ai(token, ai_data):
     """
     Post an AI instance
     """
@@ -54,7 +54,7 @@ def post_ai(user, ai_data):
 
     response = requests.post(
         url,
-        headers=set_headers(user),
+        headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
         data={**ai_default, **ai_data}
     )
@@ -68,7 +68,7 @@ def post_ai(user, ai_data):
     return ai
 
 
-def post_import_ai(user, ai_data):
+def post_import_ai(token, ai_data):
     """
     Post an AI import JSON
     """
@@ -78,7 +78,7 @@ def post_import_ai(user, ai_data):
 
     logger.debug(url)
 
-    headers = set_headers(user)
+    headers = set_headers(token)
     headers['Content-type'] = 'application/json'
 
     response = requests.post(

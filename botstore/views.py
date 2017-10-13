@@ -17,8 +17,8 @@ class BotDetailView(DetailView):
     template_name = 'bot_detail.html'
 
     def get_object(self, **kwargs):
-        pk = int(self.kwargs.get('pk', None))
-        return get_bot(self.request.user, pk)
+        pk = self.kwargs.get('pk', None)
+        return get_bot(pk, self.request.session.get('token', False))
 
 
 class BotListView(ListView):
@@ -31,11 +31,16 @@ class BotListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(BotListView, self).get_context_data(**kwargs)
         context['category'] = urllib.parse.unquote(self.kwargs['category'])
+        context['token'] = self.request.session.get('token', False)
+
         return context
 
     def get_queryset(self, **kwargs):
         category = self.kwargs['category']
-        return get_bots(self.request.user, urllib.parse.unquote(category))
+        return get_bots(
+            token=self.request.session.get('token', False),
+            category=urllib.parse.unquote(category)
+        )
 
 
 class CategoriesListView(ListView):
@@ -46,4 +51,4 @@ class CategoriesListView(ListView):
     template_name = 'categorie_list.html'
 
     def get_queryset(self, **kwargs):
-        return get_categories(self.request.user)
+        return get_categories(self.request.session.get('token', False))

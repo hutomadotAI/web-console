@@ -82,20 +82,22 @@ services:
     image: hu_console_v2_test
     build:
       context: .
-      args:  
+      args:
         ENVIRONMENT: test
         USERID: ${USERID:-1000}
         GROUPID: ${GROUPID:-1000}
     environment:
       # dummy variables for required values
-      ENVIRONMENT: test
-      SECRET_KEY: YWJjZGVm
-      LEGACY_SALT: YWJjZGVm
-      JWT_SECRET_KEY: YWJjZGVm
-      MEDIA_URL: aHR0cDovL2V4YW1wbGUuY29tLw==
+      API_ADMIN_TOKEN: YWJjZGVm
       API_URL: http://no_api
+      CACHE_SERVICE_PASSWORD: YWJjZGVm
+      ENVIRONMENT: test
+      JWT_SECRET_KEY: YWJjZGVm
+      LEGACY_SALT: YWJjZGVm
+      MEDIA_URL: http://::1/
+      SECRET_KEY: YWJjZGVm
     command: python manage.py test --pattern="*_spec.py"
-    
+
   #
   # Redis for caching
   #

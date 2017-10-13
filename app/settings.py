@@ -7,7 +7,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import base64       # for ENV_VAR decoding
-import datetime     # for JWT expiration delta
 import os           # for ENV_VARs and path
 
 # General
@@ -22,6 +21,10 @@ ENVIRONMENT = os.environ.get('ENVIRONMENT', 'development')
 SECRET_KEY = base64.b64decode(
     os.environ.get('SECRET_KEY')
 )
+
+# Admin API token used for quering admin level
+
+API_ADMIN_TOKEN = os.environ.get('API_ADMIN_TOKEN')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
@@ -58,9 +61,12 @@ INSTALLED_APPS = [
     'reversion',        # Provides version control for model instances
 
     # Apps specific for console:
-    'botstore',       # Bot store
-    'studio',         # Bot studio
-    'users',          # All user stuff
+    'botstore',         # Bot store
+    'legacy',           # To be removed after we switch to Django Console
+    'studio',           # Bot studio
+    'users',            # All user stuff
+
+
 ]
 
 # The ID, as an integer, of the current site in the django_site database table.
@@ -158,25 +164,7 @@ ACCOUNT_USERNAME_MIN_LENGTH = 8
 # Default redirect after user is loged in
 LOGIN_REDIRECT_URL = '/'
 
-# JSON web token
-# Used to connect to the API
-
-# This is the secret key used to sign the JWT. Make sure this is safe and not
-# shared or public.
-JWT_SECRET_KEY = base64.b64decode(
-    os.environ.get('JWT_SECRET_KEY')
-)
-
-# Algorithm for cryptographic signing in PyJWT
-JWT_ALGORITHM = 'HS256'
-
-# This is an instance of Python's `datetime.timedelta`. This will be added to
-# datetime.utcnow() to set the expiration time.
-JWT_EXPIRATION_DELTA = datetime.timedelta(days=60)
-
-
 # ReCaptcha
-
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
@@ -285,7 +273,20 @@ DATABASES = {
         'PORT': os.environ.get('DATABASE_PORT', '3306'),
         'ATOMIC_REQUESTS': True,
     },
+    'core': {
+        # To be remved after we switch to Django Console
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('CORE_DATABASE_NAME'),
+        'USER': os.environ.get('CORE_DATABASE_USER'),
+        'PASSWORD': os.environ.get('CORE_DATABASE_PASSWORD'),
+        'HOST': os.environ.get('CORE_DATABASE_HOST'),
+        'PORT': os.environ.get('CORE_DATABASE_PORT'),
+        'ATOMIC_REQUESTS': True,
+    }
 }
+
+# To be removed after we switch to Django Console
+DATABASE_ROUTERS = ['legacy.database.Router']
 
 # ------------------------------------------------------------------------------
 #
@@ -388,9 +389,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Media
 #
 # User generated content
-MEDIA_URL = base64.b64decode(
-    os.environ.get('MEDIA_URL')
-).decode('utf-8')
+MEDIA_URL = os.environ.get('MEDIA_URL')
 
 # ------------------------------------------------------------------------------
 #
@@ -515,7 +514,7 @@ elif ENVIRONMENT == 'test':
     # Turn debug off so tests run faster, set Log level to Warning
 
     DEBUG = False
-    DJANGO_LOG_LEVEL = 'WARNING'
+    DJANGO_LOG_LEVEL = 'DEBUG'
     TEMPLATES[0]['OPTIONS']['debug'] = False
 
 

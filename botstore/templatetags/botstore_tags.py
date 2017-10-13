@@ -25,7 +25,7 @@ def lookup(dictionary, key):
 
 
 @register.inclusion_tag('botstore_navigation.html')
-def botstore_navigation(user, active, botstore):
+def botstore_navigation(active, botstore):
     """
     Renders a botstore Naviagtion menu based on API proviaded data
     """
@@ -46,7 +46,7 @@ def botstore_navigation(user, active, botstore):
         "travel": "fa-plane",
         "virtual assistants": "fa-headphones",
     }
-    categories = get_categories(user)
+    categories = get_categories()
     return {
         'categories': categories,
         'active': active,

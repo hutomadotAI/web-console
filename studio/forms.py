@@ -1,13 +1,9 @@
-import json
 import logging
 import pytz
 
-from django import forms, template
-from django.utils.translation import ugettext_lazy as trans
+from django import forms
 from django.core.validators import RegexValidator
-
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
+from django.utils.translation import ugettext_lazy as trans
 
 from studio.services import post_ai, post_import_ai
 
@@ -53,7 +49,7 @@ class AddAI(forms.Form):
     )
 
     def save(self, *args, **kwargs):
-        return post_ai(kwargs['user'], self.cleaned_data)
+        return post_ai(kwargs['token'], self.cleaned_data)
 
 
 class ImportAI(forms.Form):
@@ -64,9 +60,5 @@ class ImportAI(forms.Form):
     )
 
     def save(self, *args, **kwargs):
-
-        logger.warning(kwargs['user'])
-
         data = self.cleaned_data['ai_data'].read().decode('utf8')
-
-        return post_import_ai(kwargs['user'], data)
+        return post_import_ai(kwargs['token'], data)

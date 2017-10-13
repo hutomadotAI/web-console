@@ -1,10 +1,11 @@
 import factory
 
 from django.contrib.auth.models import AnonymousUser, User
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 
-from users.models import Users
-from users.signals import update_legacy_tables
+from users.models import Profile
+from users.signals import create_API_user, create_profile
 
 
 class AnonymousUserFactory(factory.Factory):
@@ -15,18 +16,17 @@ class AnonymousUserFactory(factory.Factory):
         model = AnonymousUser
 
 
-class UsersFactory(factory.Factory):
+class ProfileFactory(factory.Factory):
     """
-    Create an Legacy Users user instance
+    Create an Profile instance
     """
     class Meta:
-        model = Users
+        model = Profile
 
-    email = factory.Sequence(lambda n: 'user_%s@hutoma.ai' % n)
-    username = factory.Sequence(lambda n: 'user_%s' % n)
     user = None
 
 
+@factory.django.mute_signals(pre_save, post_save)
 class UserFactory(factory.django.DjangoModelFactory):
     """
     Create an Django built-in user, relays on signals to create legacy Users
@@ -39,8 +39,6 @@ class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: 'user_%s' % n)
 
     users = factory.RelatedFactory(
-        factory=UsersFactory,
-        factory_related_name='user',
-        username=factory.SelfAttribute('..username'),
-        email=factory.SelfAttribute('..email'),
+        factory=ProfileFactory,
+        factory_related_name='user'
     )

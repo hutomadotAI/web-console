@@ -23,7 +23,7 @@ class AIListView(ListView):
     template_name = 'ai_list.html'
 
     def get_queryset(self, **kwargs):
-        return get_ai_list(self.request.user)
+        return get_ai_list(self.request.session.get('token', False))
 
 
 @method_decorator(login_required, name='dispatch')
@@ -59,7 +59,7 @@ class AICreateView(FormView):
         as a parameter, if not raises a error message and redirect back to the
         form.
         """
-        new_ai = form.save(user=self.request.user)
+        new_ai = form.save(token=self.request.session.get('token', False))
 
         # Check if save was successful
         if new_ai['status']['code'] not in [200, 201]:

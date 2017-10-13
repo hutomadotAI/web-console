@@ -3,25 +3,37 @@ import factory
 from unittest.mock import patch
 
 from django.urls import reverse
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 
 from test_plus.test import TestCase
 
-from users.tests.factories import UserFactory
 from studio.tests.factories import AiFactory
+
+from users.models import Profile
+from users.tests.factories import UserFactory
 
 
 class TestSummaryView(TestCase):
 
+    @factory.django.mute_signals(user_logged_in)
     def setUp(self):
         """
         Create a user to test response as registered user
         """
+
         self.user = UserFactory()
+        Profile.objects.create(user=self.user)
+
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['token'] = 'token'
+        session.save()
 
     def test_summary_anonymous(self):
         """
         For anonymous user summary should redirect to login
         """
+        self.client.logout()
         response = self.client.get(reverse('studio:summary'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
@@ -34,7 +46,6 @@ class TestSummaryView(TestCase):
         """
         If user is logged in he can access summary
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value.json.return_value = []
@@ -47,7 +58,6 @@ class TestSummaryView(TestCase):
         If user have no AIs instead of AIs list there should be a training
         video
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = []
@@ -68,7 +78,6 @@ class TestSummaryView(TestCase):
         If user have AIs there should be a list of AIs, as well as there
         shouldn't be the training video
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -90,7 +99,6 @@ class TestSummaryView(TestCase):
         """
         Label should reflect AIs training status
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -108,7 +116,6 @@ class TestSummaryView(TestCase):
         """
         Label should reflect AIs training status
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -126,7 +133,6 @@ class TestSummaryView(TestCase):
         """
         Label should reflect AIs training status
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -144,7 +150,6 @@ class TestSummaryView(TestCase):
         """
         Label should reflect AIs training status
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -162,7 +167,6 @@ class TestSummaryView(TestCase):
         """
         Label should reflect AIs training status
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -180,7 +184,6 @@ class TestSummaryView(TestCase):
         """
         Label should reflect AIs training status
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -198,7 +201,6 @@ class TestSummaryView(TestCase):
         """
         Label should reflect AIs training status
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -216,7 +218,6 @@ class TestSummaryView(TestCase):
         """
         A published AI should have a proper button label
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -234,7 +235,6 @@ class TestSummaryView(TestCase):
         """
         A published AI should have a proper button label
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -252,7 +252,6 @@ class TestSummaryView(TestCase):
         """
         A trained AI with no linked skills can be published
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -278,7 +277,6 @@ class TestSummaryView(TestCase):
         """
         A trained AI with linked skills can't be published
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -303,7 +301,6 @@ class TestSummaryView(TestCase):
         """
         An untrained AI can't be publish
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         mock_get.return_value = [
@@ -320,16 +317,26 @@ class TestSummaryView(TestCase):
 
 
 class TestAICreateView(TestCase):
+
+    @factory.django.mute_signals(user_logged_in)
     def setUp(self):
         """
         Create a user to test response as registered user
         """
         self.user = UserFactory()
+        Profile.objects.create(user=self.user)
 
-    def test_summary_anonymous(self):
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['token'] = 'token'
+        session.save()
+
+    def test_ai_create_anonymous(self):
         """
         Anonymous can't access create view
         """
+
+        self.client.logout()
         response = self.client.get(reverse('studio:add_bot'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
@@ -337,11 +344,10 @@ class TestAICreateView(TestCase):
             reverse('account_login') + '?next=/bots/add'
         )
 
-    def test_summary_registred(self):
+    def test_ai_create_registred(self):
         """
         Logged-in users can access create view
         """
-        self.client.force_login(self.user)
 
         # We mock ai_list
         response = self.client.get(reverse('studio:add_bot'))

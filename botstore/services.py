@@ -11,7 +11,7 @@ from app.services import set_headers
 logger = logging.getLogger(__name__)
 
 
-def get_categories(user, start=0, offset=8):
+def get_categories(token=False, start=0, offset=8):
     """
     Returnes a list of categories, with a list bots in each of them
     """
@@ -26,7 +26,7 @@ def get_categories(user, start=0, offset=8):
 
     responsJSON = requests.get(
         url,
-        headers=set_headers(user),
+        headers=set_headers(token),
         timeout=settings.API_TIMEOUT
     ).json()
 
@@ -37,7 +37,7 @@ def get_categories(user, start=0, offset=8):
     return responsJSON['categories']
 
 
-def get_bots(user, category, start=0, offset=24):
+def get_bots(category, token=False, start=0, offset=24):
     """
     Returnes a list lof bots filterd by category
     """
@@ -53,7 +53,7 @@ def get_bots(user, category, start=0, offset=24):
 
     responsJSON = requests.get(
         url,
-        headers=set_headers(user),
+        headers=set_headers(token),
         timeout=settings.API_TIMEOUT
     ).json()
 
@@ -64,19 +64,19 @@ def get_bots(user, category, start=0, offset=24):
     return bots
 
 
-def get_bot(user, pk):
+def get_bot(pk, token=False):
     """
     Returnes detils about a single bot
     """
 
-    path = '/ui/botstore/%d'
+    path = '/ui/botstore/%s'
     url = settings.API_URL + path % (pk)
 
     logger.debug(url)
 
     responsJSON = requests.get(
         url,
-        headers=set_headers(user),
+        headers=set_headers(token),
         timeout=settings.API_TIMEOUT
     ).json()
 

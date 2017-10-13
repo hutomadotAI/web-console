@@ -30,7 +30,7 @@ urlpatterns = [
     # Always use a path, explicit is better than implicit
     url(
         r'^$',
-        RedirectView.as_view(pattern_name='summary'),
+        RedirectView.as_view(pattern_name='studio:summary'),
         name='index'
     ),
 

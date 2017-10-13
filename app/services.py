@@ -1,26 +1,15 @@
 import logging
 
-from users.models import Users
-
 logger = logging.getLogger(__name__)
 
 
-def set_headers(user):
+def set_headers(token):
     """
     Add required Authentication headers
     """
 
-    if user.is_anonymous():
-        headers = {}
-    else:
-        legacy_user = Users.objects.get(user=user)
-        headers = {
-            'Authorization': 'Bearer %s' % legacy_user.token
-        }
+    headers = {'Authorization': 'Bearer %s' % token} if token else {}
 
-    logger.debug('header %s set for user %s' % (
-        headers,
-        user
-    ))
+    logger.debug('header %s set' % headers)
 
     return headers
