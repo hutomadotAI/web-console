@@ -64,7 +64,7 @@ def run_test(src_path: Path, clean_images: bool):
 
 def main(build_args):
     """Main function"""
-    src_path = ROOT_DIR
+    src_path = ROOT_DIR/'src'
     build_test(src_path)
     run_test(src_path, build_args.clean_images)
 

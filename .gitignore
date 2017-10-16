@@ -104,4 +104,8 @@ ENV/
 .vscode/
 
 # Test output files
-test_output/**
+test_output/
+
+# Enviroment variable files
+secrets.env
+.env
