@@ -73,7 +73,10 @@ class TestImportAI(TestCase):
         # Configure the mock
         mock_get.return_value.ok = False
         mock_get.return_value.status_code = 401
-        mock_get.return_value.json.return_value = factory.build(dict, FACTORY_CLASS=UnauthorizedFactory)
+        mock_get.return_value.json.return_value = factory.build(
+            dict,
+            FACTORY_CLASS=UnauthorizedFactory
+        )
 
         response = post_import_ai(user, {})
 
@@ -88,7 +91,10 @@ class TestImportAI(TestCase):
         # Configure the mock
         mock_get.return_value.ok = True
         mock_get.return_value.status_code = 201
-        mock_get.return_value.json.return_value = factory.build(dict, FACTORY_CLASS=SuccessFactory)
+        mock_get.return_value.json.return_value = factory.build(
+            dict,
+            FACTORY_CLASS=SuccessFactory
+        )
 
         response = post_import_ai(self.user, {})
 
@@ -105,7 +111,10 @@ class TestImportAI(TestCase):
         mock_get.return_value.status_code = 201
         mock_get.return_value.json.return_value = self.created
 
-        response = post_import_ai(self.user, factory.build(dict, FACTORY_CLASS=AIImportJSON))
+        response = post_import_ai(self.user, factory.build(
+            dict,
+            FACTORY_CLASS=AIImportJSON)
+        )
 
         self.assertEqual(response['status']['code'], 201)
         self.assertEqual(self.created['aiid'], response['aiid'])
@@ -119,9 +128,18 @@ class TestImportAI(TestCase):
         # Configure the mock
         mock_get.return_value.ok = True
         mock_get.return_value.status_code = 400
-        mock_get.return_value.json.return_value = factory.build(dict, FACTORY_CLASS=NameExistsFactory)
+        mock_get.return_value.json.return_value = factory.build(
+            dict,
+            FACTORY_CLASS=NameExistsFactory
+        )
 
-        response = post_import_ai(self.user, factory.build(dict, FACTORY_CLASS=AIImportJSON))
+        response = post_import_ai(self.user, factory.build(
+            dict,
+            FACTORY_CLASS=AIImportJSON)
+        )
 
         self.assertEqual(response['status']['code'], 400)
-        self.assertEqual(response['status']['info'], 'A bot with that name already exists')
+        self.assertEqual(
+            response['status']['info'],
+            'A bot with that name already exists'
+        )
