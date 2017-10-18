@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<div class="box-card card flat no-padding col-xs-6 col-sm-4 col-md-3 col-lg-1">
+
+  <a href="{% url 'bot-detail' pk=widget.label.botId %}"><img class="card-icon" src="{{ MEDIA_URL }}boticon/{{ widget.label.botIcon }}"></a>
+
+  <div class="card-title no-shadow"><a href="{% url 'bot-detail' pk=widget.label.botId %}">{{ widget.label.name }}</a></div>
+
+  <div class="switch-checkbox">
+    {% include "django/forms/widgets/input.html" %}
+    <label for="{{ widget.attrs.id }}">{% trans 'Add' %}</label>
+  </div>
+
+</div>

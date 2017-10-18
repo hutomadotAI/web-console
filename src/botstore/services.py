@@ -85,3 +85,27 @@ def get_bot(pk, token=False):
     logger.debug(bot)
 
     return bot
+
+
+def get_purchased(token):
+    """
+    """
+
+    path = '/botstore/purchased'
+    url = settings.API_URL + path
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    skills = response.json()
+
+    logger.debug(skills)
+
+    return skills['bots']

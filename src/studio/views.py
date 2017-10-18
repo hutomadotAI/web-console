@@ -1,17 +1,32 @@
 import logging
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView, FormView
-from django.urls import reverse_lazy
-from django.contrib import messages
+from django.views.generic.base import ContextMixin
+from django.views.generic.edit import FormView
 
-from studio.forms import AddAI, ImportAI
-from studio.services import get_ai_list, post_ai
+from studio.forms import AddAI, ImportAI, UpdateSkills
+from studio.services import get_ai, get_ai_list
 
 logger = logging.getLogger(__name__)
+
+
+class StudioViewMixin(ContextMixin):
+    def get_context_data(self, **kwargs):
+        """
+        Get AI information for studio navigation, also provide
+        """
+        context = super(StudioViewMixin, self).get_context_data(**kwargs)
+        context['ai'] = get_ai(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        )
+
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -59,6 +74,7 @@ class AICreateView(FormView):
         as a parameter, if not raises a error message and redirect back to the
         form.
         """
+
         new_ai = form.save(token=self.request.session.get('token', False))
 
         # Check if save was successful
@@ -95,3 +111,43 @@ class AICreateView(FormView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+
+@method_decorator(login_required, name='dispatch')
+class SkillsUpdateView(StudioViewMixin, FormView):
+    form_class = UpdateSkills
+    template_name = 'skill_form.html'
+    success_url = 'skills'
+    fail_url = 'skills'
+
+    def get_form(self, form_class=None):
+        """Return an instance of the form to be used in this view."""
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(
+            token=self.request.session.get('token', False),
+            aiid=self.kwargs['aiid'],
+            **self.get_form_kwargs()
+        )
+
+    def get_initial(self):
+        """Returns the initial data to use for forms on this view."""
+        initial = super(SkillsUpdateView, self).get_initial()
+        ai = get_ai(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        )
+        initial = {
+            'skills': ai['linked_bots']
+        }
+        return initial
+
+    def form_valid(self, form):
+        """
+        Send new AI to API, if successful redirects to second step using AIID
+        as a parameter, if not raises a error message and redirect back to the
+        form.
+        """
+        form.save()
+
+        return super().form_valid(form)

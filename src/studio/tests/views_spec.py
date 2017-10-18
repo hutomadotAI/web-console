@@ -7,7 +7,7 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out
 
 from test_plus.test import TestCase
 
-from studio.tests.factories import AiFactory
+from studio.tests.factories import AiFactory, UnauthorizedFactory
 
 from users.models import Profile
 from users.tests.factories import UserFactory
@@ -352,3 +352,86 @@ class TestAICreateView(TestCase):
         # We mock ai_list
         response = self.client.get(reverse('studio:add_bot'))
         self.assertEqual(response.status_code, 200)
+
+
+class TestSkillsUpdateView(TestCase):
+
+    @factory.django.mute_signals(user_logged_in)
+    def setUp(self):
+        """
+        Create a user to test response as registered user
+        """
+        self.user = UserFactory()
+        self.ai = factory.build(
+                dict,
+                FACTORY_CLASS=AiFactory
+            )
+        Profile.objects.create(user=self.user)
+
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['token'] = 'token'
+        session.save()
+
+    def test_anonymous(self):
+        """
+        Anonymous can't access update skills
+        """
+
+        self.client.logout()
+        response = self.client.get(reverse(
+            'studio:skills',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('account_login') + '?next=/bots/edit/%s/skills' % self.ai['aiid']
+        )
+
+    @patch('studio.views.get_ai')
+    @patch('studio.forms.get_purchased')
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    def test_registred(self, mock_get_ai, mock_get_purchased, mock_get_categories):
+        """
+        Logged-in users can access update skills. We need to mock `get_aiid`
+        and `get_purchased` skill to build the form. `get_categories` is mocked
+        cause `Embed` is calling it using Navigation template
+        """
+
+        # We mock ai_list
+        mock_get_ai.return_value.json.return_value = [
+            factory.build(dict, FACTORY_CLASS=AiFactory)
+        ]
+        mock_get_purchased.return_value.json.return_value = [
+            factory.build(dict, FACTORY_CLASS=AiFactory),
+            factory.build(dict, FACTORY_CLASS=AiFactory),
+            factory.build(dict, FACTORY_CLASS=AiFactory)
+        ]
+        mock_get_categories.return_value.json.return_value = []
+        response = self.client.get(reverse(
+            'studio:skills',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+        self.assertEqual(response.status_code, 200)
+
+    @patch('studio.services.requests.get')
+    def test_unauthorised(self, mock_get_ai):
+        """
+        Return 404 if user doesn't have access to the AI
+        """
+
+        # We mock ai_list
+        mock_get_ai.return_value.status_code = 403
+
+        response = self.client.get(reverse(
+            'studio:skills',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+        self.assertEqual(response.status_code, 404)

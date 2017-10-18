@@ -4,7 +4,7 @@ import factory
 class AiFactory(factory.Factory):
 
     aiid = '9cf6290f-7c23-40a8-a3e8-381dd9153f2a'
-    client_token = 'eyJhbGciOiJIUzI1NiIsImNhbGciOiJERUYifQ.eNocyrsKwzAMheF30VyB5bu6lTaDwSRQunQqimO_QOhU8u4Rnc4P5_vBc6kTXP_zudcyza9lrm-4wK2Uhx7cRrRsBqZmHXojGcX1jC7TtjEFN6yo3r-r4tiHSatVQsaj56HViDGQtBTE504RjhMAAP__.m0ChIKk2E_tiNgTG5CHcTG5VHQjHoQSti6wP9XH-UPM'
+    client_token = 'token'
     name = 'Testy'
     description = ''
     created_on = '2017-08-22T13:30:22.000Z'

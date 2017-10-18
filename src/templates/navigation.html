@@ -8,6 +8,8 @@
 
       <li><a href="{% url 'studio:index' %}"><i class="fa fa-home text-light-blue active" id="level0"> </i><span>{% trans 'Home' %}</span></a></li>
 
+      {% block studio %}{% endblock studio %}
+
       <li><a data-toggle="collapse" data-target="#categories"><i class="fa fa-shopping-cart text-green"></i> <span>{% trans 'Botstore' %}</span><i class="fa fa-ellipsis-v pull-right"></i></a>
 
       {% botstore_navigation category botstore %}
@@ -20,6 +22,7 @@
       <li class="header" style="color:#8A8A8A;text-align: center;"><b>{% trans 'MY ACCOUNT' %}</b></li>
 
       {% if user.is_authenticated %}
+        <li><span>{{ user.email }}</span></li>
         <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off text-red"></i> {% trans 'Logout' %}</a></li>
       {% else %}
         <li><a href="{% url 'account_login' %}">{% trans 'Login' %}</a></li>

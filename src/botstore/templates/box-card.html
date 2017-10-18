@@ -2,16 +2,28 @@
 
 <div class="box-card card flat no-padding col-xs-6 col-sm-4 col-md-3 col-lg-1">
 
-  <a href="{% url 'bot-detail' pk=bot.botId %}"><img class="card-icon" src="{{ MEDIA_URL }}boticon/{{ bot.botIcon }}"></a>
+  {% block image %}
+    <a href="{% url 'bot-detail' pk=bot.botId %}"><img class="card-icon" src="{{ MEDIA_URL }}boticon/{{ bot.botIcon }}"></a>
+  {% endblock image %}
 
-  <div class="card-title no-shadow"><a href="{% url 'bot-detail' pk=bot.botId %}">{{ bot.name }}</a></div>
-  <div class="card-author no-shadow">by {{ developer.company }}</div>
-  <a class="card-testBotLink" href="./newAI.php" target="_top" style="display:none;">{% trans 'Test Bot' %}</a>
+  {% block title %}
+    <div class="card-title no-shadow"><a href="{% url 'bot-detail' pk=bot.botId %}">{{ bot.name }}</a></div>
+  {% endblock title %}
 
-  <div class="card-footer flat">
-    <div class="row no-margin">
-      <span class="card-linked"><a href="{% url 'bot-detail' pk=bot.botId %}"><span class="card-price pull-right">{{ bot.price }} €</span></a></span>
+  {% block author %}
+    <div class="card-author no-shadow">by {{ developer.company }}</div>
+  {% endblock author %}
+
+  {% block actions %}
+    <a class="card-testBotLink" href="./newAI.php" target="_top" style="display:none;">{% trans 'Test Bot' %}</a>
+  {% endblock actions %}
+
+  {% block price %}
+    <div class="card-footer flat">
+      <div class="row no-margin">
+        <span class="card-linked"><a href="{% url 'bot-detail' pk=bot.botId %}"><span class="card-price pull-right">{{ bot.price }} €</span></a></span>
+      </div>
     </div>
-  </div>
+  {% endblock price %}
 
 </div>

@@ -23,7 +23,7 @@ from django.conf.urls import url
 
 from django.views.generic.base import RedirectView
 
-from studio.views import AICreateView, AIListView
+from studio.views import AICreateView, AIListView, SkillsUpdateView
 
 urlpatterns = [
 
@@ -51,8 +51,57 @@ urlpatterns = [
     # Edit an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/?$',
-        AICreateView.as_view(),
+        RedirectView.as_view(pattern_name='studio:skills'),
         name='edit_bot'
+    ),
+
+    # Update training of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/training/?$',
+        SkillsUpdateView.as_view(),
+        name='training'
+    ),
+
+    # Update skills of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/skills/?$',
+        SkillsUpdateView.as_view(),
+        name='skills'
+    ),
+
+    # Update entities of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/entities/?$',
+        SkillsUpdateView.as_view(),
+        name='entities'
+    ),
+
+    # Update intents of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/intents/?$',
+        SkillsUpdateView.as_view(),
+        name='intents'
+    ),
+
+    # Update integrations of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/?$',
+        SkillsUpdateView.as_view(),
+        name='integrations'
+    ),
+
+    # Update insights of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/insights/?$',
+        SkillsUpdateView.as_view(),
+        name='insights'
+    ),
+
+    # Update settings of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/settings/?$',
+        SkillsUpdateView.as_view(),
+        name='settings'
     ),
 
 ]

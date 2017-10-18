@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'crispy_forms',     # The best way to have Django DRY forms
     'captcha',          # Django reCAPTCHA form field/widget integration app.
     'reversion',        # Provides version control for model instances
+    'django_embed_template', # Adds the {% embed %} templatetag.
 
     # Apps specific for console:
     'botstore',         # Bot store
@@ -534,6 +535,10 @@ elif ENVIRONMENT == 'test':
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': 'simple_test_db'
+        },
+        'core': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'simple_test_db'
         }
     }
 
@@ -583,7 +588,8 @@ elif ENVIRONMENT == 'test':
     #
     # Cache configuration - use in-memory for testing
     #
-    # A dictionary containing the settings for all caches to be used with Django.
+    # A dictionary containing the settings for all caches to be used
+    # with Django.
     #
     # https://docs.djangoproject.com/en/1.11/ref/settings/#std:setting-CACHES
     CACHES = {
@@ -594,6 +600,7 @@ elif ENVIRONMENT == 'test':
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
         }
     }
+
 elif ENVIRONMENT == 'production':
 
     """
