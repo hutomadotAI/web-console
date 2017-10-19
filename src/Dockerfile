@@ -39,6 +39,3 @@ ENV PYTHONUNBUFFERED 1
 COPY . /usr/src/app
 RUN chown -R appuser:appuser /usr/src/app
 USER appuser
-
-
-

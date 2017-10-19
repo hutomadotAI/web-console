@@ -35,6 +35,14 @@ def get_ai(token, aiid):
 
     ai = response.json()
 
+    #
+    ai['training'] = {
+        'status': ai['ai_status'],
+        'progress': 100 * (
+            ai['phase_1_progress'] * 0.5 + ai['phase_2_progress'] * 1.5
+            ) / 2
+    }
+
     logger.debug(ai)
 
     return ai
@@ -158,3 +166,56 @@ def post_ai_skill(token, aiid, skills_data):
     logger.debug(skills)
 
     return skills
+
+
+def post_training(token, aiid, training_file):
+    """
+    Post skills linked with an AI
+    """
+
+    path = '/ai/%s/training?source_type=0'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        files={
+            'file': training_file
+        }
+    )
+
+    logger.debug(response)
+
+    ai = response.json()
+
+    logger.debug(ai)
+
+    return ai
+
+
+def put_training_start(token, aiid):
+    """
+    Start an AI training
+    """
+
+    path = '/ai/%s/training/start'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.put(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+    )
+
+    logger.debug(response)
+
+    ai = response.json()
+
+    logger.debug(ai)
+
+    return ai

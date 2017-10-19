@@ -6,16 +6,23 @@ from django.conf import settings
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as trans
 
-from studio.services import post_ai, post_import_ai, post_ai_skill
+from app.validators import MaxSelectedValidator
+
+from studio.services import (
+    post_ai,
+    post_import_ai,
+    post_ai_skill,
+    post_training,
+    put_training_start
+)
 from botstore.services import get_purchased
 
 logger = logging.getLogger(__name__)
 
 
 class SkillsMultiple(forms.widgets.CheckboxSelectMultiple):
-    """
-    Custom form widget for skill cards
-    """
+    """Custom form widget for skill cards"""
+
     template_name = 'forms/widgets/skills.html'
     option_template_name = 'forms/widgets/skill.html'
 
@@ -28,7 +35,7 @@ class SkillsMultiple(forms.widgets.CheckboxSelectMultiple):
         return context
 
 
-class AddAI(forms.Form):
+class AddAIForm(forms.Form):
     TIMEZONES = [(tz, tz) for tz in pytz.common_timezones]
     VOICES = (
         (0, trans('Female')),
@@ -70,7 +77,7 @@ class AddAI(forms.Form):
         return post_ai(kwargs['token'], self.cleaned_data)
 
 
-class ImportAI(forms.Form):
+class ImportAIForm(forms.Form):
 
     ai_data = forms.FileField(
         label=trans('Exported Bot JSON file'),
@@ -82,23 +89,49 @@ class ImportAI(forms.Form):
         return post_import_ai(kwargs['token'], data)
 
 
-class UpdateSkills(forms.Form):
+class TrainingForm(forms.Form):
+
+    file = forms.FileField(
+        label=trans('Add training file'),
+        widget=forms.FileInput(attrs={
+            'placeholder': trans('Select a txt file')
+        })
+    )
+
+    def save(self, *args, **kwargs):
+        """Upload a file and start a new training"""
+
+        file = self.cleaned_data['file']
+        ai = post_training(kwargs['token'], kwargs['aiid'], file)
+
+        if ai['status']['code'] in [200, 201]:
+            return put_training_start(kwargs['token'], kwargs['aiid'])
+        else:
+            return ai
+
+
+class SkillsForm(forms.Form):
+    """
+    List all purchased skills which can be linked with a bot, link up to
+    5 skills
+    """
+
     skills = forms.MultipleChoiceField(
         label='',
         required=False,
+        validators=[MaxSelectedValidator(5)],
         widget=SkillsMultiple()
     )
 
     def __init__(self, *args, **kwargs):
-        """
-        Get initial choices for the form
-        """
+        """Get initial choices for the form"""
+
         self.token = kwargs.pop('token', None)
         self.aiid = kwargs.pop('aiid', None)
         skills = [
             (skill['botId'], skill) for skill in get_purchased(self.token)
         ]
-        super(UpdateSkills, self).__init__(*args, **kwargs)
+        super(SkillsForm, self).__init__(*args, **kwargs)
         self.fields['skills'].choices = skills
 
     def save(self, *args, **kwargs):

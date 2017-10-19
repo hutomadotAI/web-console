@@ -26,12 +26,16 @@
           <div class="box-title"><b>{% trans 'Basic Bot Settings' %}</b></div>
         </div>
 
-        <form method="post" class="form-add" id="add_form">
-          {% csrf_token %}
+        <div class="box-body">
 
-          {{ add_form | crispy }}
+          <form method="post" class="form-add" id="add_form">
+            {% csrf_token %}
 
-        </form>
+            {{ add_form | crispy }}
+
+          </form>
+
+        </div>
 
         <div class="box-footer">
             <a href="{% url 'studio:index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
@@ -45,16 +49,20 @@
           <div class="box-title"><b>{% trans 'Import a bot' %}</b></div>
         </div>
 
-        <form method="post" class="form-import" enctype="multipart/form-data">
-          {% csrf_token %}
+        <div class="box-body">
 
-          {{ import_form | crispy }}
+          <form method="post" class="form-import" enctype="multipart/form-data">
+            {% csrf_token %}
 
-          <div class="form-group">
-            <button style="width:100px" type="submit" class="btn btn-success flat pull-right"><b>{% trans 'Import' %}</b></button>
-          </div>
+            {{ import_form | crispy }}
 
-        </form>
+            <div class="form-group">
+              <button style="width:100px" type="submit" class="btn btn-success flat pull-right"><b>{% trans 'Import' %}</b></button>
+            </div>
+
+          </form>
+
+        </div>
 
       </div>
     </section>

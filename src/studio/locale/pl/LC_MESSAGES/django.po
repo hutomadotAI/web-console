@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-03 15:49+0000\n"
+"POT-Creation-Date: 2017-10-19 10:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,14 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-
-#: studio/models.py:13
-msgid "Female"
-msgstr "Żeński"
-
-#: studio/models.py:13
-msgid "Male"
-msgstr "Męski"
 
 #: studio/templates/ai.html:10
 msgid "Completed"
@@ -79,13 +71,22 @@ msgstr "Dodaj Bota"
 msgid "Basic Bot Settings"
 msgstr "Podstawowe informacje"
 
-#: studio/templates/ai_form.html:35
+#: studio/templates/ai_form.html:41
+#: studio/templates/modals/training_example.html:40
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: studio/templates/ai_form.html:36
+#: studio/templates/ai_form.html:42
 msgid "Next"
 msgstr "Dalej"
+
+#: studio/templates/ai_form.html:49
+msgid "Import a bot"
+msgstr ""
+
+#: studio/templates/ai_form.html:60
+msgid "Import"
+msgstr ""
 
 #: studio/templates/ai_list.html:5
 msgid "Summary"
@@ -163,6 +164,149 @@ msgstr ""
 "href='mailto:support@hutoma.ai?subject=Invite%%20to%%20slack%%20channel' "
 "tabindex=\"-1\">support@hutoma.ai</a> aby skorzystać z kanału Slackowego."
 
+#: studio/templates/forms/widgets/skill.html:11
+#, fuzzy
+#| msgid "Add bot"
+msgid "Add"
+msgstr "Dodaj Bota"
+
+#: studio/templates/modals/training_example.html:11
+msgid "Training file sample"
+msgstr "Przykładowy plik do trenowania"
+
+#: studio/templates/modals/training_example.html:16
+msgid "What is your name?"
+msgstr "Jak się nazywasz?"
+
+#: studio/templates/modals/training_example.html:17
+msgid "My name is Hu:toma."
+msgstr "Nazywam się Hu:toma"
+
+#: studio/templates/modals/training_example.html:19
+msgid "What does Hu:toma mean?"
+msgstr "Co znaczy Hu:toma"
+
+#: studio/templates/modals/training_example.html:20
+msgid "It is the combination of two words, human and automata."
+msgstr ""
+"To połączenie dwuch słów, Human (człowiek) i Automata (maszyna po włosku)"
+
+#: studio/templates/modals/training_example.html:22
+msgid "What is the meaning of life?"
+msgstr "Co jest sensem życia"
+
+#: studio/templates/modals/training_example.html:23
+msgid "If you find the answer, let me know."
+msgstr "Daj mi znać jak się dowiesz"
+
+#: studio/templates/modals/training_example.html:25
+msgid "Where do you live?"
+msgstr "Gdzie mieszkasz?"
+
+#: studio/templates/modals/training_example.html:26
+msgid "Barcelona & London."
+msgstr "W Barcelonie i Londynie"
+
+#: studio/templates/modals/training_example.html:28
+msgid "How old are you?"
+msgstr "Kiedy powstałaś"
+
+#: studio/templates/modals/training_example.html:29
+msgid "I am 8760 hours old."
+msgstr "Powstałam 8760 godzin temu"
+
+#: studio/templates/modals/training_example.html:31
+msgid "Can we be friends?"
+msgstr "Możem się zaprzyjaźnić?"
+
+#: studio/templates/modals/training_example.html:32
+msgid "Yes of course we can be friends!"
+msgstr "Tak zostańmy przyjaciółmi"
+
+#: studio/templates/modals/training_example.html:34
+msgid "Good morning Hu:toma"
+msgstr "Dzień dobry Hu:toma!"
+
+#: studio/templates/modals/training_example.html:35
+msgid "Good morning to you too my friend."
+msgstr "Dzień dobry przyjacielu!"
+
+#: studio/templates/skill_form.html:5 studio/templates/skill_form.html:30
+msgid "Edit your bot skills"
+msgstr "Edytuj umijętności twojego Bota"
+
+#: studio/templates/skill_form.html:34
+msgid ""
+"You can add new capabilities to your bot by selecting pre-trained bots from "
+"our Botstore. You can add up to 5 bots."
+msgstr ""
+
+#: studio/templates/skill_form.html:47
+msgid "Save"
+msgstr "Zapisz"
+
+#: studio/templates/studio_navigation.html:6
+msgid "Training"
+msgstr "Trenowanie"
+
+#: studio/templates/studio_navigation.html:7
+msgid "Skills"
+msgstr "Umiejętności"
+
+#: studio/templates/studio_navigation.html:8
+msgid "Entities"
+msgstr ""
+
+#: studio/templates/studio_navigation.html:9
+msgid "Intents"
+msgstr ""
+
+#: studio/templates/studio_navigation.html:10
+msgid "Integrations"
+msgstr "Integracje"
+
+#: studio/templates/studio_navigation.html:11
+msgid "Insights"
+msgstr "Statystyki"
+
+#: studio/templates/studio_navigation.html:12
+#, fuzzy
+#| msgid "Basic Bot Settings"
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: studio/templates/training_form.html:5
+msgid "Bot training"
+msgstr "Trenuj Bota"
+
+#: studio/templates/training_form.html:30
+msgid "Upload a text file"
+msgstr "Wybierz plik tekstowy"
+
+#: studio/templates/training_form.html:40
+msgid "Upload"
+msgstr "Wyślij"
+
+#: studio/templates/training_form.html:47
+msgid "Upload a plain text file with chat examples to begin training. Look at"
+msgstr ""
+
+#: studio/templates/training_form.html:47
+msgid "this example"
+msgstr "Przykład"
+
+#: studio/templates/training_form.html:54
+msgid "Check out our"
+msgstr "Zobacz"
+
+#: studio/templates/training_form.html:54
+msgid "training video tutorial"
+msgstr "materiał video"
+
+#: studio/templates/training_form.html:58
+msgid "Sample training file"
+msgstr "Przykładowy plik"
+
 #: studio/templates/welcome_video.html:6
 msgid "Video Tutorial: Create Your First Bot"
 msgstr "Video: Stwórz pierwszego Bota"
@@ -178,3 +322,9 @@ msgstr ""
 "pierwszego bota w krótkim czasie. Jeśli masz jakieś pytania radzimy dołączyć "
 "do naszej gruypy na Slacku Slack Community, aby móc zadawać pytania, jeśli "
 "potrzebujesz. "
+
+#~ msgid "Female"
+#~ msgstr "Żeński"
+
+#~ msgid "Male"
+#~ msgstr "Męski"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-03 15:49+0000\n"
+"POT-Creation-Date: 2017-10-19 10:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,10 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-
-#: users/forms.py:27
-msgid "Password"
-msgstr "Hasło"
 
 #: users/templates/account/login.html:5 users/templates/account/login.html:27
 msgid "Log in"
@@ -54,6 +50,20 @@ msgstr "Zapomniałem hsała"
 #| msgid "Password"
 msgid "Reset My Password"
 msgstr "Hasło"
+
+#: users/templates/account/password_reset_done.html:16
+#, fuzzy
+#| msgid ""
+#| "We have sent an e-mail to you for verification. Follow the link provided "
+#| "to finalize the signup process. Please contact us if you do not receive "
+#| "it within a few minutes."
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+"Na twój adres email wysł…aiśmy widomość, Kliknij link by dokończyć proces "
+"rejestracji. Prosimy daj nam znać jeśli wiadomość nie dotrze w ciągu kilku "
+"minut."
 
 #: users/templates/account/password_reset_from_key.html:5
 #: users/templates/account/password_reset_from_key.html:14
@@ -108,6 +118,9 @@ msgid ""
 msgstr ""
 "Akceptuję <a href=\"https://www.hutoma.ai/Hutoma_WebPlatformSaaSAgreement.pdf"
 "\" target=\"_blank\">Regulamin.</a>."
+
+#~ msgid "Password"
+#~ msgstr "Hasło"
 
 #~ msgid "About"
 #~ msgstr "O nas"
