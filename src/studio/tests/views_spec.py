@@ -3,11 +3,11 @@ import factory
 from unittest.mock import patch
 
 from django.urls import reverse
-from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.contrib.auth.signals import user_logged_in
 
 from test_plus.test import TestCase
 
-from studio.tests.factories import AiFactory, UnauthorizedFactory
+from studio.tests.factories import AiFactory
 
 from users.models import Profile
 from users.tests.factories import UserFactory
@@ -401,7 +401,7 @@ class TestSkillsUpdateView(TestCase):
         cause `Embed` is calling it using Navigation template
         """
 
-        # We mock ai_list
+        # We mock API calls
         mock_get_ai.return_value.json.return_value = [
             factory.build(dict, FACTORY_CLASS=AiFactory)
         ]
@@ -411,6 +411,7 @@ class TestSkillsUpdateView(TestCase):
             factory.build(dict, FACTORY_CLASS=AiFactory)
         ]
         mock_get_categories.return_value.json.return_value = []
+
         response = self.client.get(reverse(
             'studio:skills',
             kwargs={

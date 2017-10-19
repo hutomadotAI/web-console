@@ -379,6 +379,7 @@ STATIC_URL = STATIC_HOST + '/static/'
 # directories where Django will also look for static files that aren’t tied to
 # a particular app
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'studio', 'static'),
     os.path.join(BASE_DIR, 'static'),
 ]
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-03 15:49+0000\n"
+"POT-Creation-Date: 2017-10-19 10:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,22 @@ msgstr ""
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
+#: templates/403.html:5 templates/404.html:5
+msgid "Page Not found"
+msgstr "Strona nie znaleziona"
+
+#: templates/403.html:10
+msgid "Permission denied"
+msgstr "Brak dostępu"
+
+#: templates/403.html:11 templates/404.html:11
+msgid "This is not the page you were looking for."
+msgstr "To nie jest strona której szukasz"
+
+#: templates/404.html:10
+msgid "404 Not Found"
+msgstr "404 nie znaleziono"
+
 #: templates/base.html:17
 msgid "console"
 msgstr "konsola"
@@ -29,8 +45,7 @@ msgid ""
 "Hu:toma helps developers around the world build and monetize deep learning "
 "chatbots by providing free access to a proprietary platform offering both "
 "the tools and the channels to create and share conversational AIs."
-msgstr ""
-"Hu:toma pomaga developerom budować Chatboty "
+msgstr "Hu:toma pomaga developerom budować Chatboty "
 
 #: templates/footer.html:10 templates/header.html:27
 msgid "About"
@@ -76,11 +91,11 @@ msgstr "Wyloguj"
 msgid "Features"
 msgstr "Funkcje"
 
-#: templates/header.html:28
+#: templates/header.html:28 templates/navigation.html:29
 msgid "Sign Up"
 msgstr "Zarejestruj"
 
-#: templates/header.html:29
+#: templates/header.html:29 templates/navigation.html:28
 msgid "Login"
 msgstr "Zaloguj"
 
@@ -92,18 +107,21 @@ msgstr "Konsola"
 msgid "Home"
 msgstr "Strona główna"
 
-#: templates/navigation.html:11
+#: templates/navigation.html:13
 msgid "Botstore"
 msgstr ""
 
-#: templates/navigation.html:15
+#: templates/navigation.html:17
 msgid "Documentation"
 msgstr "Dokumentacja"
 
-#: templates/navigation.html:20
+#: templates/navigation.html:22
 msgid "MY ACCOUNT"
 msgstr "Moje konto"
 
-#: templates/navigation.html:22
-msgid "LOGOUT"
+#: templates/navigation.html:26
+msgid "Logout"
 msgstr "Wyloguj"
+
+#~ msgid "LOGOUT"
+#~ msgstr "Wyloguj"

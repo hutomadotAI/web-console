@@ -89,17 +89,19 @@ body {
   }
 }
 
-.form-import {
+.form-import, .form-training {
   display: flex;
-  padding: 1rem;
+  padding: 0;
 }
 
-.form-import .form-group:first-of-type {
+.form-import .form-group:first-of-type,
+.form-training .form-group:first-of-type {
   flex-grow: 2;
   margin-right: 2rem;
 }
 
-.form-import .form-group:last-of-type {
+.form-import .form-group:last-of-type,
+.form-training .form-group:last-of-type {
   align-self: flex-end;
 }
 
@@ -160,6 +162,64 @@ body {
 
   .switch-checkbox label:active:after {
     width: 5rem;
+  }
+
+/* progress */
+
+  .traningStatus {
+    display: flex;
+  }
+
+  .traningStatus label {
+    margin: 0;
+    max-width: 25%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .traningStatus progress {
+    flex-grow: 2;
+    background-color: #222;
+    border: none;
+    height: 2rem;
+    margin-left: 2rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .traningStatus progress::after {
+    content: attr(value)' % ' attr(data-label);
+    font-size: small;
+    font-weight: bold;
+    margin-right: .5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+  }
+
+  .traningStatus progress::-moz-progress-bar {
+      background-color: #00a65a;
+  }
+
+  .traningStatus progress::-webkit-progress-value {
+      background-color: #00a65a;
+  }
+
+  .traningStatus progress::-webkit-progress-bar {
+      background-color: #222;
+  }
+
+
+  .errorlist {
+    background-color: #dd4b39;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    width: 100%;
   }
 
 .messages .alert {

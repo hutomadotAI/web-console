@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% load i18n crispy_forms_tags static embed %}
+
+{% block title %}{% trans 'Bot training' %}{% endblock %}
+
+{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+  {% embed 'navigation.html' %}
+    {% block studio %}
+      {% include 'studio_navigation.html' with ai=ai active='training' %}
+    {% endblock studio %}
+  {% endembed %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <section class="content">
+      <div class="box box-solid box-clean flat no-shadow">
+        <div class="box-header with-border">
+          <div class="box-title"><i class="fa fa-cloud-upload text-info"></i> <b>{% trans 'Upload a text file' %}</b></div>
+        </div>
+
+        <div class="box-body">
+          <form method="post" class="form-training" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form | crispy }}
+
+            <div class="form-group">
+              <button style="width:100px" type="submit" class="btn btn-success flat pull-right"><b>{% trans 'Upload' %}</b></button>
+            </div>
+
+          </form>
+
+          <div class="alert alert-dismissable flat alert-base no-margin" id="containerMsgAlertUploadFile" style="margin-bottom: 0px;">
+            <i class="icon fa fa-check" id="iconAlertUploadFile"></i>
+            <span id="msgAlertUploadFile">{% trans 'Upload a plain text file with chat examples to begin training. Look at' %} <a data-toggle="modal" data-target="#sampleTrainingFile" onmouseover="this.style.cursor='pointer'" style="cursor: pointer;">{% trans 'this example' %}</a>.
+            </span>
+          </div>
+
+        </div>
+
+        <div class="box-footer">
+          {% trans 'Check out our' %} <a data-toggle="collapse" href="#collapseVideoTutorialTraining">{% trans 'training video tutorial' %}</a>
+
+          <!-- link sample of training file MODAL-->
+          <div class="pull-right">
+            <a data-toggle="modal" data-target="#sampleTrainingFile" onmouseover="this.style.cursor='pointer'" style="cursor: pointer;">{% trans 'Sample training file' %}</a>
+          </div>
+
+          <!-- video tutorial container -->
+          <div id="collapseVideoTutorialTraining" class="panel-collapse collapse">
+            <div class="box-body flat">
+              <div class="overlay center-block">
+                <div class="embed-responsive embed-responsive-16by9" id="videoTrainingFile">
+                  <iframe src="//www.youtube.com/embed/__pO6wVvBEY?controls=1&amp;hd=1&amp;enablejsapi=1" frameborder="0" allowfullscreen=""></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  {% include 'modals/training_example.html' %}
+
+{% endblock %}
+
+{% block javascripts %}
+  <script>
+    const TOKEN = '{{ request.session.token }}'
+    const AI_ID = '{{ ai.aiid }}'
+  </script>
+
+  <script src="{% static 'js/training.js' %}"></script>
+{% endblock %}
