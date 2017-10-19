@@ -4,7 +4,7 @@ import urllib
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from services import get_entities, get_entity
+from entities.services import get_entities, get_entity
 
 logger = logging.getLogger(__name__)
 
@@ -18,11 +18,9 @@ class EntityListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(EntityListView, self).get_context_data(**kwargs)
-        context['category'] = urllib.parse.unquote(self.kwargs['category'])
         context['token'] = self.request.session.get('token', False)
 
         return context
 
     def get_queryset(self):
         return get_entities(token=self.request.session.get('token', False))
-
