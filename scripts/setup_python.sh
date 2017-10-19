@@ -4,7 +4,7 @@
 # or other projects.
 SCRIPT_DIR=`dirname $BASH_SOURCE`
 ROOT_DIR="${SCRIPT_DIR}/.."
-SOURCE_DIR=${ROOT_DIR}
+SOURCE_DIR="${ROOT_DIR}/src"
 VE_DIR="${ROOT_DIR}/venv/django_unix"
 if [ ! -d $VE_DIR ]; then
     echo Initializing virtualenv at $VE_DIR
