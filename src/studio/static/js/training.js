@@ -2,7 +2,7 @@ const statusFetcher = setInterval(pollStatus, 2000)
 const trainingStatus = document.getElementById('trainingStatus')
 
 function pollStatus() {
-  fetch(`/proxy/ai/${ AI_ID }`, {
+  fetch(`/proxy/ai/${ AI.id }`, {
     credentials: 'same-origin'
   })
     .then(response => response.json())

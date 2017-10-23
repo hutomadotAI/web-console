@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<div class="logs" id="jsonBox">
+  <div class="box-header no-border text-gray text-center" style="background:#1e282c; color:#8A8A8A; height:35px; padding-top:10px;">
+    <div class="box-title text-center text-gray" style="font-size: 12px;">{% trans 'Chat logs' %}</div>
+  </div>
+
+  <pre id="msgJSON" class="text-gray no-border flat output"></pre>
+
+  <div class="box-footer flat no-border">
+    <button class="btn btn-success btn-sm center-block flat" id="action.logs:copy" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}">{% trans 'Copy' %}</button>
+  </div>
+</div>

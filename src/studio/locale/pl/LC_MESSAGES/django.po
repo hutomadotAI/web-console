@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 10:37+0000\n"
+"POT-Creation-Date: 2017-10-23 08:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,70 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: studio/forms.py:41
+msgid "Female"
+msgstr "Żeński"
+
+#: studio/forms.py:42
+msgid "Male"
+msgstr "Męski"
+
+#: studio/forms.py:47
+msgid "Consisting of letters, numbers, spaces, underscores or hyphens."
+msgstr "Dozwolone tylko litery cyfry, myślnik i podkreślenie"
+
+#: studio/forms.py:48
+#, fuzzy
+#| msgid "Bot Name"
+msgid "Name"
+msgstr "Nazwa"
+
+#: studio/forms.py:53
+#, fuzzy
+#| msgid "Add bot"
+msgid "My bot"
+msgstr "Dodaj Bota"
+
+#: studio/forms.py:54
+msgid ""
+"Enter a valid “Name” consisting of letters, numbers, spaces, underscores or "
+"hyphens."
+msgstr ""
+"Wpisz poprawną nazwę, składającą się tylko z litery cyfry, myślników i "
+"podkreślenia"
+
+#: studio/forms.py:59 studio/templates/ais.html:13
+msgid "Description"
+msgstr "Opis"
+
+#: studio/forms.py:61
+msgid "Something about the bot"
+msgstr "Opis bota"
+
+#: studio/forms.py:65
+msgid "Voice"
+msgstr "Głos"
+
+#: studio/forms.py:71
+msgid "Timezone"
+msgstr "Strefa czasowa"
+
+#: studio/forms.py:83
+msgid "Exported Bot JSON file"
+msgstr "Wyeksportowany plik z konfiguracją bota"
+
+#: studio/forms.py:95
+#, fuzzy
+#| msgid "Sample training file"
+msgid "Add training file"
+msgstr "Przykładowy plik"
+
+#: studio/forms.py:97
+#, fuzzy
+#| msgid "Upload a text file"
+msgid "Select a txt file"
+msgstr "Wybierz plik tekstowy"
 
 #: studio/templates/ai.html:10
 msgid "Completed"
@@ -100,10 +164,6 @@ msgstr "Twoje Boty"
 msgid "Bot Name"
 msgstr "Nazwa"
 
-#: studio/templates/ais.html:13
-msgid "Description"
-msgstr "Opis"
-
 #: studio/templates/ais.html:14
 msgid "# Skills Linked"
 msgstr "Liczba umiejętności"
@@ -111,6 +171,30 @@ msgstr "Liczba umiejętności"
 #: studio/templates/ais.html:15
 msgid "Status"
 msgstr ""
+
+#: studio/templates/chat.html:5
+msgid "Chat"
+msgstr ""
+
+#: studio/templates/chat.html:10
+msgid "Turn On Speech"
+msgstr "Włącz czytanie"
+
+#: studio/templates/chat.html:11
+msgid "Hide JSON logs"
+msgstr "Ukryj logi"
+
+#: studio/templates/chat.html:13
+msgid "Clear history"
+msgstr "Wyczyść historję"
+
+#: studio/templates/chat.html:21
+msgid "Type a message…"
+msgstr "Napisz wiadomość"
+
+#: studio/templates/chat.html:23
+msgid "Click to record"
+msgstr "Włącz dyktowanie"
 
 #: studio/templates/console_footer.html:5
 msgid ""
@@ -169,6 +253,18 @@ msgstr ""
 #| msgid "Add bot"
 msgid "Add"
 msgstr "Dodaj Bota"
+
+#: studio/templates/logs.html:5
+msgid "Chat logs"
+msgstr "Logi"
+
+#: studio/templates/logs.html:11
+msgid "Copy to clipboard"
+msgstr "Kojuj do schowka"
+
+#: studio/templates/logs.html:11
+msgid "Copy"
+msgstr "Kopjuj"
 
 #: studio/templates/modals/training_example.html:11
 msgid "Training file sample"
@@ -231,17 +327,17 @@ msgstr "Dzień dobry Hu:toma!"
 msgid "Good morning to you too my friend."
 msgstr "Dzień dobry przyjacielu!"
 
-#: studio/templates/skill_form.html:5 studio/templates/skill_form.html:30
+#: studio/templates/skill_form.html:5 studio/templates/skill_form.html:20
 msgid "Edit your bot skills"
 msgstr "Edytuj umijętności twojego Bota"
 
-#: studio/templates/skill_form.html:34
+#: studio/templates/skill_form.html:24
 msgid ""
 "You can add new capabilities to your bot by selecting pre-trained bots from "
 "our Botstore. You can add up to 5 bots."
 msgstr ""
 
-#: studio/templates/skill_form.html:47
+#: studio/templates/skill_form.html:35
 msgid "Save"
 msgstr "Zapisz"
 
@@ -279,31 +375,31 @@ msgstr "Ustawienia"
 msgid "Bot training"
 msgstr "Trenuj Bota"
 
-#: studio/templates/training_form.html:30
+#: studio/templates/training_form.html:20
 msgid "Upload a text file"
 msgstr "Wybierz plik tekstowy"
 
-#: studio/templates/training_form.html:40
+#: studio/templates/training_form.html:30
 msgid "Upload"
 msgstr "Wyślij"
 
-#: studio/templates/training_form.html:47
+#: studio/templates/training_form.html:37
 msgid "Upload a plain text file with chat examples to begin training. Look at"
 msgstr ""
 
-#: studio/templates/training_form.html:47
+#: studio/templates/training_form.html:37
 msgid "this example"
 msgstr "Przykład"
 
-#: studio/templates/training_form.html:54
+#: studio/templates/training_form.html:44
 msgid "Check out our"
 msgstr "Zobacz"
 
-#: studio/templates/training_form.html:54
+#: studio/templates/training_form.html:44
 msgid "training video tutorial"
 msgstr "materiał video"
 
-#: studio/templates/training_form.html:58
+#: studio/templates/training_form.html:48
 msgid "Sample training file"
 msgstr "Przykładowy plik"
 
@@ -322,9 +418,3 @@ msgstr ""
 "pierwszego bota w krótkim czasie. Jeśli masz jakieś pytania radzimy dołączyć "
 "do naszej gruypy na Slacku Slack Community, aby móc zadawać pytania, jeśli "
 "potrzebujesz. "
-
-#~ msgid "Female"
-#~ msgstr "Żeński"
-
-#~ msgid "Male"
-#~ msgstr "Męski"
