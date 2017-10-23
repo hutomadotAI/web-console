@@ -636,8 +636,9 @@ elif ENVIRONMENT == 'production':
     ALLOWED_HOSTS = [
         'localhost',
         'dev.hutoma.com',
-        'console.hutoma.ai',
-        'development-console.hutoma.ai'
+        'project1.hutoma.com',
+        'staging.hutoma.com',
+        'console.hutoma.ai'
     ]
 
     # Whether to use a secure cookie for the session cookie. If this is set to
