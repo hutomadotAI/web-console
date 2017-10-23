@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body.attributes %} class="skin-blue fixed sidebar-mini workspace"{% endblock body.attributes %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block aside %}
+  <div class="aside">
+    {% include 'chat.html' with ai=ai %}
+    {% include 'logs.html' %}
+  </div>
+{% endblock aside %}
+
+{% block javascripts %}
+  <script>
+    const API_URL = '{{ api_url }}'
+    const USER =  {
+      name: '{{ user.first_name }}',
+      email: '{{ user.email }}',
+      username: '{{ user.username }}',
+      token: '{{ request.session.token }}'
+    }
+    const AI = {
+      id: '{{ ai.aiid }}',
+      name: '{{ ai.name }}'
+    }
+    const lang = '{{ ai.language }}'
+    const gender = {{ ai.voice }}
+    const speech = false
+  </script>
+
+  <script src="{% static 'js/training.js' %}"></script>
+
+  <script src="{% static 'js/voice.js' %}"></script>
+  <script src="{% static 'js/chat.js' %}"></script>
+{% endblock %}

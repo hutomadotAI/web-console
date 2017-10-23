@@ -4,7 +4,7 @@ import pytz
 from django import forms
 from django.conf import settings
 from django.core.validators import RegexValidator
-from django.utils.translation import ugettext_lazy as trans
+from django.utils.translation import ugettext_lazy as _
 
 from app.validators import MaxSelectedValidator
 
@@ -38,37 +38,37 @@ class SkillsMultiple(forms.widgets.CheckboxSelectMultiple):
 class AddAIForm(forms.Form):
     TIMEZONES = [(tz, tz) for tz in pytz.common_timezones]
     VOICES = (
-        (0, trans('Female')),
-        (1, trans('Male'))
+        (0, _('Female')),
+        (1, _('Male'))
     )
     NAME_PATTERN = '[-a-zA-Z0-9_ ]+'
 
     name = forms.CharField(
-        help_text=trans('Consisting of letters, numbers, spaces, underscores or hyphens.'),
-        label=trans('Name'),
+        help_text=_('Consisting of letters, numbers, spaces, underscores or hyphens.'),
+        label=_('Name'),
         max_length=50,
         validators=[RegexValidator(regex=NAME_PATTERN)],
         widget=forms.TextInput(attrs={
             'pattern': NAME_PATTERN,
-            'placeholder': trans('My bot'),
-            'title': trans('Enter a valid “Name” consisting of letters, numbers, spaces, underscores or hyphens.')
+            'placeholder': _('My bot'),
+            'title': _('Enter a valid “Name” consisting of letters, numbers, spaces, underscores or hyphens.')
         })
     )
 
     description = forms.CharField(
-        label=trans('Description'),
+        label=_('Description'),
         max_length=250,
-        widget=forms.TextInput(attrs={'placeholder': trans('Something about the bot')})
+        widget=forms.TextInput(attrs={'placeholder': _('Something about the bot')})
     )
 
     voice = forms.ChoiceField(
-        label=trans('Voice'),
+        label=_('Voice'),
         choices=VOICES,
         widget=forms.Select()
     )
 
     timezone = forms.ChoiceField(
-        label=trans('Timezone'),
+        label=_('Timezone'),
         choices=TIMEZONES,
         widget=forms.Select()
     )
@@ -80,7 +80,7 @@ class AddAIForm(forms.Form):
 class ImportAIForm(forms.Form):
 
     ai_data = forms.FileField(
-        label=trans('Exported Bot JSON file'),
+        label=_('Exported Bot JSON file'),
         widget=forms.FileInput(attrs={'placeholder': 'YourBotConfig.json'})
     )
 
@@ -92,9 +92,9 @@ class ImportAIForm(forms.Form):
 class TrainingForm(forms.Form):
 
     file = forms.FileField(
-        label=trans('Add training file'),
+        label=_('Add training file'),
         widget=forms.FileInput(attrs={
-            'placeholder': trans('Select a txt file')
+            'placeholder': _('Select a txt file')
         })
     )
 

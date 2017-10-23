@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
@@ -47,6 +48,7 @@ class StudioViewMixin(ContextMixin):
         }))
 
         context['ai'] = ai
+        context['api_url'] = settings.API_URL
 
         return context
 

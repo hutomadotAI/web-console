@@ -1,7 +1,7 @@
 import logging
 
 from django import forms, template
-from django.utils.translation import ugettext_lazy as trans
+from django.utils.translation import ugettext_lazy as _
 
 from captcha.fields import ReCaptchaField
 
@@ -22,12 +22,12 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': 'Doe'})
     )
     emailAddress = forms.EmailField(
-        label=trans('Email'),
+        label=_('Email'),
         widget=forms.TextInput(attrs={'type': 'email', 'placeholder': 'j.doe@company.com'})
     )
     password = forms.CharField(
-        label=trans('Password'),
-        widget=forms.PasswordInput(attrs={'placeholder': trans('Minimum 8 characters')})
+        label=_('Password'),
+        widget=forms.PasswordInput(attrs={'placeholder': _('Minimum 8 characters')})
     )
 
     # This sorcery is needed for overwriting default Placholders

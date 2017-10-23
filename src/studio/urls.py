@@ -110,11 +110,11 @@ urlpatterns = [
         name='settings'
     ),
 
-    # Update settings of an existing AI
+    # Proxy ajax AI calls
     url(
         r'^proxy/ai/(?P<aiid>[0-9a-f-]+)?$',
         ProxyAiView.as_view(),
-        name='settings'
+        name='proxy.ai'
     ),
 
 
