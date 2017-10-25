@@ -53,6 +53,11 @@ urlpatterns = [
         include('allauth.urls')
     ),
 
+    url(
+        r'^entities/',
+        include('entities.urls')
+    ),
+
     # Used for changing users language settings
     url(
         r'^i18n/',
