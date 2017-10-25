@@ -26,7 +26,7 @@ The first time it is run it might take a while to get started, but subsequent ru
 Start database and cache containers
 
 ```bash
-docker-compose up -d mysql redis
+docker-compose up -d mysql mailhog redis
 ```
 
 ### Running management commands
