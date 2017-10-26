@@ -1,5 +1,6 @@
 import logging
 import pytz
+import json
 
 from django import forms
 from django.conf import settings
@@ -9,11 +10,13 @@ from django.utils.translation import ugettext_lazy as _
 from app.validators import MaxSelectedValidator
 
 from studio.services import (
+    delete_ai,
     post_ai,
-    post_import_ai,
     post_ai_skill,
+    post_import_ai,
+    post_regenerate_webhook_secret,
     post_training,
-    put_training_start
+    put_training_start,
 )
 from botstore.services import get_purchased
 
@@ -43,6 +46,16 @@ class AddAIForm(forms.Form):
     )
     NAME_PATTERN = '[-a-zA-Z0-9_ ]+'
 
+    aiid = forms.CharField(
+        label=_('Bot ID'),
+        max_length=36,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'readonly': True,
+            'title': _('Your bot ID')
+        })
+    )
+
     name = forms.CharField(
         help_text=_('Consisting of letters, numbers, spaces, underscores or hyphens.'),
         label=_('Name'),
@@ -51,6 +64,7 @@ class AddAIForm(forms.Form):
         widget=forms.TextInput(attrs={
             'pattern': NAME_PATTERN,
             'placeholder': _('My bot'),
+            'readonly': True,
             'title': _('Enter a valid “Name” consisting of letters, numbers, spaces, underscores or hyphens.')
         })
     )
@@ -73,8 +87,25 @@ class AddAIForm(forms.Form):
         widget=forms.Select()
     )
 
+    default_chat_responses = forms.CharField(
+        help_text=_('Split responses using semicolons'),
+        label=_('Default responses for when the bot doesn’t understand the user'),
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'placeholder': _('Erm… What?')
+        })
+    )
+
+    def clean_default_chat_responses(self):
+        """Split responses and build a list string 😜"""
+
+        return json.dumps(
+            self.cleaned_data['default_chat_responses'].split(';')
+        )
+
     def save(self, *args, **kwargs):
-        return post_ai(kwargs['token'], self.cleaned_data)
+        return post_ai(ai_data=self.cleaned_data, **kwargs)
 
 
 class ImportAIForm(forms.Form):
@@ -86,7 +117,7 @@ class ImportAIForm(forms.Form):
 
     def save(self, *args, **kwargs):
         data = self.cleaned_data['ai_data'].read().decode('utf8')
-        return post_import_ai(kwargs['token'], data)
+        return post_import_ai(ai_data=data, **kwargs)
 
 
 class TrainingForm(forms.Form):
@@ -136,3 +167,35 @@ class SkillsForm(forms.Form):
 
     def save(self, *args, **kwargs):
         return post_ai_skill(self.token, self.aiid, self.cleaned_data)
+
+
+class ProxyDeleteAIForm(forms.Form):
+    """Used for validation of async calls"""
+
+    action = forms.CharField(
+        validators=[RegexValidator(regex='delete')],
+        widget=forms.HiddenInput()
+    )
+
+    aiid = forms.CharField(
+        max_length=36,
+        widget=forms.HiddenInput()
+    )
+
+    def save(self, *args, **kwargs):
+        return delete_ai(kwargs['token'], self.cleaned_data['aiid'])
+
+
+class ProxyRegenerateWebhookSecretForm(forms.Form):
+    """Used for validation of async calls"""
+
+    aiid = forms.CharField(
+        max_length=36,
+        widget=forms.HiddenInput()
+    )
+
+    def save(self, *args, **kwargs):
+        return post_regenerate_webhook_secret(
+            kwargs['token'],
+            self.cleaned_data['aiid']
+        )

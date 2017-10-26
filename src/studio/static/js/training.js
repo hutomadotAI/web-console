@@ -1,5 +1,6 @@
 const statusFetcher = setInterval(pollStatus, 2000)
 const trainingStatus = document.getElementById('trainingStatus')
+const traningStatusText = document.getElementById('traningStatusText')
 
 function pollStatus() {
   fetch(`/proxy/ai/${ AI.id }`, {
@@ -7,16 +8,16 @@ function pollStatus() {
   })
     .then(response => response.json())
     .then(ai => {
-      console.debug(ai);
+      console.debug(ai)
       trainingStatus.value = Math.ceil(ai.training.progress)
-      trainingStatus.dataset.label = ai.training.status
-      if (ai.training.status === 'ai_training_complete') {
+      traningStatusText.innerText = `${ ai.training.progress } % ${ ai.training.status }`
+      if (ai.training.status === 'completed') {
         trainingStatus.parentElement.parentElement.classList.add('alert-success')
         trainingStatus.parentElement.parentElement.classList.remove('alert-info')
         clearInterval(statusFetcher)
       }
     })
     .catch(error => {
-      console.error(error);
+      console.error(error)
     })
 }

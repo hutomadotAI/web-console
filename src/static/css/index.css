@@ -127,6 +127,17 @@ body {
   align-self: flex-end;
 }
 
+/* Tokenfield */
+
+  .tokenfield .token {
+    color: #555;
+    font-weight: bold;
+  }
+
+  .tokenfield .token .close {
+    opacity: .4;
+  }
+
 .messages {
   bottom: 0;
   margin-left: 26rem;
@@ -190,6 +201,7 @@ body {
 
   .traningStatus {
     display: flex;
+    position: relative;
   }
 
   .traningStatus label {
@@ -210,14 +222,11 @@ body {
     position: relative;
   }
 
-  .traningStatus progress::after {
-    content: attr(value)' % ' attr(data-label);
+  .traningStatus span {
     font-size: small;
     font-weight: bold;
-    margin-right: .5rem;
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 1rem;
     z-index: 2;
   }
 
@@ -1748,7 +1757,12 @@ a:focus {
     background-color: #515151;
     border: none;
     color: #ADADAD;
+}
 
+.form-control[readonly] {
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .form-group.has-success label {

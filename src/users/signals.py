@@ -24,6 +24,7 @@ def user_logged_in(sender, user, request, **kwargs):
     )
 
     request.session['token'] = api_user['dev_token']
+    request.session['dev_id'] = profile.dev_id
 
     logger.info('User {0} has logged in'.format(user))
 
