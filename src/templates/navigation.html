@@ -10,6 +10,8 @@
 
       {% block studio %}{% endblock studio %}
 
+      <li><a href="{% url 'studio:entities' %}"><i class="fa fa-sitemap text-yellow active" id="level1"> </i><span>{% trans 'Entities' %}</span></a></li>
+
       <li><a data-toggle="collapse" data-target="#categories"><i class="fa fa-shopping-cart text-green"></i> <span>{% trans 'Botstore' %}</span><i class="fa fa-ellipsis-v pull-right"></i></a>
 
       {% botstore_navigation category botstore %}

@@ -30,6 +30,7 @@ from studio.views import (
     TrainingView,
     ProxyAiView
 )
+from entities.views import EntityListView
 
 urlpatterns = [
 
@@ -77,8 +78,8 @@ urlpatterns = [
 
     # Update entities of an existing AI
     url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/entities/?$',
-        SkillsView.as_view(),
+        r'^entities/?$',
+        EntityListView.as_view(),
         name='entities'
     ),
 

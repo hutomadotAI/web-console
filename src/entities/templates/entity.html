@@ -1,5 +1,6 @@
 {% extends 'entities_base.html' %}
 {% load i18n %}
+{% load i18n crispy_forms_tags %}
 
 {% block content %}
 <div class="tab-content" style="padding-bottom:0px;">
@@ -40,7 +41,17 @@
             </div>
 
             <div class="box-body" id="boxEntities">
-                <!-- {% include 'new_entity.html' %} -->
+                <div class="bootstrap-filestyle input-group" id="GrpEntityButton">
+                    <form method="post" class="form-add" id="create_entity_form" action="{% url 'new_entity' %}">
+                        {% csrf_token %}
+                        {{ create_entity_form | crispy }}
+                        <div class="input-group-btn" tabindex="0">
+                            <button id="btnCreateEntity" form="create_entity_form" class="btn btn-success flat" style="width: 120px;">
+                                Create Entity
+                            </button>
+                        </div>
+                    </form>
+                </div>
                 <p></p>
 
                 <div class="alert alert-dismissable flat alert-base" id="containerMsgAlertEntity"
@@ -108,9 +119,16 @@ If you’re stuck check out our <a data-toggle="collapse" href="#collapseVideoTu
                 <p></p>
 
                 <div class="tab-pane" id="tab_entities">
-                    <!--{% for entitiy in entities %}
+                    <div class="content-wrapper">
+                        <section class="content">
+                            <div id="entities_list" class="row">
+
+                    {% for entity in entities %}
                         {% include 'entity_row.html' with entity=entity %}
-                    {% endfor %}-->
+                    {% endfor %}
+                            </div>
+                        </section>
+                    </div>
                 </div>
                 <p></p>
             </div>

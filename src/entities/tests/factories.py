@@ -8,6 +8,6 @@ class EntityFactory(factory.Factory):
 
 class EntitiesFactory(factory.Factory):
     entities = [
-        {"name": "entity_name", "values": ["value_a", "value_b", "value_c", "value_d"]},
-        {"name": "entity_name_2", "values": ["value_e", "value_f", "value_g"]}
+        {"sys.any": "entity_name", "values": ["value_a", "value_b", "value_c", "value_d"], "is_system":True},
+        {"name": "entity_name_2", "values": ["value_e", "value_f", "value_g"], "is_system":False}
     ]

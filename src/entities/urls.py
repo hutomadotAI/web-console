@@ -23,7 +23,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.views.decorators.cache import cache_page
 
-from entities.views import EntityListView
+from entities.views import EntityListView, NewEntityView
 
 urlpatterns = [
     url(
@@ -31,4 +31,9 @@ urlpatterns = [
         cache_page(settings.TEMPLATES_CACHE_AGE)(EntityListView.as_view()),
         name='entities'
     ),
+    url(
+        r'^new$',
+        cache_page(settings.TEMPLATES_CACHE_AGE)(NewEntityView.as_view()),
+        name='new_entity'
+    )
 ]

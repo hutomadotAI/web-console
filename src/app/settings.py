@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'legacy',           # To be removed after we switch to Django Console
     'studio',           # Bot studio
     'users',            # All user stuff
+    'entities',
 
 
 ]
@@ -214,6 +215,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            os.path.join(BASE_DIR, 'entities', 'templates'),
             os.path.join(BASE_DIR, 'botstore', 'templates'),
             os.path.join(BASE_DIR, 'studio', 'templates'),
             os.path.join(BASE_DIR, 'users', 'templates'),
