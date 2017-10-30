@@ -51,6 +51,7 @@ def get_entity(entityName, token=False):
         timeout=settings.API_TIMEOUT
     ).json()
 
+    print (entity)
     logger.debug(entity)
 
     return entity

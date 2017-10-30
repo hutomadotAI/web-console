@@ -1,0 +1,739 @@
+{% extends 'entities_base.html' %}
+{% load i18n %}
+{% load i18n crispy_forms_tags %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <form id="entity_list" method="POST">
+                    <input type="hidden" name="name" id="entity-name" value="{{ entity_name }}">
+                    <div class="box box-solid box-clean flat no-shadow unselectable">
+
+                        <div class="box-header no-border" style="padding: 10px 10px 5px 10px;">
+                            <div class="form-group no-margin">
+                                <div class="input-group">
+                                    <div class="input-prefix-text">
+                                        <i class="fa fa-sitemap text-yellow"></i>
+                                        <span><b> Entity </b></span><span class="text-md text-darkgray" style="padding-right:3px;">:</span>
+                                    </div>
+                                    <input type="text" class="flat no-shadow input-text-limited pull-left" value="@{{ entity_name }}" readonly>
+                                    <button class="input-postfix-button btn btn-success flat pull-right" id="btnSaveEntity" style="width: 130px; "
+                                            alt="save entity"
+                                            type="submit" form="entity_list">Save Entity
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box box-solid box-clean flat no-shadow unselectable">
+                        <div class="box-header with-border ">
+                            <i class="fa fa-sitemap text-yellow"></i>
+                            <div class="box-title">
+                                <b>Values</b>
+                            </div>
+                            <a data-toggle="collapse" href="#collapseValuesInfo">
+                                <div class="pull-right">more info
+                                    <i class="fa fa-question-circle text-sm text-yellow"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div id="collapseValuesInfo" class="panel-collapse collapse">
+                            <div class="box-body" style="padding-bottom:0;">
+                                <div class="overlay center-block">
+                                    <section class="content-info">
+                                        <div class="box-body">
+                                            <dd>
+                                                Entities are the sets of strings you want your bot to recognise and extract from a conversation.
+                                            </dd>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-body no-margin" id="boxValues" style="padding-top:0;">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="box-title">
+                                        <div class="input-group no-margin">
+                                            <input type="text" class="form-control flat no-shadow" id="value-entity" name="value-entity"
+                                                   placeholder="Add value..." onkeyup="checkValueCode(this,event.keyCode)"
+                                                   style="width: 96%;">
+                                            <span class="input-group-btn">
+                            <button class="btn btn-success flat" id="btnAddEntityValue" style="width: 130px;">Add Entity Value</button>
+                        </span>
+                                        </div>
+                                    </h5>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-dismissable flat alert-base" id="containerMsgAlertEntityValues" style="margin-bottom:10px;">
+                                <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>-->
+                                <i class="icon fa fa-check" id="iconAlertEntityValues"></i>
+                                <span id="msgAlertEntityValues">You can add additional values to the current entity.</span>
+                            </div>
+
+                            <div class="row" id="entityValues-list">
+                                {% csrf_token %}
+                                {% for value in values %}
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <div class="inner-addon left-addon" style="background-color: #404446;">
+                                            <i class="fa fa-sign-out text-gray"></i>
+                                            <input type="text" class="form-control flat no-shadow no-border" name="value-entity-row"
+                                                   style="background-color: #404446;" value="{{value}}" placeholder="{{value}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2" id="btnValueEntity" style="display:none;">
+                                        <div class="btn-group pull-right text-gray" style="padding-right:7px; padding-top:7px;">
+
+                                            <a data-toggle="modal" data-target="#deleteValueEntity" style="padding-right:3px; cursor: pointer;"
+                                               onClick="deleteValueEntity(this)">
+                                                <i class="fa fa-trash-o text-gray" data-toggle="tooltip" title="Delete"></i>
+                                            </a>
+
+                                        </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script>
+function isNameExists(name,list_name){
+    for (var x in list_name) {
+        if(name === list_name[x])
+            return true;
+    }
+    return false;
+}
+
+function isInputInvalid(txt,field) {
+    var letters;
+    switch(field){
+
+        case 'intent_response':
+        case 'intent_prompt':
+        case 'user_expression':
+        case 'bot_description':
+        case 'ai_description' :
+            letters = /^[\u0020-\u007e\u00a0-\uffff]+$/;
+            break;
+        case 'ai_name' :        letters = /^[a-zA-Z0-9\-_\s]+$/;                break;
+        case 'entity_name' :    letters = /^[a-zA-Z0-9_]+$/;                    break;
+        case 'entity_value' :   letters = /^[a-zA-Z0-9\-_\s]+$/;                break;
+        case 'intent_name' :    letters = /^[a-zA-Z0-9\-_]+$/;                  break;
+        case 'intent_n_prompt': letters = /^([0]?[1-9]{1,2})$/;                 break;
+        case 'response' :       letters = /^[a-zA-Z0-9\-_.,?!']+$/;             break;
+        case 'bot_name' :       letters = /^[a-zA-Z0-9\-_.,?!+()£$%&@'\s]+$/;   break;
+        case 'bot_price':       letters = /^([0-9]{0,2}((.)[0-9]{0,2}))$/;      break;
+        case 'bot_version' :    letters = /^\d{1,2}\.\d{1,2}\.\d{1,2}$/;        break;
+        case 'developer_name' :   letters = /^[a-zA-Z0-9\-_.,:?!+()£$%&@'\s]+$/;break;
+        case 'developer_address': letters = /^[a-zA-Z0-9\-_.,+()&'\s]+$/;       break;
+        case 'developer_city' :   letters = /^[a-zA-Z0-9\-_.,()'\s]+$/;         break;
+        case 'developer_country': letters = /^[a-zA-Z0-9\-_'\s]+$/;             break;
+        case 'developer_company': letters = /^[a-zA-Z0-9\-_.,?!+()£$%&@'\s]+$/;             break;
+        case 'developer_email' :  letters = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;break;
+        case 'webhook': letters =   /^((http|https):\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z0-9]+(:[0-9]{1,5})?(\/.*)?$/; break;
+        case 'URI': letters =   /^((http|https):\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z0-9]+(:[0-9]{1,5})?(\/.*)?$/; break;
+        default:
+    }
+
+    if(txt.match(letters))
+        return false;
+
+    return true;
+}
+    var entityValuesListFromServer = {{ values }};
+</script>
+<script>
+function switchCard(botId,optionFlow){var node=document.getElementById("card"+botId),targetDiv=(node.getAttribute("data-pos"),node.getElementsByClassName("card-price pull-right")[0]);switch(optionFlow){case DRAW_BOTCARDS.BOTSTORE_FLOW.value:targetDiv.classList.remove("card-price"),targetDiv.classList.add("card-purchased"),targetDiv.setAttribute("data-toggle",""),targetDiv.setAttribute("data-target",""),targetDiv.innerHTML="purchased",document.getElementById("cardTestBotLink"+botId).style.display="block";break;case DRAW_BOTCARDS.CREATE_NEW_BOT_FLOW.value:var wHTML='<div class="switch" data-link="false" id="btnSwitch'+botId+'" style="margin-top:10px;" onclick=toggleAddBotSkill(this,'+optionFlow+',"'+botId+'");></div>',parent=targetDiv.parentNode;parent.setAttribute("data-linked","false"),parent.innerHTML=wHTML;break;default:console.log("Option flow has a wrong value")}}function openSingleBot(elem,option,botId,category){elem.setAttribute("onClick","");var form=document.createElement("form");document.body.appendChild(form),form.method="POST",form.action="./dynamic/sessionBotMenu.php";var element=document.createElement("INPUT");switch(element.name="botId",element.value=botId,element.type="hidden",form.appendChild(element),void 0!==category&&((element=document.createElement("INPUT")).name="category",element.value=category,element.type="hidden",form.appendChild(element)),element=document.createElement("INPUT"),element.name="menu_title",option){case DRAW_BOTCARDS.CREATE_NEW_BOT_FLOW.value:element.value="home";break;case DRAW_BOTCARDS.BOTSTORE_FLOW.value:case DRAW_BOTCARDS.BOTSTORE_WITH_BOT_FLOW.value:element.value="botstore";break;case DRAW_BOTCARDS.ADD_SKILL_FLOW.value:element.value="settings"}element.type="hidden",form.appendChild(element),form.submit()}function RecursiveUnbind($jElement){$jElement.unbind(),$jElement.removeAttr("onclick"),$jElement.removeAttr("href"),$jElement.removeAttr("type"),$jElement.children().each(function(){RecursiveUnbind($(this))})}function toggleAddBotSkill(node,optionFlow,botId){var parent=node.parentNode,activatedBots=0;switch(optionFlow){case DRAW_BOTCARDS.CREATE_NEW_BOT_FLOW.value:activatedBots=document.getElementById("botsCarousels").getElementsByClassName("borderActive").length;break;case DRAW_BOTCARDS.ADD_SKILL_FLOW.value:activatedBots=document.getElementById("botsSearch").children[0].getElementsByClassName("borderActive").length}if(!node.classList.contains("switchOn")&&parseInt(activatedBots)>=5)alert("You can only combine up to 5 bots.");else{$(node).toggleClass("switchOn");var botcard=document.getElementById("card"+botId).children[0];"false"===$(node).attr("data-link")?($(node).attr("data-link",!0),parent.setAttribute("data-linked","true"),botcard.classList.add("borderActive")):($(node).attr("data-link",!1),parent.setAttribute("data-linked","false"),botcard.classList.remove("borderActive"))}}function btnFromBuyToPurchased(){var wHTML="",nodeBtn=document.getElementById("btnBuyBot");wHTML+="<b>Skill purchased </b>",wHTML+='<span class="fa fa-check-circle-o"></span>',nodeBtn.setAttribute("data-toggle",""),nodeBtn.setAttribute("data-target",""),nodeBtn.innerHTML=wHTML,nodeBtn.setAttribute("onClick",""),nodeBtn.className="btn btn-primary pull-right flat"}function buildCategoryURIparameter(category){return"?category="+adjustURIEscapingCategoryValue(category)}function adjustURIEscapingCategoryValue(value){return void 0===value||null===value?null:value.replace("&","%26").split(" ").join("%20")}function removeSpecialCharacters(str){return str.replace(/[&\/\\#,+()$~%.'":*?<>{}\s+]/g,"")}function htmlEncode(value){return $("<div/>").text(value).html()}function getMultipleElementValues(elementName){for(var values=[],elements=document.getElementsByName(elementName),i=0;i<elements.length;i++)values.push(elements[i].value);return values}function encodeStringArrayAsCSString(theArray){for(var result="",i=0;i<theArray.length;i++)result+=encodeURIComponent(theArray[i]),i<theArray.length-1&&(result+=",");return result}function decodeCSStringAsArray(theString){var values=[];if(""===theString)return values;for(var parts=theString.split(","),i=0;i<parts.length;i++)values.push(decodeURIComponent(parts[i]));return values}function commonAjaxApiRequest(request){return $.ajax({url:request.url,type:request.verb,data:request.data,success:function(response){var parsedResponse=null;try{parsedResponse=JSON.parse(response)}catch(error){}if(null===parsedResponse)request.onGenericError();else switch(parsedResponse.status.code){case 200:return request.onOK(),request;case 404:request.hasOwnProperty("onNotFound")&&void 0!==request.onNotFound()&&request.onNotFound();break;case 500:request.onGenericError();break;default:request.hasOwnProperty("onShowError")&&void 0!==request.onShowError()?request.onShowError(parsedResponse.status.info):request.onGenericError()}},complete:function(){request.hasOwnProperty("onComplete")&&void 0!==request.onComplete()&&request.onComplete()},error:function(){request.onGenericError()}}),null}function getHash(string){var i,hash=0;if(0===string.length)return hash;for(i=0;i<string.length;i++)hash=(hash<<5)-hash+string.charCodeAt(i),hash|=0;return hash.toString()}var ALERT={BASIC:{value:0},WARNING:{value:1},DANGER:{value:2},SUCCESS:{value:3},INFO:{value:4},PRIMARY:{value:5}},API_AI_STATE={UNDEFINED:{value:"ai_undefined"},QUEUED:{value:"ai_training_queued"},READY_TO_TRAIN:{value:"ai_ready_to_train"},TRAINING:{value:"ai_training"},STOPPED:{value:"ai_training_stopped"},COMPLETED:{value:"ai_training_complete"},ERROR:{value:"ai_error"}},UI_STATE={ERROR:{value:-1},NOTHING:{value:0},FILE_UPLOADED:{value:1},READY_TO_TRAIN:{value:2},PHASE1_INIT:{value:3},PHASE1_RUN:{value:4},PHASE2_QUEUE:{value:5},PHASE2_INIT:{value:6},PHASE2_RUN:{value:7},STOPPED:{value:8},COMPLETED:{value:10},LISTENING_MODE:{value:999}},UI_TRAINING_STATE={PHASE1_INIT:{value:100},PHASE1_RUN:{value:101},PHASE1_END:{value:102},PHASE2_INIT:{value:200},PHASE2_RUN:{value:201}},INTENT_ACTION={DELETE_INTENT:{value:!1},SAVE_INTENT:{value:!0}},DRAW_BOTCARDS={CREATE_NEW_BOT_FLOW:{value:0},BOTSTORE_FLOW:{value:1},BOTSTORE_WITH_BOT_FLOW:{value:2},ADD_SKILL_FLOW:{value:3}},BOTCARD_DETAIL={SETTINGS:1,BOTSTORE:2,OTHER:3},BOT_ICON={PATH:{value:"dist/img/boticon/"},DEFAULT_IMAGE:{value:"dist/img/default_bot.jpg"}},URLS={HUTOMA_CONSOLE:"https://console.hutoma.ai"};$(document).ready(function(){var is_chrome=navigator.userAgent.indexOf("Chrome")>-1,is_safari=navigator.userAgent.indexOf("Safari")>-1,is_windows=!(-1!==navigator.userAgent.indexOf("Mac OS"));is_chrome&&is_safari&&(is_safari=!1),(is_safari||is_windows)&&$("body").css("font-family","'Century Gothic', CenturyGothic, AppleGothic, 'Helvetica Neue', Helvetica, Arial, sans-serif")});
+function limitText(limitField,limitNum){return limitField.val().length<1?-1:limitField.val().length>=limitNum?(limitField.val(limitField.val().substring(0,limitNum-1)),1):0}
+function msgAlertNameAI(alarm,msg){
+    document.getElementById('containerMsgAlertNameAI').style.display = 'block';
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertNameAI").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertNameAI").attr('class', 'icon fa fa-check');
+            document.getElementById('ai_name').style.borderColor = "#d2d6de";
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertNameAI").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertNameAI").attr('class', 'icon fa fa-check');
+            document.getElementById('ai_name').style.borderColor = "orange";
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertNameAI").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertNameAI").attr('class', 'icon fa fa-warning');
+            document.getElementById('ai_name').style.borderColor = "red";
+            break;
+        case ALERT.SUCCESS.value:
+            $("#containerMsgAlertUploadFile").attr('class','alert alert-dismissable flat alert-success');
+            $("#iconAlertUploadFile").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertUploadFile").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertUploadFile").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertNameAI').innerText = msg;
+}
+
+function msgAlertDescriptionAI(alarm,msg){
+    document.getElementById('containerMsgAlertDescriptionAI').style.display = 'block';
+    switch (alarm){
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertDescriptionAI").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertDescriptionAI").attr('class', 'icon fa fa-check');
+            document.getElementById('ai_description').style.borderColor = "orange";
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertDescriptionAI").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertDescriptionAI").attr('class', 'icon fa fa-warning');
+            document.getElementById('ai_description').style.borderColor = "red";
+            break;
+    }
+    document.getElementById('msgAlertDescriptionAI').innerText = msg;
+}
+
+function msgAlertUploadFile(alarm,msg){
+    document.getElementById('containerMsgAlertUploadFile').style.display = 'block';
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertUploadFile").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertUploadFile").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertUploadFile").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertUploadFile").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertUploadFile").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertUploadFile").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.SUCCESS.value:
+            $("#containerMsgAlertUploadFile").attr('class','alert alert-dismissable flat alert-success');
+            $("#iconAlertUploadFile").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertUploadFile").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertUploadFile").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertUploadFile').innerText = msg;
+}
+
+function msgAlertUploadStructure(alarm,msg){
+    document.getElementById('containerMsgAlertUploadStructure').style.display = 'block';
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertUploadStructure").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertUploadStructure").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertUploadStructure").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertUploadStructure").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertUploadStructure").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertUploadStructure").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.SUCCESS.value:
+            $("#containerMsgAlertUploadStructure").attr('class','alert alert-dismissable flat alert-success');
+            $("#iconAlertUploadStructure").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertUploadStructure").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertUploadStructure").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertUploadStructure').innerText = msg;
+}
+
+function msgAlertUploadUrl(alarm,msg){
+    document.getElementById('containerMsgAlertUploadUrl').style.display = 'block';
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertUploadUrl").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertUploadUrl").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertUploadUrl").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertUploadUrl").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertUploadUrl").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertUploadUrl").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.SUCCESS.value:
+            $("#containerMsgAlertUploadUrl").attr('class','alert alert-dismissable flat alert-success');
+            $("#iconAlertUploadUrl").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertUploadUrl").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertUploadUrl").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertUploadUrl').innerText = msg;
+}
+
+function msgAlertProgressBar(alarm,msg){
+    document.getElementById('containerMsgAlertProgressBar').style.display = 'block';
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertProgressBar").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertProgressBar").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertProgressBar").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertProgressBar").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertProgressBar").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertProgressBar").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.SUCCESS.value:
+            $("#containerMsgAlertProgressBar").attr('class','alert alert-dismissable flat alert-success text-white');
+            $("#iconAlertProgressBar").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertProgressBar").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertProgressBar").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertProgressBar').innerText = msg;
+}
+
+function msgAlertUpdateAI(alarm,msg){
+    document.getElementById('containerMsgAlertUpdateAI').style.display = 'block';
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertUpdateAI").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertUpdateAI").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertUpdateAI").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertUpdateAI").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertUpdateAI").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertUpdateAI").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.SUCCESS.value:
+            $("#containerMsgAlertUpdateAI").attr('class','alert alert-dismissable flat alert-success text-white');
+            $("#iconAlertUpdateAI").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertUpdateAI").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertUpdateAI").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertUpdateAI').innerText = msg;
+}
+
+function msgAlertAiSkill(alarm,msg){
+    document.getElementById('containerMsgAlertAiSkill').style.display = 'block';
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertAiSkill").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertAiSkill").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertAiSkill").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertAiSkill").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertAiSkill").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertAiSkill").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.SUCCESS.value:
+            $("#containerMsgAlertAiSkill").attr('class','alert alert-dismissable flat alert-success');
+            $("#iconAlertAiSkill").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertAiSkill").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertAiSkill").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertAiSkill').innerHTML = msg;
+}
+
+function msgAlertEntity(alarm, msg) {
+    switch (alarm) {
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertEntity").attr('class', 'alert alert-dismissable flat alert-base');
+            $("#icongAlertEntity").attr('class', 'icon fa fa-check');
+            document.getElementById('inputEntityName').style.borderColor = "#d2d6de";
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertEntity").attr('class', 'alert alert-dismissable flat alert-warning');
+            $("#icongAlertEntity").attr('class', 'icon fa fa-check');
+            document.getElementById('inputEntityName').style.borderColor = "orange";
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertEntity").attr('class', 'alert alert-dismissable flat alert-danger');
+            $("#icongAlertEntity").attr('class', 'icon fa fa-warning');
+            document.getElementById('inputEntityName').style.borderColor = "red";
+            break
+    }
+    document.getElementById('msgAlertEntity').innerText = msg;
+}
+
+
+function msgAlertEntityValues(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertEntityValues").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertEntityValues").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertEntityValues").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertEntityValues").attr('class', 'icon fa fa-check');
+            document.getElementById('value-entity').style.borderColor = "orange";
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertEntityValues").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertEntityValues").attr('class', 'icon fa fa-warning');
+            document.getElementById('value-entity').style.borderColor = "red";
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertEntityValues").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertEntityValues").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertEntityValues').innerText = msg;
+}
+
+function msgAlertIntent(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertIntent").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertIntent").attr('class', 'icon fa fa-check');
+            document.getElementById('inputIntentName').style.borderColor = "#d2d6de";
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertIntent").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertIntent").attr('class', 'icon fa fa-check');
+            document.getElementById('inputIntentName').style.borderColor = "orange";
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertIntent").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertIntent").attr('class', 'icon fa fa-warning');
+            document.getElementById('inputIntentName').style.borderColor = "red";
+            break;
+    }
+    document.getElementById('msgAlertIntent').innerText = msg;
+}
+
+function msgAlertIntentOp(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertIntent").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertIntent").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertIntent").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertIntent").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertIntent").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertIntent").attr('class', 'icon fa fa-warning');
+            break;
+    }
+    document.getElementById('msgAlertIntent').innerText = msg;
+}
+
+function msgAlertIntentElement(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertIntentElement").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertIntentElement").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertIntentElement").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertIntentElement").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertIntentElement").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertIntentElement").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertIntentElement").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertIntentElement").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertIntentElement').innerText = msg;
+}
+
+function msgAlertUserExpression(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertUserExpression").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertUserExpression").attr('class', 'icon fa fa-check');
+            document.getElementById('user-expression').style.borderColor = "#d2d6de";
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertUserExpression").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertUserExpression").attr('class', 'icon fa fa-check');
+            document.getElementById('user-expression').style.borderColor = "orange";
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertUserExpression").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertUserExpression").attr('class', 'icon fa fa-warning');
+            document.getElementById('user-expression').style.borderColor = "red";
+            break;
+    }
+    document.getElementById('msgAlertUserExpression').innerText = msg;
+}
+
+function msgAlertIntentVariable(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertIntentVariable").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertIntentVariable").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertIntentVariable").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertIntentVariable").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertIntentVariable").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertIntentVariable").attr('class', 'icon fa fa-warning');
+            break;
+    }
+    document.getElementById('msgAlertIntentVariable').innerText = msg;
+}
+
+function msgAlertIntentResponse(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertIntentResponse").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertIntentResponse").attr('class', 'icon fa fa-check');
+            document.getElementById('intent-response').style.borderColor = "#d2d6de";
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertIntentResponse").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertIntentResponse").attr('class', 'icon fa fa-check');
+            document.getElementById('intent-response').style.borderColor = "orange";
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertIntentResponse").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertIntentResponse").attr('class', 'icon fa fa-warning');
+            document.getElementById('intent-response').style.borderColor = "red";
+            break;
+    }
+    document.getElementById('msgAlertIntentResponse').innerText = msg;
+}
+
+
+function msgAlertIntentPrompt(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertIntentPrompt").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertIntentPrompt").attr('class', 'icon fa fa-check');
+            document.getElementById('intent-prompt').style.borderColor = "#d2d6de";
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertIntentPrompt").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertIntentPrompt").attr('class', 'icon fa fa-check');
+            document.getElementById('intent-prompt').style.borderColor = "orange";
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertIntentPrompt").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertIntentPrompt").attr('class', 'icon fa fa-warning');
+            document.getElementById('intent-prompt').style.borderColor = "red";
+            break;
+    }
+    document.getElementById('msgAlertIntentPrompt').innerText = msg;
+}
+
+function msgAlertWebHook(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertWebHook").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertWebHook").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertWebHook").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertWebHook").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertWebHook").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertWebHook").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertIntentElement").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertWebHook").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertWebHook').innerText = msg;
+}
+
+
+function msgAlertBotcard(alarm,msg){
+    switch (alarm){
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertBotcard").attr('class','alert alert-dismissable flat alert-warning no-margin');
+            $("#iconAlertBotcard").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertBotcard").attr('class','alert alert-dismissable flat alert-danger no-margin');
+            $("#iconAlertBotcard").attr('class', 'icon fa fa-warning');
+            break;
+    }
+    document.getElementById('msgAlertBotcard').innerText = msg;
+}
+
+function msgAlertPublish(alarm,msg){
+    switch (alarm){
+        case ALERT.BASIC.value:
+            $("#containerMsgAlertPublish").attr('class','alert alert-dismissable flat alert-base');
+            $("#iconAlertPublish").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.WARNING.value:
+            $("#containerMsgAlertPublish").attr('class','alert alert-dismissable flat alert-warning');
+            $("#iconAlertPublish").attr('class', 'icon fa fa-check');
+            break;
+        case ALERT.DANGER.value:
+            $("#containerMsgAlertPublish").attr('class','alert alert-dismissable flat alert-danger');
+            $("#iconAlertPublish").attr('class', 'icon fa fa-warning');
+            break;
+        case ALERT.PRIMARY.value:
+            $("#containerMsgAlertPublish").attr('class','alert alert-dismissable flat alert-primary');
+            $("#iconAlertPublish").attr('class', 'icon fa fa-check');
+            break;
+    }
+    document.getElementById('msgAlertPublish').innerText = msg;
+}
+
+function closingMsgAlertProgressBarTemporized() {
+    setTimeout(function(){ document.getElementById('containerMsgAlertProgressBar').style.display = 'none'; }, 6000);
+}
+function checkValueCode(element, key) {
+    13 === key ? activeButtonCreateEntityValue() && addEntityValue() : activeButtonCreateEntityValue()
+}
+
+function activeButtonCreateEntityValue() {
+    switch (limitText($("#value-entity"), 250)) {
+        case 0:
+            return msgAlertEntityValues(ALERT.BASIC.value, "You can add additional values for the current entity."), !0;
+        case 1:
+            return msgAlertEntityValues(ALERT.WARNING.value, "The value name's is too long!"), !1
+    }
+    return !1
+}
+
+function addEntityValue() {
+    if (isInputInvalid($("#value-entity").val(), "entity_value")) msgAlertEntityValues(ALERT.DANGER.value, "Value name can contain only the following: A-Z, a-z, 0-9, _character");
+    else {
+        for (var values = [], elements = document.getElementsByName("value-entity-row"), i = 0; i < elements.length; i++) values.push(elements[i].value);
+        if (isNameExists($("#value-entity").val(), values)) msgAlertEntityValues(ALERT.DANGER.value, "Value name already exists. Please choose a different name.");
+        else {
+            var value = document.getElementById("value-entity").value,
+                parent = document.getElementById("entityValues-list");
+            document.getElementById("value-entity").value = "", createNewValueEntityRow(value, parent), msgAlertEntityValues(ALERT.BASIC.value, "You can add additional values for the current entity.")
+        }
+    }
+}
+
+function createNewValueEntityRow(value, parent) {
+    var wHTML = '';
+
+    wHTML += ('<div class="box-body flat no-padding item-row" onmouseover="OnMouseIn (this)" onmouseout="OnMouseOut (this)">');
+    wHTML += ('<div class="row">');
+
+    wHTML += ('<div class="col-xs-10" >');
+    wHTML += ('<div class="inner-addon left-addon" style="background-color: #404446;">');
+    wHTML += ('<i class="fa fa-sign-out text-gray"></i>');
+    wHTML += ('<input type="text" class="form-control flat no-shadow no-border" name="value-entity-row" style="background-color: #404446;" value="' + value + '" placeholder="' + value + '">');
+    wHTML += ('</div>');
+    wHTML += ('</div>');
+
+    wHTML += ('<div class="col-xs-2" id="btnValueEntity" style="display:none;" >');
+    wHTML += ('<div class="btn-group pull-right text-gray" style="padding-right:7px; padding-top:7px;">');
+
+    wHTML += ('<a data-toggle="modal" data-target="#deleteValueEntity" style="padding-right:3px; cursor: pointer;" onClick="deleteValueEntity(this)">');
+    wHTML += ('<i class="fa fa-trash-o text-gray" data-toggle="tooltip" title="Delete"></i>');
+    wHTML += ('</a>');
+
+    wHTML += ('</div>');
+    wHTML += ('</div>');
+
+    wHTML += ('</div>');
+    wHTML += ('</div>');
+
+    var newNode = document.createElement('div');
+    newNode.setAttribute('class', 'col-xs-12');
+    newNode.setAttribute('style', 'col-xs-12');
+    newNode.innerHTML = wHTML;
+    parent.insertBefore(newNode, parent.firstChild);
+}
+
+function deleteValueEntity(element) {
+    var parent = element.parentNode.parentNode.parentNode.parentNode.parentNode;
+    $(parent.parentNode).find("input").attr("placeholder");
+    parent.parentNode.removeChild(parent)
+}
+
+function OnMouseIn(elem) {
+    elem.children[0].children[1].style.display = ""
+}
+
+function OnMouseOut(elem) {
+    elem.children[0].children[1].style.display = "none"
+}
+
+function saveEntity() {
+    var values = [],
+        entityName = document.getElementById("entity-name").value,
+        elements = document.getElementsByName("value-entity-row");
+    if (0 !== elements.length) {
+        for (var i = 0; i < elements.length; i++) values.push(elements[i].value);
+        var prevCursor = document.body.style.cursor;
+        document.body.style.cursor = "wait", $("#btnSaveEntity").prop("disabled", !0), msgAlertEntityValues(ALERT.WARNING.value, "Saving..."), commonAjaxApiRequest({
+            url: "./proxy/entityProxy.php?entity=" + entityName,
+            data: {
+                values: values
+            },
+            verb: "PUT",
+            onOK: function() {
+                msgAlertEntityValues(ALERT.PRIMARY.value, "Entity saved.")
+            },
+            onGenericError: function() {
+                msgAlertEntityValues(ALERT.DANGER.value, "Entity not saved.")
+            },
+            onShowError: function(message) {
+                msgAlertEntityValues(ALERT.DANGER.value, message)
+            },
+            onComplete: function() {
+                $("#btnSaveEntity").prop("disabled", !1), document.body.style.cursor = prevCursor
+            }
+        })
+    } else msgAlertEntityValues(ALERT.WARNING.value, "Please enter at least one value for this entity.")
+}
+document.getElementById("btnAddEntityValue").addEventListener("click", addEntityValue), $(document).ready(function() {
+    for (var x in entityValuesListFromServer) {
+        var value = entityValuesListFromServer[x],
+            parent = document.getElementById("entityValues-list");
+        document.getElementById("value-entity").value = "", createNewValueEntityRow(value, parent)
+    }
+});
+</script>
+
+{% endblock %}

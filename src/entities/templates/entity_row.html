@@ -37,7 +37,7 @@ function OnMouseOut(elem) {
             <div class="row item-row">
                 <div class="col-xs-10 no-padding" id="obj-entity{{index}}">
                     {% if entity.is_system == False %}
-                    <a href="new">
+                    <a href="{% url 'entityelement' %}">
                     {% endif %}
                     <input type="text" class="form-control flat no-shadow" id="entity-label{{index}}" name="entity-label"
                     {% if entity.is_system == False %}

@@ -41,7 +41,10 @@ class NewEntityView(View):
     Create a new Entity.
     """
     context_object_name = 'entity'
-    template_name = 'new_entity.html'
+    template_name = 'entityelement.html'
+
+    def __init__(self):
+        self.context = None
 
     def post(self, request, *args, **kwargs):
         """
@@ -49,15 +52,22 @@ class NewEntityView(View):
         it would be an Import form, if not and there is a `name` in POST part
         it's an Add form.
         """
-
-        return render(request, template_name='new_entity.html')
+        context = {}
+        form = createEntity(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['entity_name']
+        token = request.session.get('token', False)
+        entity = get_entity(name, token=token)
+        context['entity_name'] = name
+        context['values'] = entity['entity_values']
+        return render(request, 'entityelement.html', context)
 
     def get_context_data(self, **kwargs):
-        context = super(NewEntityView, self).get_context_data(**kwargs)
-        context['token'] = self.request.session.get('token', False)
-        context['entity_name'] = self.request.POST.get('entity_name', None)
+        self.context = super(NewEntityView, self).get_context_data(**kwargs)
+        self.context['token'] = self.request.session.get('token', False)
+        self.context['entity_name'] = self.request.POST.get('entity_name', None)
 
-        if context['entity_name'] is None:
+        if self.context['entity_name'] is None:
             raise Exception('Not getting name properly.')
 
     def get_queryset(self):

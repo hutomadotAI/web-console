@@ -2,7 +2,12 @@
 {% load i18n %}
 {% load i18n crispy_forms_tags %}
 
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
 {% block content %}
+<div class="content-wrapper">
 <div class="tab-content" style="padding-bottom:0px;">
     <div class="tab-pane active" id="page_general">
 
@@ -42,7 +47,7 @@
 
             <div class="box-body" id="boxEntities">
                 <div class="bootstrap-filestyle input-group" id="GrpEntityButton">
-                    <form method="post" class="form-add" id="create_entity_form" action="{% url 'new_entity' %}">
+                    <form method="post" class="form-add" id="create_entity_form" action="{% url 'entityelement' %}">
                         {% csrf_token %}
                         {{ create_entity_form | crispy }}
                         <div class="input-group-btn" tabindex="0">
@@ -162,5 +167,6 @@ If you’re stuck check out our <a data-toggle="collapse" href="#collapseVideoTu
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

@@ -32,8 +32,8 @@ urlpatterns = [
         name='entities'
     ),
     url(
-        r'^new$',
+        r'^entityelement$',
         cache_page(settings.TEMPLATES_CACHE_AGE)(NewEntityView.as_view()),
-        name='new_entity'
+        name='entityelement'
     )
 ]
