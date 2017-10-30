@@ -81,3 +81,25 @@ def save_entity(entityName, entityValues, token=False):
     )
 
     logger.debug(response)
+
+
+def delete_entity(entityName, token=False):
+    """
+    Delete a specific entity.
+    :param entityName: The name of the entity.
+    :param entityValues: The values in the entity.
+    :param token: The user token.
+    :return:
+    """
+    path = '/entity?entity_name={0}'
+    url = settings.API_URL + path.format(entityName)
+
+    logger.debug(url)
+
+    response = requests.delete(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)

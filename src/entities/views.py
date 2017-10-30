@@ -49,10 +49,10 @@ class NewEntityView(View):
         it's an Add form.
         """
         context = {}
-        form = createEntity(request.POST)
         token = request.session.get('token', False)
         name = request.POST.get('entity_name')
         values = request.POST.getlist('value-entity-row')
+
         if len(values) > 0:
             context['entity_name'] = name
             context['values'] = values
