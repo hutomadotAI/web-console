@@ -33,17 +33,19 @@ function OnMouseOut(elem) {
 }
 </script>
 <div class="col-xs-12">
-        <div class="box-body flat no-padding" onmouseover="OnMouseIn (this)" onmouseout="OnMouseOut (this)">
+        <div class="box-body flat no-padding">
+          <form action="{% url 'entityelement' %}" method="POST">
+            {% csrf_token %}
             <div class="row item-row">
                 <div class="col-xs-10 no-padding" id="obj-entity{{index}}">
                     {% if entity.is_system == False %}
                     <a href="{% url 'entityelement' %}">
                     {% endif %}
-                    <input type="text" class="form-control flat no-shadow" id="entity-label{{index}}" name="entity-label"
+                    <input type="submit" class="form-control flat no-shadow" id="entity_name{{index}}" name="entity_name"
                     {% if entity.is_system == False %}
                     onClick = "editEntity(this,this.value)" onMouseOver="this.style.cursor='pointer'"
                     {% endif %}
-                    style=" background-color: #404446; " value="@{{entity.name}}" readonly>
+                    style=" background-color: #404446; " value="{{entity.entity_name}}" readonly>
                     {% if entity.is_system == False %}
                     </a>
                     {% endif %}
@@ -51,10 +53,11 @@ function OnMouseOut(elem) {
                 <div class="col-xs-2" id="btnEnt{{index}}"  style="display:none;margin-top:8px;" >
                     <div class="btn-group pull-right text-gray">
                         <a data-toggle="modal" data-target="#deleteEntity" id="{{index}}" style="cursor: pointer;">
-                            <i class="fa fa-trash-o text-gray" data-toggle="tooltip" title="Delete"></i></a>
+                            <i class="fa fa-trash-o text-gray" data-toggle="tooltip" title="Delete" onmouseover="OnMouseIn (this)" onmouseout="OnMouseOut (this)"></i></a>
                     </div>
                 </div>
             </div>
+          </form>
         </div>
     </div>
 {% endblock %}

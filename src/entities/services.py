@@ -51,7 +51,33 @@ def get_entity(entityName, token=False):
         timeout=settings.API_TIMEOUT
     ).json()
 
-    print (entity)
     logger.debug(entity)
 
     return entity
+
+
+def save_entity(entityName, entityValues, token=False):
+    """
+    Save a specific entity.
+    :param entityName: The name of the entity.
+    :param entityValues: The values in the entity.
+    :param token: The user token.
+    :return:
+    """
+    path = '/entity?entity_name={0}'
+    url = settings.API_URL + path.format(entityName)
+
+    logger.debug(url)
+    data = {
+        "entity_name": entityName,
+        "entity_values": entityValues
+    }
+
+    response = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        json=data
+    )
+
+    logger.debug(response)

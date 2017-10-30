@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <form id="entity_list" method="POST">
-                    <input type="hidden" name="name" id="entity-name" value="{{ entity_name }}">
+                    <input type="hidden" name="entity_name" id="entity_name" value="{{ entity_name }}">
                     <div class="box box-solid box-clean flat no-shadow unselectable">
 
                         <div class="box-header no-border" style="padding: 10px 10px 5px 10px;">
@@ -22,7 +22,7 @@
                                         <i class="fa fa-sitemap text-yellow"></i>
                                         <span><b> Entity </b></span><span class="text-md text-darkgray" style="padding-right:3px;">:</span>
                                     </div>
-                                    <input type="text" class="flat no-shadow input-text-limited pull-left" value="@{{ entity_name }}" readonly>
+                                    <input type="text" class="flat no-shadow input-text-limited pull-left" value="{{ entity_name }}" readonly>
                                     <button class="input-postfix-button btn btn-success flat pull-right" id="btnSaveEntity" style="width: 130px; "
                                             alt="save entity"
                                             type="submit" form="entity_list">Save Entity
@@ -69,7 +69,7 @@
                                                    placeholder="Add value..." onkeyup="checkValueCode(this,event.keyCode)"
                                                    style="width: 96%;">
                                             <span class="input-group-btn">
-                            <button class="btn btn-success flat" id="btnAddEntityValue" style="width: 130px;">Add Entity Value</button>
+                            <button class="btn btn-success flat" id="btnAddEntityValue" form="none" style="width: 130px;">Add Entity Value</button>
                         </span>
                                         </div>
                                     </h5>
@@ -701,7 +701,7 @@ function OnMouseOut(elem) {
 
 function saveEntity() {
     var values = [],
-        entityName = document.getElementById("entity-name").value,
+        entityName = document.getElementById("entity_name").value,
         elements = document.getElementsByName("value-entity-row");
     if (0 !== elements.length) {
         for (var i = 0; i < elements.length; i++) values.push(elements[i].value);

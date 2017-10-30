@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView, View
 
-from entities.services import get_entities, get_entity
+from entities.services import get_entities, get_entity, save_entity
 from entities.forms import *
 
 logger = logging.getLogger(__name__)
@@ -29,11 +29,7 @@ class EntityListView(ListView):
         return context
 
     def get_queryset(self):
-        entities = [
-            {"name": "sys.any", "values": ["value_a", "value_b", "value_c", "value_d"], "is_system": True},
-            {"name": "entity_name_2", "values": ["value_e", "value_f", "value_g"], "is_system": False}
-        ]
-        return entities#get_entities(token=self.request.session.get('token', False))
+        return get_entities(token=self.request.session.get('token', False))
 
 
 class NewEntityView(View):
@@ -54,12 +50,18 @@ class NewEntityView(View):
         """
         context = {}
         form = createEntity(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['entity_name']
         token = request.session.get('token', False)
-        entity = get_entity(name, token=token)
-        context['entity_name'] = name
-        context['values'] = entity['entity_values']
+        name = request.POST.get('entity_name')
+        values = request.POST.getlist('value-entity-row')
+        if len(values) > 0:
+            context['entity_name'] = name
+            context['values'] = values
+            save_entity(name, values, token=token)
+        else:
+            entity = get_entity(name, token=token)
+            context['entity_name'] = name
+            context['values'] = entity['entity_values']
+
         return render(request, 'entityelement.html', context)
 
     def get_context_data(self, **kwargs):
