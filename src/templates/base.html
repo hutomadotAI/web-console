@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/skin-blue.css' %}">
 
-    {% block extra_head %}{% endblock %}
+    {% block stylesheets %}{% endblock %}
 
     {% block gtm.head %}{% endblock %}
 
@@ -60,6 +60,8 @@
         {% include 'footer.html' %}
       {% endblock footer %}
 
+      {% block modals %}{% endblock %}
+
     {% endblock %}
 
     {% block extra_body %}{% endblock %}
@@ -67,6 +69,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js" integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI=" crossorigin="anonymous"></script>
+
+    <script src="{% static 'js/clipboard.js' %}"></script>
 
     {% block javascripts %}{% endblock %}
 

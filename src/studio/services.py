@@ -3,6 +3,7 @@ import requests
 
 from django.conf import settings
 from django.http import Http404
+from django.utils.translation import ugettext_lazy as _
 
 from app.services import set_headers
 
@@ -10,9 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_ai(token, aiid):
-    """
-    Returns a particular AI data
-    """
+    """Returns a particular AI data"""
 
     path = '/ai/%s'
     url = settings.API_URL + path % aiid
@@ -28,30 +27,60 @@ def get_ai(token, aiid):
     logger.debug(response)
 
     if response.status_code in [401, 403, 404]:
-        """
-        We don't revile if AI exists
-        """
-        raise Http404('AI id %s doesn’t exists' % aiid)
+        # We don't reveal if AI exists
+        raise Http404(_('AI id %s doesn’t exist') % aiid)
 
-    ai = response.json()
+    return response.json()
 
-    #
-    ai['training'] = {
-        'status': ai['ai_status'],
-        'progress': 100 * (
-            ai['phase_1_progress'] * 0.5 + ai['phase_2_progress'] * 1.5
-            ) / 2
-    }
 
-    logger.debug(ai)
+def delete_ai(token, aiid):
+    """Returns a particular AI data"""
 
-    return ai
+    path = '/ai/%s'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.delete(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    if response.status_code in [401, 403, 404]:
+        # We don't reveal if AI exists
+        raise Http404(_('AI id %s doesn’t exist') % aiid)
+
+    return response.json()
+
+
+def get_ai_export(token, aiid):
+    """Returns an AI export JSON data"""
+
+    path = '/ai/%s/export'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    if response.status_code in [401, 403, 404]:
+        # We don't reveal if AI exists
+        raise Http404(_('AI id %s doesn’t exist') % aiid)
+
+    return response.json()
 
 
 def get_ai_list(token):
-    """
-    Returns a list of all bots created by a user
-    """
+    """Returns a list of all bots created by a user"""
 
     path = '/ai'
     url = settings.API_URL + path
@@ -75,10 +104,8 @@ def get_ai_list(token):
     return ai_list
 
 
-def post_ai(token, ai_data):
-    """
-    Post an AI instance
-    """
+def post_ai(token, ai_data, aiid=''):
+    """Creates or updates an AI instance"""
 
     ai_default = {
         'is_private': False,
@@ -87,10 +114,10 @@ def post_ai(token, ai_data):
         'locale': 'en-US',
     }
 
-    path = '/ai'
-    url = settings.API_URL + path
+    path = '/ai/%s'
+    url = settings.API_URL + path % aiid
 
-    logger.debug(url)
+    logger.debug([url, ai_data])
 
     response = requests.post(
         url,
@@ -101,17 +128,11 @@ def post_ai(token, ai_data):
 
     logger.debug(response)
 
-    ai = response.json()
-
-    logger.debug(ai)
-
-    return ai
+    return response.json()
 
 
 def post_import_ai(token, ai_data):
-    """
-    Post an AI import JSON
-    """
+    """Creates a new AI instance based on provided JSON file"""
 
     path = '/ai/import'
     url = settings.API_URL + path
@@ -130,17 +151,11 @@ def post_import_ai(token, ai_data):
 
     logger.debug(response)
 
-    ai = response.json()
-
-    logger.debug(ai)
-
-    return ai
+    return response.json()
 
 
 def post_ai_skill(token, aiid, skills_data):
-    """
-    Post skills linked with an AI
-    """
+    """Updates skills linked with an AI"""
 
     path = '/ai/%s/bots?bot_list=%s'
     url = settings.API_URL + path % (
@@ -161,17 +176,11 @@ def post_ai_skill(token, aiid, skills_data):
 
     logger.debug(response)
 
-    skills = response.json()
-
-    logger.debug(skills)
-
-    return skills
+    return response.json()
 
 
 def post_training(token, aiid, training_file):
-    """
-    Post skills linked with an AI
-    """
+    """Updates bot Training file"""
 
     path = '/ai/%s/training?source_type=0'
     url = settings.API_URL + path % aiid
@@ -189,17 +198,11 @@ def post_training(token, aiid, training_file):
 
     logger.debug(response)
 
-    ai = response.json()
-
-    logger.debug(ai)
-
-    return ai
+    return response.json()
 
 
 def put_training_start(token, aiid):
-    """
-    Start an AI training
-    """
+    """Start an AI training"""
 
     path = '/ai/%s/training/start'
     url = settings.API_URL + path % aiid
@@ -214,11 +217,25 @@ def put_training_start(token, aiid):
 
     logger.debug(response)
 
-    ai = response.json()
+    return response.json()
 
-    logger.debug(ai)
 
-    return ai
+def post_regenerate_webhook_secret(token, aiid):
+    """Generate a new Webhook secret"""
+
+    path = '/ai/%s/regenerate_webhook_secret'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+    )
+
+    logger.debug(response)
+    return response.json()
 
 def get_entities(token=False):
     """

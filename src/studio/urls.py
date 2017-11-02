@@ -25,12 +25,15 @@ from django.views.generic.base import RedirectView
 
 from studio.views import (
     AICreateView,
+    AIUpdateView,
     AIListView,
     SkillsView,
     TrainingView,
     ProxyAiView,
     EntityListView,
-    NewEntityView
+    NewEntityView,
+    ProxyAiExportView,
+    ProxyRegenerateWebhookSecretView
 )
 
 urlpatterns = [
@@ -108,13 +111,13 @@ urlpatterns = [
     # Update settings of an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/settings/?$',
-        SkillsView.as_view(),
+        AIUpdateView.as_view(),
         name='settings'
     ),
 
     # Proxy ajax AI calls
     url(
-        r'^proxy/ai/(?P<aiid>[0-9a-f-]+)?$',
+        r'^proxy/ai/(?P<aiid>[0-9a-f-]+)$',
         ProxyAiView.as_view(),
         name='proxy.ai'
     ),
@@ -129,5 +132,14 @@ urlpatterns = [
         NewEntityView.as_view(),
         name='entityelement'
     )
+        r'^proxy/ai/(?P<aiid>[0-9a-f-]+)/export$',
+        ProxyAiExportView.as_view(),
+        name='proxy.ai.export'
+    ),
 
+    url(
+        r'^proxy/ai/(?P<aiid>[0-9a-f-]+)/regenerate_webhook_secret$',
+        ProxyRegenerateWebhookSecretView.as_view(),
+        name='proxy.ai.regenerate_webhook_secret'
+    ),
 ]

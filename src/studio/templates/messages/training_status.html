@@ -1,3 +1,4 @@
 <div class="traningStatus">
-  <label for="trainingStatus">Training {{ ai.name|title }}</label> <progress id="trainingStatus" value="{{ ai.training.progress|floatformat }}" max="100" data-label="{{ ai.training.status }}">{{ ai.training.progress|floatformat }} %</progress>
+  <label for="trainingStatus">Training {{ ai.name|title }}</label> <progress id="trainingStatus" value="{{ ai.training.progress|floatformat }}" max="100">{{ ai.training.progress|floatformat }} %</progress>
+  <span id="traningStatusText">{{ ai.training.progress|floatformat }} % {{ ai.training.status }}</span>
 </div>

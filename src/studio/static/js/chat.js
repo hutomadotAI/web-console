@@ -4,14 +4,12 @@ const HISTORY_KEY = `${AI.id}_history`
 const HISTORY = JSON.parse(sessionStorage.getItem(HISTORY_KEY)) || []
 
 var showJsonWindow = true // json window showed for default
-var JSONnode = document.getElementById('msgJSON')
 var speechResponse = false
 var recording = false
 
 var waiting = false
 
 // Attach listeners
-document.getElementById('action.logs:copy').addEventListener('click', copyLogs)
 document.getElementById('action.logs:toggle').addEventListener('click', toggleLogs)
 document.getElementById('action.history:clear').addEventListener('click', clearHistory)
 
@@ -245,7 +243,7 @@ function requestAnswerAI(message) {
 
       if (response) {
         // Write response in JSON message box
-        JSONnode.innerHTML = JSON.stringify(response, undefined, 2);
+        document.getElementById('msgJSON').innerHTML = JSON.stringify(response, undefined, 2);
 
         if (response.chatId) {
           // save the chatID
@@ -294,42 +292,6 @@ function toggleLogs() {
   // toggle json window
   $('#jsonBox').toggle();
   showJsonWindow = !showJsonWindow;
-}
-
-function copyLogs() {
-  var node = document.getElementById('msgJSON');
-  var content = (node.innerHTML);
-
-  if (content.length !== 0 && content.trim()) {
-    var aux = document.createElement('input');
-
-    document.getElementById('message').value = '';
-    aux.value = content;
-
-    document.body.appendChild(aux);
-    aux.select();
-
-    var copysuccess;
-    try {
-      copysuccess = document.execCommand('cut');
-    } catch (e) {
-      $('#btnJSON').attr('data-original-title', 'Not supported.').tooltip('show');
-      $('#btnJSON').attr('data-original-title', 'Copy to clipboard');
-    }
-    if (!copysuccess) {
-      $('#btnJSON').attr('data-original-title', 'Not supported.').tooltip('show');
-      $('#btnJSON').attr('data-original-title', 'Copy to clipboard');
-    }
-    else {
-      $('#btnJSON').attr('data-original-title', 'Copied.').tooltip('show');
-      $('#btnJSON').attr('data-original-title', 'Copy to clipboard');
-    }
-    document.body.removeChild(aux);
-  }
-  else {
-    $('#btnJSON').attr('data-original-title', 'Nothing to copy.').tooltip('show');
-    $('#btnJSON').attr('data-original-title', 'Copy to clipboard.');
-  }
 }
 
 function cleanChat(msg) {
