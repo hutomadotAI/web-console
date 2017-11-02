@@ -28,9 +28,10 @@ from studio.views import (
     AIListView,
     SkillsView,
     TrainingView,
-    ProxyAiView
+    ProxyAiView,
+    EntityListView,
+    NewEntityView
 )
-from entities.views import EntityListView
 
 urlpatterns = [
 
@@ -118,5 +119,15 @@ urlpatterns = [
         name='proxy.ai'
     ),
 
+    url(
+        r'^$',
+        EntityListView.as_view(),
+        name='entities'
+    ),
+    url(
+        r'^entityelement$',
+        NewEntityView.as_view(),
+        name='entityelement'
+    )
 
 ]

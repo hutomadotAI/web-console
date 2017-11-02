@@ -1,0 +1,19 @@
+<div class="modal fade" id="{{ id }}" role="dialog">
+  <div class="modal-dialog flat width600" style="border: 1px solid red;">
+    <div class="modal-content bordered" style="background-color: #202020">
+
+      <div class="modal-header">
+        <button type="button" class="close" id="btnModelClose" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class="fa fa fa-warning text-danger" style="padding-right:2em"></i> {{ title }}</h4>
+      </div>
+
+      <div class="modal-body">
+        {% block body %}{% endblock body %}
+      </div>
+
+      <div class="modal-footer">
+        {% block footer %}{% endblock footer %}
+      </div>
+    </div>
+  </div>
+</div>

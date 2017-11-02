@@ -136,3 +136,11 @@ class SkillsForm(forms.Form):
 
     def save(self, *args, **kwargs):
         return post_ai_skill(self.token, self.aiid, self.cleaned_data)
+
+class EntityForm(forms.Form):
+    entity_name = forms.CharField(
+        label=_('Name'),
+        max_length=50,
+        widget=forms.TextInput(attrs={'placeholder': _('Entity_Name')})
+    )
+    print (str(entity_name))
