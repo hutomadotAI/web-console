@@ -34,12 +34,12 @@ function OnMouseOut(elem) {
 </script>
 <div class="col-xs-12">
         <div class="box-body flat no-padding">
-          <form action="{% url 'entityelement' %}" method="POST">
+          <form action="{% url 'studio:entityelement' %}" method="POST">
             {% csrf_token %}
             <div class="row item-row">
                 <div class="col-xs-10 no-padding" id="obj-entity{{index}}">
                     {% if entity.is_system == False %}
-                    <a href="{% url 'entityelement' %}">
+                    <a href="{% url 'studio:entityelement' %}">
                     {% endif %}
                     <input type="submit" class="form-control flat no-shadow" id="entity_name{{index}}" name="entity_name"
                     {% if entity.is_system == False %}

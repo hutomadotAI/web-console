@@ -47,7 +47,7 @@
 
             <div class="box-body" id="boxEntities">
                 <div class="bootstrap-filestyle input-group" id="GrpEntityButton">
-                    <form method="post" class="form-add" id="create_entity_form" action="{% url 'entityelement' %}">
+                    <form method="post" class="form-add" id="create_entity_form" action="{% url 'studio:entityelement' %}">
                         {% csrf_token %}
                         {{ create_entity_form | crispy }}
                         <div class="input-group-btn" tabindex="0">

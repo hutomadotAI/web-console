@@ -123,7 +123,7 @@ urlpatterns = [
     ),
 
     url(
-        r'^$',
+        r'^entities$',
         EntityListView.as_view(),
         name='entities'
     ),
@@ -131,7 +131,8 @@ urlpatterns = [
         r'^entityelement$',
         NewEntityView.as_view(),
         name='entityelement'
-    )
+    ),
+    url(
         r'^proxy/ai/(?P<aiid>[0-9a-f-]+)/export$',
         ProxyAiExportView.as_view(),
         name='proxy.ai.export'

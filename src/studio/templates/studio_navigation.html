@@ -5,7 +5,7 @@
   <ul class="treeview-menu">
     <li{% if active == 'training' %} class="active"{% endif %}><a href="{% url 'studio:training' ai.aiid %}"><i class="fa fa-graduation-cap"></i> <span>{% trans 'Training' %}</span></a></li>
     <li{% if active == 'skills' %} class="active"{% endif %}><a href="{% url 'studio:skills' ai.aiid %}"><i class="fa fa-plus text-purple"></i> <span>{% trans 'Skills' %}</span></a></li>
-    <li{% if active == 'entities' %} class="active"{% endif %}><a href="{% url 'studio:entities' ai.aiid %}"><i class="fa fa-sitemap text-yellow"></i> <span>{% trans 'Entities' %}</span></a></li>
+    <li{% if active == 'entities' %} class="active"{% endif %}><a href="{% url 'studio:entities' %}"><i class="fa fa-sitemap text-yellow"></i> <span>{% trans 'Entities' %}</span></a></li>
     <li{% if active == 'intents' %} class="active"{% endif %}><a href="{% url 'studio:intents' ai.aiid %}"><i class="fa fa-commenting-o text-green"></i> <span>{% trans 'Intents' %}</span></a></li>
     <li{% if active == 'integrations' %} class="active"{% endif %}><a href="{% url 'studio:integrations' ai.aiid %}"><i class="fa fa-puzzle-piece text-blue"></i> <span>{% trans 'Integrations' %}</span></a></li>
     <li{% if active == 'insights' %} class="active"{% endif %}><a href="{% url 'studio:insights' ai.aiid %}"><i class="fa fa-pie-chart text-light-blue"></i> <span>{% trans 'Insights' %}</span></a></li>

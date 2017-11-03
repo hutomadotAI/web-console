@@ -391,7 +391,8 @@ class NewEntityView(View):
         else:
             entity = get_entity(name, token=token)
             context['entity_name'] = name
-            context['values'] = entity['entity_values']
+            if 'entity_values' not in entity:
+                context['values'] = entity['entity_values']
 
         return render(request, 'entityelement.html', context)
 
