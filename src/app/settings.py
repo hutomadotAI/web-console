@@ -244,6 +244,8 @@ TEMPLATES = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+TOKENFIELD_DELIMITER = '\u2028'
+
 # ------------------------------------------------------------------------------
 #
 # WebServer configuration

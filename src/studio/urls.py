@@ -27,10 +27,13 @@ from studio.views import (
     AICreateView,
     AIUpdateView,
     AIListView,
+    IntentsView,
+    IntentsUpdateView,
     SkillsView,
     TrainingView,
     ProxyAiView,
     ProxyAiExportView,
+    ProxyIntentDeleteView,
     ProxyRegenerateWebhookSecretView,
 )
 
@@ -88,8 +91,15 @@ urlpatterns = [
     # Update intents of an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/intents/?$',
-        SkillsView.as_view(),
+        IntentsView.as_view(),
         name='intents'
+    ),
+
+    # Update an intent of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/intents/(?P<intent_name>[-0-9a-zA-Z_]+)/?$',
+        IntentsUpdateView.as_view(),
+        name='intents.edit'
     ),
 
     # Update integrations of an existing AI
@@ -130,6 +140,13 @@ urlpatterns = [
         r'^proxy/ai/(?P<aiid>[0-9a-f-]+)/regenerate_webhook_secret$',
         ProxyRegenerateWebhookSecretView.as_view(),
         name='proxy.ai.regenerate_webhook_secret'
+    ),
+
+    # Remove an intent
+    url(
+        r'^proxy/intent/(?P<aiid>[0-9a-f-]+)/?$',
+        ProxyIntentDeleteView.as_view(),
+        name='proxy.intent.delete'
     ),
 
 

@@ -1,6 +1,7 @@
 import json
 import factory
 import tempfile
+
 from test_plus.test import TestCase
 from unittest.mock import Mock, patch
 
@@ -10,9 +11,11 @@ from studio.forms import (
     AddAIForm,
     ImportAIForm,
     TrainingForm,
-    SkillsForm
+    SkillsForm,
+    EntityForm,
+    IntentForm,
 )
-from studio.tests.factories import AIImportJSON
+from studio.tests.factories import AIImportJSON, IntentFactory, EntityFactory
 from botstore.tests.factories import MetadataFactory
 
 
@@ -214,4 +217,287 @@ class TestTrainingForm(TestCase):
         self.assertFalse(
             self.form.is_valid(),
             'A valid form should have a training file'
+        )
+
+
+class TestIntentForm(TestCase):
+
+    def test_a_valid_intent_without_webhook(self):
+        """Provide minimal required data"""
+
+        data = factory.build(dict, FACTORY_CLASS=IntentFactory)
+
+        form = IntentForm(data)
+
+        self.assertTrue(
+            form.is_valid(),
+            'Even with empty Webhook, form is valid'
+        )
+
+    def test_a_valid_intent_with_webhook(self):
+        """Test webhook URL"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            webhook='http://hutoma.ai'
+        )
+
+        form = IntentForm(data)
+
+        self.assertTrue(
+            form.is_valid(),
+            'Webhook is an URL, form is valid'
+        )
+
+    def test_an_invalid_intent_with_webhook(self):
+        """Test if Webhook is validated"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            webhook='Not an URL'
+        )
+
+        form = IntentForm(data)
+
+        self.assertFalse(
+            form.is_valid(),
+            'Webhook isn’t an URL, form is invalid'
+        )
+
+    def test_an_invalid_intent_without_responses(self):
+        """Responses are required"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            responses=''
+        )
+
+        form = IntentForm(data)
+
+        self.assertFalse(
+            form.is_valid(),
+            'Responses is missing, form is invalid'
+        )
+
+    def test_an_invalid_intent_without_user_says(self):
+        """Users says is required"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            user_says=''
+        )
+
+        form = IntentForm(data)
+
+        self.assertFalse(
+            form.is_valid(),
+            'User say is missing, form is invalid'
+        )
+
+    def test_clean_response(self):
+        """Responses are converted to a list"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory
+        )
+
+        form = IntentForm(data)
+
+        form.is_valid()
+
+        self.assertSequenceEqual(
+            form.cleaned_data['responses'],
+            ['Response 1', 'Response 2', 'Response 3'],
+            'Responses needs to be a list'
+        )
+
+    def test_clean_user_says(self):
+        """User say are converted to a list"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory
+        )
+
+        form = IntentForm(data)
+
+        form.is_valid()
+
+        self.assertSequenceEqual(
+            form.cleaned_data['user_says'],
+            ['User say 1', 'User say 2', 'User say 3'],
+            'User say needs to be a list'
+        )
+
+    def test_clean_empty_webhook(self):
+        """Webhook is an object, and not enabled"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory
+        )
+
+        form = IntentForm(data)
+
+        form.is_valid()
+
+        self.assertEqual(
+            form.cleaned_data['webhook'],
+            {
+                'intent_name': 'Intent_name',
+                'endpoint': '',
+                'enabled': False
+            },
+            'Webhook is an object, and not enabled'
+        )
+
+    def test_clean_webhook(self):
+        """Webhook is an object, and enabled"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            webhook='http://hutoma.ai'
+        )
+
+        form = IntentForm(data)
+
+        form.is_valid()
+
+        self.assertEqual(
+            form.cleaned_data['webhook'],
+            {
+                'intent_name': 'Intent_name',
+                'endpoint': 'http://hutoma.ai',
+                'enabled': True
+            },
+            'Webhook is an object, and enabled'
+        )
+
+    def test_intent_name_slug(self):
+        """Intent name should be a slug"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            intent_name='Not a slug'
+        )
+
+        form = IntentForm(data)
+
+        self.assertFalse(
+            form.is_valid(),
+            'Intent name should be a slug'
+        )
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            intent_name='!#@$%^&'
+        )
+
+        form = IntentForm(data)
+
+        self.assertFalse(
+            form.is_valid(),
+            'Intent name should be a slug'
+        )
+
+
+class TestEntityForm(TestCase):
+
+    def test_a_valid_required_entity(self):
+        """Provide valid required data"""
+
+        data = factory.build(dict, FACTORY_CLASS=EntityFactory)
+
+        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+
+        self.assertTrue(
+            form.is_valid(),
+            'Provide valid required data, should pass'
+        )
+
+    def test_a_valid_not_required_entity(self):
+        """Provide valid not required data"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=EntityFactory,
+            required=False
+        )
+
+        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+
+        self.assertTrue(
+            form.is_valid(),
+            'Provide valid not required data, should pass'
+        )
+
+    def test_clean_prompts(self):
+        """Prompts should be a list"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=EntityFactory
+        )
+
+        form = EntityForm(data)
+
+        form.is_valid()
+
+        self.assertSequenceEqual(
+            form.cleaned_data['prompts'],
+            ['User prompt 1', 'User prompt 2', 'User prompt 3'],
+            'Prompts should be a list, should pass'
+        )
+
+    def test_an_invalid_choice(self):
+        """Provide an invalid entity name"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=EntityFactory,
+            entity_name='something'
+        )
+
+        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+
+        self.assertFalse(
+            form.is_valid(),
+            'Invalid entity name, should fail'
+        )
+
+    def test_an_invalid_prompt_number(self):
+        """Provide an invalid number of prompts"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=EntityFactory,
+            n_prompts=0
+        )
+
+        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+
+        self.assertFalse(
+            form.is_valid(),
+            'Invalid entity name, should be greater than 0, should fail'
+        )
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=EntityFactory,
+            n_prompts=19
+        )
+
+        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+
+        self.assertFalse(
+            form.is_valid(),
+            'Invalid entity name, should be lower than 16, should fail'
         )

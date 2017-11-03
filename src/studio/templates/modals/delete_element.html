@@ -1,0 +1,16 @@
+{% load i18n embed %}
+
+{% embed 'modals/danger_modal.html' with id='delete_element' title='Delete element' %}
+
+  {% block body %}
+    <p>{% blocktrans %}Are you sure you want to permanently delete  <span class="element-id"></span>?{% endblocktrans %}</p>
+    <form method="delete" id="delete_element_form"></form>
+
+  {% endblock body %}
+
+  {% block footer %}
+    <button type="button" class="btn btn-primary flat" data-dismiss="modal">{% trans 'Cancel' %}</button>
+    <button type="submit" form="delete_element_form" class="btn btn-danger flat">{% trans 'Delete' %}</button>
+  {% endblock footer %}
+
+{% endembed %}

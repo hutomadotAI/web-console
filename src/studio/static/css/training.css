@@ -1,0 +1,52 @@
+/**
+ *
+ * Styling of training status. TODO: move progress in to forms styles
+ *
+ * We style training status using `display: flex`
+ *
+ */
+
+.traningStatus {
+  display: flex;
+  position: relative;
+}
+
+.traningStatus label {
+  margin: 0;
+  max-width: 25%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.traningStatus progress {
+  background-color: var(--UI-800);
+  border: none;
+  flex-grow: 2;
+  height: 2rem;
+  margin-left: 2rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.traningStatus span {
+  font-size: small;
+  font-weight: bold;
+  position: absolute;
+  right: 1rem;
+  z-index: 2;
+}
+
+.traningStatus progress::-moz-progress-bar {
+  /* We must separate it so both browsers works */
+    background-color: var(--SUCCESS);
+}
+
+.traningStatus progress::-webkit-progress-value {
+  /* We must separate it so both browsers works */
+    background-color: var(--SUCCESS);
+}
+
+.traningStatus progress::-webkit-progress-bar {
+    background-color: var(--UI-800);
+}

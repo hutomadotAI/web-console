@@ -1,8 +1,10 @@
 import logging
+import requests
 
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.forms import formset_factory
 from django.http import HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.shortcuts import redirect
@@ -12,11 +14,12 @@ from django.views import View
 from django.views.generic import ListView
 from django.views.generic.base import ContextMixin
 from django.views.generic.edit import FormView
-from django.views.decorators.csrf import csrf_exempt
 
 from studio.forms import (
     AddAIForm,
     ImportAIForm,
+    IntentForm,
+    EntityForm,
     ProxyDeleteAIForm,
     ProxyRegenerateWebhookSecretForm,
     SkillsForm,
@@ -26,6 +29,11 @@ from studio.services import (
     get_ai,
     delete_ai,
     get_ai_export,
+    get_intent_list,
+    get_entities_list,
+    get_intent,
+    post_intent,
+    delete_intent,
     get_ai_list,
     post_regenerate_webhook_secret,
 )
@@ -34,6 +42,7 @@ logger = logging.getLogger(__name__)
 
 
 class StudioViewMixin(ContextMixin):
+
     def get_context_data(self, **kwargs):
         """
         Get AI information for studio navigation and training progress
@@ -126,6 +135,20 @@ class ProxyAiExportView(View):
             self.request.session.get('token', False),
             aiid
         )['bot'])
+
+
+@method_decorator(login_required, name='dispatch')
+class ProxyIntentDeleteView(View):
+    """Temporary proxy until we open the full API to the world"""
+
+    def delete(self, request, aiid, *args, **kwargs):
+        intent_name = request.GET.get('intent_name')
+
+        return JsonResponse(delete_intent(
+            self.request.session.get('token', False),
+            aiid,
+            intent_name
+        ))
 
 
 @method_decorator(login_required, name='dispatch')
@@ -234,7 +257,9 @@ class AIUpdateView(StudioViewMixin, FormView):
             self.request.session.get('token', False),
             self.kwargs['aiid']
         )
-        initial['default_chat_responses'] = ';'.join(initial['default_chat_responses'])
+        initial['default_chat_responses'] = settings.TOKENFIELD_DELIMITER.join(
+            initial['default_chat_responses']
+        )
         return initial
 
     def form_valid(self, form):
@@ -262,6 +287,150 @@ class AIUpdateView(StudioViewMixin, FormView):
         messages.add_message(self.request, level, ai['status']['info'])
 
         return HttpResponseRedirect(redirect_url)
+
+
+@method_decorator(login_required, name='dispatch')
+class IntentsView(StudioViewMixin, FormView):
+    """Manage AI Intents and theirs relations with Entities"""
+
+    form_class = IntentForm
+    template_name = 'intent_form.html'
+    success_url = 'studio:intents'
+    fail_url = 'studio:intents'
+    formset = formset_factory(EntityForm, extra=0, can_delete=True)
+    formset_prefix = 'entities'
+
+    def get_context_data(self, **kwargs):
+        """Update context with Intents list and Entities formset"""
+
+        context = super(IntentsView, self).get_context_data(**kwargs)
+
+        # Get entities
+        entities = get_entities_list(
+            self.request.session.get('token', False)
+        ).get('entities')
+
+        # And pass it to formset initial choice
+        # TODO: Change initial to entities after we refactor Intent API code
+        context['formset'] = kwargs.get('formset', self.get_formset(
+            initial=self.initial.get('variables', []),
+            form_kwargs={'entities': entities},
+        ))
+
+        context['intents'] = get_intent_list(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        )
+
+        return context
+
+    def form_valid(self, form, formset):
+        """Try to save Intent, can still not valid"""
+
+        intent = form.save(
+            aiid=self.kwargs['aiid'],
+            token=self.request.session.get('token', False),
+            variables=formset.cleaned_data
+        )
+
+        # Check if save was successful
+        if intent['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+
+            redirect_url = HttpResponseRedirect(
+                reverse_lazy(
+                    self.success_url,
+                    kwargs={
+                        **self.kwargs
+                    }
+                )
+            )
+        else:
+            level = messages.ERROR
+            redirect_url = self.render_to_response(
+                self.get_context_data(form=form)
+            )
+
+        messages.add_message(self.request, level, intent['status']['info'])
+
+        return redirect_url
+
+    def form_invalid(self, form, formset):
+        """If the form or formset is invalid, render the invalid form."""
+
+        return self.render_to_response(
+            self.get_context_data(form=form, formset=formset)
+        )
+
+    def get_formset(self, **kwargs):
+        """Return an instance of the formset to be used in this view."""
+
+        return self.formset(
+            data=self.get_form_kwargs().get('data'),
+            prefix=self.formset_prefix,
+            **kwargs
+        )
+
+    def post(self, request, *args, **kwargs):
+        """Custom post for handling both Intent form and Entities formset"""
+
+        # Get entities
+        entities = get_entities_list(
+            self.request.session.get('token', False)
+        ).get('entities')
+
+        form = self.get_form()
+        formset = self.get_formset(
+            form_kwargs={'entities': entities}
+        )
+
+        if form.is_valid() and formset.is_valid():
+            return self.form_valid(form, formset)
+        else:
+            return self.form_invalid(form, formset)
+
+
+@method_decorator(login_required, name='dispatch')
+class IntentsUpdateView(IntentsView):
+    """Single Intent view"""
+
+    success_url = 'studio:intents.edit'
+
+    def get_initial(self, **kwargs):
+        """Get and prepare Intent data"""
+
+        # Get an intent
+        intent = get_intent(
+            self.request.session.get('token', False),
+            self.kwargs['aiid'],
+            self.kwargs['intent_name']
+        )
+
+        # Prepare data for the form
+        # TODO: should be a better way to do it in the form itself?
+        intent['webhook'] = intent['webhook']['endpoint']
+        intent['responses'] = settings.TOKENFIELD_DELIMITER.join(
+            intent['responses']
+        )
+        intent['user_says'] = settings.TOKENFIELD_DELIMITER.join(
+            intent['user_says']
+        )
+        for entity in intent['variables']:
+            entity['prompts'] = settings.TOKENFIELD_DELIMITER.join(
+                entity['prompts']
+            )
+
+        self.initial = intent
+
+        return super(IntentsUpdateView, self).get_initial(**kwargs)
+
+    def get_context_data(self, **kwargs):
+        """Provide intent name for the template"""
+
+        context = super(IntentsUpdateView, self).get_context_data(**kwargs)
+        context['intent_name'] = self.initial['intent_name']
+
+        return context
 
 
 @method_decorator(login_required, name='dispatch')

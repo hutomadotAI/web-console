@@ -4,16 +4,18 @@ import json
 
 from django import forms
 from django.conf import settings
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.utils.translation import ugettext_lazy as _
 
 from app.validators import MaxSelectedValidator
 
 from studio.services import (
     delete_ai,
+    get_entities_list,
     post_ai,
     post_ai_skill,
     post_import_ai,
+    post_intent,
     post_regenerate_webhook_secret,
     post_training,
     put_training_start,
@@ -22,8 +24,11 @@ from botstore.services import get_purchased
 
 logger = logging.getLogger(__name__)
 
+NAME_PATTERN = '[-a-zA-Z0-9_ ]+'
+SLUG_PATTERN = '^[-a-zA-Z0-9_]+$'
 
-class SkillsMultiple(forms.widgets.CheckboxSelectMultiple):
+
+class SkillsMultipleWidget(forms.widgets.CheckboxSelectMultiple):
     """Custom form widget for skill cards"""
 
     template_name = 'forms/widgets/skills.html'
@@ -33,9 +38,165 @@ class SkillsMultiple(forms.widgets.CheckboxSelectMultiple):
         """
         Provide “MEDIA_URL” as Context processors aren't run for widgets
         """
-        context = super(SkillsMultiple, self).get_context(name, value, attrs)
+        context = super(SkillsMultipleWidget, self).get_context(name, value, attrs)
         context['MEDIA_URL'] = settings.MEDIA_URL
         return context
+
+
+class EntityForm(forms.Form):
+    """Used as base for formset on Intents tab"""
+
+    def __init__(self, *args, **kwargs):
+        """Get initial choices for the form"""
+
+        entities = kwargs.pop('entities', [])
+
+        super(EntityForm, self).__init__(*args, **kwargs)
+
+        self.fields['entity_name'].choices = [
+            (entity['entity_name'], entity['entity_name']) for entity in entities
+        ]
+
+        # ”The formset is smart enough to ignore extra forms that were not
+        # changed.” Make them dummy again and enable requirement checks.
+        self.empty_permitted = False
+
+    required = forms.BooleanField(
+        required=False,
+    )
+
+    entity_name = forms.ChoiceField(
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'required': True,
+        })
+    )
+
+    n_prompts = forms.IntegerField(
+        validators=[
+            MaxValueValidator(16),
+            MinValueValidator(1)
+        ],
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'max': 16,
+            'min': 1,
+            'required': True,
+            'placeholder': _('ex. 3'),
+        })
+    )
+
+    label = forms.CharField(
+        validators=[RegexValidator(regex=SLUG_PATTERN)],
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'pattern': SLUG_PATTERN,
+            'maxlength': 250,
+            'required': True,
+            'placeholder': _('Unique label'),
+            'title': _('Enter a valid “Label” consisting of letters, numbers, underscores or hyphens.')
+        })
+    )
+
+    prompts = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'data-minLength': 1,
+            'data-maxlength': 250,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
+            'class': 'form-control',
+            'required': True,
+            'placeholder': _('Add a user prompts'),
+        })
+    )
+
+    def clean_prompts(self):
+        """Split prompts"""
+        return self.cleaned_data['prompts'].split(settings.TOKENFIELD_DELIMITER)
+
+
+class IntentForm(forms.Form):
+
+    intent_name = forms.CharField(
+        label=_('Name'),
+        max_length=250,
+        validators=[RegexValidator(regex=SLUG_PATTERN)],
+        widget=forms.TextInput(attrs={
+            'pattern': SLUG_PATTERN,
+            'placeholder': _('Intent name'),
+            'title': _('Enter a valid “Name” consisting of letters, numbers, underscores or hyphens.')
+        })
+    )
+
+    user_says = forms.CharField(
+        label=_('Expressions'),
+        help_text=_('Give the bot examples of how a user would express this intent. To create a new expression press enter'),
+        widget=forms.TextInput(attrs={
+            'data-minLength': 1,
+            'data-maxlength': 250,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
+            'placeholder': _('Add a user expression'),
+            'title': _('Enter a valid input consisting of letters, numbers, spaces, underscores or hyphens.')
+        })
+    )
+
+    responses = forms.CharField(
+        label=_('Responses'),
+        help_text=_('Give the bot examples of how it should respond to a user’s intent. To create a new response press enter'),
+        widget=forms.TextInput(attrs={
+            'data-minLength': 1,
+            'data-maxlength': 250,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
+            'placeholder': _('Add a sample bot response'),
+        })
+    )
+
+    webhook = forms.URLField(
+        label=_('WebHook'),
+        help_text=_('Provide the WebHook endpoint.'),
+        required=False,
+        widget=forms.URLInput(attrs={
+            'placeholder': _('ex. https://hutoma.ai/webhook_url'),
+        })
+    )
+
+    def clean_user_says(self):
+        """Split expressions"""
+        return self.cleaned_data['user_says'].split(
+            settings.TOKENFIELD_DELIMITER
+        )
+
+    def clean_responses(self):
+        """Split expressions"""
+        return self.cleaned_data['responses'].split(
+            settings.TOKENFIELD_DELIMITER
+        )
+
+    def clean_webhook(self):
+        """Build webhook object"""
+        if not self.cleaned_data.get('intent_name'):
+            raise forms.ValidationError('intent_name is required')
+
+        return {
+            'intent_name': self.cleaned_data['intent_name'],
+            'endpoint': self.cleaned_data['webhook'],
+            'enabled': bool(self.cleaned_data['webhook']),
+        }
+
+    def save(self, *args, **kwargs):
+        """Combine form data with entities coming from formset"""
+
+        # TODO: Remove after we refactor Intent API code
+        self.cleaned_data['webhook']['aiid'] = kwargs['aiid']
+
+        # TODO: Rename to entities after we refactor Intent API code
+        self.cleaned_data['variables'] = [
+            entity for entity in kwargs.pop('variables') if not entity['DELETE']
+        ]
+
+        return post_intent(self.cleaned_data, **kwargs)
 
 
 class AddAIForm(forms.Form):
@@ -44,7 +205,6 @@ class AddAIForm(forms.Form):
         (0, _('Female')),
         (1, _('Male'))
     )
-    NAME_PATTERN = '[-a-zA-Z0-9_ ]+'
 
     aiid = forms.CharField(
         label=_('Bot ID'),
@@ -88,20 +248,25 @@ class AddAIForm(forms.Form):
     )
 
     default_chat_responses = forms.CharField(
-        help_text=_('Split responses using semicolons'),
+        help_text=_('To create a new response press enter'),
         label=_('Default responses for when the bot doesn’t understand the user'),
         max_length=255,
         required=False,
         widget=forms.TextInput(attrs={
+            'data-maxlength': 250,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
             'placeholder': _('Erm… What?')
         })
     )
 
     def clean_default_chat_responses(self):
-        """Split responses and build a list string 😜"""
+        """Split responses and build a list string"""
 
         return json.dumps(
-            self.cleaned_data['default_chat_responses'].split(';')
+            self.cleaned_data['default_chat_responses'].split(
+                settings.TOKENFIELD_DELIMITER
+            )
         )
 
     def save(self, *args, **kwargs):
@@ -151,7 +316,7 @@ class SkillsForm(forms.Form):
         label='',
         required=False,
         validators=[MaxSelectedValidator(5)],
-        widget=SkillsMultiple()
+        widget=SkillsMultipleWidget()
     )
 
     def __init__(self, *args, **kwargs):

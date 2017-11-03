@@ -19,6 +19,10 @@
   </div>
 {% endblock aside %}
 
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'css/training.css' %}">
+{% endblock %}
+
 {% block javascripts %}
   <script>
     const API_URL = '{{ api_url }}'
@@ -32,13 +36,10 @@
       id: '{{ ai.aiid }}',
       name: '{{ ai.name }}'
     }
-    const lang = '{{ ai.language }}'
-    const gender = {{ ai.voice }}
-    const speech = false
   </script>
 
+  <script src="{% static 'js/clipboard.js' %}"></script>
   <script src="{% static 'js/training.js' %}"></script>
-
   <script src="{% static 'js/voice.js' %}"></script>
   <script src="{% static 'js/chat.js' %}"></script>
 {% endblock %}

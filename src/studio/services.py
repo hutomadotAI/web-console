@@ -1,3 +1,4 @@
+import json
 import logging
 import requests
 
@@ -27,7 +28,7 @@ def get_ai(token, aiid):
     logger.debug(response)
 
     if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exists
+        # We don't reveal if AI exist
         raise Http404(_('AI id %s doesn’t exist') % aiid)
 
     return response.json()
@@ -50,7 +51,7 @@ def delete_ai(token, aiid):
     logger.debug(response)
 
     if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exists
+        # We don't reveal if AI exist
         raise Http404(_('AI id %s doesn’t exist') % aiid)
 
     return response.json()
@@ -73,7 +74,7 @@ def get_ai_export(token, aiid):
     logger.debug(response)
 
     if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exists
+        # We don't reveal if AI exist
         raise Http404(_('AI id %s doesn’t exist') % aiid)
 
     return response.json()
@@ -235,5 +236,127 @@ def post_regenerate_webhook_secret(token, aiid):
     )
 
     logger.debug(response)
+
+    return response.json()
+
+
+def get_entities_list(token):
+    """Returns a list of all entities for a user"""
+
+    path = '/entities/'
+    url = settings.API_URL + path
+
+    logger.debug([url, token])
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    if response.status_code in [401, 403, 404]:
+        # We don't reveal if AI exist
+        raise Http404(_('AI doesn’t exist'))
+
+    return response.json()
+
+
+def get_intent_list(token, aiid):
+    """Returns a list of all intents for a particular AI"""
+
+    path = '/intents/%s'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    if response.status_code in [401, 403, 404]:
+        # We don't reveal if AI exist
+        raise Http404('AI id %s doesn’t exist' % aiid)
+
+    return response.json()
+
+
+def get_intent(token, aiid, intent_name):
+    """Returns a particular intent data"""
+
+    path = '/intent/%s?intent_name=%s'
+    url = settings.API_URL + path % (
+        aiid,
+        intent_name
+    )
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    if response.status_code in [401, 403, 404]:
+        # We don't reveal if AI exist
+        raise Http404('AI id %s doesn’t exists' % aiid)
+
+    return response.json()
+
+
+def post_intent(payload, token, aiid):
+    """Create or update an Intent"""
+
+    path = '/intent/%s'
+    url = settings.API_URL + path % aiid
+
+    logger.debug([url, payload])
+
+    response = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        json=payload
+    )
+
+    logger.debug(response)
+
+    if response.status_code in [401, 403, 404]:
+        # We don't reveal if AI exist
+        raise Http404('AI id %s doesn’t exists' % aiid)
+
+    return response.json()
+
+
+def delete_intent(token, aiid, intent_name):
+    """Delete an Intent"""
+
+    path = '/intent/%s?intent_name=%s'
+    url = settings.API_URL + path % (
+        aiid,
+        intent_name
+    )
+
+    logger.debug(url)
+
+    response = requests.delete(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+    )
+
+    logger.debug(response)
+
+    if response.status_code in [401, 403, 404]:
+        # We don't reveal if AI exist
+        raise Http404('AI id %s doesn’t exists' % aiid)
 
     return response.json()

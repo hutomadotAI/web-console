@@ -1,0 +1,144 @@
+{% extends 'studio_base.html' %}
+
+{% load i18n crispy_forms_tags static embed %}
+
+{% block title %}{% trans 'Bot intents' %} {{ intent_name }}{% endblock %}
+
+{% block navigation %}
+  {% embed 'navigation.html' %}
+    {% block studio %}
+      {% include 'studio_navigation.html' with ai=ai active='intents' %}
+    {% endblock studio %}
+  {% endembed %}
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <section class="content">
+      <div class="box box-solid box-clean flat no-shadow">
+        <div class="box-header with-border">
+          <div class="box-title"><i class="fa fa-commenting-o text-green"></i> <b>{% if intent_name %}{% trans 'Edit' %} {{ intent_name }}{% else %}{% trans 'Create Intent' %}{% endif %}</b></div>
+        </div>
+
+        <div class="box-body">
+          <form method="post" id="intent_form">
+            {% csrf_token %}
+
+            {{ form | crispy }}
+
+            <label>Enteties</label>
+
+            <div class="alert alert-info">{% blocktrans %}Use intents to map what a user says and what action should be taken by your business logic.{% endblocktrans %}</div>
+
+            {% for form in formset.forms %}
+
+              {% include 'entity_formset.html' with id=forloop.counter0 fields=form %}
+
+              {{ form.errors }}
+
+            {% endfor %}
+
+            {{ formset.management_form }}
+
+          </form>
+
+          <button id="formset_add" class="btn btn-success" data-toggle="tooltip" title="{% trans 'Add this Entity' %}">Add entity</button>
+
+          <script id="empty_formset" type="text/template">
+
+            {% include 'entity_formset.html' with id='__prefix__' fields=formset.empty_form %}
+
+          </script>
+
+        </div>
+
+        <div class="box-footer">
+          <button style="min-width:100px" type="submit" form="intent_form" class="btn btn-success flat pull-right"><b>{% if intent_name %}{% trans 'Update' %}{% else %}{% trans 'Create' %}{% endif %}</b></button>
+        </div>
+
+      </div>
+
+      {% if intents.intent_name|length %}
+
+          <div class="box box-solid box-clean flat no-shadow">
+            <div class="box-header with-border">
+              <div class="box-title"><i class="fa fa-commenting-o text-green"></i> <b>{% trans 'Intents list' %}</b></div>
+            </div>
+
+            <div class="box-body">
+              <div class="elements">
+                {% for name in intents.intent_name %}
+                  <div class="element {{ name }}">
+                    <a href="{% url 'studio:intents.edit' ai.aiid name %}" title="edit {{ name }}">{{ name }}</a>
+                    <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:proxy.intent.delete' ai.aiid %}?intent_name={{ name }}" data-id="{{ name }}"></button>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+          </div>
+
+      {% endif %}
+
+    </section>
+  </div>
+
+{% endblock %}
+
+{% block modals %}
+  {% include 'modals/delete_element.html' %}
+{% endblock modals %}
+
+{% block stylesheets.vendors %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha256-4qBzeX420hElp9/FzsuqUNqVobcClz1BjnXoxUDSYQ0=" crossorigin="anonymous">
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/elements.css' %}">
+  <link rel="stylesheet" href="{% static 'css/formset.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tokenfield.css' %}">
+{% endblock %}
+
+{% block javascripts.vendors %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha256-jdwX0QzXB7z7Xc7Vz0ovtIHWO5qIZWg0aLcGv44JDgE=" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script src="{% static 'js/messages.js' %}"></script>
+  <script src="{% static 'js/elements.js' %}"></script>
+  <script src="{% static 'js/formset.js' %}"></script>
+  <script src="{% static 'js/tokenfield.js' %}"></script>
+
+  <script>
+
+    const TOTAL_FORMS = document.getElementById('id_entities-TOTAL_FORMS')
+    const INTENT_FORM = document.getElementById('intent_form')
+    const EMPTY_FORMSET = document.getElementById('empty_formset')
+
+    $(document)
+      .on('click', '#formset_add', function (event) {
+        // get form html
+        var div = document.createElement('div')
+
+        // replace prefix with entities forms counter
+        div.innerHTML = EMPTY_FORMSET.innerHTML.replace(
+          /__prefix__/g,
+          TOTAL_FORMS.value
+        )
+
+        // Append new form to the ma
+        var newEntity = INTENT_FORM.appendChild(div.firstElementChild)
+
+        // Enable tokenfield
+        $(newEntity).find('[data-tokenfield]').tokenfield(TOKENFIELD_OPTIONS);
+
+        // Update Entities forms counter
+        TOTAL_FORMS.value++
+      })
+  </script>
+
+{% endblock %}

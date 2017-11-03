@@ -80,7 +80,7 @@
 
       </div>
 
-      <div class="box box-solid box-clean flat no-shadow">
+      <div class="box box-solid box-danger flat no-shadow">
         <div class="box-header with-border">
           <div class="box-title"><b>{% trans 'Danger zone' %}</b></div>
         </div>
@@ -155,8 +155,19 @@
   {% endembed %}
 {% endblock %}
 
-{% block stylesheets %}
+{% block stylesheets.vendors %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha256-4qBzeX420hElp9/FzsuqUNqVobcClz1BjnXoxUDSYQ0=" crossorigin="anonymous" />
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/training.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tokenfield.css' %}">
+{% endblock %}
+
+{% block javascripts.vendors %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha256-jdwX0QzXB7z7Xc7Vz0ovtIHWO5qIZWg0aLcGv44JDgE=" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -173,18 +184,8 @@
     }
   </script>
 
+  <script src="{% static 'js/tokenfield.js' %}"></script>
   <script src="{% static 'js/training.js' %}"></script>
   <script src="{% static 'js/webhook.js' %}"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha256-jdwX0QzXB7z7Xc7Vz0ovtIHWO5qIZWg0aLcGv44JDgE=" crossorigin="anonymous"></script>
-
-  <script>
-    $(document).ready(function() {
-      $('#id_default_chat_responses').tokenfield({
-        createTokensOnBlur: true,
-        delimiter: ';'
-      });
-    });
-  </script>
 
 {% endblock %}

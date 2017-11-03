@@ -34,9 +34,7 @@ def get_user_token(api_admin_token, user_id):
 
 
 def post_user(api_admin_token, user_data):
-    """
-    Create a user
-    """
+    """Create a user"""
 
     path = '/admin/?email={0}&username={1}&first_name={2}&last_name={3}'
     url = settings.API_URL + path.format(

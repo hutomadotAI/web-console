@@ -26,9 +26,13 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
+    {% block stylesheets.vendors %}{% endblock %}
+
     <link rel="stylesheet" href="https://www.hutoma.ai/css/main.css">
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/skin-blue.css' %}">
+    <link rel="stylesheet" href="{% static 'css/messages.css' %}">
 
     {% block stylesheets %}{% endblock %}
 
@@ -74,7 +78,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI=" crossorigin="anonymous"></script>
 
-    <script src="{% static 'js/clipboard.js' %}"></script>
+    {% block javascripts.vendors %}{% endblock %}
 
     {% block javascripts %}{% endblock %}
 

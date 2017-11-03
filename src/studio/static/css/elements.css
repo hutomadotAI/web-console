@@ -1,0 +1,28 @@
+.element {
+  background-color: #444;
+  display: flex;
+  align-items: center;
+  margin: 0 0 2px;
+  padding: .5rem 1rem;
+}
+
+.element a {
+  color: inherit;
+  display: block;
+  flex-grow: 2;
+}
+
+.element button {
+  background-color: transparent;
+  border: none;
+  opacity: 0;
+}
+
+.element:hover button {
+  color: #fff;
+  opacity: 1;
+}
+
+.element .btn-danger:hover {
+  background-color: var(--DANGER);
+}

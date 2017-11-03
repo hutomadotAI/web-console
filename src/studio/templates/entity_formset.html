@@ -1,0 +1,28 @@
+{% load i18n %}
+
+<div class="form-formset">
+
+  <input type="checkbox" class="delete" name="entities-{{ id }}-DELETE" id="id_entities-{{ id }}-DELETE">
+
+  {% for field in fields %}
+
+    {% if not forloop.last %}
+
+      <div class="form-group {{ field.label|slugify }}-group">
+        <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <div class="controls">
+          {{ field }}
+        </div>
+      </div>
+
+    {% endif %}
+
+  {% endfor %}
+
+  <div class="form-group delete-group">
+    <div class="controls">
+      <label class="btn formset-remove fa fa-trash" for="id_entities-{{ id }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove the Entitie' %}"></label>
+    </div>
+  </div>
+
+</div>

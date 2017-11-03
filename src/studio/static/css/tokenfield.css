@@ -1,0 +1,44 @@
+/**
+ *
+ * A jQuery tag/token input plug-in for Twitter's Bootstrap
+ *
+ * https://github.com/sliptree/bootstrap-tokenfield
+ *
+ * We style Tokenfields using `display: flex`, we use `column-reverse` so the
+ * input is always on the top and tokens are inserted at the beginning .
+ * We restyle original input so we can see validation messages.
+ *
+ */
+
+.tokenfield {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.tokenfield .token {
+  border: none;
+  color: var(--INPUT_BACKGROUND);
+  font-weight: bold;
+  margin: 0 -0.5rem 0.5rem;
+  padding-right: 3rem;
+  position: relative;
+}
+
+.tokenfield .token .close {
+  opacity: 0.4;
+  position: absolute;
+  right: 0.5rem;
+}
+
+.tokenfield .token.invalid {
+  background-color: var(--DANGER);
+  border-radius: var(--INPUT_BORDER_RADIUS);
+  border: none;
+  color: #fff;
+}
+
+.tokenfield [data-tokenfield] {
+  left: 0 !important; /* Overwrites in-line styling */
+  opacity: 0;
+  z-index: -1;
+}

@@ -1,0 +1,102 @@
+/**
+ *
+ * A formset is a layer of abstraction to work with multiple forms on the same
+ * page. It can be best compared to a data grid.
+ *
+ * As formset are extremly nasty to manage filelds we style formset using
+ * `display: Flex` which let us control individual fields
+ *
+ */
+
+.form-formset {
+  display: flex;
+  margin: 0 -1rem 2rem;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.form-formset .form-group {
+  margin: 1px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-formset .form-group .controls {
+  background-color: var(--INPUT_BACKGROUND);
+  min-height: 34px;
+  margin-top: auto;
+}
+
+.form-formset .form-group:first-of-type .controls {
+  border-radius: 4px 0 0 0;
+}
+
+.form-formset .form-group:last-of-type .controls {
+  border-radius: 0 4px 0 0;
+}
+
+.form-formset .control-label {
+  font-size: smaller;
+}
+
+.form-formset .btn {
+  background-color: var(--INPUT_BACKGROUND);
+  height: 34px;
+  padding: 0 12px;
+  line-height: 34px;
+}
+
+.form-formset .delete {
+  display: none;
+}
+
+.form-formset .delete-group .btn {
+  border-radius: 0 4px 0 0;
+}
+
+.form-formset .formset-remove:hover,
+.form-formset .formset-remove:focus {
+  color: #fff;
+  background-color: var(--DANGER)
+}
+
+.form-formset .delete:checked ~ .form-group .controls,
+.form-formset .delete:checked ~ .form-group .controls .form-control {
+  background-color: var(--DANGER)
+}
+
+.form-formset .form-control {
+  border-radius: 0;
+}
+
+/* TODO: move to entities stylesheet */
+
+.form-group.n-prompts-group {
+  width: 10rem;
+}
+
+.form-group.entity-name-group,
+.form-group.label-group {
+  flex-grow: 2;
+}
+
+.form-group.prompts-group {
+  order: 1;
+  width: 100%;
+}
+
+.form-group.prompts-group .control-label {
+  display: none;
+}
+
+.form-group.prompts-group .controls,
+.form-group.prompts-group .form-control {
+  border-radius: 0 0 4px 4px;
+}
+
+.form-group.required-group .controls {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 6rem;
+}

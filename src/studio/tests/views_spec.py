@@ -436,3 +436,87 @@ class TestSkillsUpdateView(TestCase):
             }
         ))
         self.assertEqual(response.status_code, 404)
+
+
+class TestIntentsView(TestCase):
+
+    @factory.django.mute_signals(user_logged_in)
+    def setUp(self):
+        """
+        Create a user to test response as registered user
+        """
+        self.user = UserFactory()
+        self.ai = factory.build(
+                dict,
+                FACTORY_CLASS=AiFactory
+            )
+        Profile.objects.create(user=self.user)
+
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['token'] = 'token'
+        session.save()
+
+    def test_anonymous(self):
+        """
+        Anonymous can't access update intents
+        """
+
+        self.client.logout()
+        response = self.client.get(reverse(
+            'studio:intents',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('account_login') + '?next=/bots/edit/%s/intents' % self.ai['aiid']
+        )
+
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_entities_list')
+    @patch('studio.views.get_intent_list')
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    def test_registred(self, mock_get_ai, mock_get_entities_list, mock_intent_list, mock_get_categories):
+        """
+        Logged-in users can access update intents. We need to mock `get_aiid`
+        and `get_purchased` skill to build the form. `get_categories` is mocked
+        cause `Embed` is calling it using Navigation template
+        """
+
+        # We mock API calls
+        mock_get_ai.return_value.json.return_value = [
+            factory.build(dict, FACTORY_CLASS=AiFactory)
+        ]
+        mock_get_entities_list.return_value.json.return_value = []
+        mock_intent_list.return_value.json.return_value = {
+            'intents_name': ['intent 1', 'intent 2']
+        }
+        mock_get_categories.return_value.json.return_value = []
+
+        response = self.client.get(reverse(
+            'studio:intents',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+        self.assertEqual(response.status_code, 200)
+
+    @patch('studio.services.requests.get')
+    def test_unauthorised(self, mock_get_ai):
+        """
+        Return 404 if user doesn't have access to the AI
+        """
+
+        # We mock API calls
+        mock_get_ai.return_value.status_code = 403
+
+        response = self.client.get(reverse(
+            'studio:intents',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+        self.assertEqual(response.status_code, 404)

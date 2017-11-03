@@ -1,0 +1,13 @@
+:root {
+  /* Colors */
+  --DANGER: #d73925;
+  --WARNING: #784e15;
+  --SUCCESS: #00a65a;
+  --INFO: #307095;
+
+  --UI-800: #222;
+
+  /* Forms */
+  --INPUT_BACKGROUND: #555;
+  --INPUT_BORDER_RADIUS: 4px;
+}
