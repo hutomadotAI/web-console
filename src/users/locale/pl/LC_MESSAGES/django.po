@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-30 16:37+0000\n"
+"POT-Creation-Date: 2017-11-06 14:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,17 +20,51 @@ msgstr ""
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: users/forms.py:25
-msgid "Email"
+#: users/decorators.py:22
+msgid ""
+"This is your first bot. Before publishing this to our store we need to "
+"collect some developer details."
 msgstr ""
 
-#: users/forms.py:29
+#: users/forms.py:30 users/forms.py:77
+msgid "Email"
+msgstr "Adres email"
+
+#: users/forms.py:37
 msgid "Password"
 msgstr "Hasło"
 
-#: users/forms.py:30
+#: users/forms.py:39
 msgid "Minimum 8 characters"
 msgstr "Minimum 8 znaków"
+
+#: users/forms.py:72
+msgid "Name"
+msgstr "Imię i nazwisko"
+
+#: users/forms.py:82
+msgid "Address"
+msgstr "Adres"
+
+#: users/forms.py:87
+msgid "Post Code"
+msgstr "Kod pocztowy"
+
+#: users/forms.py:92
+msgid "City"
+msgstr "Miasto"
+
+#: users/forms.py:97
+msgid "Country"
+msgstr "Kraj"
+
+#: users/forms.py:104
+msgid "Website"
+msgstr "Strona www"
+
+#: users/forms.py:109
+msgid "Company"
+msgstr "Firma"
 
 #: users/templates/account/login.html:5 users/templates/account/login.html:27
 msgid "Log in"
@@ -122,6 +156,14 @@ msgstr ""
 "Na twój adres email wysł…aiśmy widomość, Kliknij link by dokończyć proces "
 "rejestracji. Prosimy daj nam znać jeśli wiadomość nie dotrze w ciągu kilku "
 "minut."
+
+#: users/templates/info_form.html:5 users/templates/info_form.html:26
+msgid "Developer Info"
+msgstr "Informacje wydawcy"
+
+#: users/templates/info_form.html:41
+msgid "Save"
+msgstr "Zapisz"
 
 #: users/templates/messages/signup_form_agree_label.txt:3
 msgid ""

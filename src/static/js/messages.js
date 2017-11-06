@@ -1,3 +1,5 @@
+const MESSAGES = document.querySelector('.messages')
+
 /**
  * Add a new message
  *

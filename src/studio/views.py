@@ -204,16 +204,14 @@ class AICreateView(FormView):
         new_ai = form.save(token=self.request.session.get('token', False))
 
         # Check if save was successful
-        if new_ai['status']['code'] not in [200, 201]:
-            redirect_url = reverse_lazy(self.fail_url)
-            messages.error(self.request, new_ai['status']['info'])
-        else:
+        if new_ai['status']['code'] in [200, 201]:
             redirect_url = reverse_lazy(
                 self.success_url,
-                kwargs={
-                    'aiid': new_ai['aiid']
-                }
+                kwargs={'aiid': new_ai['aiid']}
             )
+        else:
+            redirect_url = reverse_lazy(self.fail_url)
+            messages.error(self.request, new_ai['status']['info'])
 
         return HttpResponseRedirect(redirect_url)
 
@@ -340,9 +338,7 @@ class IntentsView(StudioViewMixin, FormView):
             redirect_url = HttpResponseRedirect(
                 reverse_lazy(
                     self.success_url,
-                    kwargs={
-                        **self.kwargs
-                    }
+                    kwargs={**self.kwargs}
                 )
             )
         else:

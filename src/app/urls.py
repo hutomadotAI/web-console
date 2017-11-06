@@ -38,7 +38,7 @@ urlpatterns = [
 
     url(
         r'^botstore/',
-        include('botstore.urls')
+        include('botstore.urls', namespace='botstore')
     ),
 
     # Used to access admin section
@@ -51,6 +51,11 @@ urlpatterns = [
     url(
         r'^accounts/',
         include('allauth.urls')
+    ),
+
+    url(
+        r'^users/',
+        include('users.urls', namespace='users')
     ),
 
     # Used for changing users language settings

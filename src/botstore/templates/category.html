@@ -16,7 +16,7 @@
 
       {% if more %}
         <div class="carousel-see-more">
-          <a class="btn btn-primary flat pull-right" href="{% url 'botstore_category' category=category|lower|urlencode %}"><b>see more</b></a>
+          <a class="btn btn-primary flat pull-right" href="{% url 'botstore:category' category=category|lower|urlencode %}"><b>see more</b></a>
         </div>
       {% endif %}
 

@@ -4,7 +4,11 @@ import json
 
 from django import forms
 from django.conf import settings
-from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
+from django.core.validators import (
+    RegexValidator,
+    MaxValueValidator,
+    MinValueValidator
+)
 from django.utils.translation import ugettext_lazy as _
 
 from app.validators import MaxSelectedValidator
@@ -62,10 +66,12 @@ class EntityForm(forms.Form):
         self.empty_permitted = False
 
     required = forms.BooleanField(
+        label=_('Required'),
         required=False,
     )
 
     entity_name = forms.ChoiceField(
+        label=_('Entity name'),
         widget=forms.Select(attrs={
             'class': 'form-control',
             'required': True,
@@ -73,6 +79,7 @@ class EntityForm(forms.Form):
     )
 
     n_prompts = forms.IntegerField(
+        label=_('N prompts'),
         validators=[
             MaxValueValidator(16),
             MinValueValidator(1)
@@ -87,6 +94,7 @@ class EntityForm(forms.Form):
     )
 
     label = forms.CharField(
+        label=_('Label'),
         validators=[RegexValidator(regex=SLUG_PATTERN)],
         widget=forms.TextInput(attrs={
             'class': 'form-control',
@@ -99,6 +107,7 @@ class EntityForm(forms.Form):
     )
 
     prompts = forms.CharField(
+        label=_('Prompts'),
         widget=forms.TextInput(attrs={
             'data-minLength': 1,
             'data-maxlength': 250,
@@ -364,3 +373,4 @@ class ProxyRegenerateWebhookSecretForm(forms.Form):
             kwargs['token'],
             self.cleaned_data['aiid']
         )
+

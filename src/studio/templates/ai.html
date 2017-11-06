@@ -35,7 +35,7 @@
                 <span class="btn btn-primary disabled flat pull-right" style="margin-right: 0" data-toggle="tooltip" title="{% trans 'We do not currently support publishing bots with linked skills. Please remove them if you’d like your bot to be published.' %}"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></span>
             {% else %}
                 {# Everything is 👍, you can publish. Are you 😀? #}
-                <a href="{% url 'publish_bot' ai.aiid %}" class="btn btn-primary flat pull-right" style="margin-right: 0"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></a>
+                <a href="{% url 'botstore:publish' ai.aiid %}" class="btn btn-primary flat pull-right" style="margin-right: 0"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></a>
             {% endif %}
 
         {% endif %}

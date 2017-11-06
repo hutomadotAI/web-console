@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-30 16:37+0000\n"
+"POT-Creation-Date: 2017-11-06 14:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,15 +20,31 @@ msgstr ""
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: studio/forms.py:85
-msgid "ex. 3"
+#: studio/forms.py:69
+msgid "Required"
+msgstr "Wymagana"
+
+#: studio/forms.py:74
+msgid "Entity name"
 msgstr ""
 
-#: studio/forms.py:96
-msgid "Unique label"
-msgstr ""
+#: studio/forms.py:82
+msgid "N prompts"
+msgstr "Liczba zapytań"
+
+#: studio/forms.py:92
+msgid "ex. 3"
+msgstr "np. 3"
 
 #: studio/forms.py:97
+msgid "Label"
+msgstr "Nazwa"
+
+#: studio/forms.py:104
+msgid "Unique label"
+msgstr "Unikalna nazwa"
+
+#: studio/forms.py:105
 #, fuzzy
 #| msgid ""
 #| "Enter a valid “Name” consisting of letters, numbers, spaces, underscores "
@@ -39,21 +55,25 @@ msgstr ""
 "Wpisz poprawną nazwę, składającą się tylko z litery cyfry, myślników i "
 "podkreślenia"
 
-#: studio/forms.py:108
-msgid "Add a user prompts"
+#: studio/forms.py:110
+msgid "Prompts"
 msgstr ""
 
-#: studio/forms.py:120 studio/forms.py:214
+#: studio/forms.py:118
+msgid "Add a user prompts"
+msgstr "Dodaj wpis użytkownika"
+
+#: studio/forms.py:130 studio/forms.py:230
 #, fuzzy
 #| msgid "Bot Name"
 msgid "Name"
 msgstr "Nazwa"
 
-#: studio/forms.py:125
+#: studio/forms.py:135
 msgid "Intent name"
 msgstr ""
 
-#: studio/forms.py:126
+#: studio/forms.py:136
 #, fuzzy
 #| msgid ""
 #| "Enter a valid “Name” consisting of letters, numbers, spaces, underscores "
@@ -64,21 +84,21 @@ msgstr ""
 "Wpisz poprawną nazwę, składającą się tylko z litery cyfry, myślników i "
 "podkreślenia"
 
-#: studio/forms.py:131
+#: studio/forms.py:141
 msgid "Expressions"
-msgstr ""
+msgstr "Wypowiedzi"
 
-#: studio/forms.py:132
+#: studio/forms.py:142
 msgid ""
-"Give the bot examples of how a user would express this intent. Separate "
-"expressions using semicolons"
+"Give the bot examples of how a user would express this intent. To create a "
+"new expression press enter"
 msgstr ""
 
-#: studio/forms.py:137
+#: studio/forms.py:148
 msgid "Add a user expression"
-msgstr ""
+msgstr "Dodaj wypowiedź użytkownika"
 
-#: studio/forms.py:138
+#: studio/forms.py:149
 #, fuzzy
 #| msgid ""
 #| "Enter a valid “Name” consisting of letters, numbers, spaces, underscores "
@@ -90,61 +110,61 @@ msgstr ""
 "Wpisz poprawną nazwę, składającą się tylko z litery cyfry, myślników i "
 "podkreślenia"
 
-#: studio/forms.py:143
-msgid "Responses"
-msgstr ""
-
-#: studio/forms.py:144
-msgid ""
-"Give the bot examples of how it should respond to a user’s intent. Separate "
-"responses using semicolons"
-msgstr ""
-
-#: studio/forms.py:149
-msgid "Add a sample bot response"
-msgstr ""
-
 #: studio/forms.py:154
+msgid "Responses"
+msgstr "Odpowiedzi"
+
+#: studio/forms.py:155
+msgid ""
+"Give the bot examples of how it should respond to a user’s intent. To create "
+"a new response press enter"
+msgstr ""
+
+#: studio/forms.py:161
+msgid "Add a sample bot response"
+msgstr "Dodaj odpowiedź"
+
+#: studio/forms.py:166
 msgid "WebHook"
 msgstr ""
 
-#: studio/forms.py:155
+#: studio/forms.py:167
 msgid "Provide the WebHook endpoint."
-msgstr ""
+msgstr "Wpisz URL"
 
-#: studio/forms.py:158
+#: studio/forms.py:170
 msgid "ex. https://hutoma.ai/webhook_url"
 msgstr ""
 
-#: studio/forms.py:198
+#: studio/forms.py:214
 msgid "Female"
 msgstr "Żeński"
 
-#: studio/forms.py:199
+#: studio/forms.py:215
 msgid "Male"
 msgstr "Męski"
 
-#: studio/forms.py:203
+#: studio/forms.py:219
 msgid "Bot ID"
 msgstr ""
 
-#: studio/forms.py:208
+#: studio/forms.py:224
 #, fuzzy
 #| msgid "Your Bots"
 msgid "Your bot ID"
 msgstr "Twoje Boty"
 
-#: studio/forms.py:213
+#: studio/forms.py:229
 msgid "Consisting of letters, numbers, spaces, underscores or hyphens."
 msgstr "Dozwolone tylko litery cyfry, myślnik i podkreślenie"
 
-#: studio/forms.py:219
+#: studio/forms.py:235
 #, fuzzy
 #| msgid "Add bot"
 msgid "My bot"
 msgstr "Dodaj Bota"
 
-#: studio/forms.py:221
+#: studio/forms.py:237
 msgid ""
 "Enter a valid “Name” consisting of letters, numbers, spaces, underscores or "
 "hyphens."
@@ -152,45 +172,45 @@ msgstr ""
 "Wpisz poprawną nazwę, składającą się tylko z litery cyfry, myślników i "
 "podkreślenia"
 
-#: studio/forms.py:226 studio/templates/ais.html:13
+#: studio/forms.py:242 studio/templates/ais.html:13
 msgid "Description"
 msgstr "Opis"
 
-#: studio/forms.py:228
+#: studio/forms.py:244
 msgid "Something about the bot"
 msgstr "Opis bota"
 
-#: studio/forms.py:232
+#: studio/forms.py:248
 msgid "Voice"
 msgstr "Głos"
 
-#: studio/forms.py:238
+#: studio/forms.py:254
 msgid "Timezone"
 msgstr "Strefa czasowa"
 
-#: studio/forms.py:244
-msgid "Separate responses using semicolons"
-msgstr ""
+#: studio/forms.py:260
+msgid "To create a new response press enter"
+msgstr "Aby dodać odpowiedź wciśnij Enter"
 
-#: studio/forms.py:245
+#: studio/forms.py:261
 msgid "Default responses for when the bot doesn’t understand the user"
 msgstr ""
 
-#: studio/forms.py:251
+#: studio/forms.py:268
 msgid "Erm… What?"
-msgstr ""
+msgstr "Tak?"
 
-#: studio/forms.py:269
+#: studio/forms.py:288
 msgid "Exported Bot JSON file"
 msgstr "Wyeksportowany plik z konfiguracją bota"
 
-#: studio/forms.py:281
+#: studio/forms.py:300
 #, fuzzy
 #| msgid "Sample training file"
 msgid "Add training file"
 msgstr "Przykładowy plik"
 
-#: studio/forms.py:283
+#: studio/forms.py:302
 #, fuzzy
 #| msgid "Upload a text file"
 msgid "Select a txt file"
@@ -199,11 +219,11 @@ msgstr "Wybierz plik tekstowy"
 #: studio/services.py:32 studio/services.py:55 studio/services.py:78
 #, python-format
 msgid "AI id %s doesn’t exist"
-msgstr ""
+msgstr "Bot %s nie istnieje"
 
 #: studio/services.py:261
 msgid "AI doesn’t exist"
-msgstr ""
+msgstr "Bot nie istnieje"
 
 #: studio/templates/ai.html:10
 msgid "Completed"
@@ -446,7 +466,7 @@ msgstr ""
 #: studio/templates/modals/delete_element.html:13
 #: studio/templates/settings_form.html:135
 msgid "Delete"
-msgstr ""
+msgstr "Usuń"
 
 #: studio/templates/modals/training_example.html:11
 msgid "Training file sample"
@@ -521,23 +541,23 @@ msgstr "Zapisz"
 
 #: studio/templates/settings_form.html:47
 msgid "Export"
-msgstr ""
+msgstr "Eksportuj"
 
 #: studio/templates/settings_form.html:54
 msgid "API tokens"
-msgstr ""
+msgstr "Dostęp do API"
 
 #: studio/templates/settings_form.html:60
 msgid "Developer key"
-msgstr ""
+msgstr "ID dewelopera"
 
 #: studio/templates/settings_form.html:70
 msgid "Client key"
-msgstr ""
+msgstr "Klucz do API"
 
 #: studio/templates/settings_form.html:85
 msgid "Danger zone"
-msgstr ""
+msgstr "Strefa zagrożenia"
 
 #: studio/templates/settings_form.html:90
 msgid ""
@@ -551,12 +571,12 @@ msgstr ""
 
 #: studio/templates/settings_form.html:113
 msgid "Delete bot"
-msgstr ""
+msgstr "Usuń bota"
 
 #: studio/templates/settings_form.html:125
 #, python-format
 msgid "Are you sure you want to permanently delete %(ai.name)s?"
-msgstr ""
+msgstr "Napewno chesz usunąć %(ai.name)s?"
 
 #: studio/templates/settings_form.html:143
 msgid ""
@@ -566,7 +586,7 @@ msgstr ""
 
 #: studio/templates/settings_form.html:152
 msgid "Generate"
-msgstr ""
+msgstr "Generuj"
 
 #: studio/templates/skill_form.html:5 studio/templates/skill_form.html:20
 msgid "Edit your bot skills"

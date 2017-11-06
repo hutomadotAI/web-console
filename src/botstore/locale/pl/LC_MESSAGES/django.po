@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-30 16:37+0000\n"
+"POT-Creation-Date: 2017-11-06 14:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,180 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: botstore/forms.py:17
+msgid "Free"
+msgstr ""
+
+#: botstore/forms.py:18
+msgid "Subscription"
+msgstr ""
+
+#: botstore/forms.py:19
+msgid "Perpetual"
+msgstr ""
+
+#: botstore/forms.py:23
+msgid "Other"
+msgstr "Inne"
+
+#: botstore/forms.py:24
+msgid "Education"
+msgstr "Edukacja"
+
+#: botstore/forms.py:25
+msgid "Entertainment"
+msgstr "Rozrywka"
+
+#: botstore/forms.py:26
+msgid "Events"
+msgstr "Wydarzenia"
+
+#: botstore/forms.py:27
+msgid "Finance"
+msgstr "Finanse"
+
+#: botstore/forms.py:28
+msgid "Fitness"
+msgstr ""
+
+#: botstore/forms.py:29
+msgid "Games"
+msgstr "Gry"
+
+#: botstore/forms.py:30
+msgid "Health & Beauty"
+msgstr "Zdrowie i uroda"
+
+#: botstore/forms.py:31
+msgid "Internet of Things"
+msgstr ""
+
+#: botstore/forms.py:32
+msgid "News"
+msgstr "Wiadomości"
+
+#: botstore/forms.py:33
+msgid "Personal"
+msgstr ""
+
+#: botstore/forms.py:34
+msgid "Shopping"
+msgstr "Zakupy"
+
+#: botstore/forms.py:35
+msgid "Social"
+msgstr "Społeczność"
+
+#: botstore/forms.py:36
+msgid "Sports"
+msgstr "Sport"
+
+#: botstore/forms.py:37
+msgid "Travel"
+msgstr "Podróże"
+
+#: botstore/forms.py:38
+msgid "Virtual Assistants"
+msgstr "Asystent wirtualny"
+
+#: botstore/forms.py:42
+msgid "Everyone"
+msgstr "Wszyscy"
+
+#: botstore/forms.py:43
+msgid "Everyone 10+"
+msgstr "Wszyscy 10+"
+
+#: botstore/forms.py:44
+msgid "Teen"
+msgstr "Nastolatki"
+
+#: botstore/forms.py:45
+msgid "Mature"
+msgstr "Dla dorosłych"
+
+#: botstore/forms.py:52
+msgid "Name"
+msgstr "Nazwa"
+
+#: botstore/forms.py:53
+msgid "My bot name"
+msgstr "Nazwa mojego bota"
+
+#: botstore/forms.py:57
+msgid "Short Description"
+msgstr "Krótki opis"
+
+#: botstore/forms.py:58
+msgid "My bot description…"
+msgstr "Coś o moim bocie…"
+
+#: botstore/forms.py:62
+msgid "Select file from your computer"
+msgstr "Wybierz plik z komputera"
+
+#: botstore/forms.py:74
+msgid "Long Description"
+msgstr "Pełen opis"
+
+#: botstore/forms.py:75 botstore/forms.py:80 botstore/forms.py:128
+#, fuzzy
+#| msgid "More details"
+msgid "Some more details…"
+msgstr "Szczegóły"
+
+#: botstore/forms.py:79
+msgid "Show Example of Conversation"
+msgstr "Przykłąd konwersacji"
+
+#: botstore/forms.py:84
+msgid "Select License Type"
+msgstr "Wybierz typ licencji"
+
+#: botstore/forms.py:90
+#, fuzzy
+#| msgid "Category"
+msgid "Select Category"
+msgstr "Kategoria"
+
+#: botstore/forms.py:98
+#, fuzzy
+#| msgid "Classification"
+msgid "Select Classification"
+msgstr "Ocena treści"
+
+#: botstore/forms.py:105
+msgid "Price"
+msgstr "Cena"
+
+#: botstore/forms.py:117
+msgid "Link Privacy Policy Page"
+msgstr "Link do strony polityki prywatności"
+
+#: botstore/forms.py:119
+msgid "Enter a link to privacy policy"
+msgstr "Wspisz URL"
+
+#: botstore/forms.py:126 botstore/templates/bot_detail.html:150
+msgid "Version"
+msgstr "Wersja"
+
+#: botstore/forms.py:134
+msgid "Alert message"
+msgstr ""
+
+#: botstore/forms.py:137
+msgid "Enter a message to show."
+msgstr "Wpisz wiadomość"
+
+#: botstore/forms.py:142
+msgid "Link Video Sample"
+msgstr "Link do prezentacji video"
+
+#: botstore/forms.py:145
+msgid "Enter a link to a video"
+msgstr "Wspisz URL"
 
 #: botstore/templates/bot_detail.html:5 botstore/templates/bot_list.html:5
 #: botstore/templates/botstore_base.html:5
@@ -37,10 +211,6 @@ msgstr "Zaktualizowano"
 #: botstore/templates/bot_detail.html:144
 msgid "Category"
 msgstr "Kategoria"
-
-#: botstore/templates/bot_detail.html:150
-msgid "Version"
-msgstr "Wersja"
 
 #: botstore/templates/bot_detail.html:160
 msgid "Offer by"
@@ -100,3 +270,36 @@ msgstr ""
 #: botstore/templates/box-card.html:18
 msgid "Test Bot"
 msgstr "Testuj bota"
+
+#: botstore/templates/publish_form.html:5
+#: botstore/templates/publish_form.html:51
+msgid "Publish"
+msgstr "Publikuj"
+
+#: botstore/templates/publish_form.html:26
+msgid ""
+"This platform is currently under preview. As such the options and features "
+"are actively being developed and will likely change. Submitted bots will be "
+"reviewed before publishing."
+msgstr ""
+
+#: botstore/templates/publish_form.html:31
+msgid "Publish bot"
+msgstr "Publikuj bota"
+
+#: botstore/templates/publish_form.html:44
+msgid ""
+"After sending your bot for publishing, it will become Read-Only, meaning you "
+"will not be able to make any changes to it! You can, however, export the bot "
+"and re-import it as a new one."
+msgstr ""
+
+#: botstore/templates/publish_form.html:50
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: botstore/templates/publish_form.html:58
+#, fuzzy
+#| msgid "Developer"
+msgid "Developer Info"
+msgstr "Programista"

@@ -1,0 +1,172 @@
+/**
+ *
+ * As publish form has a rather complicated fields grid we use `display: grid`
+ * and display: flex as fall back
+ *
+ */
+
+.form-publish {
+  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2rem 1.5rem;
+  grid-auto-rows: 7rem;
+  margin: 0 0 2rem;
+}
+
+.form-publish .form-group {
+  flex-basis: 24%;
+}
+
+.form-publish #div_id_description,
+.form-publish #div_id_longDescription,
+.form-publish #div_id_sample,
+.form-publish #div_id_alertMessage,
+.form-publish #div_id_privacyPolicy {
+  flex-basis: 75%;
+}
+
+.form-publish #div_id_videoLink {
+  flex-basis: 100%;
+}
+
+.form-publish #div_id_name {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.form-publish #div_id_description {
+  grid-column: 2 / 5;
+  grid-row: 1;
+}
+
+.form-publish #div_id_icon {
+  grid-column: 1;
+  grid-row: 2 / 5;
+}
+
+.form-publish #div_id_longDescription {
+  grid-column: 2 / 5;
+  grid-row: 2 / 5;
+}
+
+.form-publish #div_id_sample {
+  grid-column: 2 / 5;
+  grid-row: 5 / 7;
+}
+
+.form-publish #div_id_licenseType {
+  grid-column: 1;
+  grid-row: 5;
+}
+
+.form-publish #div_id_category {
+  grid-column: 1;
+  grid-row: 6;
+}
+
+.form-publish #div_id_classification {
+  grid-column: 1;
+  grid-row: 7;
+}
+
+.form-publish #div_id_price {
+  grid-column: 1;
+  grid-row: 8;
+}
+
+.form-publish #div_id_privacyPolicy {
+  grid-column: 2 / 5;
+  grid-row: 8;
+}
+
+.form-publish #div_id_version {
+  grid-column: 1;
+  grid-row: 9;
+}
+
+.form-publish #div_id_alertMessage {
+  grid-column: 2 / 5;
+  grid-row: 9;
+}
+
+.form-publish #div_id_videoLink {
+  grid-column: 1 / 5;
+  grid-row: 10;
+}
+
+.form-publish textarea {
+  resize: none;
+}
+
+.form-publish #div_id_icon .controls {
+  height: calc(100% - 24px);
+  background-color: var(--INPUT_BACKGROUND);
+  color: var(--INPUT_COLOR);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-publish #div_id_icon .fileUpload {
+  opacity: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 3;
+}
+
+.form-publish #div_id_icon img {
+  position: absolute;
+  bottom: 0;
+  height: 21rem;
+  width: 21rem;
+  z-index: 2;
+  left: 50%;
+  margin-left: -10.5rem;
+}
+
+#div_id_icon .controls::before {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  content: '\f03e';
+  display: inline-block;
+  font-size: inherit;
+  font: normal normal normal 48px/1 FontAwesome;
+  position: absolute;
+  text-align: center;
+  text-rendering: auto;
+  top: 30%;
+  width: 100%;
+}
+
+#div_id_icon .controls::after {
+    content: 'Drag and drop a picture (max 512kb)';
+    position: absolute;
+    bottom: 20%;
+    padding: 0 4rem;
+    width: 100%;
+    text-align: center;
+}
+
+#div_id_price .controls {
+  display: flex;
+}
+
+#div_id_price .controls::before {
+  content: '€';
+  border-radius: 0;
+  color: var(--INPUT_COLOR);
+  background-color: #353939;
+  padding: 1rem 1.2rem;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  border-radius: var(--INPUT_BORDER_RADIUS) 0 0 var(--INPUT_BORDER_RADIUS);
+}
+
+#div_id_price .controls .form-control {
+  border-radius: 0 var(--INPUT_BORDER_RADIUS) var(--INPUT_BORDER_RADIUS) 0;
+  text-align: right;
+}

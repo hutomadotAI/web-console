@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% load i18n crispy_forms_tags static embed %}
+
+{% block title %}{% trans 'Publish' %}{% endblock %}
+
+{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="content-wrapper">
+    <section class="content">
+      <div class="alert alert-info">
+        <p>{% blocktrans %}This platform is currently under preview. As such the options and features are actively being developed and will likely change. Submitted bots will be reviewed before publishing.{% endblocktrans %}</p>
+      </div>
+
+      <div class="box box-solid box-clean flat no-shadow">
+        <div class="box-header with-border">
+          <div class="box-title"><b>{% trans 'Publish bot' %}</b></div>
+        </div>
+
+        <div class="box-body">
+
+          <form method="post" class="form-publish" id="publish_form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form | crispy }}
+
+          </form>
+
+          <div class="alert alert-warning">
+            <p>{% blocktrans %}After sending your bot for publishing, it will become Read-Only, meaning you will not be able to make any changes to it! You can, however, export the bot and re-import it as a new one.{% endblocktrans %}</p>
+          </div>
+
+        </div>
+
+        <div class="box-footer">
+          <a href="{% url 'studio:index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
+          <button style="min-width:100px" type="submit" form="publish_form" class="btn btn-success flat pull-right"><b>{% trans 'Publish' %}</b></button>
+        </div>
+
+      </div>
+
+      <div class="box box-solid box-clean flat no-shadow">
+        <div class="box-header with-border">
+          <div class="box-title"><b>{% trans 'Developer Info' %}</b></div>
+        </div>
+
+        <div class="box-body">
+          <div class="form-info">
+            {{ info_form | crispy }}
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/publish.css' %}">
+{% endblock %}
+
+{% block javascripts %}
+
+  <script src="{% static 'js/messages.js' %}"></script>
+  <script src="{% static 'js/image_upload.js' %}"></script>
+
+  <script>
+    const USER =  {
+      name: '{{ user.first_name }}',
+      email: '{{ user.email }}',
+      username: '{{ user.username }}',
+      token: '{{ request.session.token }}'
+    }
+    const AI = {
+      id: '{{ ai.aiid }}',
+      name: '{{ ai.name }}'
+    }
+  </script>
+
+{% endblock %}
+

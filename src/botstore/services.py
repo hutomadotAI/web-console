@@ -1,3 +1,4 @@
+import json
 import logging
 import requests
 import urllib
@@ -109,3 +110,50 @@ def get_purchased(token):
     logger.debug(skills)
 
     return skills['bots']
+
+
+def post_bot(token, aiid, bot_data, **kwargs):
+    """Publish a bot"""
+
+    path = '/botstore'
+    url = settings.API_URL + path
+
+    defaults = {
+        'publishing_type': 1,
+        'aiid': aiid,
+    }
+
+    logger.debug(url)
+
+    respons = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        data={**defaults, **bot_data},
+    )
+
+    logger.debug(respons)
+
+    return respons.json()
+
+
+def post_icon(token, bot_id, icon_file, **kwargs):
+    """Publish a bot"""
+
+    path = '/botstore/%d/icon'
+    url = settings.API_URL + path % bot_id
+
+    logger.debug(url)
+
+    respons = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        files={
+            'file': icon_file
+        }
+    )
+
+    logger.debug(respons.json())
+
+    return respons.json()

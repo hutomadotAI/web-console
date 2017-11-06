@@ -92,6 +92,22 @@ body {
   position: absolute;
 }
 
+.form-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 -1rem;
+}
+
+.form-info .form-group {
+  width: 31% !important;
+  margin: 0 1rem 1rem;
+}
+
+.form-info #div_id_website {
+  flex-grow: 2;
+}
+
 #error_1_id_name {
   background-color: #d73925;
   border-radius: .2rem;

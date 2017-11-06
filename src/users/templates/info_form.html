@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load i18n crispy_forms_tags static embed %}
+
+{% block title %}{% trans 'Developer Info' %}{% endblock %}
+
+{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <section class="content">
+      <div class="box box-solid box-clean flat no-shadow">
+        <div class="box-header with-border">
+          <div class="box-title"><b>{% trans 'Developer Info' %}</b></div>
+        </div>
+
+        <div class="box-body">
+
+          <form {% if next %}action="?next={{ next }}"{% endif %} method="post" class="form-info" id="info_form">
+            {% csrf_token %}
+
+            {{ form | crispy }}
+
+          </form>
+
+        </div>
+
+        <div class="box-footer">
+            <button style="min-width:100px" type="submit" form="info_form" class="btn btn-success flat pull-right"><b>{% trans 'Save' %}</b></button>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+{% endblock %}

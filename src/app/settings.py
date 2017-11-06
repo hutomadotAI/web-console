@@ -57,9 +57,10 @@ INSTALLED_APPS = [
     'allauth',          # For user registration, either via email or social
     'allauth.account',  # For user registration, either via email or social
     'crispy_forms',     # The best way to have Django DRY forms
+    'django_countries',     # Provides country choices for use with forms
     'captcha',          # Django reCAPTCHA form field/widget integration app.
     'reversion',        # Provides version control for model instances
-    'django_embed_template', # Adds the {% embed %} templatetag.
+    'django_embed_template',    # Adds the {% embed %} templatetag.
 
     # Apps specific for console:
     'botstore',         # Bot store

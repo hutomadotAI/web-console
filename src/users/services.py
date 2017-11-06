@@ -26,11 +26,7 @@ def get_user_token(api_admin_token, user_id):
 
     logger.debug(response)
 
-    response = response.json()
-
-    logger.debug(response)
-
-    return response
+    return response.json()
 
 
 def post_user(api_admin_token, user_data):
@@ -65,3 +61,42 @@ def post_user(api_admin_token, user_data):
     logger.debug(response)
 
     return response
+
+
+def get_info(token, dev_id):
+    """Request a developer info"""
+
+    path = '/developer/%s' % dev_id
+    url = settings.API_URL + path
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
+def post_info(token, dev_id, info_data):
+    """Save developer info"""
+
+    path = '/developer/%s' % dev_id
+    url = settings.API_URL + path
+
+    logger.debug(url)
+
+    response = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        data=info_data
+    )
+
+    logger.debug(response)
+
+    return response.json()

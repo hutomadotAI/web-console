@@ -3,11 +3,11 @@
 <div class="box-card card flat no-padding col-xs-6 col-sm-4 col-md-3 col-lg-1">
 
   {% block image %}
-    <a href="{% url 'bot-detail' pk=bot.botId %}"><img class="card-icon" src="{{ MEDIA_URL }}boticon/{{ bot.botIcon }}"></a>
+    <a href="{% url 'botstore:detail' pk=bot.botId %}"><img class="card-icon" src="{{ MEDIA_URL }}boticon/{{ bot.botIcon }}"></a>
   {% endblock image %}
 
   {% block title %}
-    <div class="card-title no-shadow"><a href="{% url 'bot-detail' pk=bot.botId %}">{{ bot.name }}</a></div>
+    <div class="card-title no-shadow"><a href="{% url 'botstore:detail' pk=bot.botId %}">{{ bot.name }}</a></div>
   {% endblock title %}
 
   {% block author %}
@@ -21,7 +21,7 @@
   {% block price %}
     <div class="card-footer flat">
       <div class="row no-margin">
-        <span class="card-linked"><a href="{% url 'bot-detail' pk=bot.botId %}"><span class="card-price pull-right">{{ bot.price }} €</span></a></span>
+        <span class="card-linked"><a href="{% url 'botstore:detail' pk=bot.botId %}"><span class="card-price pull-right">{{ bot.price }} €</span></a></span>
       </div>
     </div>
   {% endblock price %}

@@ -1,9 +1,14 @@
 import logging
+import pytz
 
 from django import forms, template
 from django.utils.translation import ugettext_lazy as _
 
+from django_countries import countries
+
 from captcha.fields import ReCaptchaField
+
+from users.services import post_info
 
 logger = logging.getLogger(__name__)
 
@@ -23,11 +28,16 @@ class SignupForm(forms.Form):
     )
     emailAddress = forms.EmailField(
         label=_('Email'),
-        widget=forms.TextInput(attrs={'type': 'email', 'placeholder': 'j.doe@company.com'})
+        widget=forms.TextInput(attrs={
+            'type': 'email',
+            'placeholder': 'j.doe@company.com'
+        })
     )
     password = forms.CharField(
         label=_('Password'),
-        widget=forms.PasswordInput(attrs={'placeholder': _('Minimum 8 characters')})
+        widget=forms.PasswordInput(attrs={
+            'placeholder': _('Minimum 8 characters')
+        })
     )
 
     # This sorcery is needed for overwriting default Placholders
@@ -53,3 +63,52 @@ class SignupForm(forms.Form):
 
     def signup(self, request, user):
         user.save()
+
+
+class DeveloperInfoForm(forms.Form):
+    COUNTRIES = [(code, name) for code, name in countries]
+
+    name = forms.CharField(
+        label=_('Name'),
+        widget=forms.TextInput(attrs={'placeholder': 'John Doe'})
+    )
+
+    email = forms.EmailField(
+        label=_('Email'),
+        widget=forms.EmailInput(attrs={'placeholder': 'j.doe@company.com'})
+    )
+
+    address = forms.CharField(
+        label=_('Address'),
+        widget=forms.TextInput(attrs={'placeholder': ''})
+    )
+
+    postCode = forms.CharField(
+        label=_('Post Code'),
+        widget=forms.TextInput(attrs={'placeholder': 'ex. 00123'})
+    )
+
+    city = forms.CharField(
+        label=_('City'),
+        widget=forms.TextInput(attrs={'placeholder': 'ex. Barcelona'})
+    )
+
+    country = forms.ChoiceField(
+        label=_('Country'),
+        choices=COUNTRIES,
+        initial='GB',
+        widget=forms.Select()
+    )
+
+    website = forms.URLField(
+        label=_('Website'),
+        widget=forms.URLInput(attrs={'placeholder': 'ex. https://hutoma.ai'})
+    )
+
+    company = forms.CharField(
+        label=_('Company'),
+        widget=forms.TextInput(attrs={'placeholder': 'ex. Hutoma ltd'})
+    )
+
+    def save(self, token, dev_id):
+        return post_info(token, dev_id, self.cleaned_data)
