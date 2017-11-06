@@ -4,6 +4,7 @@ import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import get_messages
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect, JsonResponse
 from django.template import loader
@@ -12,7 +13,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView
-from django.views.generic.base import ContextMixin
+from django.views.generic.base import ContextMixin, TemplateView
 from django.views.generic.edit import FormView
 
 from studio.forms import (
@@ -36,10 +37,122 @@ from studio.services import (
     delete_intent,
     get_ai_list,
     post_regenerate_webhook_secret,
-)
+    get_facebook_connect_state,
+    facebook_action, is_not_empty, set_facebook_connect_token)
 
 logger = logging.getLogger(__name__)
 
+@method_decorator(login_required, name='dispatch')
+class IntegrationView(TemplateView):
+
+    template_name = "integration.html"
+
+    def dispatch(self, request, *args, **kwargs):
+
+        """
+        check whether this is a return from Facebook's front-end connect process
+        """
+        code = self.request.GET.get('code', '')
+        if code:
+            # load the bits we need to make an API call
+            token = self.request.session.get('token', False)
+            aiid = self.kwargs['aiid']
+            # load the redirect URL that we sent to Facebook
+            redirect_url = self.request.COOKIES.get('facebookRedir')
+            # tell the API we connected
+            connect_result = set_facebook_connect_token(token, aiid, code, redirect_url)
+            # store the error if there as one
+            if connect_result['status']['code'] == 409:
+                if is_not_empty(connect_result['status'], 'info'):
+                    messages.error(request, connect_result['status']['info'])
+
+            # reload the page without the connect token
+            return HttpResponseRedirect(redirect_url)
+
+        # if there was no code then proceed as normal
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(IntegrationView, self).get_context_data(**kwargs)
+
+        token = self.request.session.get('token', False)
+        aiid = self.kwargs['aiid']
+        ai = get_ai(
+            token,
+            aiid
+        )
+        context['ai'] = ai
+
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class IntegrationFacebookView(TemplateView):
+
+    template_name = "integration_facebook.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(IntegrationFacebookView, self).get_context_data(**kwargs)
+
+        # load the basics
+        token = self.request.session.get('token', False)
+        aiid = self.kwargs['aiid']
+        action = self.kwargs['action']
+        page_id = self.kwargs['id']
+        context['aiid'] = aiid
+
+        # if there was an action other than just 'get'
+        if action != 'get':
+            params = {
+                'action': action,
+                'id': page_id
+            }
+            # relay the action to the API
+            action_result = facebook_action(token, aiid, params)
+            # and display the result
+            if is_not_empty(action_result, 'status'):
+                messages.info(self.request, action_result['status']['info'])
+
+        # get the connect state from the API
+        facebook_state = get_facebook_connect_state(token, aiid)
+
+        # retrieve the various bits of data if available
+        context['fb_success'] = is_not_empty(facebook_state, 'success')
+        context['fb_app_id'] = facebook_state['facebook_app_id'] \
+            if is_not_empty(facebook_state, 'facebook_app_id') else ''
+        context['fb_permissions'] = facebook_state['facebook_request_permissions'] \
+            if is_not_empty(facebook_state, 'facebook_request_permissions') \
+            else ''
+        context['facebook_username'] = facebook_state['facebook_username'] \
+            if is_not_empty(facebook_state, 'facebook_username') else ''
+        if is_not_empty(facebook_state, 'integration_status'):
+            messages.info(self.request, facebook_state['integration_status'])
+
+        # are we connected to facebook?
+        context['fb_not_connected'] = not is_not_empty(facebook_state, 'has_access_token')
+
+        # have we got a list of pages that the user could choose to integrate?
+        has_page_list = is_not_empty(facebook_state, 'page_list')
+        context['fb_empty_pagelist'] = not has_page_list
+        context['fb_page_list'] = facebook_state['page_list'] \
+            if has_page_list else {}
+
+        # is this bot already successfully integrated with a page?
+        has_integrated_page = is_not_empty(facebook_state, 'page_integrated_id')
+        context['fb_no_page_selected'] = not has_integrated_page
+        context['fb_page_integrated_id'] = facebook_state['page_integrated_id'] \
+            if has_integrated_page else ''
+        context['fb_page_integrated_name'] = facebook_state['page_integrated_name'] \
+            if has_integrated_page else ''
+
+        # take only the first message and add it to the context
+        # but remove all messages from the context
+        facebook_message = ''
+        for message in get_messages(self.request):
+            if not facebook_message:
+                facebook_message = message
+        context['facebook_message'] = facebook_message
+
+        return context
 
 class StudioViewMixin(ContextMixin):
 

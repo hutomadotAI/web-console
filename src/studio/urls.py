@@ -35,7 +35,8 @@ from studio.views import (
     ProxyAiExportView,
     ProxyIntentDeleteView,
     ProxyRegenerateWebhookSecretView,
-)
+    IntegrationView,
+    IntegrationFacebookView)
 
 urlpatterns = [
 
@@ -95,18 +96,25 @@ urlpatterns = [
         name='intents'
     ),
 
-    # Update an intent of an existing AI
+    # List the integration options for an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/intents/(?P<intent_name>[-0-9a-zA-Z_]+)/?$',
         IntentsUpdateView.as_view(),
         name='intents.edit'
     ),
 
-    # Update integrations of an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/?$',
-        SkillsView.as_view(),
+        IntegrationView.as_view(),
         name='integrations'
+    ),
+
+    # /bots/edit/35671f21-9bd7-4893-9593-2dd36d381272/integrations/facebook/get/
+    # List or update facebook integration for this AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/(?P<action>get|page|disconnect)/(?P<id>[0-9]*)$',
+        IntegrationFacebookView.as_view(),
+        name='integrations_facebook'
     ),
 
     # Update insights of an existing AI
@@ -148,6 +156,5 @@ urlpatterns = [
         ProxyIntentDeleteView.as_view(),
         name='proxy.intent.delete'
     ),
-
 
 ]

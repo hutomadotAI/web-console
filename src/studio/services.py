@@ -1,5 +1,7 @@
 import json
 import logging
+import urllib
+
 import requests
 
 from django.conf import settings
@@ -360,3 +362,84 @@ def delete_intent(token, aiid, intent_name):
         raise Http404('AI id %s doesn’t exists' % aiid)
 
     return response.json()
+
+def set_facebook_connect_token(token, aiid, connect_token, redirect_url):
+    """ Registers a connect token once the user has completed a
+        connect operation on the front-end
+    """
+
+    path = '/ai/%s/facebook/connect'
+    url = settings.API_URL + path % aiid
+
+    payload = {
+        'connect_token': connect_token,
+        'redirect_uri': redirect_url
+    }
+
+    logger.debug(url)
+
+    response = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_FACEBOOK_TIMEOUT,
+        json=payload
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
+def get_facebook_connect_state(token, aiid):
+    """
+    read the facebook connection status for this aiid
+    """
+    path = '/ai/%s/facebook'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
+def facebook_action(token, aiid, params):
+    """
+    take some action on the facebook connection
+    """
+    query_string = urllib.parse.urlencode(params)
+    path = '/ai/%s/facebook?%s'
+    url = settings.API_URL + path % (aiid, query_string)
+
+    logger.debug(url)
+
+    response = requests.put(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_FACEBOOK_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+def is_not_empty(dict, field):
+    """
+    for a field in a dictionary, safely tells you whether it is present
+    and is not empty
+    :param dict:
+    :param field:
+    :return:
+    """
+    if dict:
+        if field in dict:
+            if dict[field]:
+                return True
+    return False

@@ -1,0 +1,135 @@
+
+<script>
+  appid = '{{fb_app_id}}';
+  permissions = '{{fb_permissions}}';
+
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: appid,
+      xfbml: true,
+      version: "v2.6"
+    });
+
+  };
+
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+</script>
+
+{% if fb_not_connected %}
+
+<div class="box-header with-border">
+
+  <div class="alert alert-base flat no-shadow">
+    Integrate this bot with a Facebook Page to allow it to respond on your behalf.
+    Users can talk to the bot over Facebook Messenger, both in the app and on the web.
+  </div>
+  <div style="padding-bottom: 20px">
+    <button class="btn btn-primary flat center-block" id="fb-int-connect" style="width: 260px; "
+            alt="disconnect">
+      <i class="fa fa-facebook text-blue"></i>
+      Connect to Facebook
+    </button>
+  </div>
+</div>
+
+{% else %}
+
+<div class="box-header with-border ">
+  <div class="alert alert-base flat no-shadow">
+    <p>Connected to "{{facebook_username}}" Facebook account</p>
+  </div>
+  <div style="padding-bottom: 20px">
+    <button class="btn btn-primary flat center-block" id="fb-disconnect" style="width: 260px; " alt="disconnect">
+      disconnect
+    </button>
+  </div>
+
+    {% if fb_no_page_selected %}
+        {% if not fb_success %}
+
+  <div class="alert alert-base flat no-shadow">
+    Could not get a list of pages from Facebook.
+  </div>
+        {% elif fb_empty_pagelist %}
+
+  <div class="alert alert-base flat no-shadow">
+    This account has no Facebook pages that are suitable for bot integration.
+    Create a new Facebook page or connect to a different Facebook account.
+  </div>
+        {% else %}
+
+  <div class="alert alert-base flat no-shadow">
+    <p>Select a Facebook page to attach this bot to</p>
+    <ul>
+          {% for fb_page_id, fb_page_name in fb_page_list.items %}
+      <li><a class='fb-page-list' onmouseover="this.style.cursor='pointer'"
+             id="_fb_{{fb_page_id}}">{{fb_page_name}}</a></li>
+          {% endfor %}
+    </ul>
+  </div>
+
+      {% endif %}
+    {% else %}
+
+  <div id="containerMsgAlertProgressBar" style="margin-bottom: 32px; padding-right: 0px; display: block;"
+       class="alert alert-dismissable flat alert-base">
+    <i id="iconAlertProgressBar" class="icon fa fa-check"></i>
+    <span id="msgAlertProgressBar">
+                    Integrated with page <a target="_facebook"
+                                            href="https://www.facebook.com/{{fb_page_integrated_id}}">
+     {{fb_page_integrated_name}}</a>.
+                    The bot will respond to all messages sent to that page.
+                </span>
+  </div>
+
+<placeholder />
+  {% endif %}
+{% endif %}
+</div>
+
+<div class="box box-solid box-clean flat no-shadow no-margin" id="newAiintegration" style="padding-bottom: 0px;">
+  <div class="box-body" style="padding-bottom: 0px;">
+    <div style="padding-bottom: 12px">
+      {{ facebook_message }}
+    </div>
+  </div>
+</div>
+
+<script>
+
+  var message_us_data = {
+    plugin_class: 'fb-messengermessageus',
+    appid: '{{fb_app_id}}',
+    pageid: '{{fb_page_integrated_id}}',
+    button_name: 'Message Us',
+    button_action: 'to start chatting to this bot on Facebook Messenger.',
+    plugin_reference: 'https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us'
+  };
+
+  var sendtomessenger_data = {
+    appid: '{{fb_app_id}}',
+    pageid: '{{fb_page_integrated_id}}',
+    button_name: 'Send To Messenger',
+    button_action: 'for this bot to start a conversation with you on Facebook Messenger.',
+    plugin_reference: 'https://developers.facebook.com/docs/messenger-platform/plugin-reference/send-to-messenger',
+    data_ref: 'RESPOND_TO_THIS'
+  };
+
+  $.get('./templates/integration_code.mustache', function (template) {
+    $('#fb_messageus').replaceWith(Mustache.render(template, message_us_data));
+    $('#fb_sendtomessenger').replaceWith(Mustache.render(template, sendtomessenger_data));
+    // re-run facebook initialisation after templates have rendered
+    window.fbAsyncInit();
+  });
+
+</script>
