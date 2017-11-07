@@ -157,3 +157,22 @@ def post_icon(token, bot_id, icon_file, **kwargs):
     logger.debug(respons.json())
 
     return respons.json()
+
+
+def post_purchase(token, bot_id):
+    """Purchase a bot"""
+
+    path = '/botstore/purchase/%s'
+    url = settings.API_URL + path % bot_id
+
+    logger.debug(url)
+
+    respons = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(respons.json())
+
+    return respons.json()

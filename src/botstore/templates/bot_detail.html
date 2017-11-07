@@ -11,13 +11,13 @@
 
       {% include 'botstore_info.html' %}
 
-      <div class="box box-solid box-clean flat no-shadow bot-box" id="singleBot">
+      <div class="box box-solid box-clean flat no-shadow bot-box">
 
         <!-- ================ BOT DETAILS TOP CARD INFO ================= -->
         <div class="bot-card">
 
           <div class="bot-card-icon left">
-            <img class="bot-card-icon" src="{{ MEDIA_URL }}boticon/{{ bot.metadata.botIcon }}" id="botIcon">
+            <img class="bot-card-icon" src="{{ MEDIA_URL }}boticon/{{ bot.metadata.botIcon }}">
           </div>
 
           <div class="bot-card-area">
@@ -26,27 +26,17 @@
 
               <!--title-->
               <div class="col-xs-8 bot-title">
-                <span id="botTitle">{{ bot.metadata.name }}</span>
-              </div>
-
-              <!--badge-->
-              <div class="col-xs-3 bot-badge no-padding" id="botBadge">{{ bot.metadata.badge }}</div>
-
-              <!--close button-->
-              <div class="col-xs-1 bot-close-button no-padding">
-                <a href="" id="btnBuyBotBack" class="fa fa-close text-md text-darkgray"></a>
+                <span>{{ bot.metadata.name }}</span>
               </div>
 
             </div>
 
             <div class="row no-margin">
+
               <!--description-->
               <div class="col-xs-9 bot-description">
                 {{ bot.metadata.description }}
               </div>
-
-              <!--star ratings-->
-              <div class="col-xs-3 bot-star"></div>
 
             </div>
 
@@ -56,7 +46,7 @@
 
                 <!--message-->
                 <div class="col-xs-12 bot-msg">
-                  <i class="fa fa-info-circle text-sm text-yellow" id="botMessageIcon"></i>
+                  <i class="fa fa-info-circle text-sm text-yellow"></i>
                   {{ bot.metadata.alertMessage }}
                 </div>
 
@@ -75,24 +65,23 @@
 
                 <!--licence-->
                 <div class="row no-margin bot-licence">
-                  licence <span id="botLicense">{{ bot.metadata.licenseType }}</span>
+                  licence <span>{{ bot.metadata.licenseType }}</span>
                 </div>
 
                 <!--price-->
                 <div class="row no-margin bot-price">
                   <div class="pull-left text-orange">
-                    price <span id="botPrice">{{ bot.metadata.price }}</span><span class="bot-badge no-padding text-orange"> €</span>
+                    price <span>{{ bot.metadata.price }}</span><span class="bot-badge no-padding text-orange"> €</span>
                   </div>
                 </div>
               </div>
 
               <div class="col-xs-4 bot-button">
-
-                <!--Buy button-->
-                <button class="btn btn-success pull-right flat" id="btnBuyBot" style="width:135px;">
-                  <b>Add Skill</b>
-                  <span class="fa fa-arrow-circle-right"></span>
-                </button>
+                {% if bot.owned %}
+                  <span class="btn btn-primary pull-right flat"><b>{% trans 'Skill purchased' %} </b></span>
+                {% else %}
+                  <a href="{% url 'botstore:purchase' bot.metadata.botId %}" class="btn btn-success pull-right flat" style="width:135px;"><b>{% trans 'Add Skill' %}</b></a>
+                {% endif %}
               </div>
             </div>
 
@@ -103,9 +92,7 @@
         <!-- ================ BOT DETAILS DESCRIPTION INFO ================= -->
         <div class="box-body">
           <div class="row no-margin">
-            <div class="col-xs-12 bot-h2">
-              Description
-            </div>
+            <div class="col-xs-12 bot-h2">Description</div>
           </div>
           <div class="row no-margin" style="padding-bottom:10px;">
             <div class="col-xs-12 bot-detail">
@@ -120,7 +107,7 @@
           <div class="row no-margin" style="padding-bottom:10px;">
             <div class="col-xs-12 text-gray bot-detail">
               <div class="box-body flat" style="background: #343434; border: 1px solid #737373;">
-                <div class="text-gray"><span id="botSample">{{ bot.metadata.sample }}</span></div>
+                <div class="text-gray"><span>{{ bot.metadata.sample }}</span></div>
               </div>
             </div>
           </div>
@@ -137,19 +124,19 @@
             <div class="col-xs-4">
               <div class="bot-more-details">{% trans 'Last Update' %}</div>
               <div class="text-left">
-                <span id="botLastUpdate">{{ bot.metadata.lastUpdate|date }}</span>
+                <span>{{ bot.metadata.lastUpdate|date }}</span>
               </div>
             </div>
             <div class="col-xs-4">
               <div class="bot-more-details">{% trans 'Category' %}</div>
               <div class="text-left">
-                <span id="botCategory">{{ bot.metadata.category }}</span>
+                <span>{{ bot.metadata.category }}</span>
               </div>
             </div>
             <div class="col-xs-4">
               <div class="bot-more-details">{% trans 'Version' %}</div>
               <div class="text-left">
-                <span id="botVersion">{{ bot.metadata.version }}</span>
+                <span>{{ bot.metadata.version }}</span>
               </div>
             </div>
           </div>
@@ -159,7 +146,7 @@
 
               <div class="bot-more-details">{% trans 'Offer by' %}</div>
               <div class="text-left">
-                <span id="botCompany">{{ bot.developer.company }}</span>
+                <span>{{ bot.developer.company }}</span>
               </div>
 
             </div>
@@ -167,30 +154,28 @@
 
               <div class="bot-more-details">{% trans 'Classification' %}</div>
               <div class="text-left">
-                <span id="botClassification">{{ bot.metadata.classification }}</span>
+                <span>{{ bot.metadata.classification }}</span>
               </div>
 
             </div>
-            <div class="col-xs-4" id="botPrivacyPolicySection">
+            <div class="col-xs-4">
 
               <div class="bot-more-details">{% trans 'Privacy' %}</div>
               <div class="text-left">
-                <a class="dev-link" id="botPrivacyPolicy" href="{{ bot.metadata.privacyPolicy }}" rel="nofollow" target="_blank">View Privacy Policy</a>
+                <a class="dev-link" href="{{ bot.metadata.privacyPolicy }}" rel="nofollow" target="_blank">View Privacy Policy</a>
               </div>
 
             </div>
-            <div class="col-xs-4" id="developerInfo">
+            <div class="col-xs-4">
 
               <div class="bot-more-details">{% trans 'Developer' %}</div>
               <div class="text-left">
-                <a class="dev-link" id="botWebsite" href="{{ bot.developer.website }}" rel="nofollow" target="_blank">{% trans 'Visit Website' %}</a>
+                <a class="dev-link" href="{{ bot.developer.website }}" rel="nofollow" target="_blank">{% trans 'Visit Website' %}</a>
               </div>
 
             </div>
           </div>
 
-          <br>
-          <a href="{% url 'botstore:all' %}" id="btnBackToBotstore" class="btn btn-primary pull-left flat">{% trans 'Go to Botstore' %}</a>
         </div>
       </div>
 

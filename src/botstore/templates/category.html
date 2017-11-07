@@ -8,7 +8,7 @@
 
       <div class="row carousel-row no-margin carousel-overflow">
         {% for bot in bots %}
-          {% include 'box-card.html' with developer=bot.developer bot=bot.metadata %}
+          {% include 'box-card.html' with developer=bot.developer bot=bot.metadata owned=bot.owned %}
         {% empty %}
           <div class="carousel-title">No bots yet</div>
         {% endfor %}

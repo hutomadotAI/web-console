@@ -27,29 +27,30 @@ from botstore.views import (
     BotDetailView,
     BotListView,
     CategoriesListView,
-    PublishView
+    PublishView,
+    PurchaseView,
 )
 
 urlpatterns = [
 
     # Get details of a Bot
     url(
-        r'^bots/(?P<pk>\d+)/$',
-        cache_page(settings.TEMPLATES_CACHE_AGE)(BotDetailView.as_view()),
+        r'^bots/(?P<bot_id>\d+)/$',
+        BotDetailView.as_view(),
         name='detail'
     ),
 
     # Get a list of all categories with top bots
     url(
         r'^$',
-        cache_page(settings.TEMPLATES_CACHE_AGE)(CategoriesListView.as_view()),
+        CategoriesListView.as_view(),
         name='all'
     ),
 
     # Get a list of all bots for one category
     url(
         r'^(?P<category>entertainment|education|events|finance|fitness|games|health%20%26%20beauty|internet%20of%20things|news|personal|other|shopping|social|travel|virtual%20assistants)$',
-        cache_page(settings.TEMPLATES_CACHE_AGE)(BotListView.as_view()),
+        BotListView.as_view(),
         name='category'
     ),
 
@@ -58,6 +59,13 @@ urlpatterns = [
         r'^publish/(?P<aiid>[0-9a-f-]+)/?$',
         PublishView.as_view(),
         name='publish'
+    ),
+
+    # Purchase a bot in Bot Store
+    url(
+        r'^purchase/(?P<bot_id>\d+)/?$',
+        PurchaseView.as_view(),
+        name='purchase'
     ),
 
 ]

@@ -6,11 +6,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
-from botstore.services import get_bot, get_bots, get_categories
+from botstore.services import get_bot, get_bots, get_categories, post_purchase
 from botstore.forms import PublishForm
 
 from studio.services import get_ai
@@ -20,6 +22,34 @@ from users.forms import DeveloperInfoForm
 from users.services import get_info
 
 logger = logging.getLogger(__name__)
+
+
+@method_decorator(login_required, name='dispatch')
+class PurchaseView(RedirectView):
+    """Purchase a bot"""
+
+    permanent = False
+    query_string = True
+    pattern_name = 'botstore:detail'
+
+    def get_redirect_url(self, *args, **kwargs):
+
+        purchased = post_purchase(
+            self.request.session.get('token'),
+            kwargs['bot_id']
+        )
+
+        # Check if save was successful
+        if purchased['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+            message = _('Skill successfully added! You can now add this skill to your bots.')
+        else:
+            level = messages.ERROR
+            message = purchased['status']['info']
+
+        messages.add_message(self.request, level, message)
+
+        return super(PurchaseView, self).get_redirect_url(*args, **kwargs)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -89,7 +119,7 @@ class BotDetailView(DetailView):
     template_name = 'bot_detail.html'
 
     def get_object(self, **kwargs):
-        pk = self.kwargs.get('pk', None)
+        pk = self.kwargs.get('bot_id', None)
         return get_bot(pk, self.request.session.get('token', False))
 
 
