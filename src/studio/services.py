@@ -265,6 +265,64 @@ def get_entities_list(token):
     return response.json()
 
 
+def get_entity(token, entity_name):
+    """Returns a particular entity data"""
+
+    path = '/entity?entity_name=%s'
+    url = settings.API_URL + path % entity_name
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
+def post_entity(payload, token):
+    """Create or update an entity"""
+
+    path = '/entity?entity_name=%s'
+    url = settings.API_URL + path % payload['entity_name']
+
+    logger.warning([url, payload])
+
+    response = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        json=payload
+    )
+
+    logger.warning(response)
+
+    return response.json()
+
+
+def delete_entity(token, entity_name):
+    """Delete an entity"""
+
+    path = '/entity?entity_name=%s'
+    url = settings.API_URL + path % entity_name
+
+    logger.debug(url)
+
+    response = requests.delete(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
 def get_intent_list(token, aiid):
     """Returns a list of all intents for a particular AI"""
 
@@ -292,10 +350,7 @@ def get_intent(token, aiid, intent_name):
     """Returns a particular intent data"""
 
     path = '/intent/%s?intent_name=%s'
-    url = settings.API_URL + path % (
-        aiid,
-        intent_name
-    )
+    url = settings.API_URL + path % (aiid, intent_name)
 
     logger.debug(url)
 

@@ -18,6 +18,7 @@ from studio.services import (
     get_entities_list,
     post_ai,
     post_ai_skill,
+    post_entity,
     post_import_ai,
     post_intent,
     post_regenerate_webhook_secret,
@@ -48,6 +49,41 @@ class SkillsMultipleWidget(forms.widgets.CheckboxSelectMultiple):
 
 
 class EntityForm(forms.Form):
+
+    entity_name = forms.CharField(
+        label=_('Name'),
+        widget=forms.TextInput(attrs={
+            'pattern': SLUG_PATTERN,
+            'maxlength': 250,
+            'placeholder': _('Entity name'),
+            'title': _('Enter a valid “Entity name” consisting of letters, numbers, underscores or hyphens.')
+        })
+    )
+
+    entity_values = forms.CharField(
+        label=_('Values'),
+        help_text=_('To create a new value press enter'),
+        widget=forms.TextInput(attrs={
+            'data-minLength': 1,
+            'data-maxlength': 250,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
+            'class': 'form-control',
+            'placeholder': _('Add an entity value'),
+        })
+    )
+
+    def clean_entity_values(self):
+        """Split values"""
+        return self.cleaned_data['entity_values'].split(
+            settings.TOKENFIELD_DELIMITER
+        )
+
+    def save(self, *args, **kwargs):
+        return post_entity(self.cleaned_data, **kwargs)
+
+
+class EntityFormset(forms.Form):
     """Used as base for formset on Intents tab"""
 
     def __init__(self, *args, **kwargs):
@@ -55,7 +91,7 @@ class EntityForm(forms.Form):
 
         entities = kwargs.pop('entities', [])
 
-        super(EntityForm, self).__init__(*args, **kwargs)
+        super(EntityFormset, self).__init__(*args, **kwargs)
 
         self.fields['entity_name'].choices = [
             (entity['entity_name'], entity['entity_name']) for entity in entities
@@ -121,7 +157,9 @@ class EntityForm(forms.Form):
 
     def clean_prompts(self):
         """Split prompts"""
-        return self.cleaned_data['prompts'].split(settings.TOKENFIELD_DELIMITER)
+        return self.cleaned_data['prompts'].split(
+            settings.TOKENFIELD_DELIMITER
+        )
 
 
 class IntentForm(forms.Form):

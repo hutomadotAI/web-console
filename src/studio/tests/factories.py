@@ -45,6 +45,11 @@ class AIImportJSON(factory.Factory):
 
 class EntityFactory(factory.Factory):
     entity_name = 'sys.places'
+    entity_values = 'Value 1\u2028Value 2\u2028Value 3'
+
+
+class EntityFormsetFactory(factory.Factory):
+    entity_name = 'sys.places'
     required = True
     n_prompts = 3
     prompts = 'User prompt 1\u2028User prompt 2\u2028User prompt 3'

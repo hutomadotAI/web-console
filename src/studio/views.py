@@ -21,6 +21,7 @@ from studio.forms import (
     ImportAIForm,
     IntentForm,
     EntityForm,
+    EntityFormset,
     ProxyDeleteAIForm,
     ProxyRegenerateWebhookSecretForm,
     SkillsForm,
@@ -32,8 +33,10 @@ from studio.services import (
     get_ai_export,
     get_intent_list,
     get_entities_list,
+    get_entity,
     get_intent,
     post_intent,
+    delete_entity,
     delete_intent,
     get_ai_list,
     post_regenerate_webhook_secret,
@@ -265,6 +268,19 @@ class ProxyIntentDeleteView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+class ProxyEntityDeleteView(View):
+    """Temporary proxy until we open the full API to the world"""
+
+    def delete(self, request, *args, **kwargs):
+        entity_name = request.GET.get('entity_name')
+
+        return JsonResponse(delete_entity(
+            self.request.session.get('token', False),
+            entity_name
+        ))
+
+
+@method_decorator(login_required, name='dispatch')
 class AIListView(ListView):
     """List of AIs, current homepage"""
 
@@ -401,6 +417,87 @@ class AIUpdateView(StudioViewMixin, FormView):
 
 
 @method_decorator(login_required, name='dispatch')
+class EntitiesView(StudioViewMixin, FormView):
+    """Manage AI Entities"""
+
+    form_class = EntityForm
+    template_name = 'entity_form.html'
+    success_url = 'studio:entities'
+    fail_url = 'studio:entities'
+
+    def get_context_data(self, **kwargs):
+        """Update context with Entities list"""
+
+        context = super(EntitiesView, self).get_context_data(**kwargs)
+
+        # Get entities
+        context['entities'] = get_entities_list(
+            self.request.session.get('token', False)
+        ).get('entities')
+
+        return context
+
+    def form_valid(self, form):
+        """Try to save Entity, can still be invalid"""
+
+        entity = form.save(token=self.request.session.get('token', False))
+
+        # Check if save was successful
+        if entity['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+
+            redirect_url = HttpResponseRedirect(
+                reverse_lazy(
+                    self.success_url,
+                    kwargs={**self.kwargs}
+                )
+            )
+        else:
+            level = messages.ERROR
+            redirect_url = self.render_to_response(
+                self.get_context_data(form=form)
+            )
+
+        messages.add_message(self.request, level, entity['status']['info'])
+
+        return redirect_url
+
+
+@method_decorator(login_required, name='dispatch')
+class EntitiesUpdateView(EntitiesView):
+    """Single Entity view"""
+
+    success_url = 'studio:entities.edit'
+
+    def get_initial(self, **kwargs):
+        """Get and prepare Entity data"""
+
+        # Get an entity
+        intent = get_entity(
+            self.request.session.get('token', False),
+            self.kwargs['entity_name']
+        )
+
+        # Prepare data for the form
+        # TODO: should be a better way to do it in the form itself?
+        intent['entity_values'] = settings.TOKENFIELD_DELIMITER.join(
+            intent['entity_values']
+        )
+
+        self.initial = intent
+
+        return super(EntitiesUpdateView, self).get_initial(**kwargs)
+
+    def get_context_data(self, **kwargs):
+        """Provide entity name for the template"""
+
+        context = super(EntitiesUpdateView, self).get_context_data(**kwargs)
+        context['entity_name'] = self.initial['entity_name']
+
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
 class IntentsView(StudioViewMixin, FormView):
     """Manage AI Intents and theirs relations with Entities"""
 
@@ -408,7 +505,7 @@ class IntentsView(StudioViewMixin, FormView):
     template_name = 'intent_form.html'
     success_url = 'studio:intents'
     fail_url = 'studio:intents'
-    formset = formset_factory(EntityForm, extra=0, can_delete=True)
+    formset = formset_factory(EntityFormset, extra=0, can_delete=True)
     formset_prefix = 'entities'
 
     def get_context_data(self, **kwargs):

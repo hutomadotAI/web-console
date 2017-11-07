@@ -25,18 +25,22 @@ from django.views.generic.base import RedirectView
 
 from studio.views import (
     AICreateView,
-    AIUpdateView,
     AIListView,
-    IntentsView,
+    AIUpdateView,
+    EntitiesUpdateView,
+    EntitiesView,
+    IntegrationFacebookView,
+    IntegrationView,
     IntentsUpdateView,
-    SkillsView,
-    TrainingView,
-    ProxyAiView,
+    IntentsView,
     ProxyAiExportView,
+    ProxyAiView,
+    ProxyEntityDeleteView,
     ProxyIntentDeleteView,
     ProxyRegenerateWebhookSecretView,
-    IntegrationView,
-    IntegrationFacebookView)
+    SkillsView,
+    TrainingView,
+)
 
 urlpatterns = [
 
@@ -85,24 +89,32 @@ urlpatterns = [
     # Update entities of an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/entities/?$',
-        SkillsView.as_view(),
+        EntitiesView.as_view(),
         name='entities'
     ),
 
-    # Update intents of an existing AI
+    # Update an Entity of an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/entities/(?P<entity_name>[-0-9a-zA-Z_]+)/?$',
+        EntitiesUpdateView.as_view(),
+        name='entities.edit'
+    ),
+
+    # Update Intents of an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/intents/?$',
         IntentsView.as_view(),
         name='intents'
     ),
 
-    # List the integration options for an existing AI
+    # Update an Intent of an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/intents/(?P<intent_name>[-0-9a-zA-Z_]+)/?$',
         IntentsUpdateView.as_view(),
         name='intents.edit'
     ),
 
+    # List the integration options for an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/?$',
         IntegrationView.as_view(),
@@ -157,4 +169,10 @@ urlpatterns = [
         name='proxy.intent.delete'
     ),
 
+    # Remove an intent
+    url(
+        r'^proxy/entity$',
+        ProxyEntityDeleteView.as_view(),
+        name='proxy.entity.delete'
+    ),
 ]

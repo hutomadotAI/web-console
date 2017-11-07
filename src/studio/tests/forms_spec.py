@@ -13,9 +13,15 @@ from studio.forms import (
     TrainingForm,
     SkillsForm,
     EntityForm,
+    EntityFormset,
     IntentForm,
 )
-from studio.tests.factories import AIImportJSON, IntentFactory, EntityFactory
+from studio.tests.factories import (
+    AIImportJSON,
+    EntityFactory,
+    EntityFormsetFactory,
+    IntentFactory,
+)
 from botstore.tests.factories import MetadataFactory
 
 
@@ -409,14 +415,14 @@ class TestIntentForm(TestCase):
         )
 
 
-class TestEntityForm(TestCase):
+class TestEntityFormset(TestCase):
 
     def test_a_valid_required_entity(self):
         """Provide valid required data"""
 
-        data = factory.build(dict, FACTORY_CLASS=EntityFactory)
+        data = factory.build(dict, FACTORY_CLASS=EntityFormsetFactory)
 
-        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+        form = EntityFormset(data, entities=[{'entity_name': 'sys.places'}])
 
         self.assertTrue(
             form.is_valid(),
@@ -428,11 +434,11 @@ class TestEntityForm(TestCase):
 
         data = factory.build(
             dict,
-            FACTORY_CLASS=EntityFactory,
+            FACTORY_CLASS=EntityFormsetFactory,
             required=False
         )
 
-        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+        form = EntityFormset(data, entities=[{'entity_name': 'sys.places'}])
 
         self.assertTrue(
             form.is_valid(),
@@ -444,10 +450,10 @@ class TestEntityForm(TestCase):
 
         data = factory.build(
             dict,
-            FACTORY_CLASS=EntityFactory
+            FACTORY_CLASS=EntityFormsetFactory
         )
 
-        form = EntityForm(data)
+        form = EntityFormset(data)
 
         form.is_valid()
 
@@ -462,11 +468,11 @@ class TestEntityForm(TestCase):
 
         data = factory.build(
             dict,
-            FACTORY_CLASS=EntityFactory,
+            FACTORY_CLASS=EntityFormsetFactory,
             entity_name='something'
         )
 
-        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+        form = EntityFormset(data, entities=[{'entity_name': 'sys.places'}])
 
         self.assertFalse(
             form.is_valid(),
@@ -478,11 +484,11 @@ class TestEntityForm(TestCase):
 
         data = factory.build(
             dict,
-            FACTORY_CLASS=EntityFactory,
+            FACTORY_CLASS=EntityFormsetFactory,
             n_prompts=0
         )
 
-        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+        form = EntityFormset(data, entities=[{'entity_name': 'sys.places'}])
 
         self.assertFalse(
             form.is_valid(),
@@ -491,13 +497,43 @@ class TestEntityForm(TestCase):
 
         data = factory.build(
             dict,
-            FACTORY_CLASS=EntityFactory,
+            FACTORY_CLASS=EntityFormsetFactory,
             n_prompts=19
         )
 
-        form = EntityForm(data, entities=[{'entity_name': 'sys.places'}])
+        form = EntityFormset(data, entities=[{'entity_name': 'sys.places'}])
 
         self.assertFalse(
             form.is_valid(),
             'Invalid entity name, should be lower than 16, should fail'
+        )
+
+
+class TestEntityForm(TestCase):
+
+    def test_a_valid_entity(self):
+        """Provide valid data"""
+
+        data = factory.build(dict, FACTORY_CLASS=EntityFactory)
+
+        form = EntityForm(data)
+
+        self.assertTrue(
+            form.is_valid(),
+            'Provide valid required data, should pass'
+        )
+
+    def test_clean_values(self):
+        """Prompts should be a list"""
+
+        data = factory.build(dict, FACTORY_CLASS=EntityFactory)
+
+        form = EntityForm(data)
+
+        form.is_valid()
+
+        self.assertSequenceEqual(
+            form.cleaned_data['entity_values'],
+            ['Value 1', 'Value 2', 'Value 3'],
+            'Values should be a list, should pass'
         )
