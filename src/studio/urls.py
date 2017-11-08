@@ -40,6 +40,8 @@ from studio.views import (
     ProxyRegenerateWebhookSecretView,
     SkillsView,
     TrainingView,
+    IntegrationFacebookView, 
+    FacebookIntegrationCustomiseView
 )
 
 urlpatterns = [
@@ -121,12 +123,18 @@ urlpatterns = [
         name='integrations'
     ),
 
-    # /bots/edit/35671f21-9bd7-4893-9593-2dd36d381272/integrations/facebook/get/
     # List or update facebook integration for this AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/(?P<action>get|page|disconnect)/(?P<id>[0-9]*)$',
         IntegrationFacebookView.as_view(),
         name='integrations_facebook'
+    ),
+
+    # save customisations to facebook integration
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/customise$',
+        FacebookIntegrationCustomiseView.as_view(),
+        name='integrations_facebook_customise'
     ),
 
     # Update insights of an existing AI

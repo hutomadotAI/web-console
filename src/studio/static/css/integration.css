@@ -1,0 +1,24 @@
+/* Integration code */
+.integration-code {
+  border-color: #515151;
+  background-color: #353939;
+  padding: 16px;
+}
+
+.integration-code-block {
+  color: lightgray;
+  background-color: #232426;
+  border-color: #515151;
+  margin-top: 8px;
+}
+
+.integration-code-title {
+  font-size: large;
+}
+
+.integration-plugin {
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 16px;
+  color: dimgray;
+}

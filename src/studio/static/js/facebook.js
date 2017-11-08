@@ -19,9 +19,12 @@ function saveFacebookCustomisations() {
 
   $("#fb-custom-save").text("Saving...");
   $.ajax({
-    url: "./dynamic/integrations.facebook.customisations.php",
+    url: "./integrations/facebook/customise",
     type: "POST",
     contentType: "application/json", // send as JSON
+    beforeSend: function(xhr, settings) {
+      xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
+    },
     data: JSON.stringify({
       "page_greeting": page_greeting,
       "get_started_payload": get_started_payload
@@ -69,7 +72,13 @@ function loadFacebookAction(action, id) {
   if (id == null) {
     id = '0';
   }
-  $("#facebookState").load("./integrations/facebook/" + action + '/' + id);
+  $("#facebookState").load("./integrations/facebook/" + action + '/' + id, function() {
+    // if facebook sdk loaded too early then run the init script again
+    if (typeof(FB) != 'undefined'
+      && FB != null ) {
+        window.fbAsyncInit();
+    }
+  });
 };
 
 

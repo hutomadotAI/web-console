@@ -418,6 +418,7 @@ def delete_intent(token, aiid, intent_name):
 
     return response.json()
 
+
 def set_facebook_connect_token(token, aiid, connect_token, redirect_url):
     """ Registers a connect token once the user has completed a
         connect operation on the front-end
@@ -485,16 +486,49 @@ def facebook_action(token, aiid, params):
 
     return response.json()
 
-def is_not_empty(dict, field):
+
+def get_facebook_customisations(token, aiid):
     """
-    for a field in a dictionary, safely tells you whether it is present
-    and is not empty
-    :param dict:
-    :param field:
-    :return:
+    load customisations for the page
     """
-    if dict:
-        if field in dict:
-            if dict[field]:
-                return True
-    return False
+    path = '/ai/%s/facebook/custom'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
+def set_facebook_customisations(token, aiid, page_greeting, get_started):
+    """
+    save customisations for the page
+    """
+    path = '/ai/%s/facebook/custom'
+    url = settings.API_URL + path % aiid
+
+    payload = {
+        'page_greeting': page_greeting,
+        'get_started_payload': get_started
+    }
+
+    logger.debug(url)
+
+    response = requests.post(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        json=payload
+    )
+
+    logger.debug(response)
+
+    return response.json()
+

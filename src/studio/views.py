@@ -1,3 +1,4 @@
+import json
 import logging
 import requests
 
@@ -5,8 +6,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import get_messages
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.forms import formset_factory
-from django.http import HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -41,7 +42,10 @@ from studio.services import (
     get_ai_list,
     post_regenerate_webhook_secret,
     get_facebook_connect_state,
-    facebook_action, is_not_empty, set_facebook_connect_token)
+    facebook_action,
+    set_facebook_connect_token,
+    get_facebook_customisations,
+    set_facebook_customisations)
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +70,7 @@ class IntegrationView(TemplateView):
             connect_result = set_facebook_connect_token(token, aiid, code, redirect_url)
             # store the error if there as one
             if connect_result['status']['code'] == 409:
-                if is_not_empty(connect_result['status'], 'info'):
+                if bool(connect_result['status'] and 'info' in connect_result['status']):
                     messages.error(request, connect_result['status']['info'])
 
             # reload the page without the connect token
@@ -87,6 +91,7 @@ class IntegrationView(TemplateView):
         context['ai'] = ai
 
         return context
+
 
 @method_decorator(login_required, name='dispatch')
 class IntegrationFacebookView(TemplateView):
@@ -112,40 +117,38 @@ class IntegrationFacebookView(TemplateView):
             # relay the action to the API
             action_result = facebook_action(token, aiid, params)
             # and display the result
-            if is_not_empty(action_result, 'status'):
+            if bool(action_result and action_result.get('status')):
                 messages.info(self.request, action_result['status']['info'])
 
         # get the connect state from the API
         facebook_state = get_facebook_connect_state(token, aiid)
 
         # retrieve the various bits of data if available
-        context['fb_success'] = is_not_empty(facebook_state, 'success')
-        context['fb_app_id'] = facebook_state['facebook_app_id'] \
-            if is_not_empty(facebook_state, 'facebook_app_id') else ''
-        context['fb_permissions'] = facebook_state['facebook_request_permissions'] \
-            if is_not_empty(facebook_state, 'facebook_request_permissions') \
-            else ''
-        context['facebook_username'] = facebook_state['facebook_username'] \
-            if is_not_empty(facebook_state, 'facebook_username') else ''
-        if is_not_empty(facebook_state, 'integration_status'):
+        context['fb_success'] = bool(facebook_state and facebook_state.get('success'))
+        context['fb_app_id'] = facebook_state.get('facebook_app_id', '')
+        context['fb_permissions'] = facebook_state.get('facebook_request_permissions', '')
+        context['facebook_username'] = facebook_state.get('facebook_username', '')
+        if bool(facebook_state and facebook_state.get('integration_status')):
             messages.info(self.request, facebook_state['integration_status'])
 
         # are we connected to facebook?
-        context['fb_not_connected'] = not is_not_empty(facebook_state, 'has_access_token')
+        context['fb_not_connected'] = not bool(facebook_state and facebook_state.get('has_access_token'))
 
         # have we got a list of pages that the user could choose to integrate?
-        has_page_list = is_not_empty(facebook_state, 'page_list')
+        has_page_list = bool(facebook_state and facebook_state.get('page_list'))
         context['fb_empty_pagelist'] = not has_page_list
         context['fb_page_list'] = facebook_state['page_list'] \
             if has_page_list else {}
 
         # is this bot already successfully integrated with a page?
-        has_integrated_page = is_not_empty(facebook_state, 'page_integrated_id')
+        has_integrated_page = bool(facebook_state and facebook_state.get('page_integrated_id'))
         context['fb_no_page_selected'] = not has_integrated_page
-        context['fb_page_integrated_id'] = facebook_state['page_integrated_id'] \
-            if has_integrated_page else ''
-        context['fb_page_integrated_name'] = facebook_state['page_integrated_name'] \
-            if has_integrated_page else ''
+        context['fb_page_integrated_id'] =facebook_state.get('page_integrated_id', '')
+        context['fb_page_integrated_name'] = facebook_state.get('page_integrated_name', '')
+
+        # if there is a page then load customisations
+        if has_integrated_page:
+            self.integrated_page_context(token, aiid, context)
 
         # take only the first message and add it to the context
         # but remove all messages from the context
@@ -156,6 +159,35 @@ class IntegrationFacebookView(TemplateView):
         context['facebook_message'] = facebook_message
 
         return context
+
+    def integrated_page_context(self, token, aiid, context):
+        '''
+        if we have an integrated page then load customisations
+        '''
+        customisations = get_facebook_customisations(token, aiid)
+        context['page_greeting'] = customisations.get('page_greeting', '')
+        context['get_started_payload'] = customisations.get('get_started_payload', '')
+
+
+@method_decorator(login_required, name='dispatch')
+class FacebookIntegrationCustomiseView(View):
+    '''
+    FB Integration customisations save handler
+    '''
+
+    def post(self, request, aiid, *args, **kwargs):
+        token = request.session.get('token', False)
+        # pull the data from the json payload
+        message = json.loads(request.body)
+        page_greeting = message.get('page_greeting', '')
+        get_started_payload = message.get('get_started_payload', '')
+        # call the API
+        result = set_facebook_customisations(token, aiid, page_greeting, get_started_payload)
+        # return an error unless we got a 200 in JSON from the API
+        if bool(result and result.get('status')):
+            return HttpResponse(status=result['status']['code'])
+
+        return HttpResponse(status=400)
 
 class StudioViewMixin(ContextMixin):
 

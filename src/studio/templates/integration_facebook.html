@@ -9,7 +9,6 @@
       xfbml: true,
       version: "v2.6"
     });
-
   };
 
   (function (d, s, id) {
@@ -92,8 +91,67 @@
                 </span>
   </div>
 
-<placeholder />
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="fb_page_greeting">Greeting message to display on the welcome screen</label>
+        <div class="input-group">
+          <div class="input-group-addon">
+            <i class="icon fa fa-comment-o"></i>
+          </div>
+          <input type="text" class="form-control flat no-shadow"
+                 id="fb_page_greeting"
+                 value="{{page_greeting}}">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="fb_get_started_payload">Command to send to the bot when the user taps the
+          Get Started button</label>
+        <div class="input-group">
+          <div class="input-group-addon">
+            <i class="icon fa fa-play-circle-o"></i>
+          </div>
+          <input type="text" class="form-control flat no-shadow"
+                 id="fb_get_started_payload"
+                 value="{{get_started_payload}}">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding-bottom: 20px">
+    <button class="btn btn-primary flat center-block" id="fb-custom-save" style="width: 260px; display: none"
+            alt="save customisations">
+      save customisations
+    </button>
+  </div>
+
+  {% with appid=fb_app_id pageid=fb_page_integrated_id %}
+
+    {% with plugin_class="fb-messengermessageus" button_name="Message Us" %}
+      {% with button_action="to start chatting to this bot on Facebook Messenger." %}
+        {% with plugin_reference="https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us" %}
+          {% include "integration_facebook_messenger.html" %}
+        {% endwith %}
+      {% endwith %}
+    {% endwith %}
+
+    {% with plugin_class="fb-send-to-messenger" button_name="Send To Messenger" data_ref="RESPOND_TO_THIS" %}
+      {% with button_action="for this bot to start a conversation with you on Facebook Messenger." %}
+        {% with plugin_reference="https://developers.facebook.com/docs/messenger-platform/plugin-reference/send-to-messenger" %}
+          {% include "integration_facebook_messenger.html" %}
+        {% endwith %}
+      {% endwith %}
+    {% endwith %}
+
+  {% endwith %}
   {% endif %}
+
 {% endif %}
 </div>
 
@@ -104,32 +162,3 @@
     </div>
   </div>
 </div>
-
-<script>
-
-  var message_us_data = {
-    plugin_class: 'fb-messengermessageus',
-    appid: '{{fb_app_id}}',
-    pageid: '{{fb_page_integrated_id}}',
-    button_name: 'Message Us',
-    button_action: 'to start chatting to this bot on Facebook Messenger.',
-    plugin_reference: 'https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us'
-  };
-
-  var sendtomessenger_data = {
-    appid: '{{fb_app_id}}',
-    pageid: '{{fb_page_integrated_id}}',
-    button_name: 'Send To Messenger',
-    button_action: 'for this bot to start a conversation with you on Facebook Messenger.',
-    plugin_reference: 'https://developers.facebook.com/docs/messenger-platform/plugin-reference/send-to-messenger',
-    data_ref: 'RESPOND_TO_THIS'
-  };
-
-  $.get('./templates/integration_code.mustache', function (template) {
-    $('#fb_messageus').replaceWith(Mustache.render(template, message_us_data));
-    $('#fb_sendtomessenger').replaceWith(Mustache.render(template, sendtomessenger_data));
-    // re-run facebook initialisation after templates have rendered
-    window.fbAsyncInit();
-  });
-
-</script>
