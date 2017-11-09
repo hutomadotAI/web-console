@@ -723,19 +723,37 @@ elif ENVIRONMENT == 'production':
     #
     # Emails
     #
-    # TODO: move to SendGrid
-    #
 
     INSTALLED_APPS += ['anymail']
 
+    # Use an adapter for allauth
+    ACCOUNT_ADAPTER = 'users.adapter.SendgridTemplatesAdapter'
+
+    # Configure Email provider
+    EMAIL_BACKEND = 'anymail.backends.sendgrid.EmailBackend'
+
+    # Configure access
     ANYMAIL = {
-        'MAILGUN_API_KEY': os.environ.get('MAILGUN_API_KEY'),
-        'MAILGUN_SENDER_DOMAIN': 'mg.samp.la',
+        'SENDGRID_API_KEY': os.environ.get('SENDGRID_API_KEY'),
     }
 
-    EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'no-reply@mg.samp.la'
-    EMAIL_SUBJECT_PREFIX = '🤖 from Hu:toma: '
+    # Sendgrid Templates settings
+
+    # Formatting string that indicates how merge fields are delimited in your
+    # SendGrid templates. Parameter `first_name` would be `first_name` in
+    # Sendgrid
+    SENDGRID_MERGE_FIELD_FORMAT = '-{}-'
+
+    # Email templates corresponding to Allauth actions
+    SENDGRID_TEMPLATES = {
+        'account/email/password_reset_key': '1780e9d0-cb68-4de6-a159-dc2fa83e86a1',
+        'account/email/email_confirmation': '1f853c34-19f3-4205-8e6d-e44d24f41875'
+    }
+
+    SENDGRID_DEFAULT_TEMPLATE = 'a9e787d6-10f4-4ab2-b824-29b851a57c3c'
+
+    # Mailing settings
+    DEFAULT_FROM_EMAIL = '🤖 from Hutoma AI <no-reply@hutoma.ai>'
 
     # --------------------------------------------------------------------------
     #
