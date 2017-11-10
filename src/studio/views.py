@@ -215,7 +215,7 @@ class StudioViewMixin(ContextMixin):
         }))
 
         context['ai'] = ai
-        context['api_url'] = settings.API_URL
+        context['api_url'] = settings.PUBLIC_API_URL
 
         return context
 
