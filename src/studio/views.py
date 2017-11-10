@@ -49,6 +49,7 @@ from studio.services import (
 
 logger = logging.getLogger(__name__)
 
+
 @method_decorator(login_required, name='dispatch')
 class IntegrationView(TemplateView):
 
@@ -57,7 +58,8 @@ class IntegrationView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
 
         """
-        check whether this is a return from Facebook's front-end connect process
+        Check whether this is a return from Facebook's front-end connect
+        process.
         """
         code = self.request.GET.get('code', '')
         if code:
@@ -67,7 +69,9 @@ class IntegrationView(TemplateView):
             # load the redirect URL that we sent to Facebook
             redirect_url = self.request.COOKIES.get('facebookRedir')
             # tell the API we connected
-            connect_result = set_facebook_connect_token(token, aiid, code, redirect_url)
+            connect_result = set_facebook_connect_token(
+                token, aiid, code, redirect_url
+            )
             # store the error if there as one
             if connect_result['status']['code'] == 409:
                 if bool(connect_result['status'] and 'info' in connect_result['status']):
@@ -126,13 +130,19 @@ class IntegrationFacebookView(TemplateView):
         # retrieve the various bits of data if available
         context['fb_success'] = bool(facebook_state and facebook_state.get('success'))
         context['fb_app_id'] = facebook_state.get('facebook_app_id', '')
-        context['fb_permissions'] = facebook_state.get('facebook_request_permissions', '')
-        context['facebook_username'] = facebook_state.get('facebook_username', '')
+        context['fb_permissions'] = facebook_state.get(
+            'facebook_request_permissions', ''
+        )
+        context['facebook_username'] = facebook_state.get(
+            'facebook_username', ''
+        )
         if bool(facebook_state and facebook_state.get('integration_status')):
             messages.info(self.request, facebook_state['integration_status'])
 
         # are we connected to facebook?
-        context['fb_not_connected'] = not bool(facebook_state and facebook_state.get('has_access_token'))
+        context['fb_not_connected'] = not bool(facebook_state and facebook_state.get(
+            'has_access_token')
+        )
 
         # have we got a list of pages that the user could choose to integrate?
         has_page_list = bool(facebook_state and facebook_state.get('page_list'))
@@ -141,10 +151,16 @@ class IntegrationFacebookView(TemplateView):
             if has_page_list else {}
 
         # is this bot already successfully integrated with a page?
-        has_integrated_page = bool(facebook_state and facebook_state.get('page_integrated_id'))
+        has_integrated_page = bool(facebook_state and facebook_state.get(
+            'page_integrated_id'
+        ))
         context['fb_no_page_selected'] = not has_integrated_page
-        context['fb_page_integrated_id'] =facebook_state.get('page_integrated_id', '')
-        context['fb_page_integrated_name'] = facebook_state.get('page_integrated_name', '')
+        context['fb_page_integrated_id'] = facebook_state.get(
+            'page_integrated_id', ''
+        )
+        context['fb_page_integrated_name'] = facebook_state.get(
+            'page_integrated_name', ''
+        )
 
         # if there is a page then load customisations
         if has_integrated_page:
@@ -166,7 +182,9 @@ class IntegrationFacebookView(TemplateView):
         '''
         customisations = get_facebook_customisations(token, aiid)
         context['page_greeting'] = customisations.get('page_greeting', '')
-        context['get_started_payload'] = customisations.get('get_started_payload', '')
+        context['get_started_payload'] = customisations.get(
+            'get_started_payload', ''
+        )
 
 
 @method_decorator(login_required, name='dispatch')
@@ -182,12 +200,18 @@ class FacebookIntegrationCustomiseView(View):
         page_greeting = message.get('page_greeting', '')
         get_started_payload = message.get('get_started_payload', '')
         # call the API
-        result = set_facebook_customisations(token, aiid, page_greeting, get_started_payload)
+        result = set_facebook_customisations(
+            token,
+            aiid,
+            page_greeting,
+            get_started_payload
+        )
         # return an error unless we got a 200 in JSON from the API
         if bool(result and result.get('status')):
             return HttpResponse(status=result['status']['code'])
 
         return HttpResponse(status=400)
+
 
 class StudioViewMixin(ContextMixin):
 
@@ -637,28 +661,30 @@ class IntentsUpdateView(IntentsView):
     def get_initial(self, **kwargs):
         """Get and prepare Intent data"""
 
-        # Get an intent
-        intent = get_intent(
-            self.request.session.get('token', False),
-            self.kwargs['aiid'],
-            self.kwargs['intent_name']
-        )
-
-        # Prepare data for the form
-        # TODO: should be a better way to do it in the form itself?
-        intent['webhook'] = intent['webhook']['endpoint']
-        intent['responses'] = settings.TOKENFIELD_DELIMITER.join(
-            intent['responses']
-        )
-        intent['user_says'] = settings.TOKENFIELD_DELIMITER.join(
-            intent['user_says']
-        )
-        for entity in intent['variables']:
-            entity['prompts'] = settings.TOKENFIELD_DELIMITER.join(
-                entity['prompts']
+        if not self.initial:
+            # Get an intent if not prepared yet (get_form_kwargs) is calling
+            # get_initial  we don't want to run it multiple times
+            intent = get_intent(
+                self.request.session.get('token', False),
+                self.kwargs['aiid'],
+                self.kwargs['intent_name']
             )
 
-        self.initial = intent
+            # Prepare data for the form
+            # TODO: should be a better way to do it in the form itself?
+            intent['webhook'] = intent['webhook']['endpoint']
+            intent['responses'] = settings.TOKENFIELD_DELIMITER.join(
+                intent['responses']
+            )
+            intent['user_says'] = settings.TOKENFIELD_DELIMITER.join(
+                intent['user_says']
+            )
+            for entity in intent['variables']:
+                entity['prompts'] = settings.TOKENFIELD_DELIMITER.join(
+                    entity['prompts']
+                )
+
+            self.initial = intent
 
         return super(IntentsUpdateView, self).get_initial(**kwargs)
 
