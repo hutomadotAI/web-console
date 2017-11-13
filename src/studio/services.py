@@ -284,13 +284,16 @@ def get_entity(token, entity_name):
     return response.json()
 
 
-def post_entity(payload, token):
+def post_entity(payload, token, **kwargs):
     """Create or update an entity"""
 
     path = '/entity?entity_name=%s'
-    url = settings.API_URL + path % payload['entity_name']
+    url = settings.API_URL + path % kwargs.get(
+        'entity_name',
+        payload.get('entity_name')
+    )
 
-    logger.warning([url, payload])
+    logger.debug([url, payload])
 
     response = requests.post(
         url,
@@ -299,7 +302,7 @@ def post_entity(payload, token):
         json=payload
     )
 
-    logger.warning(response)
+    logger.debug(response)
 
     return response.json()
 

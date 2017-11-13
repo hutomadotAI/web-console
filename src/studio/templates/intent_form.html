@@ -68,7 +68,7 @@
             <div class="box-body">
               <div class="elements">
                 {% for name in intents.intent_name %}
-                  <div class="element {{ name }}">
+                  <div class="element">
                     <a href="{% url 'studio:intents.edit' ai.aiid name %}" title="edit {{ name }}">{{ name }}</a>
                     <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:proxy.intent.delete' ai.aiid %}?intent_name={{ name }}" data-id="{{ name }}"></button>
                   </div>

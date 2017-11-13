@@ -44,7 +44,7 @@
         <div class="box-body">
           <div class="elements">
             {% for entity in entities reversed %}
-              <div class="element {{ entity.entity_name }}">
+              <div class="element">
                 {% if entity.is_system %}
                   <span><span class="label label-primary">system</span> {{ entity.entity_name }}</span>
                 {% else %}

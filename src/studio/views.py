@@ -478,8 +478,7 @@ class EntitiesView(StudioViewMixin, FormView):
 
     form_class = EntityForm
     template_name = 'entity_form.html'
-    success_url = 'studio:entities'
-    fail_url = 'studio:entities'
+    success_url = 'studio:entities.edit'
 
     def get_context_data(self, **kwargs):
         """Update context with Entities list"""
@@ -496,7 +495,10 @@ class EntitiesView(StudioViewMixin, FormView):
     def form_valid(self, form):
         """Try to save Entity, can still be invalid"""
 
-        entity = form.save(token=self.request.session.get('token', False))
+        entity = form.save(
+            token=self.request.session.get('token', False),
+            **self.kwargs
+        )
 
         # Check if save was successful
         if entity['status']['code'] in [200, 201]:
@@ -505,7 +507,10 @@ class EntitiesView(StudioViewMixin, FormView):
             redirect_url = HttpResponseRedirect(
                 reverse_lazy(
                     self.success_url,
-                    kwargs={**self.kwargs}
+                    kwargs={
+                        'aiid': self.kwargs['aiid'],
+                        'entity_name': form.cleaned_data['entity_name']
+                    }
                 )
             )
         else:
@@ -522,8 +527,6 @@ class EntitiesView(StudioViewMixin, FormView):
 @method_decorator(login_required, name='dispatch')
 class EntitiesUpdateView(EntitiesView):
     """Single Entity view"""
-
-    success_url = 'studio:entities.edit'
 
     def get_initial(self, **kwargs):
         """Get and prepare Entity data"""

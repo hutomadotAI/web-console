@@ -40,7 +40,7 @@ from studio.views import (
     ProxyRegenerateWebhookSecretView,
     SkillsView,
     TrainingView,
-    IntegrationFacebookView, 
+    IntegrationFacebookView,
     FacebookIntegrationCustomiseView
 )
 
