@@ -172,12 +172,6 @@
 
 {% block javascripts %}
   <script>
-    const USER =  {
-      name: '{{ user.first_name }}',
-      email: '{{ user.email }}',
-      username: '{{ user.username }}',
-      token: '{{ request.session.token }}'
-    }
     const AI = {
       id: '{{ ai.aiid }}',
       name: '{{ ai.name }}'

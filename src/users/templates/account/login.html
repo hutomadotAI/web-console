@@ -13,7 +13,7 @@
 
         <p class="login-box-msg"><b>{% trans 'Login to Hu:toma' %}</b></p>
 
-        <form class="login form-signin" method="POST" action="{% url 'account_login' %}">
+        <form class="login form-signin" id="login_form" method="POST" action="{% url 'account_login' %}">
 
           {% csrf_token %}
 
@@ -23,11 +23,13 @@
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
           {% endif %}
 
-          <div class="form-group row">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">{% trans 'Log in' %}</button>
-          </div>
-
         </form>
+
+        <div class="form-group row">
+          <button type="submit" form="login_form" class="btn btn-primary btn-block btn-flat">{% trans 'Log in' %}</button>
+        </div>
+
+
 
         <a class="new-link" href="{% url 'account_reset_password' %}">{% trans 'I forgot my password' %}</a><br>
         <a class="new-link" href="{% url 'account_signup' %}" class="text-center">{% trans 'Register a new account' %}</a>

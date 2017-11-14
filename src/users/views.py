@@ -20,7 +20,7 @@ class DeveloperInfoView(FormView):
     template_name = 'info_form.html'
 
     def get_context_data(self, **kwargs):
-        kwargs['next'] = self.request.GET['next']
+        kwargs['next'] = self.request.GET.get('next')
 
         return super().get_context_data(**kwargs)
 

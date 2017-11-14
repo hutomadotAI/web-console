@@ -1,0 +1,13 @@
+{% load account %}
+{% load i18n %}
+{% user_display user as name %}
+{% blocktrans %}Successfully signed in as <b>{{name}}</b>.{% endblocktrans %}
+
+<script>dataLayer.push({
+  event: 'abstractEvent',
+  eventCategory: 'user',
+  eventAction: 'login',
+  eventMetadata: {
+    timestamp: Date.now()
+  }
+})</script>

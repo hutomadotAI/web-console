@@ -1,0 +1,11 @@
+{% load i18n %}
+{% blocktrans %}You have signed out.{% endblocktrans %}
+
+<script>dataLayer.push({
+  event: 'abstractEvent',
+  eventCategory: 'user',
+  eventAction: 'logout',
+  eventMetadata: {
+    timestamp: Date.now()
+  }
+})</script>

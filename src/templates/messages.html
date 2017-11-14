@@ -3,7 +3,7 @@
 
     {% for message in messages %}
       <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissable" role="alert">
-        {{ message }}
+        {{ message | safe }}
       </div>
     {% endfor %}
 

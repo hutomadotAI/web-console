@@ -13,7 +13,7 @@
 
         <p class="login-box-msg"><b>{% trans 'Sign up and start creating awesomeness' %}</b></p>
 
-        <form class="form-signup" method="POST" action="{% url 'account_signup' %}">
+        <form class="form-signup" method="POST" id="register_form" action="{% url 'account_signup' %}">
 
           {% csrf_token %}
 
@@ -23,11 +23,11 @@
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
           {% endif %}
 
-          <div id="div_id_submit" class="form-group">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">{% trans 'Sign Up' %}</button>
-          </div>
-
         </form>
+
+        <div class="form-group row">
+          <button type="submit" form="register_form" class="btn btn-primary btn-block btn-flat">{% trans 'Sign Up' %}</button>
+        </div>
 
         <a class="new-link" href="{% url 'account_login' %}">{% trans 'I already have an account' %}</a>
 

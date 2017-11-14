@@ -230,6 +230,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processors.tag_manager',
             ],
         },
     },
@@ -246,6 +247,19 @@ TEMPLATES = [
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 TOKENFIELD_DELIMITER = '\u2028'
+
+
+# ------------------------------------------------------------------------------
+#
+# Tag manager
+#
+# Configure Google tag manager, GTM is disabled if ID is empty
+
+TAG_MANAGER_ENVIRONMENT = base64.b64decode(
+    os.environ.get('TAG_MANAGER_ENVIRONMENT', '')
+)
+TAG_MANAGER_ID = os.environ.get('TAG_MANAGER_ID', '')
+
 
 # ------------------------------------------------------------------------------
 #
