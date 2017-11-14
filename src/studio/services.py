@@ -1,4 +1,3 @@
-import json
 import logging
 import urllib
 
@@ -535,3 +534,41 @@ def set_facebook_customisations(token, aiid, page_greeting, get_started):
 
     return response.json()
 
+
+def get_insights_chatlogs(token, aiid, fromDate, toDate):
+    """
+    get chat logs for the specified dates
+    """
+    path = '/insights/%s/chatlogs?format=csv&from=%s&to=%s'
+    url = settings.API_URL + path % (aiid, fromDate, toDate)
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_LOGS_TIMEOUT
+    )
+
+    logger.debug(response)
+    return response
+
+
+def get_insights_chart(token, aiid, fromDate, toDate, data_type):
+    """
+    get chart data for the specified dates
+    """
+    path = '/insights/%s/graph/%s?from=%s&to=%s'
+    url = settings.API_URL + path % (aiid, data_type, fromDate, toDate)
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_LOGS_TIMEOUT
+    )
+
+    logger.debug(response)
+
+    return response.json()

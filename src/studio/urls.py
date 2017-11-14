@@ -41,7 +41,10 @@ from studio.views import (
     SkillsView,
     TrainingView,
     IntegrationFacebookView,
-    FacebookIntegrationCustomiseView
+    FacebookIntegrationCustomiseView,
+    InsightsView,
+    ProxyInsightsLogsView,
+    ProxyInsightsChartView
 )
 
 urlpatterns = [
@@ -137,10 +140,24 @@ urlpatterns = [
         name='integrations_facebook_customise'
     ),
 
-    # Update insights of an existing AI
+    # Insights: download chat logs for an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/insights/logs/?$',
+        ProxyInsightsLogsView.as_view(),
+        name='insights_log_data'
+    ),
+
+    # Insights: download chart data for an existing AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/insights/chart/?$',
+        ProxyInsightsChartView.as_view(),
+        name='insights_chart_data'
+    ),
+
+    # Display insights of an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/insights/?$',
-        SkillsView.as_view(),
+        InsightsView.as_view(),
         name='insights'
     ),
 

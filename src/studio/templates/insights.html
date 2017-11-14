@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% load i18n crispy_forms_tags static embed %}
+
+{% block title %}{% trans 'Bot Insights' %}{% endblock %}
+
+{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
+
+{% block header %}
+{% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+{% embed 'navigation.html' %}
+{% block studio %}
+{% include 'studio_navigation.html' with ai=ai active='insights' %}
+{% endblock studio %}
+{% endembed %}
+{% endblock %}
+
+{% block footer %}
+{% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        {% include "chatlogs_download.html" %}
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="box box-solid box-clean flat no-shadow unselectable">
+          <div class="box-header with-border">
+            <i class="fa fa-bar-chart-o text-green"></i>
+            <div class="box-title"><b>Charts</b></div>
+          </div>
+          <div class="box-body">
+
+            <div style="width:90%; height: 300px; display: block; margin: auto; text-align: center;">
+              <div id="chartSessionsLoading" style="height:100%; width:100%">
+                <span style="display: inline-block; height:50%"></span>
+                <img src="{% static 'images/loader_grey.gif' %}" style="vertical-align: middle;">
+              </div>
+              <div id="chartSessions"></div>
+              <div id="chartSessionsError"
+                   style="width:100%; height:100%; border:1px solid red; display: none;">
+                <span style="line-height:150px">There was an error loading the data for Chat Sessions. Please try again later.</span>
+              </div>
+            </div>
+
+            <div style="width:90%; height: 300px; display: block; margin: auto; text-align: center; vertical-align: middle">
+              <div id="chartInteractionsLoading" style="height:100%; width:100%">
+                <span style="display: inline-block; height:50%"></span>
+                <img src="{% static 'images/loader_grey.gif' %}" style="vertical-align: middle;">
+              </div>
+              <div id="chartInteractions"></div>
+              <div id="chartInteractionsError"
+                   style="width:100%; height:100%; border:1px solid red; display: none;">
+                <span style="line-height:150px">There was an error loading the data for Chat Interactions. Please try again later.</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'css/training.css' %}">
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="{% static 'js/insights.js' %}"></script>
+<script src="{% static 'js/training.js' %}"></script>
+<script type="text/javascript">
+
+  google.charts.load("current", {packages: ['corechart']});
+  google.charts.setOnLoadCallback(function () {
+    requestInsightsSessions('{{aiid}}', '{{from_date}}', '{{to_date}}', '{{date_interval}}');
+    requestInsightsInteractions('{{aiid}}', '{{from_date}}', '{{to_date}}', '{{date_interval}}');
+  });
+
+</script>
+
+<script>
+  var aiid = '{{aiid}}';
+</script>
+
+{% endblock %}

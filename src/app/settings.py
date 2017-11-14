@@ -411,6 +411,9 @@ API_TIMEOUT = 1
 # allow five seconds for API calls that make one or more calls to Facebook's API
 API_FACEBOOK_TIMEOUT = 5
 
+# allow a much longer timeout for async chart loading
+API_LOGS_TIMEOUT = 20
+
 # ------------------------------------------------------------------------------
 #
 # Environments specific settings

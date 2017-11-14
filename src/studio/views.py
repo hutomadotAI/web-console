@@ -1,5 +1,7 @@
 import json
 import logging
+
+import datetime
 import requests
 
 from django.conf import settings
@@ -45,7 +47,9 @@ from studio.services import (
     facebook_action,
     set_facebook_connect_token,
     get_facebook_customisations,
-    set_facebook_customisations)
+    set_facebook_customisations,
+    get_insights_chatlogs,
+    get_insights_chart)
 
 logger = logging.getLogger(__name__)
 
@@ -772,3 +776,65 @@ class TrainingView(StudioViewMixin, FormView):
         )
 
         return HttpResponseRedirect(redirect_url)
+
+
+@method_decorator(login_required, name='dispatch')
+class InsightsView(StudioViewMixin, TemplateView):
+
+    template_name = "insights.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(InsightsView, self).get_context_data(**kwargs)
+
+        # hard code dates to 30 day window
+        today = datetime.date.today()
+        context['to_date'] = today.isoformat()
+        context['from_date'] = (datetime.date.today() - datetime.timedelta(days=30))\
+            .isoformat()
+
+        # generate date range description
+        context['date_interval'] = "from %s to %s" \
+                                   % (context['from_date'], context['to_date'])
+
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class ProxyInsightsLogsView(View):
+    """Get logs from the api and relay them as an attachment"""
+
+    def post(self, request, aiid, *args, **kwargs):
+
+        # get date params from the request body
+        fromDate = request.POST.get("from", "")
+        toDate = request.POST.get("to", "")
+
+        logs = get_insights_chatlogs(
+            self.request.session.get('token', False),
+            aiid,
+            fromDate,
+            toDate)
+
+        response = HttpResponse(logs, content_type='application/csv')
+        response['Content-Disposition'] = 'attachment; filename="chatlogs.csv"'
+        return response
+
+
+@method_decorator(login_required, name='dispatch')
+class ProxyInsightsChartView(View):
+    """Get chart data from the api and relay json content directly"""
+
+    def post(self, request, aiid, *args, **kwargs):
+
+        token = self.request.session.get('token', False),
+        data_type = request.POST.get("dataType", "")
+
+        # hard code dates to a 30 day window
+        today = datetime.date.today()
+        to_date = today.isoformat()
+        from_date = (datetime.date.today() - datetime.timedelta(days=30))\
+            .isoformat()
+
+        # relay request to the api
+        response = get_insights_chart(token, aiid, from_date, to_date, data_type)
+        return JsonResponse(response)
