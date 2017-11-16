@@ -9,6 +9,7 @@
 .traningStatus {
   display: flex;
   position: relative;
+  width: 100%;
 }
 
 .traningStatus label {

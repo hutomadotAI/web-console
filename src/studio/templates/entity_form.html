@@ -1,15 +1,11 @@
 {% extends 'studio_base.html' %}
 
-{% load i18n crispy_forms_tags static embed %}
+{% load i18n crispy_forms_tags static %}
 
 {% block title %}{% trans 'Bot entities' %} {{ entity_name }}{% endblock %}
 
 {% block navigation %}
-  {% embed 'navigation.html' %}
-    {% block studio %}
-      {% include 'studio_navigation.html' with ai=ai active='entities' %}
-    {% endblock studio %}
-  {% endembed %}
+  {% include 'studio_navigation.html' with ai=ai active='entities' %}
 {% endblock %}
 
 {% block content %}
@@ -21,7 +17,7 @@
         </div>
 
         <div class="box-body">
-          <form method="post" id="entity_form">
+          <form method="post" class="persistent" id="entity_form">
             {% csrf_token %}
 
             {{ form | crispy }}

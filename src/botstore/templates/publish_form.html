@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load i18n crispy_forms_tags static embed %}
+{% load i18n crispy_forms_tags static %}
 
 {% block title %}{% trans 'Publish' %}{% endblock %}
 
@@ -33,7 +33,7 @@
 
         <div class="box-body">
 
-          <form method="post" class="form-publish" id="publish_form" enctype="multipart/form-data">
+          <form method="post" class="persistent form-publish" id="publish_form" enctype="multipart/form-data">
             {% csrf_token %}
 
             {{ form | crispy }}
@@ -77,16 +77,11 @@
 
 {% block javascripts %}
 
+  <script src="{% static 'js/forms.js' %}"></script>
   <script src="{% static 'js/messages.js' %}"></script>
   <script src="{% static 'js/image_upload.js' %}"></script>
 
   <script>
-    const USER =  {
-      name: '{{ user.first_name }}',
-      email: '{{ user.email }}',
-      username: '{{ user.username }}',
-      token: '{{ request.session.token }}'
-    }
     const AI = {
       id: '{{ ai.aiid }}',
       name: '{{ ai.name }}'

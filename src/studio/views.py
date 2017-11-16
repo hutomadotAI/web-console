@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView
-from django.views.generic.base import ContextMixin, TemplateView
+from django.views.generic.base import ContextMixin, TemplateView, RedirectView
 from django.views.generic.edit import FormView
 
 from studio.forms import (
@@ -31,27 +31,58 @@ from studio.forms import (
     TrainingForm,
 )
 from studio.services import (
-    get_ai,
     delete_ai,
-    get_ai_export,
-    get_intent_list,
-    get_entities_list,
-    get_entity,
-    get_intent,
-    post_intent,
     delete_entity,
     delete_intent,
-    get_ai_list,
-    post_regenerate_webhook_secret,
-    get_facebook_connect_state,
     facebook_action,
-    set_facebook_connect_token,
+    get_ai,
+    get_ai_export,
+    get_ai_list,
+    get_entities_list,
+    get_entity,
+    get_facebook_connect_state,
     get_facebook_customisations,
-    set_facebook_customisations,
+    get_insights_chart,
     get_insights_chatlogs,
-    get_insights_chart)
+    get_intent,
+    get_intent_list,
+    post_intent,
+    post_regenerate_webhook_secret,
+    put_training_start,
+    put_training_update,
+    set_facebook_connect_token,
+    set_facebook_customisations,
+)
 
 logger = logging.getLogger(__name__)
+
+
+class StudioViewMixin(ContextMixin):
+
+    def get_context_data(self, **kwargs):
+        """Get AI information for studio navigation and training progress"""
+
+        context = super(StudioViewMixin, self).get_context_data(**kwargs)
+
+        ai = get_ai(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        )
+
+        template = 'messages/training_status.html'
+        message = loader.get_template(template)
+
+        if ai['training']['status'] == 'completed':
+            level = messages.SUCCESS
+        else:
+            level = messages.INFO
+
+        messages.add_message(self.request, level,  message.render({'ai': ai}))
+
+        context['ai'] = ai
+        context['api_url'] = settings.PUBLIC_API_URL
+
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -215,37 +246,6 @@ class FacebookIntegrationCustomiseView(View):
             return HttpResponse(status=result['status']['code'])
 
         return HttpResponse(status=400)
-
-
-class StudioViewMixin(ContextMixin):
-
-    def get_context_data(self, **kwargs):
-        """
-        Get AI information for studio navigation and training progress
-        """
-        context = super(StudioViewMixin, self).get_context_data(**kwargs)
-
-        ai = get_ai(
-            self.request.session.get('token', False),
-            self.kwargs['aiid']
-        )
-
-        template = 'messages/training_status.html'
-        message = loader.get_template(template)
-
-        if ai['training']['status'] == 'completed':
-            level = messages.SUCCESS
-        else:
-            level = messages.INFO
-
-        messages.add_message(self.request, level,  message.render({
-            'ai': ai
-        }))
-
-        context['ai'] = ai
-        context['api_url'] = settings.PUBLIC_API_URL
-
-        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -614,6 +614,16 @@ class IntentsView(StudioViewMixin, FormView):
                     kwargs={**self.kwargs}
                 )
             )
+
+            template = 'messages/retrain.html'
+            message = loader.get_template(template)
+
+            messages.add_message(
+                self.request, messages.WARNING, message.render({
+                    'aiid': self.kwargs['aiid']
+                })
+            )
+
         else:
             level = messages.ERROR
             redirect_url = self.render_to_response(
@@ -779,6 +789,44 @@ class TrainingView(StudioViewMixin, FormView):
 
 
 @method_decorator(login_required, name='dispatch')
+class RetrainView(RedirectView):
+    """
+    Restart bot training and get back to where you came from, if we don't
+    know that to studio summary
+    """
+
+    permanent = False
+    query_string = True
+    pattern_name = 'studio:summary'
+
+    def get_redirect_url(self, *args, **kwargs):
+
+        training = put_training_update(
+            self.request.session.get('token'),
+            kwargs['aiid']
+        )
+
+        # Start training if succesfully  updated
+        if training['status']['code'] in [200, 201]:
+            training = put_training_start(
+                self.request.session.get('token'),
+                kwargs['aiid']
+            )
+
+        if training['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+        else:
+            level = messages.ERROR
+
+        messages.add_message(self.request, level, training['status']['info'])
+
+        return self.request.META.get(
+            'HTTP_REFERER',
+            super(RetrainView, self).get_redirect_url(*args, **kwargs)
+        )
+
+
+@method_decorator(login_required, name='dispatch')
 class InsightsView(StudioViewMixin, TemplateView):
 
     template_name = "insights.html"
@@ -789,12 +837,14 @@ class InsightsView(StudioViewMixin, TemplateView):
         # hard code dates to 30 day window
         today = datetime.date.today()
         context['to_date'] = today.isoformat()
-        context['from_date'] = (datetime.date.today() - datetime.timedelta(days=30))\
-            .isoformat()
+        context['from_date'] = (
+            datetime.date.today() - datetime.timedelta(days=30)
+        ).isoformat()
 
         # generate date range description
-        context['date_interval'] = "from %s to %s" \
-                                   % (context['from_date'], context['to_date'])
+        context['date_interval'] = "from %s to %s" % (
+            context['from_date'], context['to_date']
+        )
 
         return context
 
@@ -806,14 +856,15 @@ class ProxyInsightsLogsView(View):
     def post(self, request, aiid, *args, **kwargs):
 
         # get date params from the request body
-        fromDate = request.POST.get("from", "")
-        toDate = request.POST.get("to", "")
+        fromDate = request.POST.get('from', '')
+        toDate = request.POST.get('to', '')
 
         logs = get_insights_chatlogs(
             self.request.session.get('token', False),
             aiid,
             fromDate,
-            toDate)
+            toDate
+        )
 
         response = HttpResponse(logs, content_type='application/csv')
         response['Content-Disposition'] = 'attachment; filename="chatlogs.csv"'
@@ -827,14 +878,17 @@ class ProxyInsightsChartView(View):
     def post(self, request, aiid, *args, **kwargs):
 
         token = self.request.session.get('token', False),
-        data_type = request.POST.get("dataType", "")
+        data_type = request.POST.get('dataType', '')
 
         # hard code dates to a 30 day window
         today = datetime.date.today()
         to_date = today.isoformat()
-        from_date = (datetime.date.today() - datetime.timedelta(days=30))\
-            .isoformat()
+        from_date = (
+            datetime.date.today() - datetime.timedelta(days=30)
+        ).isoformat()
 
         # relay request to the api
-        response = get_insights_chart(token, aiid, from_date, to_date, data_type)
+        response = get_insights_chart(
+            token, aiid, from_date, to_date, data_type
+        )
         return JsonResponse(response)

@@ -324,7 +324,10 @@ class ImportAIForm(forms.Form):
 
     ai_data = forms.FileField(
         label=_('Exported Bot JSON file'),
-        widget=forms.FileInput(attrs={'placeholder': 'YourBotConfig.json'})
+        widget=forms.FileInput(attrs={
+            'accept': '.json, application/json',
+            'placeholder': 'YourBotConfig.json'
+        })
     )
 
     def save(self, *args, **kwargs):
@@ -337,6 +340,7 @@ class TrainingForm(forms.Form):
     file = forms.FileField(
         label=_('Add training file'),
         widget=forms.FileInput(attrs={
+            'accept': '.txt, text/plain',
             'placeholder': _('Select a txt file')
         })
     )

@@ -1,25 +1,21 @@
 {% extends "base.html" %}
 
-{% load i18n crispy_forms_tags static embed %}
+{% load i18n crispy_forms_tags static %}
 
 {% block title %}{% trans 'Bot Integration' %}{% endblock %}
 
 {% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
 
 {% block header %}
-{% include 'console_header.html' %}
+  {% include 'console_header.html' %}
 {% endblock %}
 
 {% block navigation %}
-{% embed 'navigation.html' %}
-{% block studio %}
-{% include 'studio_navigation.html' with ai=ai active='integrations' %}
-{% endblock studio %}
-{% endembed %}
+  {% include 'studio_navigation.html' with ai=ai active='integrations' %}
 {% endblock %}
 
 {% block footer %}
-{% include 'console_footer.html' %}
+  {% include 'console_footer.html' %}
 {% endblock %}
 
 {% block content %}

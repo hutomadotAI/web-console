@@ -30,7 +30,7 @@ $(document)
       .catch(error => {
         console.error(error)
       })
-    console.log(this)
+    console.debug(this)
   })
 
 $('#delete_element').on('show.bs.modal', function (event) {

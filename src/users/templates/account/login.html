@@ -38,4 +38,8 @@
     </div>
   <section>
 
-{% endblock %}
+{% endblock content %}
+
+{% block javascripts.vendors %}
+  {% include 'account/cookie_banner.html' %}
+{% endblock javascripts.vendors %}

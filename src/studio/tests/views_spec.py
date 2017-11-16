@@ -354,18 +354,13 @@ class TestAICreateView(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class TestSkillsUpdateView(TestCase):
-
+class TestTrainingView(TestCase):
     @factory.django.mute_signals(user_logged_in)
     def setUp(self):
-        """
-        Create a user to test response as registered user
-        """
+        """Create a user to test response as registered user"""
+
         self.user = UserFactory()
-        self.ai = factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory
-            )
+        self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
         Profile.objects.create(user=self.user)
 
         self.client.force_login(self.user)
@@ -374,9 +369,144 @@ class TestSkillsUpdateView(TestCase):
         session.save()
 
     def test_anonymous(self):
-        """
-        Anonymous can't access update skills
-        """
+        """Anonymous can't access update training"""
+
+        self.client.logout()
+        response = self.client.get(reverse(
+            'studio:training',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('account_login') + '?next=/bots/edit/%s/training' % self.ai['aiid']
+        )
+
+    @patch('studio.views.get_ai')
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    def test_registred(self, mock_get_ai, mock_get_categories):
+
+        mock_get_ai.return_value.json.return_value = [
+            factory.build(dict, FACTORY_CLASS=AiFactory)
+        ]
+        mock_get_categories.return_value.json.return_value = []
+
+        response = self.client.get(reverse(
+            'studio:training',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+        self.assertEqual(response.status_code, 200)
+
+
+class TestEntitiesView(TestCase):
+    @factory.django.mute_signals(user_logged_in)
+    def setUp(self):
+        """Create a user to test response as registered user"""
+
+        self.user = UserFactory()
+        self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        Profile.objects.create(user=self.user)
+
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['token'] = 'token'
+        session.save()
+
+    def test_anonymous(self):
+        """Anonymous can't access update enities"""
+
+        self.client.logout()
+        response = self.client.get(reverse(
+            'studio:entities',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('account_login') + '?next=/bots/edit/%s/entities' % self.ai['aiid']
+        )
+
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_entities_list')
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    def test_registred(
+        self, mock_get_ai, mock_get_entities_list, mock_get_categories
+    ):
+
+        mock_get_ai.return_value.json.return_value = self.ai
+        mock_get_categories.return_value.json.return_value = []
+        mock_get_entities_list.return_value.json.return_value = []
+
+        response = self.client.get(reverse(
+            'studio:entities',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+        self.assertEqual(response.status_code, 200)
+
+
+class TestAIUpdateView(TestCase):
+    @factory.django.mute_signals(user_logged_in)
+    def setUp(self):
+        """Create a user to test response as registered user"""
+
+        self.user = UserFactory()
+        self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        Profile.objects.create(user=self.user)
+
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['token'] = 'token'
+        session.save()
+
+    def test_anonymous(self):
+        """Anonymous can't access update settings"""
+
+        self.client.logout()
+        response = self.client.get(reverse(
+            'studio:settings',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('account_login') + '?next=/bots/edit/%s/settings' % self.ai['aiid']
+        )
+
+    # @patch('studio.views.get_ai')
+    # @patch('botstore.templatetags.botstore_tags.get_categories')
+    # def test_registred(
+    #     self, mock_get_ai, mock_get_categories
+    # ):
+
+    #     mock_get_ai.return_value.json.return_value = self.ai
+    #     mock_get_categories.return_value.json.return_value = []
+
+    #     response = self.client.get(reverse(
+    #         'studio:settings',
+    #         kwargs={'aiid': self.ai['aiid']}
+    #     ))
+    #     self.assertEqual(response.status_code, 200)
+
+
+class TestSkillsUpdateView(TestCase):
+
+    @factory.django.mute_signals(user_logged_in)
+    def setUp(self):
+        """Create a user to test response as registered user"""
+
+        self.user = UserFactory()
+        self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        Profile.objects.create(user=self.user)
+
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['token'] = 'token'
+        session.save()
+
+    def test_anonymous(self):
+        """Anonymous can't access update skills"""
 
         self.client.logout()
         response = self.client.get(reverse(
@@ -422,9 +552,7 @@ class TestSkillsUpdateView(TestCase):
 
     @patch('studio.services.requests.get')
     def test_unauthorised(self, mock_get_ai):
-        """
-        Return 404 if user doesn't have access to the AI
-        """
+        """Return 404 if user doesn't have access to the AI"""
 
         # We mock ai_list
         mock_get_ai.return_value.status_code = 403
@@ -442,9 +570,8 @@ class TestIntentsView(TestCase):
 
     @factory.django.mute_signals(user_logged_in)
     def setUp(self):
-        """
-        Create a user to test response as registered user
-        """
+        """Create a user to test response as registered user"""
+
         self.user = UserFactory()
         self.ai = factory.build(
                 dict,
@@ -458,9 +585,7 @@ class TestIntentsView(TestCase):
         session.save()
 
     def test_anonymous(self):
-        """
-        Anonymous can't access update intents
-        """
+        """Anonymous can't access update intents"""
 
         self.client.logout()
         response = self.client.get(reverse(

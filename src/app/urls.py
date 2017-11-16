@@ -23,6 +23,7 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views import defaults, generic
+from django.views.generic.base import RedirectView
 
 
 # Ugly but, Simple is better than complex
@@ -74,10 +75,20 @@ urlpatterns = [
         name='favicon'
     ),
 
-    # favicon fallback
+    # loader io key
     url(
         r'^loaderio-beeabb3d964411d8b9bf497039873568/$',
         generic.base.TemplateView.as_view(template_name='loaderio.txt')
+    ),
+
+    # Privacy redirect
+    url(
+        r'^privacy/?$',
+        RedirectView.as_view(
+            url='https://www.hutoma.ai/privacy.pdf',
+            permanent=True
+        ),
+        name='privacy'
     ),
 ]
 

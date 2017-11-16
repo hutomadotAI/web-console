@@ -38,6 +38,7 @@ from studio.views import (
     ProxyEntityDeleteView,
     ProxyIntentDeleteView,
     ProxyRegenerateWebhookSecretView,
+    RetrainView,
     SkillsView,
     TrainingView,
     IntegrationFacebookView,
@@ -82,6 +83,13 @@ urlpatterns = [
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/training/?$',
         TrainingView.as_view(),
         name='training'
+    ),
+
+    # Restart training of an AI
+    url(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/retrain/?$',
+        RetrainView.as_view(),
+        name='retrain'
     ),
 
     # Update skills of an existing AI

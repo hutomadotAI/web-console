@@ -4,7 +4,9 @@
  */
 
 .alert {
+  align-items: baseline;
   color: #fff;
+  display: flex;
   border: none;
   border-radius: 3px;
 }
@@ -30,6 +32,12 @@
 .alert a {
   color: #fff;
   text-decoration: underline;
+}
+
+.alert .btn {
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: auto;
 }
 
 .alert-success {

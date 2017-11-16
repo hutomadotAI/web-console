@@ -1,15 +1,11 @@
 {% extends 'studio_base.html' %}
 
-{% load i18n crispy_forms_tags static embed %}
+{% load i18n crispy_forms_tags static %}
 
 {% block title %}{% trans 'Bot intents' %} {{ intent_name }}{% endblock %}
 
 {% block navigation %}
-  {% embed 'navigation.html' %}
-    {% block studio %}
-      {% include 'studio_navigation.html' with ai=ai active='intents' %}
-    {% endblock studio %}
-  {% endembed %}
+  {% include 'studio_navigation.html' with ai=ai active='intents' %}
 {% endblock %}
 
 {% block content %}
@@ -21,7 +17,7 @@
         </div>
 
         <div class="box-body">
-          <form method="post" id="intent_form">
+          <form method="post" class="persistent" id="intent_form">
             {% csrf_token %}
 
             {{ form | crispy }}
@@ -86,7 +82,7 @@
 {% endblock %}
 
 {% block modals %}
-  {% include 'modals/delete_element.html' %}
+  {% include 'modals/delete_element.html' with id='delete_element' %}
 {% endblock modals %}
 
 {% block stylesheets.vendors %}

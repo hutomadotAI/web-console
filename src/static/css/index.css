@@ -6594,12 +6594,12 @@ ul.pagination li a {
 }
 
 .card-icon {
-    width: 170px;
-    height: 150px;
-    display: block;
-    margin: auto;
-    background: rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+  background-color: #ECEFF1;
+  background-image: url('../images/empty_icon.svg');
+  display: block;
+  height: 150px;
+  margin: auto;
+  width: 170px;
 }
 
 .card-icon > img {

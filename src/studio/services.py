@@ -203,6 +203,44 @@ def post_training(token, aiid, training_file):
     return response.json()
 
 
+def put_training_update(token, aiid):
+    """Update AI training"""
+
+    path = '/ai/%s/training/update'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.put(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
+def put_training_start(token, aiid):
+    """Start AI training"""
+
+    path = '/ai/%s/training/start'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.put(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
 def put_training_start(token, aiid):
     """Start an AI training"""
 

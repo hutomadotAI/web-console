@@ -1,25 +1,11 @@
-{% extends "base.html" %}
+{% extends 'studio_base.html' %}
 
-{% load i18n crispy_forms_tags static embed %}
+{% load i18n crispy_forms_tags static %}
 
 {% block title %}{% trans 'Bot Settings' %}{% endblock %}
 
-{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
-
-{% block header %}
-  {% include 'console_header.html' %}
-{% endblock %}
-
 {% block navigation %}
-  {% embed 'navigation.html' %}
-    {% block studio %}
-      {% include 'studio_navigation.html' with ai=ai active='settings' %}
-    {% endblock studio %}
-  {% endembed %}
-{% endblock %}
-
-{% block footer %}
-  {% include 'console_footer.html' %}
+  {% include 'studio_navigation.html' with ai=ai active='settings' %}
 {% endblock %}
 
 {% block content %}
@@ -32,7 +18,7 @@
 
         <div class="box-body">
 
-          <form method="post" class="settings-add" id="settings_form">
+          <form method="post" class="persistent settings-add" id="settings_form">
             {% csrf_token %}
 
             {{ form | crispy }}
@@ -44,7 +30,7 @@
         <div class="box-footer">
             <a href="{% url 'studio:index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
             <button style="min-width:100px" type="submit" form="settings_form" class="btn btn-success flat pull-right"><b>{% trans 'Save' %}</b></button>
-            <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" download="bot-{{ ai.aiid }}" style="min-width:100px" id="action.settings:export" class="btn btn-primary flat pull-right"><b>{% trans 'Export' %}</b></a>
+            <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" download="bot-{{ ai.aiid }}" style="min-width:100px" class="btn btn-primary flat pull-right"><b>{% trans 'Export' %}</b></a>
         </div>
 
       </div>
@@ -61,7 +47,7 @@
             <div class="input-group">
               <input type="text" readonly class="form-control" id="dev_id" value="{{ request.session.dev_id }}">
               <span class="input-group-btn">
-                <button class="btn flat direct-chat-dictate" id="action.speech:dictate"  data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#dev_id"><i class="fa fa-clipboard"></i></button>
+                <button class="btn flat direct-chat-dictate" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#dev_id"><i class="fa fa-clipboard"></i></button>
               </span>
             </div>
           </div>
@@ -71,7 +57,7 @@
             <div class="input-group">
               <input type="text" readonly class="form-control" id="dev_token" value="{{ request.session.token }}">
               <span class="input-group-btn">
-                <button class="btn flat direct-chat-dictate" id="action.speech:dictate"  data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#dev_token"><i class="fa fa-clipboard"></i></button>
+                <button class="btn flat direct-chat-dictate" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#dev_token"><i class="fa fa-clipboard"></i></button>
               </span>
             </div>
           </div>
@@ -96,13 +82,13 @@
               <div class="input-group">
                 <input type="text" readonly class="textinput textInput form-control" id="webhook_signing_secret">
                 <span class="input-group-btn">
-                  <button class="btn flat direct-chat-dictate" id="action.speech:dictate"  data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#webhook_signing_secret"><i class="fa fa-clipboard"></i></button>
+                  <button class="btn flat direct-chat-dictate" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#webhook_signing_secret"><i class="fa fa-clipboard"></i></button>
                 </span>
               </div>
             </div>
 
             <div class="form-group">
-              <button style="width:100px" data-toggle="modal" data-target="#regenHmacSecret" class="btn btn-primary flat pull-right"><b>Generate</b></button>
+              <button style="width:100px" data-toggle="modal" data-target="#regenerate_webhook_secret" class="btn btn-primary flat pull-right"><b>Generate</b></button>
             </div>
 
           </div>
@@ -110,7 +96,7 @@
         </div>
 
         <div class="box-footer">
-          <button style="min-width:100px" data-toggle="modal" data-target="#deleteAI" class="btn btn-danger flat pull-right"><b>{% trans 'Delete bot' %}</b></button>
+          <button style="min-width:100px" data-toggle="modal" data-target="#delete_AI" class="btn btn-danger flat pull-right"><b>{% trans 'Delete bot' %}</b></button>
         </div>
 
       </div>
@@ -119,40 +105,8 @@
 {% endblock %}
 
 {% block modals %}
-  {% embed 'modals/danger_modal.html' with id='deleteAI' title='Delete bot' %}
-
-    {% block body %}
-      <p>{% blocktrans %}Are you sure you want to permanently delete {{ ai.name }}?{% endblocktrans %}</p>
-      <form method="post" action="{% url 'studio:proxy.ai' ai.aiid %}" id="delete_bot">
-        {% csrf_token %}
-        <input type="hidden" name="aiid" value="{{ ai.aiid }}">
-        <input type="hidden" name="action" value="delete">
-      </form>
-    {% endblock body %}
-
-    {% block footer %}
-      <button type="button" class="btn btn-primary flat" data-dismiss="modal">{% trans 'Cancel' %}</button>
-      <button type="submit" form="delete_bot" class="btn btn-danger flat">{% trans 'Delete' %}</button>
-    {% endblock footer %}
-
-  {% endembed %}
-
-  {% embed 'modals/danger_modal.html' with id='regenHmacSecret' title='Regenerate the webhook signing secret' %}
-
-    {% block body %}
-      <p>{% blocktrans %}Warning - if this is updated, all code relying on the existing key for signature validation must be updated{% endblocktrans %}</p>
-      <form method="post" action="{% url 'studio:proxy.ai.regenerate_webhook_secret' ai.aiid %}" id="regenerate_webhook">
-        {% csrf_token %}
-        <input type="hidden" name="aiid" value="{{ ai.aiid }}">
-      </form>
-    {% endblock body %}
-
-    {% block footer %}
-      <button type="button" class="btn btn-primary flat" data-dismiss="modal">{% trans 'Cancel' %}</button>
-      <button type="submit" form="regenerate_webhook" class="btn btn-danger flat">{% trans 'Generate' %}</button>
-    {% endblock footer %}
-
-  {% endembed %}
+  {% include 'modals/delete_ai.html' with id='delete_AI' %}
+  {% include 'modals/regenerate_webhook_secret.html' with id='regenerate_webhook_secret' %}
 {% endblock %}
 
 {% block stylesheets.vendors %}
@@ -162,7 +116,6 @@
 {% block stylesheets %}
   {{ block.super }}
 
-  <link rel="stylesheet" href="{% static 'css/training.css' %}">
   <link rel="stylesheet" href="{% static 'css/tokenfield.css' %}">
 {% endblock %}
 
@@ -171,15 +124,8 @@
 {% endblock %}
 
 {% block javascripts %}
-  <script>
-    const AI = {
-      id: '{{ ai.aiid }}',
-      name: '{{ ai.name }}'
-    }
-  </script>
+  {{ block.super }}
 
   <script src="{% static 'js/tokenfield.js' %}"></script>
-  <script src="{% static 'js/training.js' %}"></script>
   <script src="{% static 'js/webhook.js' %}"></script>
-
 {% endblock %}
