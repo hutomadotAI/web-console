@@ -57,8 +57,23 @@ body {
 
 .form-signup .form-group {
   margin: 1%;
+  position: relative;
   width: 48%;
 }
+
+.form-signup .toggle-password {
+  background: no-repeat;
+  border: none;
+  bottom: 0;
+  color: #fff;
+  font-size: 2rem;
+  line-height: 32px;
+  outline: none !important;
+  position: absolute;
+  right: 1rem;
+}
+
+.form-signup .toggle-password
 
 @media (max-width: 480px) {
   .form-signup .form-group {
