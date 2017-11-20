@@ -49,7 +49,7 @@ document.addEventListener('change', function handleChange(event) {
     return confirmationMessage               // Gecko, WebKit, Chrome <34
   }
 
-  if (event.target.form.classList.contains('persistent')) {
+  if (event.target.form && event.target.form.classList.contains('persistent')) {
     window.addEventListener('beforeunload', handleBeforeUnload)
     document.addEventListener('submit', function handleSubmit(event) {
       window.removeEventListener('beforeunload', handleBeforeUnload)

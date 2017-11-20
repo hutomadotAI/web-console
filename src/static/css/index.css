@@ -6596,6 +6596,8 @@ ul.pagination li a {
 .card-icon {
   background-color: #ECEFF1;
   background-image: url('../images/empty_icon.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
   display: block;
   height: 150px;
   margin: auto;

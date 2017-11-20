@@ -36,27 +36,27 @@
 
     {% block stylesheets %}{% endblock %}
 
+    {% block gtm.head %}
+      <script>
+        var dataLayer = []
+
+        {% if user.is_authenticated %}
+          const USER =  {
+            name: '{{ user.first_name }}',
+            email: '{{ user.email }}',
+            username: '{{ user.username }}',
+            token: '{{ request.session.token }}',
+            devId: '{{ request.session.dev_id }}'
+          }
+          dataLayer.push({'user': USER})
+        {% else %}
+          const USER = {}
+        {% endif %}
+
+      </script>
+    {% endblock %}
+
     {% if tag_manager_id %}
-      {% block gtm.head %}
-        <script>
-          var dataLayer = []
-
-          {% if user.is_authenticated %}
-            const USER =  {
-              name: '{{ user.first_name }}',
-              email: '{{ user.email }}',
-              username: '{{ user.username }}',
-              token: '{{ request.session.token }}',
-              devId: '{{ request.session.dev_id }}'
-            }
-            dataLayer.push({'user': USER})
-          {% else %}
-            const USER = {}
-          {% endif %}
-
-        </script>
-      {% endblock %}
-
       {% include 'tag_manager_head.html' %}
     {% endif %}
 
