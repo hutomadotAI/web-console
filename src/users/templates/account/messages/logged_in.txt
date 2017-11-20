@@ -1,7 +1,7 @@
 {% load account %}
 {% load i18n %}
 {% user_display user as name %}
-{% blocktrans %}Successfully signed in as <b>{{name}}</b>.{% endblocktrans %}
+{% blocktrans %}<p>Successfully signed in as <b>{{name}}</b>.</p>{% endblocktrans %}
 
 <script>dataLayer.push({
   event: 'abstractEvent',

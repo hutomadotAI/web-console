@@ -1,5 +1,5 @@
 {% load i18n %}
-{% blocktrans %}You have signed out.{% endblocktrans %}
+{% blocktrans %}<p>You have signed out.</p>{% endblocktrans %}
 
 <script>dataLayer.push({
   event: 'abstractEvent',

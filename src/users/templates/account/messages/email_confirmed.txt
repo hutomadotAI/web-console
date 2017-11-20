@@ -1,5 +1,5 @@
 {% load i18n %}
-{% blocktrans %}You have confirmed <b>{{email}}</b>.{% endblocktrans %}
+{% blocktrans %}<p>You have confirmed <b>{{email}}</b>.</p>{% endblocktrans %}
 
 <script>dataLayer.push({
   event: 'abstractEvent',
