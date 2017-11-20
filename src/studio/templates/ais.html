@@ -18,7 +18,7 @@
             </tr>
             </thead>
             <tbody id="tableAiList">
-                {% for ai in ais %}
+                {% for ai in ais reversed %}
                   {% include 'ai.html' with ai=ai %}
                 {% endfor %}
             </tbody>
