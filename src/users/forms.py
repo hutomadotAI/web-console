@@ -2,6 +2,7 @@ import logging
 import pytz
 
 from django import forms, template
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from django_countries import countries
@@ -49,9 +50,10 @@ class SignupForm(forms.Form):
         label=label.render(),
         widget=forms.CheckboxInput
     )
-    captcha = ReCaptchaField(label='', attrs={
-        'theme': 'dark',
-    })
+    if settings.RECAPTCHA_PUBLIC_KEY and settings.RECAPTCHA_PRIVATE_KEY:
+        captcha = ReCaptchaField(label='', attrs={
+            'theme': 'dark',
+        })
 
     def __init__(self, *args, **kwargs):
 

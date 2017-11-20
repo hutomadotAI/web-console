@@ -96,6 +96,8 @@ services:
       LEGACY_SALT: YWJjZGVm
       MEDIA_URL: http://::1/
       SECRET_KEY: YWJjZGVm
+      RECAPTCHA_PUBLIC_KEY: YWJjZGVm
+      RECAPTCHA_PRIVATE_KEY: YWJjZGVm
     command: python manage.py test --pattern="*_spec.py"
 
   #
