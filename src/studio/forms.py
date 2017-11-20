@@ -289,6 +289,7 @@ class AddAIForm(forms.Form):
     )
 
     timezone = forms.ChoiceField(
+        initial='Europe/London',
         label=_('Timezone'),
         choices=TIMEZONES,
         widget=forms.Select()
