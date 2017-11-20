@@ -39,7 +39,7 @@
 
         <div class="box-body">
           <div class="elements">
-            {% for entity in entities reversed %}
+            {% for entity in entities|dictsort:'is_system' %}
               <div class="element">
                 {% if entity.is_system %}
                   <span><span class="label label-primary">system</span> {{ entity.entity_name }}</span>
