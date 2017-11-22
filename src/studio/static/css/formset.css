@@ -71,8 +71,8 @@
 
 /* TODO: move to entities stylesheet */
 
-.form-group.n-prompts-group {
-  width: 10rem;
+.form-group.n_prompts-group {
+  width: 7rem;
 }
 
 .form-group.entity-name-group,
