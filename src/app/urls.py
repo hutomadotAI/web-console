@@ -90,6 +90,16 @@ urlpatterns = [
         ),
         name='privacy'
     ),
+
+    # Landing home page redirect
+    url(
+        r'^home/?$',
+        RedirectView.as_view(
+            url='https://www.hutoma.ai',
+            permanent=True
+        ),
+        name='home'
+    ),
 ]
 
 if settings.DEBUG:

@@ -2,9 +2,9 @@
 
 {% load i18n static %}
 
-{% block title %}{% trans 'Page not found' %} — 404{% endblock %}
+{% block title %}{% trans 'Access is forbidden' %} — 403{% endblock %}
 
-{% block code %}404{% endblock code %}
+{% block code %}403{% endblock code %}
 
 {% block chat %}
 
@@ -42,7 +42,9 @@
 
     <div class="messages">
 
-      <div class="message">{% blocktrans %}I couldn't find the page you were looking for.{% endblocktrans %}</div>
+      <div class="message">{% blocktrans %}CSRF verification failed.{% endblocktrans %}</div>
+
+      <div class="message">{% blocktrans %}Could you please go back, refresh the page and try again?{% endblocktrans %}</div>
 
     </div>
 

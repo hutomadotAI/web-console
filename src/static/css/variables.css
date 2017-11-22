@@ -7,6 +7,16 @@
 
   --UI-800: #222;
 
+  --HUTOMA-BLUE-100: #BBDEFB;
+  --HUTOMA-BLUE-300: #64B5F6;
+  --HUTOMA-BLUE-500: #42A5F5;
+  --HUTOMA-BLUE-700: #1976D2;
+  --HUTOMA-BLUE-900: #0D47A1;
+
+  /* Typography */
+  --HUTOMA-TITLE: Futura, 'Century Gothic', sans-serif;
+  --HUTOMA-BODY: 'Helvetica Neue', Arial, sans-serif;
+
   /* Forms */
   --INPUT_BACKGROUND: #515151;
   --INPUT_COLOR: #ADADAD;

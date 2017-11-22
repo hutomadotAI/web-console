@@ -1,0 +1,105 @@
+body {
+  align-items: center;
+  background-color: var(--HUTOMA-BLUE-500);
+  box-sizing: border-box;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--HUTOMA-BODY);
+  height: 100vh;
+  justify-content: space-evenly;
+  min-height: 33rem;
+  padding: 1rem 1rem 3rem;
+  position: relative;
+  text-rendering: optimizeLegibility;
+}
+
+footer {
+  background-color: var(--HUTOMA-BLUE-900);
+  position: absolute;
+  bottom: 0;
+  font-size: 0.75rem;
+  font-weight: bold;
+  width: 100%;
+  line-height: 3rem;
+  text-align: center;
+}
+
+h1 {
+  font-family: var(--HUTOMA-TITLE);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  max-width: 26rem;
+}
+
+.chat .entry {
+  display: flex;
+  margin: 0 0 2rem;
+}
+
+.chat .avatar {
+  border-radius: .5rem;
+  height: 3rem;
+  width: 3rem;
+}
+
+.chat .messages {
+  width: 65%;
+}
+
+.chat .message {
+  padding: 1rem;
+  background-color: white;
+  color: var(--HUTOMA-BLUE-500);
+  border-radius: 16px;
+  line-height: 1.5rem;
+  margin: 0 0.5rem 0.5rem;
+}
+
+.chat .message a {
+  color: var(--HUTOMA-BLUE-500);
+}
+
+.chat .message a:hover {
+  color: var(--HUTOMA-BLUE-300);
+}
+
+.chat .entry.me {
+  flex-direction: row-reverse;
+}
+
+.button {
+  border-radius: 0.25rem;
+  line-height: 2.25rem;
+  min-width: 5.5rem;
+  font-weight: bold;
+  font-size: 0.875rem;
+  padding: 0 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.button.inverse {
+  background-color: white;
+  color: var(--HUTOMA-BLUE-500);
+}
+
+.button.inverse:hover {
+  color: white;
+  background-color: var(--HUTOMA-BLUE-700);
+}
+
+.button.inverse:focus {
+  color: white;
+  background-color: var(--HUTOMA-BLUE-900);
+}
+
+.button.big {
+  line-height: 3rem;
+}
