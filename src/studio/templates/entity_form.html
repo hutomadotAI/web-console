@@ -40,12 +40,14 @@
         <div class="box-body">
           <div class="elements">
             {% for entity in entities|dictsort:'is_system' %}
-              <div class="element">
+              <div class="element element-{{ entity.entity_name }}">
                 {% if entity.is_system %}
                   <span><span class="label label-primary">system</span> {{ entity.entity_name }}</span>
                 {% else %}
                   <a href="{% url 'studio:entities.edit' ai.aiid entity.entity_name %}" title="edit {{ entity.entity_name }}"><span class="label label-success">users</span> {{ entity.entity_name }}</a>
-                  <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:proxy.entity.delete' %}?entity_name={{ entity.entity_name }}" data-id="{{ entity.entity_name }}"></button>
+                  {% if entity_name != entity.entity_name %}
+                    <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:proxy.entity.delete' %}?entity_name={{ entity.entity_name }}" data-id="{{ entity.entity_name }}"></button>
+                  {% endif %}
                 {% endif %}
               </div>
             {% endfor %}
@@ -60,7 +62,7 @@
 {% endblock %}
 
 {% block modals %}
-  {% include 'modals/delete_element.html' %}
+  {% include 'modals/delete_element.html' with id='delete_element' %}
 {% endblock modals %}
 
 {% block stylesheets.vendors %}

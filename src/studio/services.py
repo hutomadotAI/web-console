@@ -318,6 +318,9 @@ def get_entity(token, entity_name):
 
     logger.debug(response)
 
+    if response.status_code in [401, 403, 404]:
+        raise Http404(_('entity %s doesn’t exist') % entity_name)
+
     return response.json()
 
 

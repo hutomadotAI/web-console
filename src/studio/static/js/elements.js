@@ -21,7 +21,7 @@ $(document)
 
         // Remove the element
         if (success) {
-          $('.elements').find(`.element.${ id }`).remove()
+          $('.elements').find(`.element-${ id }`).remove()
         }
 
         // Hide the parents modal
