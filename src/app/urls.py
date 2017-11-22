@@ -83,12 +83,12 @@ urlpatterns = [
 
     # Privacy redirect
     url(
-        r'^privacy/?$',
+        r'^cookies/?$',
         RedirectView.as_view(
-            url='https://www.hutoma.ai/privacy.pdf',
+            url='https://www.hutoma.ai/cookiepolicy.pdf',
             permanent=True
         ),
-        name='privacy'
+        name='cookies'
     ),
 
     # Landing home page redirect
