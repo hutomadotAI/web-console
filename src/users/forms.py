@@ -68,7 +68,7 @@ class SignupForm(forms.Form):
 
 
 class DeveloperInfoForm(forms.Form):
-    COUNTRIES = [(code, name) for code, name in countries]
+    COUNTRIES = [(name, name) for name, name in countries]
 
     name = forms.CharField(
         label=_('Name'),
@@ -98,7 +98,7 @@ class DeveloperInfoForm(forms.Form):
     country = forms.ChoiceField(
         label=_('Country'),
         choices=COUNTRIES,
-        initial='GB',
+        initial='United Kingdom',
         widget=forms.Select()
     )
 
