@@ -764,13 +764,13 @@ elif ENVIRONMENT == 'production':
     # Email templates corresponding to Allauth actions
     SENDGRID_TEMPLATES = {
         'account/email/password_reset_key': '1780e9d0-cb68-4de6-a159-dc2fa83e86a1',
-        'account/email/email_confirmation': '1f853c34-19f3-4205-8e6d-e44d24f41875'
+        'account/email/email_confirmation_signup': '1f853c34-19f3-4205-8e6d-e44d24f41875'
     }
 
     SENDGRID_DEFAULT_TEMPLATE = 'a9e787d6-10f4-4ab2-b824-29b851a57c3c'
 
     # Mailing settings
-    DEFAULT_FROM_EMAIL = '🤖 from Hutoma AI <no-reply@hutoma.ai>'
+    DEFAULT_FROM_EMAIL = '🤖 from Hutoma AI <hu@hutoma.ai>'
 
     # --------------------------------------------------------------------------
     #
