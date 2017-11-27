@@ -192,7 +192,7 @@ function createBotMessage(name, message, timestamp, level, score, save=true) {
     <div class="direct-chat-text chat-${ level }">
       ${ stripHtml(message).replace(/(?:\r\n|\r|\n)/g, '<br />') }
     </div>
-    <span class="direct-chat-timestamp pull-left text-sm text-white">
+    <span class=" pull-left text-sm text-white">
       score: ${ score }
     </span>
   `;
