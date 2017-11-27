@@ -1755,9 +1755,10 @@ a:focus {
 }
 
 .form-control[readonly] {
-  color: #333;
+  color: #888;
   overflow: hidden;
   text-overflow: ellipsis;
+  background-color: #444;
 }
 
 .form-group.has-success label {
