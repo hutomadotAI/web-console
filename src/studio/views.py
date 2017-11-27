@@ -8,12 +8,13 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import get_messages
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.forms import formset_factory
-from django.template import loader
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import redirect
+from django.template import loader
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 from django.views import View
 from django.views.generic import ListView
 from django.views.generic.base import ContextMixin, TemplateView, RedirectView
@@ -394,13 +395,17 @@ class AICreateView(FormView):
 
         # Check if save was successful
         if new_ai['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
             redirect_url = reverse_lazy(
                 self.success_url,
                 kwargs={'aiid': new_ai['aiid']}
             )
         else:
+            level = messages.ERROR
             redirect_url = reverse_lazy(self.fail_url)
             messages.error(self.request, new_ai['status']['info'])
+
+        messages.add_message(self.request, level, new_ai['status']['info'])
 
         return HttpResponseRedirect(redirect_url)
 
@@ -753,12 +758,16 @@ class SkillsView(StudioViewMixin, FormView):
         return initial
 
     def form_valid(self, form):
-        """
-        Send new AI to API, if successful redirects to second step using AIID
-        as a parameter, if not raises a error message and redirect back to the
-        form.
-        """
-        form.save()
+        """Save skills attached to a bot"""
+        skills = form.save()
+
+        if skills['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+            skills['status']['info'] = _('Skills updated')
+        else:
+            level = messages.ERROR
+
+        messages.add_message(self.request, level, skills['status']['info'])
 
         return super().form_valid(form)
 
