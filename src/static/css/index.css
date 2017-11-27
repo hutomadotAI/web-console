@@ -6564,19 +6564,25 @@ ul.pagination li a {
     color: #ADADAD;
 }
 
-.carousel-box{
-  display: inline-block;
-  padding: 0px;
+.carousel-box {
+  padding: 0;
   width: 100%;
 }
 
-.carousel-row{
-    max-height: 249px;
-    min-height: 245px;
-    white-space: nowrap;
-    padding-top:2px;
-    padding-right:2px;
-    text-overflow: ellipsis;
+.carousel-row {
+  min-height: 245px;
+  white-space: nowrap;
+  padding-top:2px;
+  padding-right:2px;
+  text-overflow: ellipsis;
+}
+
+.category-list .carousel-row {
+  display: inline-block;
+  margin: -4rem 0 4rem;
+  max-height: 28rem;
+  padding-top: 4rem;
+  position: relative;
 }
 
 .carousel-overflow{
@@ -6592,9 +6598,10 @@ ul.pagination li a {
 }
 
 .carousel-see-more{
-    height: 45px;
-    top: 8px;
-    position:relative;
+  height: 45px;
+  position:absolute;
+  right: 0;
+  top: 0;
 }
 
 .carousel-ovelay{

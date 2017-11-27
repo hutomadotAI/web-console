@@ -6,19 +6,20 @@
 
       <div class="carousel-title">{{ category|title }}</div>
 
-      <div class="row carousel-row no-margin carousel-overflow">
+      <div class="row carousel-row carousel-overflow">
         {% for bot in bots %}
           {% include 'box-card.html' with developer=bot.developer bot=bot.metadata owned=bot.owned %}
         {% empty %}
           <div class="carousel-title">No bots yet</div>
         {% endfor %}
-      </div>
 
-      {% if more %}
-        <div class="carousel-see-more">
-          <a class="btn btn-primary flat pull-right" href="{% url 'botstore:category' category=category|lower|urlencode %}"><b>see more</b></a>
-        </div>
-      {% endif %}
+        {% if more %}
+          <div class="carousel-see-more">
+            <a class="btn btn-primary flat pull-right" href="{% url 'botstore:category' category=category|lower|urlencode %}"><b>see more</b></a>
+          </div>
+        {% endif %}
+
+      </div>
 
     </div>
 
