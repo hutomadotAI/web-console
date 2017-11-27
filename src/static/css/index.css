@@ -92,7 +92,7 @@ body {
 .form-add {
   display: flex;
   flex-wrap: wrap;
-  margin: 2rem 0 4rem;
+  margin: 2rem -1rem 4rem;
 }
 
 .form-add .form-group {
