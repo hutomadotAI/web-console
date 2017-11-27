@@ -523,22 +523,13 @@ class EntitiesView(StudioViewMixin, FormView):
                 )
             )
 
-            template = 'messages/retrain.html'
-            message = loader.get_template(template)
-
-            messages.add_message(
-                self.request, messages.WARNING, message.render({
-                    'aiid': self.kwargs['aiid']
-                })
-            )
-
         else:
             level = messages.ERROR
             redirect_url = self.render_to_response(
                 self.get_context_data(form=form)
             )
 
-            messages.add_message(self.request, level, entity['status']['info'])
+        messages.add_message(self.request, level, entity['status']['info'])
 
         return redirect_url
 
