@@ -7031,6 +7031,12 @@ ul.pagination li a {
     /*margin-bottom: 200px;*/
 }
 
+.web-body .messages {
+  margin: 0 auto;
+  max-width: 96rem;
+  right: 0;
+}
+
 .web-footer {
     /*position: absolute;*/
     padding: 40px 0;
