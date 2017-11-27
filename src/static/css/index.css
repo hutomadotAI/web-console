@@ -21,6 +21,11 @@ body {
     color: #ADADAD;
 }
 
+hr {
+  border-color: #888;
+  margin: 3rem 0;
+}
+
 .workspace .messages,
 .workspace .content-wrapper {
   margin-right: 320px;
@@ -105,6 +110,16 @@ body {
 
 .form-add #div_id_name .help-block {
   position: absolute;
+}
+
+@media (max-width: 1024px) {
+  .form-add {
+    flex-direction: column;
+  }
+
+  .form-add #div_id_name .help-block {
+    position: static;
+  }
 }
 
 .loading {

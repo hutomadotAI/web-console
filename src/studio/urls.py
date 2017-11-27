@@ -64,7 +64,7 @@ urlpatterns = [
         name='summary'
     ),
 
-    # Creat a new AI
+    # Create a new AI
     url(
         r'^bots/add/?$',
         AICreateView.as_view(),
