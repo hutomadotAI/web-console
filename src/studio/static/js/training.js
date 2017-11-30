@@ -10,7 +10,7 @@ function pollStatus() {
     .then(ai => {
       console.debug(ai)
       trainingStatus.value = Math.ceil(ai.training.progress)
-      traningStatusText.innerText = `${ ai.training.progress } % ${ ai.training.status }`
+      traningStatusText.innerText = `${ ai.training.progress } %`
       if (ai.training.status === 'completed') {
         trainingStatus.parentElement.parentElement.classList.add('alert-success')
         trainingStatus.parentElement.parentElement.classList.remove('alert-info')
