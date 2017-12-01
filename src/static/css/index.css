@@ -3492,13 +3492,13 @@ table.text-center th {
   background-color: #444;
   flex-grow: 2;
   height: 20rem;
-  margin: 0 1rem;
+  margin: 0 1.2rem;
 }
 
 .direct-chat-messages {
   background-color: #444;
   flex-grow: 2;
-  margin: 0 1rem;
+  margin: 0 1.2rem;
   padding: 10px;
   height: 20rem;
   overflow: auto;
