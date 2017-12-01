@@ -15,16 +15,6 @@
   flex-direction: column-reverse;
 }
 
-@-webkit-keyframes heightGrow {
-  /* Used to delay token field growth so submitting is possible */
-  from {
-    height: 0;
-  }
-  to {
-    height: auto;
-  }
-}
-
 @keyframes heightGrow {
   /* Used to delay token field growth so submitting is possible */
   from {

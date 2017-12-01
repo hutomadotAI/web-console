@@ -6113,42 +6113,6 @@ table.text-center th {
     animation: glowing 1500ms infinite;
 }
 
-@-webkit-keyframes glowing {
-    0% {
-        color: #dd4b39;
-    }
-    50% {
-        color: #FFFFFF;
-    }
-    100% {
-        color: #dd4b39;
-    }
-}
-
-@-moz-keyframes glowing {
-    0% {
-        color: #dd4b39;
-    }
-    50% {
-        color: #FFFFFF;
-    }
-    100% {
-        color: #dd4b39;
-    }
-}
-
-@-o-keyframes glowing {
-    0% {
-        color: #dd4b39;
-    }
-    50% {
-        color: #FFFFFF;
-    }
-    100% {
-        color: #dd4b39;
-    }
-}
-
 @keyframes glowing {
     0% {
         color: #dd4b39;

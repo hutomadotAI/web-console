@@ -28,6 +28,22 @@
   margin-left: 2rem;
   overflow: hidden;
   position: relative;
+  background-size: 5rem 5rem;
+  background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.2) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2) 75%, transparent 75%, transparent);
+  animation: move 2s linear infinite;
+}
+
+.traningStatus progress::after {
+  content: '';
+  background-size: 5rem;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-size: 5rem 5rem;
+  background-image: linear-gradient(-45deg, rgba(0, 0, 0, 0.2) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2) 75%, transparent 75%, transparent);
+  animation: move 2s linear infinite;
 }
 
 .traningStatus span {
@@ -46,8 +62,15 @@
 .traningStatus progress::-webkit-progress-value {
   /* We must separate it so both browsers works */
     background-color: var(--SUCCESS);
+    position: absolute;
+    z-index: 2;
 }
 
 .traningStatus progress::-webkit-progress-bar {
     background-color: var(--UI-800);
+}
+
+@keyframes move {
+  from  { background-position: 0 0; }
+  to    { background-position: 5rem 5rem; }
 }
