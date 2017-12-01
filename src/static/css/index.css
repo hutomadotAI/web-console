@@ -3504,6 +3504,11 @@ table.text-center th {
   overflow: auto;
 }
 
+.direct-chat-input {
+  padding: 1rem;
+  margin: 0 1.2rem 1rem;
+}
+
 .direct-chat-msg,
 .direct-chat-text {
     display: block;
