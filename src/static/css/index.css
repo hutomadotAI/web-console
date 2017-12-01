@@ -2170,16 +2170,16 @@ a:focus {
 }
 
 .box.box-solid > .box-header .btn.btn-default {
-    background: transparent;
+    background-color: transparent;
 }
 
 .box.box-solid > .box-header .btn:hover,
 .box.box-solid > .box-header a:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .box.box-solid > .box-header .btn.btn-success:hover {
-    background: #449d44;
+    background-color: #449d44;
 }
 
 .box.box-solid.box-default {
