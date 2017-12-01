@@ -249,10 +249,6 @@ class IntentForm(forms.Form):
 
 class AddAIForm(forms.Form):
     TIMEZONES = [(tz, tz) for tz in pytz.common_timezones]
-    VOICES = (
-        (0, _('Female')),
-        (1, _('Male'))
-    )
 
     aiid = forms.CharField(
         label=_('Bot ID'),
@@ -281,12 +277,6 @@ class AddAIForm(forms.Form):
         label=_('Description'),
         max_length=250,
         widget=forms.TextInput(attrs={'placeholder': _('Something about the bot')})
-    )
-
-    voice = forms.ChoiceField(
-        label=_('Voice'),
-        choices=VOICES,
-        widget=forms.Select()
     )
 
     timezone = forms.ChoiceField(

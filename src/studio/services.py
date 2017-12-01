@@ -110,6 +110,7 @@ def post_ai(token, ai_data, aiid=''):
     """Creates or updates an AI instance"""
 
     ai_default = {
+        'voice': 1,
         'is_private': False,
         'personality': 0,
         'confidence': 0.4,
