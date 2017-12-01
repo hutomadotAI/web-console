@@ -49,7 +49,7 @@ hr {
 }
 
 .form-signup {
-  align-items: flex-start;
+  justify-content: space-between;
   display: flex;
   flex-wrap: wrap;
   height: 100%;
@@ -61,7 +61,6 @@ hr {
 }
 
 .form-signup .form-group {
-  margin: 1%;
   position: relative;
   width: 48%;
 }
@@ -78,7 +77,15 @@ hr {
   right: 1rem;
 }
 
-.form-signup .toggle-password
+.form-signup #div_id_captcha {
+  /* trick to fit reCaptcha */
+  transform: scale(.94);
+}
+
+.form-signup #div_id_captcha .controls {
+  /* trick to position reCaptcha */
+  margin-left: -5px;
+}
 
 @media (max-width: 480px) {
   .form-signup .form-group {
