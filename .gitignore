@@ -109,3 +109,4 @@ test_output/
 # Enviroment variable files
 secrets.env
 .env
+node_modules/

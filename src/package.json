@@ -1,0 +1,13 @@
+{
+  "name": "web-console",
+  "version": "1.0.0",
+  "description": "Web console Javascripts",
+  "private": true,
+  "scripts": {
+    "test": "tape **/*.spec.js"
+  },
+  "devDependencies": {
+    "tape": "^4.8.0"
+  }
+
+}

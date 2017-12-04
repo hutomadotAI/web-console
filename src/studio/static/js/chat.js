@@ -190,7 +190,7 @@ function createBotMessage(name, message, timestamp, level, score, save=true) {
       <span class="direct-chat-timestamp">${ getPrintableLocalDateTime(timestamp) }</span>
     </div>
     <div class="direct-chat-text chat-${ level }">
-      ${ stripHtml(message).replace(/(?:\r\n|\r|\n)/g, '<br />') }
+      ${ sanitize(message) }
     </div>
     <span class=" pull-left text-sm text-white">
       score: ${ score }
@@ -212,10 +212,6 @@ function createBotMessage(name, message, timestamp, level, score, save=true) {
     height = parseInt(height) + 5
     $('#messages').scrollTop(height)
   }
-}
-
-function stripHtml(text) {
-  return $('<div>' + text + '</div>').text();
 }
 
 function requestAnswerAI(message) {
@@ -243,7 +239,7 @@ function requestAnswerAI(message) {
 
       if (response) {
         // Write response in JSON message box
-        document.getElementById('msgJSON').innerHTML = JSON.stringify(response, undefined, 2);
+        document.getElementById('msgJSON').innerText = JSON.stringify(response, undefined, 2);
 
         if (response.chatId) {
           // save the chatID
@@ -299,11 +295,3 @@ function cleanChat(msg) {
   msg = msg.replace('\/', '&#47');
   return msg.replace('\<', '&#60').replace('\>', '&#62;').trim();
 }
-
-String.prototype.toHtmlEntities = function () {
-  return this.replace(/./gm, function (s) {
-    return '&#' + s.charCodeAt(0) + ';';
-  });
-};
-
-
