@@ -26,134 +26,102 @@
 
 {% if fb_not_connected %}
 
-<div class="box-header with-border">
+  <div class="box-header with-border">
 
-  <div class="alert alert-base flat no-shadow">
-    Integrate this bot with a Facebook Page to allow it to respond on your behalf.
-    Users can talk to the bot over Facebook Messenger, both in the app and on the web.
+    <div class="alert alert-base flat no-shadow">
+      Integrate this bot with a Facebook Page to allow it to respond on your behalf.
+      Users can talk to the bot over Facebook Messenger, both in the app and on the web.
+    </div>
+
+    <div style="padding-bottom: 20px">
+      <button class="btn btn-primary flat center-block" id="fb-int-connect" style="width: 260px; "><i class="fa fa-facebook text-blue"></i> Connect to Facebook</button>
+    </div>
+
   </div>
-  <div style="padding-bottom: 20px">
-    <button class="btn btn-primary flat center-block" id="fb-int-connect" style="width: 260px; "
-            alt="disconnect">
-      <i class="fa fa-facebook text-blue"></i>
-      Connect to Facebook
-    </button>
-  </div>
-</div>
 
 {% else %}
 
 <div class="box-header with-border ">
+
   <div class="alert alert-base flat no-shadow">
     <p>Connected to "{{facebook_username}}" Facebook account</p>
   </div>
+
   <div style="padding-bottom: 20px">
-    <button class="btn btn-primary flat center-block" id="fb-disconnect" style="width: 260px; " alt="disconnect">
-      disconnect
-    </button>
+    <button class="btn btn-primary flat center-block" id="fb-disconnect" style="width: 260px; " alt="disconnect">disconnect</button>
   </div>
 
-    {% if fb_no_page_selected %}
-        {% if not fb_success %}
+  {% if fb_no_page_selected %}
 
-  <div class="alert alert-base flat no-shadow">
-    Could not get a list of pages from Facebook.
-  </div>
-        {% elif fb_empty_pagelist %}
-
-  <div class="alert alert-base flat no-shadow">
-    This account has no Facebook pages that are suitable for bot integration.
-    Create a new Facebook page or connect to a different Facebook account.
-  </div>
-        {% else %}
-
-  <div class="alert alert-base flat no-shadow">
-    <p>Select a Facebook page to attach this bot to</p>
-    <ul>
-          {% for fb_page_id, fb_page_name in fb_page_list.items %}
-      <li><a class='fb-page-list' onmouseover="this.style.cursor='pointer'"
-             id="_fb_{{fb_page_id}}">{{fb_page_name}}</a></li>
-          {% endfor %}
-    </ul>
-  </div>
-
-      {% endif %}
+    {% if not fb_success %}
+      <div class="alert alert-error flat no-shadow">
+        Could not get a list of pages from Facebook.
+      </div>
+    {% elif fb_empty_pagelist %}
+      <div class="alert alert-info flat no-shadow">
+        This account has no Facebook pages that are suitable for bot integration. Create a new Facebook page or connect to a different Facebook account.
+      </div>
     {% else %}
 
-  <div id="containerMsgAlertProgressBar" style="margin-bottom: 32px; padding-right: 0px; display: block;"
-       class="alert alert-dismissable flat alert-base">
-    <i id="iconAlertProgressBar" class="icon fa fa-check"></i>
-    <span id="msgAlertProgressBar">
-                    Integrated with page <a target="_facebook"
-                                            href="https://www.facebook.com/{{fb_page_integrated_id}}">
-     {{fb_page_integrated_name}}</a>.
-                    The bot will respond to all messages sent to that page.
-                </span>
-  </div>
+      <div class="alert-base flat no-shadow" style="padding: 2rem">
+        <p>Select a Facebook page to attach this bot to</p>
+        <ul style="padding: 2rem">
+          {% for fb_page_id, fb_page_name in fb_page_list.items %}
+            <li><a class='fb-page-list' id="_fb_{{fb_page_id}}" style="font-weight: bold;color: #fff;cursor: pointer;">{{fb_page_name}}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <label for="fb_page_greeting">Greeting message to display on the welcome screen</label>
-        <div class="input-group">
-          <div class="input-group-addon">
-            <i class="icon fa fa-comment-o"></i>
+    {% endif %}
+  {% else %}
+
+    <div id="containerMsgAlertProgressBar" style="margin-bottom: 32px; padding-right: 0px; display: block;"
+         class="alert alert-dismissable flat alert-base">
+      <i id="iconAlertProgressBar" class="icon fa fa-check"></i>
+      <span id="msgAlertProgressBar">Integrated with page <a target="_facebook" href="https://www.facebook.com/{{fb_page_integrated_id}}"> {{fb_page_integrated_name}}</a>. The bot will respond to all messages sent to that page.</span>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="fb_page_greeting">Greeting message to display on the welcome screen</label>
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="icon fa fa-comment-o"></i>
+            </div>
+            <input type="text" class="form-control flat no-shadow" id="fb_page_greeting" value="{{page_greeting}}">
           </div>
-          <input type="text" class="form-control flat no-shadow"
-                 id="fb_page_greeting"
-                 value="{{page_greeting}}">
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <label for="fb_get_started_payload">Command to send to the bot when the user taps the
-          Get Started button</label>
-        <div class="input-group">
-          <div class="input-group-addon">
-            <i class="icon fa fa-play-circle-o"></i>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="fb_get_started_payload">Command to send to the bot when the user taps the Get Started button</label>
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="icon fa fa-play-circle-o"></i>
+            </div>
+            <input type="text" class="form-control flat no-shadow" id="fb_get_started_payload" value="{{get_started_payload}}">
           </div>
-          <input type="text" class="form-control flat no-shadow"
-                 id="fb_get_started_payload"
-                 value="{{get_started_payload}}">
         </div>
       </div>
     </div>
-  </div>
 
-  <div style="padding-bottom: 20px">
-    <button class="btn btn-primary flat center-block" id="fb-custom-save" style="width: 260px; display: none"
-            alt="save customisations">
-      save customisations
-    </button>
-  </div>
+    <div style="padding-bottom: 20px">
+      <button class="btn btn-primary flat center-block" id="fb-custom-save" style="width: 260px; display: none" alt="save customisations">save customisations</button>
+    </div>
 
-  {% with appid=fb_app_id pageid=fb_page_integrated_id %}
+    {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-messengermessageus' button_name='Message Us' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us' button_action='to start chatting to this bot on Facebook Messenger.' %}
 
-    {% with plugin_class="fb-messengermessageus" button_name="Message Us" %}
-      {% with button_action="to start chatting to this bot on Facebook Messenger." %}
-        {% with plugin_reference="https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us" %}
-          {% include "integration_facebook_messenger.html" %}
-        {% endwith %}
-      {% endwith %}
-    {% endwith %}
+    {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-send-to-messenger' button_name='Send To Messenger' data_ref='RESPOND_TO_THIS' button_action='for this bot to start a conversation with you on Facebook Messenger.' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/send-to-messenger' %}
 
-    {% with plugin_class="fb-send-to-messenger" button_name="Send To Messenger" data_ref="RESPOND_TO_THIS" %}
-      {% with button_action="for this bot to start a conversation with you on Facebook Messenger." %}
-        {% with plugin_reference="https://developers.facebook.com/docs/messenger-platform/plugin-reference/send-to-messenger" %}
-          {% include "integration_facebook_messenger.html" %}
-        {% endwith %}
-      {% endwith %}
-    {% endwith %}
-
-  {% endwith %}
   {% endif %}
 
-{% endif %}
 </div>
+
+{% endif %}
 
 <div class="box box-solid box-clean flat no-shadow no-margin" id="newAiintegration" style="padding-bottom: 0px;">
   <div class="box-body" style="padding-bottom: 0px;">
