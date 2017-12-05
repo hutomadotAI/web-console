@@ -3697,8 +3697,14 @@ table.text-center th {
 }
 
 .chat-success{
-    background: #00a65a;
-    border-color: #00a65a;
+    background: var(--SUCCESS);
+    border-color: var(--SUCCESS);
+    color: #ffffff;
+}
+
+.chat-error{
+    background: var(--DANGER);
+    border-color: var(--DANGER);
     color: #ffffff;
 }
 

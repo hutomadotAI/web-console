@@ -254,7 +254,8 @@ function requestAnswerAI(message) {
           }
 
         } else {
-          message = 'no chat id returned'
+          level = 'error'
+          message = 'No chat id returned'
         }
       }
 
@@ -264,7 +265,11 @@ function requestAnswerAI(message) {
 
       console.debug(xhr, ajaxOptions, thrownError)
 
-      createBotMessage(AI.name, 'Cannot contact the server.', Date.now(), 'error', -1)
+      if (xhr.status >= 500) {
+        createBotMessage(AI.name, 'Internal server error', Date.now(), 'error', -1)
+      } else {
+        createBotMessage(AI.name, 'Cannot contact the server', Date.now(), 'error', -1)
+      }
 
     }
   });
