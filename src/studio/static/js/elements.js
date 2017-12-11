@@ -1,6 +1,8 @@
 $(document)
   .on('submit', '[method=delete]', function (event) {
     event.preventDefault()
+    const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`)
+
     var id = $(this).data('id')
 
     fetch(this.action, {
@@ -26,6 +28,11 @@ $(document)
 
         // Hide the parents modal
         $(this).parents('.modal').modal('hide')
+
+        for(let button of SUBMIT_BUTTONS) {
+          button.disabled = false
+          button.classList.remove('loading')
+        }
       })
       .catch(error => {
         console.error(error)

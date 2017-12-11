@@ -6,13 +6,10 @@
  * @return {undefined}
  */
 document.addEventListener('submit', function handleSubmit(event) {
-
-  if (['post', 'get'].includes(event.target.method) && event.target.id) {
-    const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`)
-    for(let button of SUBMIT_BUTTONS) {
-      button.disabled = true
-      button.classList.add('loading')
-    }
+  const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`)
+  for(let button of SUBMIT_BUTTONS) {
+    button.disabled = true
+    button.classList.add('loading')
   }
 })
 

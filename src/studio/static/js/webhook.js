@@ -1,7 +1,6 @@
-document.getElementById('regenerate_webhook').addEventListener('submit', getSecret)
-
-function getSecret(event) {
+document.getElementById('regenerate_webhook').addEventListener('submit', function getSecret(event) {
   event.preventDefault()
+  const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`)
 
   fetch(this.getAttribute('action'), {
     credentials: 'same-origin',
@@ -15,9 +14,13 @@ function getSecret(event) {
     .then(webhookSecret => {
       console.debug(webhookSecret);
       document.getElementById('webhook_signing_secret').value = webhookSecret.status.info
-      $('#regenHmacSecret').modal('hide')
+      for(let button of SUBMIT_BUTTONS) {
+        button.disabled = false
+        button.classList.remove('loading')
+      }
+      $('#regenerate_webhook_secret').modal('hide')
     })
     .catch(error => {
       console.error(error)
     })
-}
+})

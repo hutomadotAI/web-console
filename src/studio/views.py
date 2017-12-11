@@ -335,10 +335,12 @@ class ProxyEntityDeleteView(View):
     def delete(self, request, *args, **kwargs):
         entity_name = request.GET.get('entity_name')
 
-        return JsonResponse(delete_entity(
+        deleted = delete_entity(
             self.request.session.get('token', False),
             entity_name
-        ))
+        )
+
+        return JsonResponse(deleted, status=deleted['status']['code'])
 
 
 @method_decorator(login_required, name='dispatch')
