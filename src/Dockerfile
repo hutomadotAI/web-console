@@ -1,4 +1,14 @@
-FROM python:3.6
+FROM python:3.6.3-slim-jessie
+
+# With Debian jessie slim image, need to install the mysql libs
+# Don't be tempted to move to Debian stretch as that will use MariaDB
+# Install translation tools, we build translations locally
+RUN apt-get update && apt-get install -y \
+  build-essential \
+  gettext \
+  libgettextpo-dev \
+  libmysqlclient-dev \
+  && rm -rf /var/lib/apt/lists/*
 
 # Gather arguments
 ARG ENVIRONMENT=development
@@ -7,12 +17,6 @@ ARG SECRET_KEY
 
 # Name container for easier discovery
 LABEL container=$CONTAINER
-
-# Install translation tools, we build translations locally
-RUN apt-get update && apt-get install -y \
-  gettext \
-  libgettextpo-dev \
-  && rm -rf /var/lib/apt/lists/*
 
 # Use a working directory
 RUN mkdir -p /usr/src/app
@@ -28,8 +32,8 @@ RUN pip install -r $ENVIRONMENT.ini
 # define user IDs as ARG
 ARG USERID=1000
 ARG GROUPID=1000
-RUN addgroup --gid=$GROUPID appuser
-RUN adduser --uid=$USERID --gid=$GROUPID appuser
+RUN addgroup --system --gid $GROUPID appuser
+RUN adduser --system --uid $USERID --gid $GROUPID appuser
 
 # Python logs to stdout. Force stdin, stdout and stderr to be
 # totally unbuffered.
