@@ -20,12 +20,12 @@
         <span class="text-red flat">{% trans 'Error' %}</span>
     {% endif %}</td>
 
-    <td style="padding-top: 8px;padding-right: 0;">
+    <td style="padding-top: 8px; padding-right: 0;">
 
         {% if ai.publishing_state == 'PUBLISHED' %}
-            <a class="btn btn-success disabled flat pull-right" style="margin-right: 0; width: 115px;"><b>Published</b></a>
+            <a class="btn btn-success disabled flat pull-right" style="margin-right: 0; min-width: 115px;"><b>Published</b></a>
         {% elif ai.publishing_state == 'SUBMITTED' %}
-            <a class="btn btn-info disabled flat pull-right" style="margin-right: 0; width: 115px;"><b>Request Sent</b></a>
+            <a class="btn btn-info disabled flat pull-right" style="margin-right: 0; min-width: 115px;"><b>Request Sent</b></a>
         {% elif ai.publishing_state == 'NOT_PUBLISHED' %}
             {% if ai.ai_status != 'ai_training_complete' %}
                 {# Bot need to be trained before being published #}
