@@ -664,10 +664,26 @@ elif ENVIRONMENT == 'production':
         'console.hutoma.ai'
     ]
 
+    # We are using a proxy by enabling this tell Django to use X-Forwarded-Host
+    # header in preference to the Host header
+    USE_X_FORWARDED_HOST = True
+
     # Whether to use a secure cookie for the session cookie. If this is set to
     # True, the cookie will be marked as “secure,” which means browsers may
     # ensure that the cookie is only sent under an HTTPS connection.
-    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    # By default, is_secure() is able to determine whether a request is secure
+    # by looking at whether the requested URL uses “https://”. This is
+    # important for Django’s CSRF protection, and may be used by your own code
+    # or third-party apps.
+    #
+    # We are using a proxy to set a custom HTTP header that tells Django
+    # whether the request came in via HTTPS.
+    #
+    # https://docs.djangoproject.com/en/2.0/ref/settings/#std:setting-SECURE_PROXY_SSL_HEADER
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     # Password validation
     #

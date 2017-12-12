@@ -21,7 +21,8 @@ def get_user_token(api_admin_token, user_id):
     response = requests.get(
         url,
         headers=set_headers(api_admin_token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -51,7 +52,8 @@ def post_user(api_admin_token, user_data):
             'username': user_data.username,
             'first_name': user_data.first_name,
             'last_name': user_data.last_name,
-        }
+        },
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -74,7 +76,8 @@ def get_info(token, dev_id):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -94,7 +97,8 @@ def post_info(token, dev_id, info_data):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
-        data=info_data
+        data=info_data,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)

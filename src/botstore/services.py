@@ -28,7 +28,8 @@ def get_categories(token=False, start=0, offset=8):
     responsJSON = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     ).json()
 
     categories = responsJSON['categories']
@@ -55,7 +56,8 @@ def get_bots(category, token=False, start=0, offset=24):
     responsJSON = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     ).json()
 
     bots = responsJSON['items']
@@ -78,7 +80,8 @@ def get_bot(pk, token=False):
     responsJSON = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     ).json()
 
     bot = responsJSON['item']
@@ -100,7 +103,8 @@ def get_purchased(token):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -130,6 +134,7 @@ def post_bot(token, aiid, bot_data, **kwargs):
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
         data={**defaults, **bot_data},
+        verify=not settings.DEBUG
     )
 
     logger.debug(respons)
@@ -151,7 +156,8 @@ def post_icon(token, bot_id, icon_file, **kwargs):
         timeout=settings.API_TIMEOUT,
         files={
             'file': icon_file
-        }
+        },
+        verify=not settings.DEBUG
     )
 
     logger.debug(respons.json())
@@ -170,7 +176,8 @@ def post_purchase(token, bot_id):
     respons = requests.post(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(respons.json())

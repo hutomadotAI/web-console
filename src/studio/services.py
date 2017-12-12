@@ -23,7 +23,8 @@ def get_ai(token, aiid):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -46,7 +47,8 @@ def delete_ai(token, aiid):
     response = requests.delete(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -69,7 +71,8 @@ def get_ai_export(token, aiid):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -92,7 +95,8 @@ def get_ai_list(token):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     if response.status_code == 200:
@@ -126,7 +130,8 @@ def post_ai(token, ai_data, aiid=''):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
-        data={**ai_default, **ai_data}
+        data={**ai_default, **ai_data},
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -149,7 +154,8 @@ def post_import_ai(token, ai_data):
         url,
         headers=headers,
         timeout=settings.API_TIMEOUT,
-        data=ai_data
+        data=ai_data,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -174,7 +180,8 @@ def post_ai_skill(token, aiid, skills_data):
         url,
         headers=headers,
         timeout=settings.API_TIMEOUT,
-        data=skills_data
+        data=skills_data,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -196,7 +203,8 @@ def post_training(token, aiid, training_file):
         timeout=settings.API_TIMEOUT,
         files={
             'file': training_file
-        }
+        },
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -216,6 +224,7 @@ def put_training_update(token, aiid):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -235,6 +244,7 @@ def put_training_start(token, aiid):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -254,6 +264,7 @@ def put_training_start(token, aiid):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -273,6 +284,7 @@ def post_regenerate_webhook_secret(token, aiid):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -291,7 +303,8 @@ def get_entities_list(token):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -314,7 +327,8 @@ def get_entity(token, entity_name):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -340,7 +354,8 @@ def post_entity(payload, token, **kwargs):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
-        json=payload
+        json=payload,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -360,6 +375,7 @@ def delete_entity(token, entity_name):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -378,7 +394,8 @@ def get_intent_list(token, aiid):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -401,7 +418,8 @@ def get_intent(token, aiid, intent_name):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -425,7 +443,8 @@ def post_intent(payload, token, aiid):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
-        json=payload
+        json=payload,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -452,6 +471,7 @@ def delete_intent(token, aiid, intent_name):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -482,7 +502,8 @@ def set_facebook_connect_token(token, aiid, connect_token, redirect_url):
         url,
         headers=set_headers(token),
         timeout=settings.API_FACEBOOK_TIMEOUT,
-        json=payload
+        json=payload,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -502,7 +523,8 @@ def get_facebook_connect_state(token, aiid):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -523,7 +545,8 @@ def facebook_action(token, aiid, params):
     response = requests.put(
         url,
         headers=set_headers(token),
-        timeout=settings.API_FACEBOOK_TIMEOUT
+        timeout=settings.API_FACEBOOK_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -543,7 +566,8 @@ def get_facebook_customisations(token, aiid):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_TIMEOUT
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -569,7 +593,8 @@ def set_facebook_customisations(token, aiid, page_greeting, get_started):
         url,
         headers=set_headers(token),
         timeout=settings.API_TIMEOUT,
-        json=payload
+        json=payload,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -589,7 +614,8 @@ def get_insights_chatlogs(token, aiid, fromDate, toDate):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_LOGS_TIMEOUT
+        timeout=settings.API_LOGS_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
@@ -608,7 +634,8 @@ def get_insights_chart(token, aiid, fromDate, toDate, data_type):
     response = requests.get(
         url,
         headers=set_headers(token),
-        timeout=settings.API_LOGS_TIMEOUT
+        timeout=settings.API_LOGS_TIMEOUT,
+        verify=not settings.DEBUG
     )
 
     logger.debug(response)
