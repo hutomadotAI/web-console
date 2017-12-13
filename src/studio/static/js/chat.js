@@ -182,6 +182,8 @@ function createBotMessage(name, message, timestamp, level, score, save=true) {
 
   var height = parseInt($('#messages').scrollTop());
 
+  var score = score !== -1 ? `<span class=" pull-left text-sm text-white">score: ${ score }</span>` : '';
+
   var comment = document.createElement('div');
   comment.className = 'direct-chat-msg bot';
   comment.innerHTML = `
@@ -192,9 +194,7 @@ function createBotMessage(name, message, timestamp, level, score, save=true) {
     <div class="direct-chat-text chat-${ level }">
       ${ sanitize(message) }
     </div>
-    <span class=" pull-left text-sm text-white">
-      score: ${ score }
-    </span>
+    ${ score }
   `;
 
   document.getElementById('messages').appendChild(comment);
@@ -261,14 +261,16 @@ function requestAnswerAI(message) {
 
       createBotMessage(AI.name, message, Date.now(), level, score)
     },
-    error: function (xhr, ajaxOptions, thrownError) {
+    error: function (jqXHR, textStatus, errorThrown) {
 
-      console.debug(xhr, ajaxOptions, thrownError)
+      console.debug(jqXHR, textStatus, errorThrown)
 
-      if (xhr.status >= 500) {
+      if (textStatus === 'timeout') {
+        createBotMessage(AI.name, 'Cannot contact the server', Date.now(), 'error', -1)
+      } else if (jqXHR.status >= 500) {
         createBotMessage(AI.name, 'Internal server error', Date.now(), 'error', -1)
       } else {
-        createBotMessage(AI.name, 'Cannot contact the server', Date.now(), 'error', -1)
+        createBotMessage(AI.name, 'Something unexpected occured', Date.now(), 'error', -1)
       }
 
     }
