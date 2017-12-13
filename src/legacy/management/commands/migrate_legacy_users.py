@@ -1,8 +1,7 @@
 """A command that will migrate users from legacy user table """
 import logging
-import os
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from allauth.account.models import EmailAddress
 from allauth.utils import generate_unique_username
@@ -14,7 +13,8 @@ from users.models import Profile
 from legacy.models import Users
 from users.signals import create_API_user, create_profile
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('users')
+
 
 class Command(BaseCommand):
     help = 'A command that will migrate users from legacy user table'
@@ -32,15 +32,8 @@ class Command(BaseCommand):
             logger.info(legacy_user)
 
             # Disable pre_save and post_save signal
-            pre_save.disconnect(
-                create_API_user,
-                sender=User
-            )
-
-            post_save.disconnect(
-                create_profile,
-                sender=User
-            )
+            pre_save.disconnect(create_API_user, sender=User)
+            post_save.disconnect(create_profile, sender=User)
 
             # Update password if not a new user from Django, whom doesn't
             # have password_salt
@@ -96,12 +89,5 @@ class Command(BaseCommand):
             )
 
             # Enable back pre_save and post_save signal
-            pre_save.connect(
-                create_API_user,
-                sender=User
-            )
-
-            post_save.connect(
-                create_profile,
-                sender=User
-            )
+            pre_save.connect(create_API_user, sender=User)
+            post_save.connect(create_profile, sender=User)
