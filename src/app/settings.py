@@ -685,6 +685,28 @@ elif ENVIRONMENT == 'production':
     # https://docs.djangoproject.com/en/2.0/ref/settings/#std:setting-SECURE_PROXY_SSL_HEADER
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+    # X-XSS-Protection sets the configuration for the cross-site scripting
+    # filter built into most browsers. While True set header to:
+    # X-XSS-Protection: 1; mode=block
+    #
+    # https://scotthelme.co.uk/hardening-your-http-response-headers/#x-xss-protection
+    SECURE_BROWSER_XSS_FILTER = True
+
+    # X-Content-Type-Options stops a browser from trying to MIME-sniff the
+    # content type and forces it to stick with the declared content-type.
+    # While True set header to:
+    # X-Content-Type-Options: nosniff
+    #
+    # https://scotthelme.co.uk/hardening-your-http-response-headers/#x-content-type-options
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    # HTTP Strict Transport Security is an excellent feature to support on your
+    # site and strengthens your implementation of TLS by getting the User Agent
+    # to enforce the use of HTTPS. 2592000s = 30 days
+    #
+    # https://scotthelme.co.uk/hsts-the-missing-link-in-tls/
+    SECURE_HSTS_SECONDS = 2592000
+
     # Password validation
     #
     # The list of validators that are used to check the strength of
