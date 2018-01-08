@@ -6387,15 +6387,6 @@ ul.pagination li a {
     bottom: 0px;
 }
 
-.unselectable {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
 .input-group .input-prefix-text {
     display: table-cell;
     vertical-align: middle;
