@@ -93,7 +93,9 @@ function toggleSpeech() {
 }
 
 function dictateSpeech() {
-  this.classList.toggle('record')
+  var button = this;
+
+  button.classList.add('record')
 
   if (recording) {
     recording = stopDictation(recording)
@@ -101,6 +103,7 @@ function dictateSpeech() {
     recording = startDictation(function (results) {
       document.getElementById('message').value = results.error || results[0][0].transcript
       createNodeChat()
+      button.classList.remove('record')
     })
   }
 }
