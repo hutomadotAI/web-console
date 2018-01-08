@@ -26,6 +26,10 @@ hr {
   margin: 3rem 0;
 }
 
+.sidebar-menu > li > .slack-community {
+  display: none;
+}
+
 .workspace .messages,
 .workspace .content-wrapper {
   margin-right: 320px;
