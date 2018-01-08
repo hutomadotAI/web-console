@@ -589,6 +589,12 @@ class IntentsView(StudioViewMixin, FormView):
             self.request.session.get('token', False)
         ).get('entities')
 
+        # Custom entities goes first, sort alphabetically
+        entities.sort(key=lambda entity: (
+            entity['is_system'],
+            entity['entity_name']
+        ))
+
         # And pass it to formset initial choice
         # TODO: Change initial to entities after we refactor Intent API code
         context['formset'] = kwargs.get('formset', self.get_formset(
