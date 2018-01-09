@@ -1779,6 +1779,12 @@ a:focus {
     color: #ADADAD;
 }
 
+/* Fix Firefox rendering #3679 */
+.form-control[type=file] {
+  height: auto;
+  min-height: 34px;
+}
+
 .form-control[readonly] {
   color: #888;
   overflow: hidden;
