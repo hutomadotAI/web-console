@@ -92,7 +92,7 @@ msgid "Prompts"
 msgstr ""
 
 #: studio/forms.py:154
-msgid "Add a user prompts"
+msgid "Add a user prompt"
 msgstr "Dodaj wpis użytkownika"
 
 #: studio/forms.py:173

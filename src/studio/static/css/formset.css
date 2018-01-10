@@ -13,6 +13,7 @@
   margin: 0 -1rem 2rem;
   padding: 0 1rem;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .form-formset .form-group {
@@ -57,15 +58,32 @@
 .form-formset .formset-remove:hover,
 .form-formset .formset-remove:focus {
   color: #fff;
-  background-color: var(--DANGER)
+  background-color: var(--DANGER);
+
 }
 
+.form-formset .delete:checked ~ .form-group .control-label,
 .form-formset .delete:checked ~ .form-group .controls,
 .form-formset .delete:checked ~ .form-group .controls .form-control {
-  background-color: var(--DANGER)
+  opacity: 0.2;
 }
 
-.form-formset .form-control {
+.form-formset .delete:checked ~ .form-group:last-of-type::after {
+  content: 'will be deleted';
+  position: absolute;
+  font-size: 1.2em;
+  font-weight: bold;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 0);
+}
+
+.form-formset .delete-group .controls {
+  opacity: 1 !important;
+}
+
+.form-formset .controls,
+.form-formset .controls .form-control {
   border-radius: 0;
 }
 

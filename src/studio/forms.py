@@ -152,7 +152,7 @@ class EntityFormset(forms.Form):
             'data-tokenfield': True,
             'class': 'form-control',
             'required': True,
-            'placeholder': _('Add a user prompts'),
+            'placeholder': _('Add a user prompt'),
         })
     )
 
