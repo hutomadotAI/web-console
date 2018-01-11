@@ -1,6 +1,9 @@
-const statusFetcher = setInterval(pollStatus, 2000)
-const trainingStatus = document.getElementById('trainingStatus')
-const traningStatusText = document.getElementById('traningStatusText')
+const STATUS_FETCHER = setInterval(pollStatus, 2000)
+const AI_TRAINING = document.getElementById('AI_TRAINING')
+const ICONS = {
+  'empty': 'fa-circle-o',
+  'training': 'fa-cog fa-spin'
+}
 
 function pollStatus() {
   fetch(`/proxy/ai/${ AI.id }`, {
@@ -9,13 +12,9 @@ function pollStatus() {
     .then(response => response.json())
     .then(ai => {
       console.debug(ai)
-      trainingStatus.value = Math.ceil(ai.training.progress)
-      traningStatusText.innerText = `${ ai.training.progress } % ${ ai.training.progress >= 25 && ai.training.progress < 100 ? traningStatusText.dataset.usable : '' }`
-      if (ai.training.status === 'completed') {
-        trainingStatus.parentElement.parentElement.classList.add('alert-success')
-        trainingStatus.parentElement.parentElement.classList.remove('alert-info')
-        clearInterval(statusFetcher)
-      }
+      AI_TRAINING.className = `fa ${ ICONS[ai.training.status] || 'fa-circle' } circle training status-${ ai.training.status } pull-right`
+      AI_TRAINING.title = `Training status: ${ ai.training.status }`
+      $(AI_TRAINING).tooltip('fixTitle')
     })
     .catch(error => {
       console.error(error)

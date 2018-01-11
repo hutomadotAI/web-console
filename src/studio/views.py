@@ -65,22 +65,11 @@ class StudioViewMixin(ContextMixin):
 
         context = super(StudioViewMixin, self).get_context_data(**kwargs)
 
-        ai = get_ai(
+        context['ai'] = get_ai(
             self.request.session.get('token', False),
             self.kwargs['aiid']
         )
 
-        template = 'messages/training_status.html'
-        message = loader.get_template(template)
-
-        if ai['training']['status'] == 'completed':
-            level = messages.SUCCESS
-        else:
-            level = messages.INFO
-
-        messages.add_message(self.request, level,  message.render({'ai': ai}))
-
-        context['ai'] = ai
         context['api_url'] = settings.PUBLIC_API_URL
 
         return context

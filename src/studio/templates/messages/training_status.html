@@ -1,7 +1,0 @@
-{% load i18n %}
-
-<div class="traningStatus">
-  <label for="trainingStatus">{% trans 'Training' %} {{ ai.name|title }}</label> <progress id="trainingStatus" value="{{ ai.training.progress|floatformat }}" max="100">{{ ai.training.progress|floatformat }} %</progress>
-  <span id="traningStatusText" data-usable="{% trans 'you can test your bot' %}">{{ ai.training.progress|floatformat }} %{% if ai.training.progress >= 25 and ai.training.progress < 100 %}, {% trans 'you can test your bot' %}{% endif %}</span>
-</div>
-

@@ -36,7 +36,7 @@ hr {
 }
 
 .workspace.fixed .content-wrapper {
-  min-height: calc(100vh - 12.6rem);
+  min-height: calc(100vh - 5.3rem);
 }
 
 .workspace .aside {
@@ -894,6 +894,14 @@ a:focus {
     display: block;
 }
 
+.skin-blue .sidebar-menu a span  {
+  display: inline-block;
+  max-width: 75%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
 .sidebar-menu > li > a > .fa,
 .sidebar-menu > li > a > .glyphicon,
 .sidebar-menu > li > a > .ion {
@@ -1072,10 +1080,11 @@ a:focus {
 }
 
 .sidebar-menu li > a > .pull-right {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    margin-top: -7px;
+  margin-top: -7px;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  width: auto;
 }
 
 /*
@@ -1390,6 +1399,22 @@ a:focus {
 
 .dropdown-menu > .divider {
   background-color: #888;
+}
+
+.training.status-empty {
+  color: white;
+}
+
+.training.status-error {
+  color: var(--DANGER);
+}
+
+.training.status-completed {
+  color:  var(--SUCCESS);
+}
+
+.training.status-training {
+  color:  var(--WARNING);
 }
 
 .navbar-nav > .notifications-menu > .dropdown-menu,
@@ -3521,8 +3546,7 @@ table.text-center th {
 }
 
 .direct-chat-input {
-  padding: 1rem;
-  margin: 0 1.2rem 1rem;
+  margin: 1.2rem;
 }
 
 .direct-chat-msg,
