@@ -94,15 +94,20 @@ function toggleSpeech() {
 
 function dictateSpeech() {
   var button = this;
-
-  button.classList.add('record')
+  button.classList.toggle('record')
 
   if (recording) {
     recording = stopDictation(recording)
   } else {
     recording = startDictation(function (results) {
-      document.getElementById('message').value = results.error || results[0][0].transcript
-      createNodeChat()
+      waiting = true
+      var message = results.error || results[0][0].transcript
+      var level = results.error ? 'error' : 'normal'
+      createUserMessage(USER.name, message, Date.now(), level)
+      if (level === 'normal') {
+        requestAnswerAI(message)
+      }
+      recording = false
       button.classList.remove('record')
     })
   }
@@ -120,7 +125,7 @@ function createNodeChat() {
   if (message && !waiting) {
     waiting = true
     disableChat()
-    createUserMessage(USER.name, message, Date.now())
+    createUserMessage(USER.name, message, Date.now(), 'normal')
     requestAnswerAI(message)
   }
 }
@@ -138,7 +143,7 @@ function cutText(phrase) {
   return phrase;
 }
 
-function createUserMessage(name, message, timestamp, save=true) {
+function createUserMessage(name, message, timestamp, level, save=true) {
   if (save) {
     updateHistory('USER', [...arguments])
   }
@@ -157,7 +162,7 @@ function createUserMessage(name, message, timestamp, save=true) {
       <span class="direct-chat-timestamp">${ getPrintableLocalDateTime(timestamp) }</span>
       <span class="direct-chat-name" style="color:gray;">${ name }</span>
     </div>
-    <div class="direct-chat-text">
+    <div class="direct-chat-text chat-${ level }">
       ${ cleanChat(message) }
     </div>
   `;

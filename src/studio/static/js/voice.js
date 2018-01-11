@@ -33,18 +33,25 @@ function speak(text, callback) {
 function startDictation(callback) {
   if ('webkitSpeechRecognition' in window) {
     var recognition = new webkitSpeechRecognition()
+    var results = false;
+    console.debug('Start Dictation')
 
     recognition.continuous = false
     recognition.interimResults = false
     recognition.addEventListener('result',  function (event) {
       console.debug('recognition resulted')
       recognition.stop()
-      callback(event.results)
+      results = event.results
     })
     recognition.addEventListener('error', function (error) {
       console.debug('recognition error')
       recognition.stop()
-      callback(error)
+      results = error
+    })
+
+    recognition.addEventListener('end', function (event) {
+      console.debug('recognition end')
+      callback(results || { error: 'Recognition error' })
     })
 
     recognition.start()
