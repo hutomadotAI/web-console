@@ -661,7 +661,8 @@ elif ENVIRONMENT == 'production':
         'dev.hutoma.com',
         'project1.hutoma.com',
         'staging.hutoma.com',
-        'console.hutoma.ai'
+        'console.hutoma.ai',
+        'console2.hutoma.ai'
     ]
 
     # We are using a proxy by enabling this tell Django to use X-Forwarded-Host
