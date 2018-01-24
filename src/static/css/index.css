@@ -288,6 +288,13 @@ body > section, .footer {
     clear: both;
 }
 
+.ai-list.bot-description {
+  padding-top: 15px;
+  overflow: hidden;
+  max-width: 512px;
+  text-overflow: ellipsis;
+}
+
 .layout-boxed .wrapper {
     max-width: 1250px;
     margin: 0 auto;
