@@ -5,6 +5,12 @@
  *
  */
 
+/* Fix messages for image upload */
+.messages {
+  position: fixed;
+  z-index: 100;
+}
+
 .form-publish {
   display: flex;
   display: grid;
