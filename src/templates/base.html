@@ -124,21 +124,6 @@
         $('[data-toggle=tooltip]').tooltip()
       })
 
-      document.addEventListener('submit', function (event) {
-        const SUBMIT_BUTTON = document.querySelector(`[form=${event.target.id}]`)
-        SUBMIT_BUTTON.disabled = true
-        SUBMIT_BUTTON.classList.add('loading')
-      })
-
-      document.addEventListener('keydown', function(event) {
-        if(event.target.form && event.keyCode == 13) {
-          if (event.metaKey || event.ctrlKey) {
-            event.target.form.submit()
-          } else {
-            event.preventDefault()
-          }
-        }
-      })
     </script>
 
   </body>
