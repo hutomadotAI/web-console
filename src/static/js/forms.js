@@ -6,7 +6,7 @@
  * @return {undefined}
  */
 document.addEventListener('submit', function handleSubmit(event) {
-  const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`)
+  const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id || 'none'}]`)
   for(let button of SUBMIT_BUTTONS) {
     button.disabled = true
     button.classList.add('loading')
