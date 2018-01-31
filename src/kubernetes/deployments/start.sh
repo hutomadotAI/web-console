@@ -7,6 +7,11 @@ function check_return_code {
     fi
 }
 
+# If we can't even display the Django version something went badly wrong
+echo "Checking Django configuration works"
+python manage.py version
+check_return_code
+
 # Check if database is ready
 echo "Checking Database"
 while ! python manage.py showmigrations 2> /dev/null; do
