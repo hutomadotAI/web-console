@@ -7,6 +7,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import base64       # for ENV_VAR decoding
+import json         # for JSON parsing
 import os           # for ENV_VARs and path
 
 # General
@@ -375,7 +376,7 @@ LOCALE_PATHS = [
 # Languages we are using
 LANGUAGES = [
     ('en', 'English'),
-    ('fr', 'France'),
+    ('fr', 'Français'),
     ('pl', 'Polski'),
 ]
 
@@ -656,18 +657,10 @@ elif ENVIRONMENT == 'production':
     # site can serve. This is a security measure to prevent HTTP Host header
     # attacks, which are possible even under many seemingly-safe web server
     # configurations.
-    ALLOWED_HOSTS = [
-        'localhost',
-        'dev.hutoma.com',
-        'project1.hutoma.com',
-        'staging.hutoma.com',
-        'console.hutoma.ai',
-        'console2.hutoma.ai'
-    ]
 
-    # We are using a proxy by enabling this tell Django to use X-Forwarded-Host
-    # header in preference to the Host header
-    USE_X_FORWARDED_HOST = True
+    ALLOWED_HOSTS_JSON = os.environ.get('ALLOWED_HOSTS',
+        '["localhost"]') # localhost
+    ALLOWED_HOSTS = json.loads(ALLOWED_HOSTS_JSON)
 
     # Whether to use a secure cookie for the session cookie. If this is set to
     # True, the cookie will be marked as “secure,” which means browsers may

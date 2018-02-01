@@ -278,7 +278,8 @@ function requestAnswerAI(message) {
       } else if (jqXHR.status >= 500) {
         createBotMessage(AI.name, 'Internal server error', Date.now(), 'error', -1)
       } else {
-        createBotMessage(AI.name, 'Something unexpected occured', Date.now(), 'error', -1)
+        var message = jqXHR.responseJSON.status ? jqXHR.responseJSON.status.info : 'Something unexpected occurred'
+        createBotMessage(AI.name, message, Date.now(), 'error', -1)
       }
 
     }
