@@ -81,36 +81,38 @@
       <span id="msgAlertProgressBar">Integrated with page <a target="_facebook" href="https://www.facebook.com/{{fb_page_integrated_id}}"> {{fb_page_integrated_name}}</a>. The bot will respond to all messages sent to that page.</span>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label for="fb_page_greeting">Greeting message to display on the welcome screen</label>
-          <div class="input-group">
-            <div class="input-group-addon">
-              <i class="icon fa fa-comment-o"></i>
+    <form id="FB_SETTINGS">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="fb_page_greeting">Greeting message to display on the welcome screen</label>
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="icon fa fa-comment-o"></i>
+              </div>
+              <input type="text" required maxlength="160" class="form-control flat no-shadow" id="fb_page_greeting" value="{{page_greeting}}">
             </div>
-            <input type="text" class="form-control flat no-shadow" id="fb_page_greeting" value="{{page_greeting}}">
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label for="fb_get_started_payload">Command to send to the bot when the user taps the Get Started button</label>
-          <div class="input-group">
-            <div class="input-group-addon">
-              <i class="icon fa fa-play-circle-o"></i>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="fb_get_started_payload">Command to send to the bot when the user taps the Get Started button</label>
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="icon fa fa-play-circle-o"></i>
+              </div>
+              <input type="text" required maxlength="160" class="form-control flat no-shadow" id="fb_get_started_payload" value="{{get_started_payload}}">
             </div>
-            <input type="text" class="form-control flat no-shadow" id="fb_get_started_payload" value="{{get_started_payload}}">
           </div>
         </div>
       </div>
-    </div>
+    </form>
 
     <div style="padding-bottom: 20px">
-      <button class="btn btn-primary flat center-block" id="fb-custom-save" style="width: 260px; display: none" alt="save customisations">save customisations</button>
+      <button class="btn btn-primary flat center-block" form="FB_SETTINGS" style="width: 260px;" alt="save customisations">save customisations</button>
     </div>
 
     {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-messengermessageus' button_name='Message Us' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us' button_action='to start chatting to this bot on Facebook Messenger.' %}

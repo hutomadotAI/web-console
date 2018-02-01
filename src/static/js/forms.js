@@ -6,7 +6,7 @@
  * @return {undefined}
  */
 document.addEventListener('submit', function handleSubmit(event) {
-  const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`)
+  const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id || 'none'}]`)
   for(let button of SUBMIT_BUTTONS) {
     button.disabled = true
     button.classList.add('loading')
@@ -15,14 +15,15 @@ document.addEventListener('submit', function handleSubmit(event) {
 
 /**
  * Prevents form submition using only `Enter` key, add submition using
- * combinations of `CMD + Enter`  or `CTRL + Enter`
+ * combinations of `CMD + Enter`  or `CTRL + Enter`. Allow to use enter in
+ * textareas
  *
  * @param  {Event object} event dispatched submit event
  *
  * @return {undefined}
  */
 document.addEventListener('keydown', function handleKeydown(event) {
-  if(event.target.form && event.keyCode == 13) {
+  if(event.target.localName != 'textarea' && event.target.form && event.keyCode == 13) {
     if (event.metaKey || event.ctrlKey) {
       event.target.form.submit()
     } else {

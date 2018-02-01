@@ -3,7 +3,7 @@
 <tr role="row" class="even">
 
     <td class="text-gray" style="padding-top: 15px;">{{ ai.name }}</td>
-    <td style="padding-top: 15px;">{{ ai.description }}</td>
+    <td class="ai-list bot-description" title="{{ ai.description }}">{{ ai.description }}</td>
     <td class="text-center" style="padding-top: 15px;">{{ ai.linked_bots|length }}</td>
     <td class="text-center" style="padding-top: 15px;">
     {% if ai.ai_status == 'ai_training_complete' %}

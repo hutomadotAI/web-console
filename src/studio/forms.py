@@ -292,9 +292,11 @@ class AddAIForm(forms.Form):
         max_length=255,
         required=False,
         widget=forms.TextInput(attrs={
+            'data-minLength': 1,
             'data-maxlength': 250,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
+            'required': True,
             'placeholder': _('Erm… What?')
         })
     )

@@ -288,6 +288,13 @@ body > section, .footer {
     clear: both;
 }
 
+.ai-list.bot-description {
+  padding-top: 15px;
+  overflow: hidden;
+  max-width: 512px;
+  text-overflow: ellipsis;
+}
+
 .layout-boxed .wrapper {
     max-width: 1250px;
     margin: 0 auto;
@@ -774,7 +781,7 @@ a:focus {
     position: absolute;
     top: 0;
     left: 0;
-    padding-top: 51px;
+    padding-top: 50px;
     min-height: 100%;
     width: 230px;
     z-index: 810;
@@ -6576,16 +6583,16 @@ ul.pagination li a {
 }
 
 .carousel-row {
+  margin: 0 -1rem 4rem;
   min-height: 245px;
-  white-space: nowrap;
-  padding-top:2px;
   padding-right:2px;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .category-list .carousel-row {
   display: inline-block;
-  margin: -4rem 0 4rem;
+  margin: -4rem -1rem 4rem;
   max-height: 28rem;
   padding-top: 4rem;
   position: relative;
@@ -6600,7 +6607,7 @@ ul.pagination li a {
     height: 45px;
     min-width: 180px;
     color: lightgray;
-    padding: 10px  0px 10px 10px;
+    padding: 1rem 0 1rem;
 }
 
 .carousel-see-more{

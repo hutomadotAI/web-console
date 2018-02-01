@@ -12,12 +12,14 @@ function htmlEncode(value) {
   return $('<div/>').text(value).html();
 }
 
-function saveFacebookCustomisations() {
+function saveFacebookCustomisations(event) {
+
+  event.preventDefault();
 
   var page_greeting = $('#fb_page_greeting').val();
   var get_started_payload = $('#fb_get_started_payload').val();
 
-  $("#fb-custom-save").text("Saving...");
+  $("[form=FB_SETTINGS]").text("Saving…");
   $.ajax({
     url: "./integrations/facebook/customise",
     type: "POST",
@@ -32,13 +34,13 @@ function saveFacebookCustomisations() {
     complete: function () {
     },
     success: function () {
-      $("#fb-custom-save").text("Save customisations");
+      $("[form=FB_SETTINGS]").text("Save customisations");
       custom_greeting = page_greeting;
       custom_get_started = get_started_payload;
       showSaveIfThereAreChanges();
     },
     error: function (data) {
-      $("#fb-custom-save").text("Save failed. Retry?");
+      $("[form=FB_SETTINGS]").text("Save failed. Retry?");
       showSaveIfThereAreChanges();
     }
   });
@@ -98,10 +100,7 @@ $("#facebookState").on("click", "#fb-int-connect", function () {
   return false;
 });
 
-$("#facebookState").on("click", "#fb-custom-save", function () {
-  saveFacebookCustomisations()
-  return false;
-});
+$("#facebookState").on("submit", "#FB_SETTINGS", saveFacebookCustomisations);
 
 $("#facebookState").on("keyup", "#fb_page_greeting", function () {
   showSaveIfThereAreChanges();
