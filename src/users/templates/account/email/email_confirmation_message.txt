@@ -1,0 +1,14 @@
+{% load account %}
+{% load i18n %}
+{% autoescape off %}{% blocktrans %}
+Hi {{ user_display }}
+
+Thanks for registering an account with Hu:toma! Before we get started, we'll need to verify your email.
+
+To confirm this is correct, go to {{ activate_url }}
+{% endblocktrans %}{% endautoescape %}
+
+{% blocktrans%}If you’re a 🤖, we're sorry but we don’t offer Hu:toma to non human users yet.{% endblocktrans %}
+
+{% blocktrans%}Our Best,
+Hu:toma team{% endblocktrans %}

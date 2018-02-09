@@ -1,0 +1,56 @@
+{% extends 'email/base.html' %}
+
+{% block preheader %}Please verify your email{% endblock preheader %}
+
+{% block body %}
+
+    <table class="module" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+      <tr>
+        <td style="padding:48px 48px 24px 48px; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff">
+          <p style="color: #324148; font-family: 'Roboto', sans-serif; font-size: 20px; font-weight:300; line-height: 24px;">
+            Hi {{ user.get_full_name }}
+          </p>
+        </td>
+      </tr>
+    </table>
+
+    <table class="module" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+      <tr>
+        <td style="padding:0 48px 24px 48px; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff">
+          <p style="color: #324148; font-family: 'Roboto', sans-serif; font-size: 14px; line-height: 24px;">
+            Thanks for registering an account with Hu:toma! Before we get started, we'll need to verify your email.
+          </p>
+        </td>
+      </tr>
+    </table>
+
+    <table border="0" cellPadding="0" cellSpacing="0" class="module" role="module" style="table-layout:fixed" width="100%">
+      <tr><td align="left" bgcolor="#ffffff" class="outer-td" style="padding:0px 0px 24px 48px; background-color:#ffffff">
+        <table border="0" cellPadding="0" cellSpacing="0" class="wrapper-mobile" style="text-align:left">
+          <tr><td align="center" bgcolor="#8bc34a" class="inner-td" style="border-radius:2px; font-size:14px; text-align:center; background-color:inherit">
+            <a href="{{ activate_url }}" class="button" style="background-color:#8bc34a; border-radius:2px; border-width:0px; color:#ffffff; display:inline-block; font-family: 'Roboto', sans-serif; font-size:14px; font-weight: bold; letter-spacing:0px; line-height:16px; padding:12px 12px 12px 12px; text-align:center; text-decoration:none; text-transform:uppercase" target="_blank" title="Verify me!">Verify me</a>
+          </td></tr>
+      </table>
+    </td></tr></table>
+
+    <table class="module" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+      <tr>
+        <td style="padding:0 48px 24px 48px; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff">
+          <p style="color: #324148; font-family: 'Roboto', sans-serif; font-size: 12px; line-height: 24px;">
+            If you’re a 🤖, we're sorry but we don’t offer Hu:toma to non human users yet.
+          </p>
+        </td>
+      </tr>
+    </table>
+
+    <table class="module" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+      <tr>
+        <td style="padding:0 48px 48px 48px; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff">
+          <p style="color: #324148; font-family: 'Roboto', sans-serif; font-size: 14px; line-height: 24px;">
+            Our Best,<br><strong>Hu:toma team</strong>
+          </p>
+        </td>
+      </tr>
+    </table>
+
+{% endblock body %}

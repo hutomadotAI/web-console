@@ -1,0 +1,199 @@
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <!--[if !mso]><!--><meta http-equiv="X-UA-Compatible" content="IE=Edge" /><!--<![endif]-->
+
+    <!--[if (gte mso 9)|(IE)]>
+      <xml>
+        <o:OfficeDocumentSettings>
+        <o:AllowPNG/>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+      </xml>
+    <![endif]-->
+
+    <!--[if (gte mso 9)|(IE)]>
+      <style type="text/css">
+        body {width: 640px;margin: 0 auto;}
+        table {border-collapse: collapse;}
+        table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+        img {-ms-interpolation-mode: bicubic;}
+      </style>
+    <![endif]-->
+
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css?family=Roboto:300,400');
+
+      body {
+        -webkit-font-smoothing:antialiased;
+        -webkit-text-size-adjust:none;
+
+        background-color: #2196F3;
+        border-bottom: 24px solid #1976D2;
+        color: #263238;
+        display: block;
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+
+      body, p, div {
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      body {
+        color: #263238;
+      }
+
+      body a {
+        color: none;
+        text-decoration: none;
+      }
+
+      p { margin: 0; padding: 0; }
+
+      table.wrapper {
+        width:100% !important;
+        table-layout: fixed;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: 100%;
+        -moz-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+
+      .svg {
+        display: none;
+      }
+
+      .png {
+        display: block;
+      }
+
+      [data-type='svg'] {
+        display: block !important;
+      }
+
+      [data-type='png'] {
+        display: none !important;
+      }
+
+      /*
+        Remove make address white
+        https://litmus.com/blog/how-to-fix-blue-links-in-gmail
+       */
+      .contact a {
+        color: #ffffff !important;
+        font-size: 12px !important;
+        text-decoration: underline !important;
+      }
+
+      .button:hover {
+        background-color: #aed581 !important;
+      }
+
+      .button:active {
+        background-color: #7cb342 !important;
+      }
+
+      @media screen and (max-width:480px) {
+        /* Mobile styles */
+
+        table.wrapper-mobile {
+          width: 100% !important;
+          table-layout: fixed;
+        }
+
+        td[bgcolor="#ffffff"] {
+          padding-left: 24px !important;
+          padding-right: 24px !important;
+        }
+      }
+
+    </style>
+
+  </head>
+  <body>
+    <center class="wrapper">
+      <div>
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#2196F3">
+          <tr>
+            <td valign="top" bgcolor="#2196F3" width="100%">
+              <table width="100%" role="content-container" class="outer" align="center" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="100%">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td>
+                          <!--[if mso]><center><table><tr><td width="640"><![endif]-->
+                          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width:640px;" align="center">
+                            <tr>
+                              <td role="modules-container" style="padding: 0px 24px 0px 24px; color: #263238; text-align: left;" bgcolor="#2196F3" width="100%" align="left">
+
+                                <table class="module preheader preheader-hide" border="0" cellpadding="0" cellspacing="0" width="100%" style="display: none !important; mso-hide: all; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;">
+                                  <tr>
+                                    <td role="module-content">
+                                      {% block preheader %}{% endblock preheader %} ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+                                    </td>
+                                  </tr>
+                                </table>
+
+                                <table class="wrapper" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+                                  <tr>
+                                    <td style="padding:48px 0px 48px 0px; background-color:#2196F3;" valign="top" align="center">
+                                      <a href="https://www.hutoma.ai" target="_blank"><img src="{% static 'images/mailing_header.svg' %}" alt="Hu:toma AI" class="svg" data-type="svg"  style="color:#ffffff; text-decoration:none; font-family: 'Roboto', sans-serif; font-size:12px;" width="125" height="24"><img src="{% static 'images/mailing_header.png' %}" alt="Hu:toma AI" class="png" data-type="png"  style="color:#ffffff; text-decoration:none; font-family: 'Roboto', sans-serif; font-size:12px;" width="125" height="24"></a>
+                                    </td>
+                                  </tr>
+                                </table>
+
+                                {% block body %}{% endblock body %}
+
+                                <table class="module" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+                                  <tr>
+                                    <td style="font-family: 'Roboto', sans-serif; color:#ffffff; font-size:12px; line-height:24px; font-weight:bold; padding:48px 0px 0px 0px; text-align:center; background-color:#2196F3;" height="100%" valign="top" bgcolor="#2196F3">
+                                      Sent by Hu:toma • <a href="https://blog.hutoma.ai" style="font-family: 'Roboto', sans-serif; color: #ffffff; text-decoration: none;" target="_blank">check our blog</a> • <a href="https://twitter.com/@hutomadotai" style="font-family: 'Roboto', sans-serif; color: #ffffff; text-decoration: none;" target="_blank">@hutomadotai</a>
+                                    </td>
+                                  </tr>
+                                </table>
+
+                                <table class="wrapper" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+                                  <tr>
+                                    <td style="font-size:12px; line-height:24px; font-family: 'Roboto', sans-serif; padding:24px 0px 24px 0px; background-color:#2196F3;" valign="top" align="center">
+                                      <a href="https://www.hutoma.ai" target="_blank"><img src="{% static 'images/mailing_footer.svg' %}" alt=": )" class="svg" data-type="svg" border="0" style="color:#ffffff; text-decoration:none; font-family: 'Roboto', sans-serif; font-size: 12px;" width="34" height="24"><img src="{% static 'images/mailing_footer.png' %}" alt=": )" class="png" data-type="png" border="0" style="color:#ffffff; text-decoration:none; font-family: 'Roboto', sans-serif; font-size: 12px;" width="34" height="24"></a>
+                                    </td>
+                                  </tr>
+                                </table>
+
+                                <table class="module" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+                                  <tr>
+                                    <td style="padding:0px 0px 24px 0px; background-color:#2196F3;" height="100%" valign="top" bgcolor="#2196F3">
+                                      <p style="color:#ffffff; font-family: 'Roboto', sans-serif; font-size:12px; line-height:24px; text-align:center;" class="contact">Carrer del Consell de Cent, 341, 08007 Barcelona Spain<br>●●●<br>Davidson House, Forbury Square, Reading RG1 3EU, United Kingdom</p>
+                                    </td>
+                                  </tr>
+                                </table>
+
+                              </td>
+                            </tr>
+                          </table>
+                          <!--[if mso]></td></tr></table></center><![endif]-->
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </center>
+  </body>
+</html>

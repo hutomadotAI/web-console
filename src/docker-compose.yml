@@ -18,7 +18,7 @@ services:
     env_file: secrets.env
     environment:
       ENVIRONMENT: development
-      DJANGO_STATIC_HOST: //0.0.0.0.xip.io
+      DJANGO_STATIC_HOST: http://0.0.0.0.xip.io
     volumes:
       - .:/usr/src/app
     ports:

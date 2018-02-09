@@ -163,6 +163,17 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 # Usernames are setup by application, longer are always harder to guess
 ACCOUNT_USERNAME_MIN_LENGTH = 8
 
+# ------------------------------------------------------------------------------
+#
+# Email
+#
+
+#  Let's not use prefixes
+EMAIL_SUBJECT_PREFIX = ''
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+
+DEFAULT_FROM_EMAIL = 'Hutoma AI <hello@hutoma.ai>'
+
 # Default redirect after user is loged in
 LOGIN_REDIRECT_URL = '/'
 
@@ -453,6 +464,11 @@ if ENVIRONMENT == 'development':
     # Allow all hosts in development mode
     ALLOWED_HOSTS = ['*']
 
+    # --------------------------------------------------------------------------
+    #
+    # Email
+    #
+
     EMAIL_PORT = 1025
     EMAIL_HOST = os.environ.get('EMAIL_HOST', 'mailhog')
 
@@ -658,8 +674,8 @@ elif ENVIRONMENT == 'production':
     # attacks, which are possible even under many seemingly-safe web server
     # configurations.
 
-    ALLOWED_HOSTS_JSON = os.environ.get('ALLOWED_HOSTS',
-        '["localhost"]') # localhost
+    # localhost
+    ALLOWED_HOSTS_JSON = os.environ.get('ALLOWED_HOSTS', '["localhost"]')
     ALLOWED_HOSTS = json.loads(ALLOWED_HOSTS_JSON)
 
     # Whether to use a secure cookie for the session cookie. If this is set to
@@ -770,40 +786,14 @@ elif ENVIRONMENT == 'production':
 
     # --------------------------------------------------------------------------
     #
-    # Emails
+    # Email
     #
 
-    INSTALLED_APPS += ['anymail']
-
-    # Use an adapter for allauth
-    ACCOUNT_ADAPTER = 'users.adapter.SendgridTemplatesAdapter'
-
-    # Configure Email provider
-    EMAIL_BACKEND = 'anymail.backends.sendgrid.EmailBackend'
-
-    # Configure access
-    ANYMAIL = {
-        'SENDGRID_API_KEY': os.environ.get('SENDGRID_API_KEY'),
-    }
-
-    # Sendgrid Templates settings
-
-    # Formatting string that indicates how merge fields are delimited in your
-    # SendGrid templates. Parameter `first_name` would be `first_name` in
-    # Sendgrid
-    SENDGRID_MERGE_FIELD_FORMAT = '-{}-'
-
-    # Email templates corresponding to Allauth actions
-    SENDGRID_TEMPLATES = {
-        'account/email/password_reset_key': '1780e9d0-cb68-4de6-a159-dc2fa83e86a1',
-        'account/email/email_confirmation_signup': '1f853c34-19f3-4205-8e6d-e44d24f41875',
-        'account/email/email_confirmation': '1f853c34-19f3-4205-8e6d-e44d24f41875'
-    }
-
-    SENDGRID_DEFAULT_TEMPLATE = 'a9e787d6-10f4-4ab2-b824-29b851a57c3c'
-
-    # Mailing settings
-    DEFAULT_FROM_EMAIL = '🤖 from Hutoma AI <hu@hutoma.ai>'
+    EMAIL_HOST = 'mail.smtp2go.com'
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    EMAIL_PORT = 2525
+    EMAIL_USE_TLS = True
 
     # --------------------------------------------------------------------------
     #
