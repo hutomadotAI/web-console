@@ -79,7 +79,7 @@
 
       </div>
 
-      {% if intents.intent_name|length %}
+      {% if ai_details.intents|length %}
 
           <div class="box box-solid box-clean flat no-shadow">
             <div class="box-header with-border">
@@ -88,7 +88,7 @@
 
             <div class="box-body">
               <div class="elements">
-                {% for name in intents.intent_name %}
+                {% for name in ai_details.intents %}
                   <div class="element element-{{ name }}">
                     <a href="{% url 'studio:intents.edit' ai.aiid name %}" title="edit {{ name }}">{{ name }}</a>
                     {% if intent_name != name %}

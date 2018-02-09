@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block body.attributes %} class="skin-blue fixed sidebar-mini workspace"{% endblock body.attributes %}
+{% block body.attributes %} class="skin-blue fixed sidebar-mini workspace{% if chatable %} chatable{% endif %}"{% endblock body.attributes %}
 
 {% block header %}
   {% include 'console_header.html' %}

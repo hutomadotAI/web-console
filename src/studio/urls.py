@@ -26,6 +26,7 @@ from django.views.generic.base import RedirectView
 from studio.views import (
     AICreateView,
     AIListView,
+    AIDetailView,
     AIUpdateView,
     EntitiesUpdateView,
     EntitiesView,
@@ -74,7 +75,7 @@ urlpatterns = [
     # Edit an existing AI
     url(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/?$',
-        RedirectView.as_view(pattern_name='studio:skills'),
+        AIDetailView.as_view(),
         name='edit_bot'
     ),
 

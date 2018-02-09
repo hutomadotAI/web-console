@@ -28,6 +28,13 @@ class AiFactory(factory.Factory):
     ]
 
 
+class AIDetails(factory.Factory):
+
+    training_file = ''
+    intents = []
+    skills = []
+
+
 class AIImportJSON(factory.Factory):
     name = 'Foo IIss4'
     description = ''

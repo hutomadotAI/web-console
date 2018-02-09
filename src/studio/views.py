@@ -37,8 +37,10 @@ from studio.services import (
     delete_intent,
     facebook_action,
     get_ai,
+    get_ai_details,
     get_ai_export,
     get_ai_list,
+    get_ai_skill,
     get_entities_list,
     get_entity,
     get_facebook_connect_state,
@@ -60,25 +62,38 @@ logger = logging.getLogger(__name__)
 
 class StudioViewMixin(ContextMixin):
 
+    chatable = True
+
     def get_context_data(self, **kwargs):
         """Get AI information for studio navigation and training progress"""
 
         context = super(StudioViewMixin, self).get_context_data(**kwargs)
-
         context['ai'] = get_ai(
             self.request.session.get('token', False),
             self.kwargs['aiid']
         )
-
+        context['ai_details'] = get_ai_details(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        )
+        context['chatable'] = bool(
+            context['ai_details']['training_file'] or
+            context['ai_details']['skills'] or
+            context['ai_details']['intents']
+        )
         context['api_url'] = settings.PUBLIC_API_URL
+
+        if not context['chatable']:
+            messages.info(self.request, _('Before you start chatting with your bot it needs to be trained or have at least one skill attached.'))
 
         return context
 
 
 @method_decorator(login_required, name='dispatch')
-class IntegrationView(TemplateView):
+class IntegrationView(StudioViewMixin, TemplateView):
 
-    template_name = "integration.html"
+    chatable = False
+    template_name = 'integration.html'
 
     def dispatch(self, request, *args, **kwargs):
 
@@ -108,24 +123,11 @@ class IntegrationView(TemplateView):
         # if there was no code then proceed as normal
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super(IntegrationView, self).get_context_data(**kwargs)
-
-        token = self.request.session.get('token', False)
-        aiid = self.kwargs['aiid']
-        ai = get_ai(
-            token,
-            aiid
-        )
-        context['ai'] = ai
-
-        return context
-
 
 @method_decorator(login_required, name='dispatch')
 class IntegrationFacebookView(TemplateView):
 
-    template_name = "integration_facebook.html"
+    template_name = 'integration_facebook.html'
 
     def get_context_data(self, **kwargs):
         context = super(IntegrationFacebookView, self).get_context_data(**kwargs)
@@ -202,9 +204,9 @@ class IntegrationFacebookView(TemplateView):
         return context
 
     def integrated_page_context(self, token, aiid, context):
-        '''
+        """
         if we have an integrated page then load customisations
-        '''
+        """
         customisations = get_facebook_customisations(token, aiid)
         context['page_greeting'] = customisations.get('page_greeting', '')
         context['get_started_payload'] = customisations.get(
@@ -214,9 +216,9 @@ class IntegrationFacebookView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class FacebookIntegrationCustomiseView(View):
-    '''
+    """
     FB Integration customisations save handler
-    '''
+    """
 
     def post(self, request, aiid, *args, **kwargs):
         token = request.session.get('token', False)
@@ -344,10 +346,16 @@ class AIListView(ListView):
 
 
 @method_decorator(login_required, name='dispatch')
+class AIDetailView(StudioViewMixin, TemplateView):
+    """Summary of an AI"""
+
+    template_name = 'ai_detail.html'
+
+
+@method_decorator(login_required, name='dispatch')
 class AICreateView(FormView):
-    """
-    Create a new AI or import one from an export JSON file
-    """
+    """Create a new AI or import one from an export JSON file"""
+
     form_class = AddAIForm
     template_name = 'ai_form.html'
     success_url = 'studio:edit_bot'
@@ -424,9 +432,8 @@ class AICreateView(FormView):
 
 @method_decorator(login_required, name='dispatch')
 class AIUpdateView(StudioViewMixin, FormView):
-    """
-    Create a new AI or import one from an export JSON file
-    """
+    """Manage AI settings"""
+
     form_class = AddAIForm
     template_name = 'settings_form.html'
     success_url = 'studio:settings'
@@ -590,11 +597,6 @@ class IntentsView(StudioViewMixin, FormView):
             initial=self.initial.get('variables', []),
             form_kwargs={'entities': entities},
         ))
-
-        context['intents'] = get_intent_list(
-            self.request.session.get('token', False),
-            self.kwargs['aiid']
-        )
 
         return context
 
@@ -769,21 +771,20 @@ class TrainingView(StudioViewMixin, FormView):
 
     def form_valid(self, form):
 
-        ai = form.save(
+        training = form.save(
             token=self.request.session.get('token', False),
-            aiid=self.kwargs['aiid'],
-            request=self.request
+            aiid=self.kwargs['aiid']
         )
 
         # Check if save was successful
-        if ai['status']['code'] in [200, 201]:
+        if training['status']['code'] in [200, 201]:
             level = messages.SUCCESS
             url = self.success_url
         else:
             level = messages.ERROR
             url = self.fail_url
 
-        messages.add_message(self.request, level, ai['status']['info'])
+        messages.add_message(self.request, level, training['status']['info'])
 
         redirect_url = reverse_lazy(
             url,
@@ -836,7 +837,8 @@ class RetrainView(RedirectView):
 @method_decorator(login_required, name='dispatch')
 class InsightsView(StudioViewMixin, TemplateView):
 
-    template_name = "insights.html"
+    chatable = False
+    template_name = 'insights.html'
 
     def get_context_data(self, **kwargs):
         context = super(InsightsView, self).get_context_data(**kwargs)

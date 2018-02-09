@@ -1,25 +1,14 @@
-{% extends "base.html" %}
+{% extends 'studio_base.html' %}
 
-{% load i18n crispy_forms_tags static %}
+{% load i18n static %}
 
 {% block title %}{% trans 'Bot Insights' %}{% endblock %}
-
-{% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
-
-{% block header %}
-  {% include 'console_header.html' %}
-{% endblock %}
 
 {% block navigation %}
   {% include 'studio_navigation.html' with ai=ai active='insights' %}
 {% endblock %}
 
-{% block footer %}
-  {% include 'console_footer.html' %}
-{% endblock %}
-
 {% block content %}
-
 <div class="content-wrapper">
   <section class="content">
     <div class="row">
@@ -72,22 +61,28 @@
 
 {% endblock %}
 
+{% block javascripts.vendors %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+{% endblock javascripts.vendors %}
+
 {% block javascripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="{% static 'js/insights.js' %}"></script>
-<script type="text/javascript">
+  {{ block.super }}
 
-  google.charts.load("current", {packages: ['corechart']});
-  google.charts.setOnLoadCallback(function () {
-    requestInsightsSessions('{{aiid}}', '{{from_date}}', '{{to_date}}', '{{date_interval}}');
-    requestInsightsInteractions('{{aiid}}', '{{from_date}}', '{{to_date}}', '{{date_interval}}');
-  });
+  <script src="{% static 'js/insights.js' %}"></script>
 
-</script>
+  <script>
 
-<script>
-  var aiid = '{{aiid}}';
-</script>
+    google.charts.load("current", {packages: ['corechart']});
+    google.charts.setOnLoadCallback(function () {
+      requestInsightsSessions('{{aiid}}', '{{from_date}}', '{{to_date}}', '{{date_interval}}');
+      requestInsightsInteractions('{{aiid}}', '{{from_date}}', '{{to_date}}', '{{date_interval}}');
+    });
 
-{% endblock %}
+    $(document).ready(function(){
+      setupLogDownloadDatePickers();
+    });
+
+  </script>
+
+{% endblock javascripts %}

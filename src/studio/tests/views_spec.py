@@ -7,7 +7,7 @@ from django.contrib.auth.signals import user_logged_in
 
 from test_plus.test import TestCase
 
-from studio.tests.factories import AiFactory
+from studio.tests.factories import AiFactory, AIDetails
 
 from users.models import Profile
 from users.tests.factories import UserFactory
@@ -17,9 +17,7 @@ class TestSummaryView(TestCase):
 
     @factory.django.mute_signals(user_logged_in)
     def setUp(self):
-        """
-        Create a user to test response as registered user
-        """
+        """Create a user to test response as registered user"""
 
         self.user = UserFactory()
         Profile.objects.create(user=self.user)
@@ -30,9 +28,8 @@ class TestSummaryView(TestCase):
         session.save()
 
     def test_summary_anonymous(self):
-        """
-        For anonymous user summary should redirect to login
-        """
+        """For anonymous user summary should redirect to login"""
+
         self.client.logout()
         response = self.client.get(reverse('studio:summary'))
         self.assertEqual(response.status_code, 302)
@@ -43,9 +40,7 @@ class TestSummaryView(TestCase):
 
     @patch('studio.views.get_ai_list')
     def test_summary_registred(self, mock_get):
-        """
-        If user is logged in he can access summary
-        """
+        """If user is logged in he can access summary"""
 
         # We mock ai_list
         mock_get.return_value.json.return_value = []
@@ -320,9 +315,8 @@ class TestAICreateView(TestCase):
 
     @factory.django.mute_signals(user_logged_in)
     def setUp(self):
-        """
-        Create a user to test response as registered user
-        """
+        """Create a user to test response as registered user"""
+
         self.user = UserFactory()
         Profile.objects.create(user=self.user)
 
@@ -332,9 +326,7 @@ class TestAICreateView(TestCase):
         session.save()
 
     def test_ai_create_anonymous(self):
-        """
-        Anonymous can't access create view
-        """
+        """Anonymous can't access create view"""
 
         self.client.logout()
         response = self.client.get(reverse('studio:add_bot'))
@@ -345,9 +337,7 @@ class TestAICreateView(TestCase):
         )
 
     def test_ai_create_registred(self):
-        """
-        Logged-in users can access create view
-        """
+        """Logged-in users can access create view"""
 
         # We mock ai_list
         response = self.client.get(reverse('studio:add_bot'))
@@ -361,6 +351,7 @@ class TestTrainingView(TestCase):
 
         self.user = UserFactory()
         self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        self.ai_details = factory.build(dict, FACTORY_CLASS=AIDetails)
         Profile.objects.create(user=self.user)
 
         self.client.force_login(self.user)
@@ -382,14 +373,16 @@ class TestTrainingView(TestCase):
             reverse('account_login') + '?next=/bots/edit/%s/training' % self.ai['aiid']
         )
 
-    @patch('studio.views.get_ai')
     @patch('botstore.templatetags.botstore_tags.get_categories')
-    def test_registred(self, mock_get_ai, mock_get_categories):
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_registred(
+        self, mock_get_ai_details, mock_get_ai, mock_get_categories
+    ):
 
-        mock_get_ai.return_value.json.return_value = [
-            factory.build(dict, FACTORY_CLASS=AiFactory)
-        ]
-        mock_get_categories.return_value.json.return_value = []
+        mock_get_ai.return_value = self.ai
+        mock_get_categories.return_value = []
+        mock_get_ai_details.return_value = self.ai_details
 
         response = self.client.get(reverse(
             'studio:training',
@@ -407,6 +400,7 @@ class TestEntitiesView(TestCase):
 
         self.user = UserFactory()
         self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        self.ai_details = factory.build(dict, FACTORY_CLASS=AIDetails)
         Profile.objects.create(user=self.user)
 
         self.client.force_login(self.user)
@@ -428,22 +422,202 @@ class TestEntitiesView(TestCase):
             reverse('account_login') + '?next=/bots/edit/%s/entities' % self.ai['aiid']
         )
 
-    @patch('studio.views.get_ai')
-    @patch('studio.views.get_entities_list')
     @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_entities_list')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
     def test_registred(
-        self, mock_get_ai, mock_get_entities_list, mock_get_categories
+        self, mock_get_ai_details, mock_get_ai, mock_get_entities_list, mock_get_categories
     ):
 
-        mock_get_ai.return_value.json.return_value = self.ai
-        mock_get_categories.return_value.json.return_value = []
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
         mock_get_entities_list.return_value.json.return_value = []
+        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:entities',
             kwargs={'aiid': self.ai['aiid']}
         ))
         self.assertEqual(response.status_code, 200)
+
+
+class TestAIDetailView(TestCase):
+
+    @factory.django.mute_signals(user_logged_in)
+    def setUp(self):
+        """Create a user to test response as registered user"""
+
+        self.user = UserFactory()
+        self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        self.ai_details = factory.build(dict, FACTORY_CLASS=AIDetails)
+        Profile.objects.create(user=self.user)
+
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['token'] = 'token'
+        session.save()
+
+    def test_anonymous(self):
+        """Anonymous can't access bot summary"""
+
+        self.client.logout()
+        response = self.client.get(reverse(
+            'studio:edit_bot',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('account_login') + '?next=/bots/edit/%s' % self.ai['aiid']
+        )
+
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_registred(
+        self, mock_get_ai_details, mock_get_ai, mock_get_categories
+    ):
+        """Should pass and show bot summary page"""
+
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
+        mock_get_categories.return_value = []
+
+        response = self.client.get(reverse(
+            'studio:edit_bot',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+
+        self.assertEqual(response.status_code, 200)
+
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_is_chatable(
+        self, mock_get_ai_details, mock_get_ai, mock_get_categories
+    ):
+        """Should pass empty bot isn't chatable"""
+
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
+        mock_get_categories.return_value = []
+
+        response = self.client.get(reverse(
+            'studio:edit_bot',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+
+        self.assertNotContains(response, 'chatable')
+        self.assertContains(response, 'Before you start chatting with your bot it needs to be trained or have at least one skill attached.')
+
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_new_bot(
+        self, mock_get_ai_details, mock_get_ai, mock_get_categories
+    ):
+        """Should pass and show a info messages"""
+
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
+        mock_get_categories.return_value = []
+
+        response = self.client.get(reverse(
+            'studio:edit_bot',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+
+        self.assertContains(response, 'Simply upload historical conversations or conversation samples between your users.')
+        self.assertContains(response, 'An Intent is a way to flag completion of a specific task during a conversation.')
+        self.assertContains(response, 'Think of bot skills as Lego pieces that you can mix and match together to build your own AI.')
+
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_with_training_file(
+        self, mock_get_ai_details, mock_get_ai, mock_get_categories
+    ):
+        """
+        Should pass and show content of the training file and no info messages
+        """
+
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
+        mock_get_categories.return_value = []
+
+        mock_get_ai_details.return_value['training_file'] = 'This is my training file'
+
+        response = self.client.get(reverse(
+            'studio:edit_bot',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+
+        self.assertContains(response, 'This is my training file')
+        self.assertNotContains(response, 'Simply upload historical conversations or conversation samples between your users.')
+
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_intents(
+        self, mock_get_ai_details, mock_get_ai, mock_get_categories
+    ):
+        """Should pass and show intents list and no info messages"""
+
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
+        mock_get_categories.return_value = []
+
+        mock_get_ai_details.return_value['intents'] = [
+            'intent_1', 'intent_2', 'intent_3', 'intent_4', 'intent_5', 'intent_6'
+        ]
+
+        response = self.client.get(reverse(
+            'studio:edit_bot',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+
+        self.assertContains(response, 'intent_1')
+        self.assertContains(response, 'intent_2')
+        self.assertContains(response, 'intent_3')
+        self.assertContains(response, 'intent_4')
+        self.assertContains(response, 'intent_5')
+        self.assertNotContains(response, 'intent_6')
+        self.assertNotContains(response, 'An Intent is a way to flag completion of a specific task during a conversation.')
+
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_skills(
+        self, mock_get_ai_details, mock_get_ai, mock_get_categories
+    ):
+        """Should pass and show skills list"""
+
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
+        mock_get_categories.return_value = []
+
+        mock_get_ai_details.return_value['skills'] = [
+            {'name': 'bot 1'},
+            {'name': 'bot 2'},
+            {'name': 'bot 3'},
+            {'name': 'bot 4'},
+            {'name': 'bot 5'},
+            {'name': 'bot 6'},
+        ]
+
+        response = self.client.get(reverse(
+            'studio:edit_bot',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+
+        self.assertContains(response, 'bot 1')
+        self.assertContains(response, 'bot 2')
+        self.assertContains(response, 'bot 3')
+        self.assertContains(response, 'bot 4')
+        self.assertContains(response, 'bot 5')
+        self.assertNotContains(response, 'bot 6')
+        self.assertNotContains(response, 'Think of bot skills as Lego pieces that you can mix and match together to build your own AI.')
 
 
 class TestAIUpdateView(TestCase):
@@ -453,6 +627,7 @@ class TestAIUpdateView(TestCase):
 
         self.user = UserFactory()
         self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        self.ai_details = factory.build(dict, FACTORY_CLASS=AIDetails)
         Profile.objects.create(user=self.user)
 
         self.client.force_login(self.user)
@@ -474,20 +649,20 @@ class TestAIUpdateView(TestCase):
             reverse('account_login') + '?next=/bots/edit/%s/settings' % self.ai['aiid']
         )
 
-    # @patch('studio.views.get_ai')
-    # @patch('botstore.templatetags.botstore_tags.get_categories')
-    # def test_registred(
-    #     self, mock_get_ai, mock_get_categories
-    # ):
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_registred(self, mock_get_ai_details, mock_get_ai, mock_get_categories):
 
-    #     mock_get_ai.return_value.json.return_value = self.ai
-    #     mock_get_categories.return_value.json.return_value = []
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
+        mock_get_categories.return_value = []
 
-    #     response = self.client.get(reverse(
-    #         'studio:settings',
-    #         kwargs={'aiid': self.ai['aiid']}
-    #     ))
-    #     self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse(
+            'studio:settings',
+            kwargs={'aiid': self.ai['aiid']}
+        ))
+        self.assertEqual(response.status_code, 200)
 
 
 class TestSkillsUpdateView(TestCase):
@@ -498,6 +673,7 @@ class TestSkillsUpdateView(TestCase):
 
         self.user = UserFactory()
         self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        self.ai_details = factory.build(dict, FACTORY_CLASS=AIDetails)
         Profile.objects.create(user=self.user)
 
         self.client.force_login(self.user)
@@ -521,10 +697,11 @@ class TestSkillsUpdateView(TestCase):
             reverse('account_login') + '?next=/bots/edit/%s/skills' % self.ai['aiid']
         )
 
-    @patch('studio.views.get_ai')
-    @patch('studio.forms.get_purchased')
     @patch('botstore.templatetags.botstore_tags.get_categories')
-    def test_registred(self, mock_get_ai, mock_get_purchased, mock_get_categories):
+    @patch('studio.forms.get_purchased')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_registred(self, mock_get_ai_details, mock_get_ai, mock_get_purchased, mock_get_categories):
         """
         Logged-in users can access update skills. We need to mock `get_aiid`
         and `get_purchased` skill to build the form. `get_categories` is mocked
@@ -532,15 +709,14 @@ class TestSkillsUpdateView(TestCase):
         """
 
         # We mock API calls
-        mock_get_ai.return_value.json.return_value = [
-            factory.build(dict, FACTORY_CLASS=AiFactory)
-        ]
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
         mock_get_purchased.return_value.json.return_value = [
             factory.build(dict, FACTORY_CLASS=AiFactory),
             factory.build(dict, FACTORY_CLASS=AiFactory),
             factory.build(dict, FACTORY_CLASS=AiFactory)
         ]
-        mock_get_categories.return_value.json.return_value = []
+        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:skills',
@@ -573,10 +749,8 @@ class TestIntentsView(TestCase):
         """Create a user to test response as registered user"""
 
         self.user = UserFactory()
-        self.ai = factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory
-            )
+        self.ai = factory.build(dict, FACTORY_CLASS=AiFactory)
+        self.ai_details = factory.build(dict, FACTORY_CLASS=AIDetails)
         Profile.objects.create(user=self.user)
 
         self.client.force_login(self.user)
@@ -600,11 +774,14 @@ class TestIntentsView(TestCase):
             reverse('account_login') + '?next=/bots/edit/%s/intents' % self.ai['aiid']
         )
 
-    @patch('studio.views.get_ai')
-    @patch('studio.views.get_entities_list')
-    @patch('studio.views.get_intent_list')
+
     @patch('botstore.templatetags.botstore_tags.get_categories')
-    def test_registred(self, mock_get_ai, mock_get_entities_list, mock_intent_list, mock_get_categories):
+    @patch('studio.views.get_entities_list')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_registred(
+        self, mock_get_ai_details, mock_get_ai, mock_get_entities_list, mock_get_categories
+    ):
         """
         Logged-in users can access update intents. We need to mock `get_aiid`
         and `get_purchased` skill to build the form. `get_categories` is mocked
@@ -612,14 +789,10 @@ class TestIntentsView(TestCase):
         """
 
         # We mock API calls
-        mock_get_ai.return_value.json.return_value = [
-            factory.build(dict, FACTORY_CLASS=AiFactory)
-        ]
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
         mock_get_entities_list.return_value.json.return_value = []
-        mock_intent_list.return_value.json.return_value = {
-            'intents_name': ['intent 1', 'intent 2']
-        }
-        mock_get_categories.return_value.json.return_value = []
+        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:intents',
@@ -629,11 +802,46 @@ class TestIntentsView(TestCase):
         ))
         self.assertEqual(response.status_code, 200)
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_entities_list')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_details')
+    def test_intents(
+        self, mock_get_ai_details, mock_get_ai, mock_get_entities_list, mock_get_categories
+    ):
+        """
+        Logged-in users can access update intents. We need to mock `get_aiid`
+        and `get_purchased` skill to build the form. `get_categories` is mocked
+        cause `Embed` is calling it using Navigation template
+        """
+
+        # We mock API calls
+        mock_get_ai.return_value = self.ai
+        mock_get_ai_details.return_value = self.ai_details
+        mock_get_entities_list.return_value.json.return_value = []
+        mock_get_categories.return_value = []
+
+        mock_get_ai_details.return_value['intents'] = [
+            'intent_1', 'intent_2', 'intent_3', 'intent_4', 'intent_5', 'intent_6'
+        ]
+
+        response = self.client.get(reverse(
+            'studio:intents',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+
+        self.assertContains(response, 'intent_1')
+        self.assertContains(response, 'intent_2')
+        self.assertContains(response, 'intent_3')
+        self.assertContains(response, 'intent_4')
+        self.assertContains(response, 'intent_5')
+        self.assertContains(response, 'intent_6')
+
     @patch('studio.services.requests.get')
     def test_unauthorised(self, mock_get_ai):
-        """
-        Return 404 if user doesn't have access to the AI
-        """
+        """Return 404 if user doesn't have access to the AI"""
 
         # We mock API calls
         mock_get_ai.return_value.status_code = 403

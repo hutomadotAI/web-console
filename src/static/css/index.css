@@ -30,8 +30,8 @@ hr {
   display: none;
 }
 
-.workspace .messages,
-.workspace .content-wrapper {
+.workspace.chatable .messages,
+.workspace.chatable .content-wrapper {
   margin-right: 320px;
 }
 
@@ -40,6 +40,11 @@ hr {
 }
 
 .workspace .aside {
+  width: 0;
+  display: none;
+}
+
+.workspace.chatable .aside {
   background-color: #222;
   padding: 5rem 0 0;
   display: flex;
@@ -50,6 +55,16 @@ hr {
   top: 0;
   width: 32rem;
   z-index: 1010;
+}
+
+.documentation.link {
+  position: absolute;
+  right: 1rem;
+  top: 1.2rem;
+}
+
+.smallprint {
+  font-size: small;
 }
 
 .form-signup {
@@ -2148,6 +2163,29 @@ a:focus {
  * Component: Box
  * --------------
  */
+
+.box-row {
+  display: flex;
+  margin: -1rem;
+  min-height: 30rem;
+}
+
+.box-row .box {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.box-row .box .box-footer{
+  margin-top: auto;
+}
+
+.box .btn.single {
+  margin: 25% auto;
+  display: block;
+  width: 17rem;
+}
+
 .box {
     position: relative;
     border-radius: 3px;
@@ -2217,13 +2255,8 @@ a:focus {
     border-top: 0;
 }
 
-.box.box-solid > .box-header .btn.btn-default {
-    background-color: transparent;
-}
-
-.box.box-solid > .box-header .btn:hover,
-.box.box-solid > .box-header a:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+.box.box-solid > .box-header .btn {
+  min-width: 10rem;
 }
 
 .box.box-solid > .box-header .btn.btn-success:hover {
@@ -2253,9 +2286,12 @@ a:focus {
 }
 
 .box.box-solid.box-clean > .box-header {
-    color: #98A8BA;
-    background: #232426;
-    border-bottom: 1px solid #404446;
+  color: #98A8BA;
+  background: #232426;
+}
+
+.box.box-solid.box-clean > .box-header.with-border {
+  border-bottom: 1px solid #404446;
 }
 
 .box.box-solid.box-default > .box-header {
@@ -2962,15 +2998,17 @@ a:focus {
 }
 
 .btn-default {
-    background-color: #252628;
-    color: #444;
-    border-color: #ddd;
+    background-color: #333;
+    color: #fff;
+    border-color: #464747;
 }
 
 .btn-default:hover,
 .btn-default:active,
 .btn-default.hover {
-    background-color: #252628;
+    background-color: #444;
+    color: #fff;
+    border-color: #464747;
 }
 
 .btn-primary {

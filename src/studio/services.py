@@ -36,6 +36,30 @@ def get_ai(token, aiid):
     return response.json()
 
 
+def get_ai_details(token, aiid):
+    """Returns a particular AI data"""
+
+    path = '/ui/ai/%s/details'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    response = requests.get(
+        url,
+        headers=set_headers(token),
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
+    )
+
+    logger.debug(response)
+
+    if response.status_code in [401, 403, 404]:
+        # We don't reveal if AI exist
+        raise Http404(_('AI id %s doesn’t exist') % aiid)
+
+    return response.json()
+
+
 def delete_ai(token, aiid):
     """Returns a particular AI data"""
 
@@ -108,6 +132,50 @@ def get_ai_list(token):
     logger.debug(ai_list)
 
     return ai_list
+
+
+def get_ai_skill(token, aiid):
+    """Get skills linked with an AI"""
+
+    path = '/ai/%s/bots'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    headers = set_headers(token)
+
+    response = requests.get(
+        url,
+        headers=headers,
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
+    )
+
+    logger.debug(response)
+
+    return response.json()
+
+
+def get_ai_training(token, aiid):
+    """Get training content of an AI"""
+
+    path = '/ai/%s/training/materials'
+    url = settings.API_URL + path % aiid
+
+    logger.debug(url)
+
+    headers = set_headers(token)
+
+    response = requests.get(
+        url,
+        headers=headers,
+        timeout=settings.API_TIMEOUT,
+        verify=not settings.DEBUG
+    )
+
+    logger.debug(response)
+
+    return response.json()
 
 
 def post_ai(token, ai_data, aiid=''):
@@ -216,26 +284,6 @@ def put_training_update(token, aiid):
     """Update AI training"""
 
     path = '/ai/%s/training/update'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.put(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def put_training_start(token, aiid):
-    """Start AI training"""
-
-    path = '/ai/%s/training/start'
     url = settings.API_URL + path % aiid
 
     logger.debug(url)

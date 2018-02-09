@@ -26,7 +26,7 @@
 
 {% if fb_not_connected %}
 
-  <div class="box-header with-border">
+  <div class="box-body">
 
     <div class="alert alert-base flat no-shadow">
       Integrate this bot with a Facebook Page to allow it to respond on your behalf.
@@ -48,7 +48,7 @@
   </div>
 
   <div style="padding-bottom: 20px">
-    <button class="btn btn-primary flat center-block" id="fb-disconnect" style="width: 260px; " alt="disconnect">disconnect</button>
+    <button class="btn btn-primary flat center-block" id="fb-disconnect" style="width: 260px; " alt="disconnect">Disconnect</button>
   </div>
 
   {% if fb_no_page_selected %}
@@ -112,7 +112,7 @@
     </form>
 
     <div style="padding-bottom: 20px">
-      <button class="btn btn-primary flat center-block" form="FB_SETTINGS" style="width: 260px;" alt="save customisations">save customisations</button>
+      <button class="btn btn-primary flat center-block" form="FB_SETTINGS" style="width: 260px;" alt="save customisations">Save customizations</button>
     </div>
 
     {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-messengermessageus' button_name='Message Us' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us' button_action='to start chatting to this bot on Facebook Messenger.' %}
@@ -125,6 +125,8 @@
 
 {% endif %}
 
+{% if facebook_message %}
+
 <div class="box box-solid box-clean flat no-shadow no-margin" id="newAiintegration" style="padding-bottom: 0px;">
   <div class="box-body" style="padding-bottom: 0px;">
     <div style="padding-bottom: 12px">
@@ -132,3 +134,5 @@
     </div>
   </div>
 </div>
+
+{% endif %}

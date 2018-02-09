@@ -339,16 +339,16 @@ class TrainingForm(forms.Form):
         })
     )
 
-    def save(self, *args, **kwargs):
+    def save(self, token, aiid):
         """Upload a file and start a new training"""
 
         file = self.cleaned_data['file']
-        ai = post_training(kwargs['token'], kwargs['aiid'], file)
+        training = post_training(token, aiid, file)
 
-        if ai['status']['code'] in [200, 201]:
-            return put_training_start(kwargs['token'], kwargs['aiid'])
+        if training['status']['code'] in [200, 201]:
+            return put_training_start(token, aiid)
         else:
-            return ai
+            return training
 
 
 class SkillsForm(forms.Form):
