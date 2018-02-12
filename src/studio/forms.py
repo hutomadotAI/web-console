@@ -75,9 +75,11 @@ class EntityForm(forms.Form):
 
     def clean_entity_values(self):
         """Split values"""
-        return self.cleaned_data['entity_values'].split(
+        split_list =  self.cleaned_data['entity_values'].split(
             settings.TOKENFIELD_DELIMITER
         )
+        stripped_list = [item.strip() for item in split_list]
+        return stripped_list
 
     def save(self, *args, **kwargs):
         return post_entity(self.cleaned_data, **kwargs)
