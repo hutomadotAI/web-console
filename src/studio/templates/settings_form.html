@@ -28,9 +28,11 @@
         </div>
 
         <div class="box-footer">
-            <a href="{% url 'studio:index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
-            <button style="min-width:100px" type="submit" form="settings_form" class="btn btn-success flat pull-right"><b>{% trans 'Save' %}</b></button>
-            <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" download="bot-{{ ai.aiid }}.json" style="min-width:100px" class="btn btn-primary flat pull-right"><b>{% trans 'Export bot' %}</b></a>
+            <a href="{% url 'studio:index' %}" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
+            <div class="pull-right">
+              <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" download="bot-{{ ai.aiid }}.json" class="btn btn-primary flat"><b>{% trans 'Export bot' %}</b></a>
+              <button type="submit" form="settings_form" class="btn btn-success flat"><b>{% trans 'Save' %}</b></button>
+            </div>
         </div>
 
       </div>
@@ -98,7 +100,7 @@
             </div>
 
             <div class="form-group">
-              <button style="width:100px" data-toggle="modal" data-target="#regenerate_webhook_secret" class="btn btn-primary flat pull-right"><b>Generate</b></button>
+              <button data-toggle="modal" data-target="#regenerate_webhook_secret" class="btn btn-primary flat pull-right"><b>Generate</b></button>
             </div>
 
           </div>
@@ -106,7 +108,7 @@
         </div>
 
         <div class="box-footer">
-          <button style="min-width:100px" data-toggle="modal" data-target="#delete_AI" class="btn btn-danger flat pull-right"><b>{% trans 'Delete bot' %}</b></button>
+          <button data-toggle="modal" data-target="#delete_AI" class="btn btn-danger flat pull-right"><b>{% trans 'Delete bot' %}</b></button>
         </div>
 
       </div>

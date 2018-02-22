@@ -2964,6 +2964,11 @@ select:not([multiple]) {
     -webkit-box-shadow: none;
     box-shadow: none;
     border: 1px solid transparent;
+    min-width: 8.8rem;
+}
+
+.input-group-btn .btn {
+  min-width: auto;
 }
 
 .btn.uppercase {
