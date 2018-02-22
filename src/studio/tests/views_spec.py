@@ -59,7 +59,7 @@ class TestSummaryView(TestCase):
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
-            'Welcome to Hu:toma.ai — the marketplace for your bots'
+            'Welcome to Hu:toma AI - make your knowledge conversational'
         )
         self.assertContains(
             response,
@@ -81,7 +81,7 @@ class TestSummaryView(TestCase):
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
-            'Welcome to Hu:toma.ai — the marketplace for your bots'
+            'Welcome to Hu:toma AI - make your knowledge conversational'
         )
         self.assertNotContains(
             response,
