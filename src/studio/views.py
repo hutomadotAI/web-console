@@ -84,7 +84,7 @@ class StudioViewMixin(ContextMixin):
         context['api_url'] = settings.PUBLIC_API_URL
 
         if not context['chatable']:
-            messages.info(self.request, _('Before you start chatting with your bot it needs to be trained or have at least one skill attached.'))
+            messages.info(self.request, _('To start chatting with your bot either upload a training file, add a skill, or add an intent.'))
 
         return context
 

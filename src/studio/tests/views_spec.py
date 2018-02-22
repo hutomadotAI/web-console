@@ -509,7 +509,7 @@ class TestAIDetailView(TestCase):
         ))
 
         self.assertNotContains(response, 'chatable')
-        self.assertContains(response, 'Before you start chatting with your bot it needs to be trained or have at least one skill attached.')
+        self.assertContains(response, 'To start chatting with your bot either upload a training file, add a skill, or add an intent')
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai')
