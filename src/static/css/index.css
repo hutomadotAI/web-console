@@ -2181,9 +2181,9 @@ a:focus {
 }
 
 .box .btn.single {
-  margin: 25% auto;
   display: block;
-  width: 17rem;
+  margin: 25% auto;
+  max-width: 20rem;
 }
 
 .box {
