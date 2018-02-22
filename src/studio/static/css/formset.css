@@ -28,14 +28,6 @@
   margin-top: auto;
 }
 
-.form-formset .form-group:first-of-type .controls {
-  border-radius: 4px 0 0 0;
-}
-
-.form-formset .form-group:last-of-type .controls {
-  border-radius: 0 4px 0 0;
-}
-
 .form-formset .control-label {
   font-size: smaller;
 }
@@ -52,7 +44,8 @@
 }
 
 .form-formset .delete-group .btn {
-  border-radius: 0 4px 0 0;
+  background-color: #333;
+  border-radius: 0;
 }
 
 .form-formset .formset-remove:hover,
@@ -105,11 +98,6 @@
 
 .form-group.prompts-group .control-label {
   display: none;
-}
-
-.form-group.prompts-group .controls,
-.form-group.prompts-group .form-control {
-  border-radius: 0 0 4px 4px;
 }
 
 .form-group.required-group .controls {

@@ -149,7 +149,7 @@ hr {
 }
 
 .loading {
-  background-image: url('data:image/svg+xml;charset=utf8,<svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#fff"><circle cx="30" cy="15" r="8"><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.2;1" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="8" fill-opacity="0.3"><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="90" cy="15" r="8"><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.2;1" calcMode="linear" repeatCount="indefinite" /></circle></svg>');
+  background-image: url('data:image/svg+xml;charset=utf8,<svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="white"><circle cx="30" cy="15" r="8"><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.2;1" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="8" fill-opacity="0.3"><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="90" cy="15" r="8"><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.2;1" calcMode="linear" repeatCount="indefinite" /></circle></svg>');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 3rem;
@@ -1824,6 +1824,18 @@ a:focus {
     background-color: #515151;
     border: none;
     color: #ADADAD;
+    border-radius: 0;
+}
+
+select:not([multiple]) {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-position: right 50%;
+  background-repeat: no-repeat;
+  background-image: url('data:image/svg+xml;charset=utf8,<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-4, 0)" fill="LightGray"><polygon points="8 0 12 7 4 7"></polygon><polygon transform="translate(8, 12.5) scale(1, -1) translate(-8, -12.5)" points="8 9 12 16 4 16"></polygon></g></svg>');
+  padding: .5em;
+  padding-right: 1.5em
 }
 
 /* Fix Firefox rendering #3679 */
