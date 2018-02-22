@@ -56,3 +56,22 @@ document.addEventListener('change', function handleChange(event) {
     })
   }
 })
+
+/**
+ * Updates submit button type if the form has change
+ *
+ * @param  {Event object} event dispatched submit event
+ *
+ * @return {undefined}
+ */
+document.addEventListener('change', function handleChange(event) {
+
+  if (event.target.form && event.target.form.classList.contains('persistent')) {
+    const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.form.id || 'none'}]`)
+
+    for(let button of SUBMIT_BUTTONS) {
+      button.classList.add('btn-success')
+      button.classList.remove('btn-primary')
+    }
+  }
+})
