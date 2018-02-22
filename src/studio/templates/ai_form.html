@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags static %}
 
-{% block title %}{% trans 'Add bot' %}{% endblock %}
+{% block title %}{% trans 'Create bot' %}{% endblock %}
 
 {% block body.attributes %} class="skin-blue fixed sidebar-mini"{% endblock body.attributes %}
 
@@ -28,7 +28,7 @@
 
         <div class="box-body">
 
-          <form method="post" class="form-add" id="add_form">
+          <form method="post" class="persistent form-add" id="add_form">
             {% csrf_token %}
 
             {{ add_form | crispy }}
@@ -70,3 +70,7 @@
     </section>
   </div>
 {% endblock %}
+
+{% block javascripts %}
+  <script src="{% static 'js/forms.js' %}"></script>
+{% endblock javascripts %}
