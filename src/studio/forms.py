@@ -117,7 +117,7 @@ class EntityFormset(forms.Form):
     )
 
     n_prompts = forms.IntegerField(
-        initial=1,
+        initial=3,
         label=_('N prompts'),
         validators=[
             MaxValueValidator(16),
