@@ -239,7 +239,7 @@ class IntentForm(forms.Form):
         """Combine form data with entities coming from formset"""
 
         # TODO: Remove after we refactor Intent API code
-        self.cleaned_data['webhook']['aiid'] = kwargs['aiid']
+        self.cleaned_data['webhook']['aiid'] = str(kwargs['aiid'])
 
         # TODO: Rename to entities after we refactor Intent API code
         self.cleaned_data['variables'] = [
@@ -322,7 +322,8 @@ class ImportAIForm(forms.Form):
         label=_('Exported Bot JSON file'),
         widget=forms.FileInput(attrs={
             'accept': '.json, application/json',
-            'placeholder': 'YourBotConfig.json'
+            'placeholder': 'YourBotConfig.json',
+            'class': 'form-control'
         })
     )
 
@@ -337,7 +338,8 @@ class TrainingForm(forms.Form):
         label=_('Add training file'),
         widget=forms.FileInput(attrs={
             'accept': '.txt, text/plain',
-            'placeholder': _('Select a txt file')
+            'placeholder': _('Select a txt file'),
+            'class': 'form-control'
         })
     )
 

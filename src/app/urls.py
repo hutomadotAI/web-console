@@ -8,19 +8,19 @@
 
     Function views
         1. Add an import:  from studio import views
-        2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+        path('$', views.home, name='home')
 
     Class-based views
         1. Add an import:  from studio.views import Home
-        2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+        path('$', Home.as_view(), name='home')
 
     Including another URLconf
         1. Import the include() function: from django.conf.urls import url, include
-        2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
+        path('blog/', include('blog.urls'))
 """
 
 from django.conf import settings
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.contrib import admin
 from django.views import defaults, generic
 from django.views.generic.base import RedirectView
@@ -32,42 +32,42 @@ admin.site.site_header = 'Hu:toma admin'
 urlpatterns = [
 
 
-    url(
-        r'^',
+    path(
+        '',
         include('studio.urls', namespace='studio')
     ),
 
-    url(
-        r'^botstore/',
+    path(
+        'botstore/',
         include('botstore.urls', namespace='botstore')
     ),
 
     # Used to access admin section
-    url(
-        r'^admin/',
+    path(
+        'admin/',
         admin.site.urls
     ),
 
     # Used to support authentication and users management
-    url(
-        r'^accounts/',
+    path(
+        'accounts/',
         include('allauth.urls')
     ),
 
-    url(
-        r'^users/',
+    path(
+        'users/',
         include('users.urls', namespace='users')
     ),
 
     # Used for changing users language settings
-    url(
-        r'^i18n/',
+    path(
+        'i18n/',
         include('django.conf.urls.i18n'),
     ),
 
     # favicon fallback
-    url(
-        r'^favicon\.ico$',
+    path(
+        'favicon.ico',
         generic.base.RedirectView.as_view(
             url='/static/images/favicon.png',
             permanent=True
@@ -76,14 +76,14 @@ urlpatterns = [
     ),
 
     # loader io key
-    url(
-        r'^loaderio-beeabb3d964411d8b9bf497039873568/$',
+    path(
+        'loaderio-beeabb3d964411d8b9bf497039873568',
         generic.base.TemplateView.as_view(template_name='loaderio.txt')
     ),
 
     # Privacy redirect
-    url(
-        r'^cookies/?$',
+    path(
+        'cookies',
         RedirectView.as_view(
             url='https://www.hutoma.ai/cookiepolicy.pdf',
             permanent=True
@@ -92,8 +92,8 @@ urlpatterns = [
     ),
 
     # Landing home page redirect
-    url(
-        r'^home/?$',
+    path(
+        'home',
         RedirectView.as_view(
             url='https://www.hutoma.ai',
             permanent=True
@@ -114,23 +114,23 @@ if settings.DEBUG:
     Use urls for Django toolbar if available
     """
     urlpatterns += [
-        url(
-            r'^400/$',
+        path(
+            '400',
             defaults.bad_request,
             kwargs={'exception': Exception('Bad Request!')}
         ),
-        url(
-            r'^403/$',
+        path(
+            '403',
             defaults.permission_denied,
             kwargs={'exception': Exception('Permission Denied')}
         ),
-        url(
-            r'^404/$',
+        path(
+            '404',
             defaults.page_not_found,
             kwargs={'exception': Exception('Page not Found')}
         ),
-        url(
-            r'^500/$',
+        path(
+            '500',
             defaults.server_error
         ),
     ]
@@ -140,8 +140,8 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns += [
-            url(
-                r'^__debug__/',
+            path(
+                '__debug__/',
                 include(debug_toolbar.urls)
             ),
         ]

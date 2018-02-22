@@ -271,7 +271,7 @@ TOKENFIELD_DELIMITER = '\u2028'
 
 TAG_MANAGER_ENVIRONMENT = base64.b64decode(
     os.environ.get('TAG_MANAGER_ENVIRONMENT', '')
-)
+).decode('utf-8')
 TAG_MANAGER_ID = os.environ.get('TAG_MANAGER_ID', '')
 
 

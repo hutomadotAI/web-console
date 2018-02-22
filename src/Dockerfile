@@ -1,4 +1,4 @@
-FROM python:3.6.3-slim-jessie
+FROM python:3.6.4-slim-jessie
 
 # With Debian jessie slim image, need to install the mysql libs
 # Don't be tempted to move to Debian stretch as that will use MariaDB

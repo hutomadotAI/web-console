@@ -8,18 +8,18 @@
 
     Function views
         1. Add an import:  from studio import views
-        2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+        2. Add a URL to urlpatterns:  url('', views.home, name='home')
 
     Class-based views
         1. Add an import:  from studio.views import Home
-        2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+        2. Add a URL to urlpatterns:  url('', Home.as_view(), name='home')
 
     Including another URLconf
         1. Import the include() function: from django.conf.urls import url, include
-        2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
+        2. Add a URL to urlpatterns:  url('blog/', include('blog.urls'))
 """
 
-from django.conf.urls import url
+from django.urls import path, re_path
 
 from django.views.generic.base import RedirectView
 
@@ -49,163 +49,166 @@ from studio.views import (
     ProxyInsightsChartView
 )
 
+app_name = 'studio'
+
 urlpatterns = [
 
     # Always use a path, explicit is better than implicit
-    url(
-        r'^$',
+    path(
+        '',
         RedirectView.as_view(pattern_name='studio:summary'),
         name='index'
     ),
 
     # Summary page of studio app
-    url(
-        r'^summary/?$',
+    path(
+        'summary',
         AIListView.as_view(),
         name='summary'
     ),
 
     # Create a new AI
-    url(
-        r'^bots/add/?$',
+    path(
+        'bots/add',
         AICreateView.as_view(),
         name='add_bot'
     ),
 
     # Edit an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/?$',
+    path(
+        'bots/edit/<uuid:aiid>',
         AIDetailView.as_view(),
         name='edit_bot'
     ),
 
     # Update training of an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/training/?$',
+    path(
+        'bots/edit/<uuid:aiid>/training',
         TrainingView.as_view(),
         name='training'
     ),
 
     # Restart training of an AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/retrain/?$',
+    path(
+        'bots/edit/<uuid:aiid>/retrain',
         RetrainView.as_view(),
         name='retrain'
     ),
 
     # Update skills of an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/skills/?$',
+    path(
+        'bots/edit/<uuid:aiid>/skills',
         SkillsView.as_view(),
         name='skills'
     ),
 
     # Update entities of an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/entities/?$',
+    path(
+        'bots/edit/<uuid:aiid>/entities',
         EntitiesView.as_view(),
         name='entities'
     ),
 
     # Update an Entity of an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/entities/(?P<entity_name>[-0-9a-zA-Z_]+)/?$',
+    path(
+        'bots/edit/<uuid:aiid>/entities/<slug:entity_name>',
         EntitiesUpdateView.as_view(),
         name='entities.edit'
     ),
 
     # Update Intents of an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/intents/?$',
+    path(
+        'bots/edit/<uuid:aiid>/intents',
         IntentsView.as_view(),
         name='intents'
     ),
 
     # Update an Intent of an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/intents/(?P<intent_name>[-0-9a-zA-Z_]+)/?$',
+    path(
+        'bots/edit/<uuid:aiid>/intents/<slug:intent_name>',
         IntentsUpdateView.as_view(),
         name='intents.edit'
     ),
 
     # List the integration options for an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/?$',
+    path(
+        'bots/edit/<uuid:aiid>/integrations',
         IntegrationView.as_view(),
         name='integrations'
     ),
 
     # List or update facebook integration for this AI
-    url(
+    re_path(
         r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/(?P<action>get|page|disconnect)/(?P<id>[0-9]*)$',
         IntegrationFacebookView.as_view(),
+
         name='integrations_facebook'
     ),
 
     # save customisations to facebook integration
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/customise$',
+    path(
+        'bots/edit/<uuid:aiid>/integrations/facebook/customise',
         FacebookIntegrationCustomiseView.as_view(),
         name='integrations_facebook_customise'
     ),
 
     # Insights: download chat logs for an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/insights/logs/?$',
+    path(
+        'bots/edit/<uuid:aiid>/insights/logs',
         ProxyInsightsLogsView.as_view(),
         name='insights_log_data'
     ),
 
     # Insights: download chart data for an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/insights/chart/?$',
+    path(
+        'bots/edit/<uuid:aiid>/insights/chart',
         ProxyInsightsChartView.as_view(),
         name='insights_chart_data'
     ),
 
     # Display insights of an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/insights/?$',
+    path(
+        'bots/edit/<uuid:aiid>/insights',
         InsightsView.as_view(),
         name='insights'
     ),
 
     # Update settings of an existing AI
-    url(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/settings/?$',
+    path(
+        'bots/edit/<uuid:aiid>/settings',
         AIUpdateView.as_view(),
         name='settings'
     ),
 
     # Proxy ajax AI calls
-    url(
-        r'^proxy/ai/(?P<aiid>[0-9a-f-]+)$',
+    path(
+        'proxy/ai/<uuid:aiid>',
         ProxyAiView.as_view(),
         name='proxy.ai'
     ),
 
-    url(
-        r'^proxy/ai/(?P<aiid>[0-9a-f-]+)/export$',
+    path(
+        'proxy/ai/<uuid:aiid>/export',
         ProxyAiExportView.as_view(),
         name='proxy.ai.export'
     ),
 
-    url(
-        r'^proxy/ai/(?P<aiid>[0-9a-f-]+)/regenerate_webhook_secret$',
+    path(
+        'proxy/ai/<uuid:aiid>/regenerate_webhook_secret',
         ProxyRegenerateWebhookSecretView.as_view(),
         name='proxy.ai.regenerate_webhook_secret'
     ),
 
     # Remove an intent
-    url(
-        r'^proxy/intent/(?P<aiid>[0-9a-f-]+)/?$',
+    path(
+        'proxy/intent/<uuid:aiid>',
         ProxyIntentDeleteView.as_view(),
         name='proxy.intent.delete'
     ),
 
     # Remove an intent
-    url(
-        r'^proxy/entity$',
+    path(
+        'proxy/entity',
         ProxyEntityDeleteView.as_view(),
         name='proxy.entity.delete'
     ),
