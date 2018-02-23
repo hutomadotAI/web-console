@@ -2182,9 +2182,16 @@ select:not([multiple]) {
   min-height: 30rem;
 }
 
+@media (max-width: 1024px) {
+  .box-row {
+    flex-direction: column;
+  }
+}
+
 .box-row .box {
   margin: 1rem;
   display: flex;
+  min-height: 300px;
   flex-direction: column;
 }
 
@@ -2194,8 +2201,12 @@ select:not([multiple]) {
 
 .box .btn.single {
   display: block;
-  margin: 25% auto;
-  max-width: 20rem;
+  margin: 0 auto;
+  width: 20rem;
+  position: absolute;
+  bottom: 30%;
+  left: 50%;
+  margin-left: -10rem;
 }
 
 .box {
