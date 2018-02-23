@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def get_ai(token, aiid):
     """Returns a particular AI data"""
 
-    path = '/ai/%s'
+    path = '/ui/ai/%s'
     url = settings.API_URL + path % aiid
 
     logger.debug(url)
