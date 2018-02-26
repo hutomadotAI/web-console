@@ -266,10 +266,9 @@ class ProxyAiView(View):
     """Temporary proxy until we open the full API to the world"""
 
     def get(self, request, aiid, *args, **kwargs):
-        return JsonResponse(get_ai(
-            self.request.session.get('token', False),
-            aiid
-        ))
+        ai = get_ai(self.request.session.get('token', False), aiid)
+
+        return JsonResponse(ai, status=ai['status']['code'])
 
     def post(self, request, aiid, *args, **kwargs):
         """We use forms to secure POST requests"""
