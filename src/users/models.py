@@ -10,8 +10,7 @@ logger = logging.getLogger(__name__)
 class Profile(models.Model):
     """
     connector model to not break db structure, Django application is using
-    built-in User model, legacy users are moved in a migration. New instance
-    is created after registration.
+    built-in User model. New instance is created after registration.
 
     user — Relation between legacy and built-in model
     dev_id — Users UUID, use `CharField` instead of built-in UUID to keep

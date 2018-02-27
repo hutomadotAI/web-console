@@ -64,7 +64,6 @@ INSTALLED_APPS = [
 
     # Apps specific for console:
     'botstore',         # Bot store
-    'legacy',           # To be removed after we switch to Django Console
     'studio',           # Bot studio
     'users',            # All user stuff
 
@@ -304,21 +303,8 @@ DATABASES = {
         'HOST': os.environ.get('DATABASE_HOST', 'mysql'),
         'PORT': os.environ.get('DATABASE_PORT', '3306'),
         'ATOMIC_REQUESTS': True,
-    },
-    'core': {
-        # To be remved after we switch to Django Console
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('CORE_DATABASE_NAME'),
-        'USER': os.environ.get('CORE_DATABASE_USER'),
-        'PASSWORD': os.environ.get('CORE_DATABASE_PASSWORD'),
-        'HOST': os.environ.get('CORE_DATABASE_HOST'),
-        'PORT': os.environ.get('CORE_DATABASE_PORT'),
-        'ATOMIC_REQUESTS': True,
     }
 }
-
-# To be removed after we switch to Django Console
-DATABASE_ROUTERS = ['legacy.database.Router']
 
 # ------------------------------------------------------------------------------
 #

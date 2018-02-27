@@ -31,11 +31,6 @@ echo "Runing migrations"
 python manage.py migrate
 check_return_code
 
-# Migrate legacy users
-echo "Migrating legacy users"
-python manage.py migrate_legacy_users
-check_return_code
-
 # Process statics
 echo "Process statics"
 python manage.py collectstatic --noinput
