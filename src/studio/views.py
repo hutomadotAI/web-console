@@ -803,7 +803,7 @@ class RetrainView(RedirectView):
 
     permanent = False
     query_string = True
-    pattern_name = 'studio:summary'
+    pattern_name = 'studio:edit_bot'
 
     def get_redirect_url(self, *args, **kwargs):
 
