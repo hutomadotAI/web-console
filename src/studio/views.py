@@ -401,7 +401,6 @@ class AICreateView(FormView):
         else:
             level = messages.ERROR
             redirect_url = reverse_lazy(self.fail_url)
-            messages.error(self.request, new_ai['status']['info'])
 
         messages.add_message(self.request, level, new_ai['status']['info'])
 
