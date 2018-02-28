@@ -8,7 +8,7 @@
   color: #fff;
   display: flex;
   border: none;
-  border-radius: 3px;
+  border-radius: 0;
 }
 
 .alert p {
