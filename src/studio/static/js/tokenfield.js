@@ -26,3 +26,11 @@ $(document)
       $(event.relatedTarget).addClass('invalid')
     }
   })
+  .on('tokenfield:initialize', function (event) {
+    // Synthetic changed triggers, need to bubble
+    $(document).on('tokenfield:removedtoken tokenfield:createtoken', function (event) {
+      event.target.dispatchEvent(new Event('tokenfield:changed', { 'bubbles': true }))
+    })
+
+  })
+

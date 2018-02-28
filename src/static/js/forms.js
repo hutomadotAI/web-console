@@ -64,8 +64,7 @@ document.addEventListener('change', function handleChange(event) {
  *
  * @return {undefined}
  */
-document.addEventListener('change', function handleChange(event) {
-
+function handleChange(event) {
   if (event.target.form && event.target.form.classList.contains('persistent')) {
     const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.form.id || 'none'}]`)
 
@@ -74,4 +73,7 @@ document.addEventListener('change', function handleChange(event) {
       button.classList.remove('btn-primary')
     }
   }
-})
+}
+
+document.addEventListener('change', handleChange)
+document.addEventListener('tokenfield:changed', handleChange)
