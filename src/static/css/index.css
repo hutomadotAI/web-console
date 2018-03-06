@@ -26,6 +26,39 @@ hr {
   margin: 3rem 0;
 }
 
+iframe {
+    border: 0;
+}
+
+ol, ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+figure, p {
+  margin: 0 auto;
+  font-weight: normal;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+  font-weight: lighter;
+  margin: 0;
+}
+
+#navigation {
+  background-color: black;
+}
+
+#navigation a {
+  font-weight: bold;
+}
+
+.navbar-brand {
+  padding: 0;
+}
+
 .sidebar-menu > li > .slack-community {
   display: none;
 }
@@ -7147,15 +7180,16 @@ ul.pagination li a {
 }
 
 .web-footer {
-    /*position: absolute;*/
     padding: 40px 0;
     background-color: black;
     bottom: 0;
     width: 100%;
-    height: 250px;
-    border-top: 5px solid #062033;
     color: #fff;
     margin: 0 auto;
+}
+
+.web-footer .col-md-3 {
+  margin-bottom: 24px;
 }
 
 .web-footer a:hover {
@@ -7183,7 +7217,8 @@ ul.pagination li a {
 }
 
 .new-link {
-    color: #3c8dbc;
+  color: #3c8dbc;
+  font-weight: bold;
 }
 
 .new-link:visited {

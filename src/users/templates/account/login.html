@@ -4,39 +4,37 @@
 
 {% block title %}{% trans 'Log in' %}{% endblock %}
 
-{% block body.attributes %} class="web-body" id="body"{% endblock body.attributes %}
+{% block body.attributes %} class="web-body"{% endblock body.attributes %}
 
 {% block content %}
-  <section>
-    <div class="login-box">
-      <div class="login-box-body" style="border: 1px solid #d2d6de; background-color: #202020;">
+  <div class="login-box">
+    <div class="login-box-body" style="border: 1px solid #d2d6de; background-color: #202020;">
 
-        <p class="login-box-msg"><b>{% trans 'Login to Hu:toma' %}</b></p>
+      <p class="login-box-msg"><b>{% trans 'Login to Hu:toma' %}</b></p>
 
-        <form class="login form-signin" id="login_form" method="POST" action="{% url 'account_login' %}">
+      <form class="login form-signin" id="login_form" method="POST" action="{% url 'account_login' %}">
 
-          {% csrf_token %}
+        {% csrf_token %}
 
-          {{ form | crispy }}
+        {{ form | crispy }}
 
-          {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-          {% endif %}
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
 
-        </form>
+      </form>
 
-        <div class="form-group">
-          <button type="submit" form="login_form" class="btn btn-primary btn-block btn-flat">{% trans 'Log in' %}</button>
-        </div>
-
-
-
-        <a class="new-link" href="{% url 'account_reset_password' %}">{% trans 'I forgot my password' %}</a><br>
-        <a class="new-link" href="{% url 'account_signup' %}" class="text-center">{% trans 'Register a new account' %}</a>
-
+      <div class="form-group">
+        <button type="submit" form="login_form" class="btn btn-primary btn-block btn-flat">{% trans 'Log in' %}</button>
       </div>
+
+
+
+      <a class="new-link" href="{% url 'account_reset_password' %}">{% trans 'I forgot my password' %}</a><br>
+      <a class="new-link" href="{% url 'account_signup' %}" class="text-center">{% trans 'Register a new account' %}</a>
+
     </div>
-  <section>
+  </div>
 
 {% endblock content %}
 
