@@ -358,11 +358,22 @@ body > section, .footer {
     clear: both;
 }
 
-.ai-list.bot-description {
-  padding-top: 15px;
+.ai-list .bot-description,
+.ai-list .bot-name {
   overflow: hidden;
-  max-width: 512px;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ai-list .bot-name a,
+.ai-list .bot-skills a {
+  color: inherit;
+  display: block;
+}
+
+.ai-list .bot-description {
+  padding-top: 15px;
+  max-width: 512px;
 }
 
 .layout-boxed .wrapper {
@@ -1395,6 +1406,11 @@ select:not([multiple]) {
 
 /* Fix icon only buttons */
 .btn.fa {
+  min-width: auto;
+}
+
+/* Fix button groups buttons */
+.btn-group .btn {
   min-width: auto;
 }
 

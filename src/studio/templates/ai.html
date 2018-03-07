@@ -1,49 +1,63 @@
 {% load i18n %}
 
-<tr role="row" class="even">
+<tr role="row" class="ai-list">
 
-    <td class="text-gray" style="padding-top: 15px;">{{ ai.name }}</td>
-    <td class="ai-list bot-description" title="{{ ai.description }}">{{ ai.description }}</td>
-    <td class="text-center" style="padding-top: 15px;">{{ ai.linked_bots|length }}</td>
-    <td class="text-center" style="padding-top: 15px;">
-    {% if ai.ai_status == 'ai_training_complete' %}
-        <span class="text-olive">{% trans 'Completed' %}</span>
-    {% elif ai.ai_status == 'ai_undefined' or ai.ai_status == 'ai_ready_to_train' %}
-        <span class="text-darkgray">{% trans 'Not Started' %}</span>
-    {% elif ai.ai_status == 'ai_training_queued' %}
-        <span class="text-gray">{% trans 'Queued' %}</span>
-    {% elif ai.ai_status == 'ai_training' %}
-        <span class="text-orange">{% trans 'In Progress' %}</span>
-    {% elif ai.ai_status == 'ai_training_stopped' %}
-        <span class="text-red">{% trans 'Stopped' %}</span>
-    {% elif ai.ai_status == 'ai_error' %}
-        <span class="text-red flat">{% trans 'Error' %}</span>
-    {% endif %}</td>
+  <td class="bot-name" style="padding-top: 15px;"><a href="{% url 'studio:edit_bot' ai.aiid %}">{{ ai.name }}</a></td>
+  <td class="bot-description" title="{{ ai.description }}">{{ ai.description }}</td>
+  <td class="text-center bot-skills" style="padding-top: 15px;"><a href="{% url 'studio:skills' ai.aiid %} ">{{ ai.linked_bots|length }}</a></td>
+  <td class="text-center bot-traning" style="padding-top: 15px; white-space: nowrap;">
+  {% if ai.ai_status == 'ai_training_complete' %}
+    <span class="text-olive">{% trans 'Completed' %}</span>
+  {% elif ai.ai_status == 'ai_undefined' or ai.ai_status == 'ai_ready_to_train' %}
+    <span class="text-darkgray">{% trans 'Not Started' %}</span>
+  {% elif ai.ai_status == 'ai_training_queued' %}
+    <span class="text-gray">{% trans 'Queued' %}</span>
+  {% elif ai.ai_status == 'ai_training' %}
+    <span class="text-orange">{% trans 'In Progress' %}</span>
+  {% elif ai.ai_status == 'ai_training_stopped' %}
+    <span class="text-red">{% trans 'Stopped' %}</span>
+  {% elif ai.ai_status == 'ai_error' %}
+    <span class="text-red flat">{% trans 'Error' %}</span>
+  {% endif %}</td>
 
-    <td style="padding-top: 8px; padding-right: 0;">
+  <td style="padding-top: 8px; padding-right: 0; text-align: right; white-space: nowrap;">
 
-        {% if ai.publishing_state == 'PUBLISHED' %}
-            <a class="btn btn-success disabled flat pull-right" style="margin-right: 0; min-width: 115px;"><b>Published</b></a>
-        {% elif ai.publishing_state == 'SUBMITTED' %}
-            <a class="btn btn-info disabled flat pull-right" style="margin-right: 0; min-width: 115px;"><b>Request Sent</b></a>
-        {% elif ai.publishing_state == 'NOT_PUBLISHED' %}
-            {% if ai.ai_status != 'ai_training_complete' %}
-                {# Bot need to be trained before being published #}
-                <span class="btn btn-warning flat pull-right" style="margin-right: 0" data-toggle="tooltip" title="{% trans 'The bot needs to be fully trained before being published.' %}"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></span>
-            {% elif ai.linked_bots|length > 0 %}
-                {# We don't support linked bots in Bot store, yet #}
-                <span class="btn btn-primary disabled flat pull-right" style="margin-right: 0" data-toggle="tooltip" title="{% trans 'We do not currently support publishing bots with linked skills. Please remove them if you’d like your bot to be published.' %}"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></span>
-            {% else %}
-                {# Everything is 👍, you can publish. Are you 😀? #}
-                <a href="{% url 'botstore:publish' ai.aiid %}" class="btn btn-primary flat pull-right" style="margin-right: 0"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></a>
-            {% endif %}
-
+    {% if ai.publishing_state == 'PUBLISHED' %}
+      <a class="btn btn-success disabled flat" style="margin-right: 0; min-width: 115px;"><b>Published</b></a>
+    {% elif ai.publishing_state == 'SUBMITTED' %}
+      <a class="btn btn-info disabled flat" style="margin-right: 0; min-width: 115px;"><b>Request Sent</b></a>
+    {% elif ai.publishing_state == 'NOT_PUBLISHED' %}
+        {% if ai.ai_status != 'ai_training_complete' %}
+          {# Bot need to be trained before being published #}
+          <span class="btn btn-warning flat" style="margin-right: 0" data-toggle="tooltip" title="{% trans 'The bot needs to be fully trained before being published.' %}"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></span>
+        {% elif ai.linked_bots|length > 0 %}
+          {# We don't support linked bots in Bot store, yet #}
+          <span class="btn btn-primary disabled flat" style="margin-right: 0" data-toggle="tooltip" title="{% trans 'We do not currently support publishing bots with linked skills. Please remove them if you’d like your bot to be published.' %}"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></span>
+        {% else %}
+          {# Everything is 👍, you can publish. Are you 😀? #}
+          <a href="{% url 'botstore:publish' ai.aiid %}" class="btn btn-primary flat" style="margin-right: 0"><b> <span class="fa fa-globe"></span> {% trans 'Publish Bot' %}</b></a>
         {% endif %}
 
-    </td>
+    {% endif %}
 
-    <td style="padding-top: 8px;padding-right: 0;">
-        <a href="{% url 'studio:edit_bot' ai.aiid %}" class="btn btn-primary flat pull-right" style="margin-right: 0"><b> <span class="fa fa-search"></span> {% trans 'View Bot' %}</b></a>
-    </td>
+    <!-- Split button -->
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary flat"><b>{% trans 'View Bot' %}</b></button>
+      <button type="button" class="btn btn-primary flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a href="{% url 'studio:training' ai.aiid %}">{% trans 'Training' %}</a></li>
+        <li><a href="{% url 'studio:skills' ai.aiid %}">{% trans 'Skills' %}</a></li>
+        <li><a href="{% url 'studio:entities' ai.aiid %}">{% trans 'Entities' %}</a></li>
+        <li><a href="{% url 'studio:intents' ai.aiid %}">{% trans 'Intents' %}</a></li>
+        <li><a href="{% url 'studio:integrations' ai.aiid %}">{% trans 'Integrations' %}</a></li>
+        <li><a href="{% url 'studio:insights' ai.aiid %}">{% trans 'Insights' %}</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="{% url 'studio:settings' ai.aiid %}">{% trans 'Settings' %}</a></li>
+      </ul>
+    </div>
+  </td>
 
 </tr>
