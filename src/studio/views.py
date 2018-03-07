@@ -306,32 +306,55 @@ class ProxyAiExportView(View):
 
 
 @method_decorator(login_required, name='dispatch')
-class ProxyIntentDeleteView(View):
-    """Temporary proxy until we open the full API to the world"""
+class IntentDeleteView(View):
+    """Removes an Intent, if successful prompt user to retrain AI"""
 
-    def delete(self, request, aiid, *args, **kwargs):
-        intent_name = request.GET.get('intent_name')
+    def post(self, request, aiid, intent_name, *args, **kwargs):
+        redirect_url = reverse_lazy('studio:intents', kwargs={'aiid': aiid})
 
-        return JsonResponse(delete_intent(
+        deleted_intent = delete_intent(
             self.request.session.get('token', False),
             aiid,
             intent_name
-        ))
+        )
+
+        if deleted_intent['status']['code'] in [200, 201]:
+            level = messages.WARNING
+            template = 'messages/retrain.html'
+            message_template = loader.get_template(template)
+            message = message_template.render({'aiid': aiid})
+
+        else:
+            level = messages.ERROR
+            message = deleted_intent['status']['info']
+
+        messages.add_message(self.request, level, message)
+
+        return HttpResponseRedirect(redirect_url)
 
 
 @method_decorator(login_required, name='dispatch')
-class ProxyEntityDeleteView(View):
-    """Temporary proxy until we open the full API to the world"""
+class EntityDeleteView(RedirectView):
+    """Removes an Entity"""
 
-    def delete(self, request, *args, **kwargs):
-        entity_name = request.GET.get('entity_name')
+    def post(self, request, aiid, entity_name, *args, **kwargs):
+        redirect_url = reverse_lazy('studio:entities', kwargs={'aiid': aiid})
 
-        deleted = delete_entity(
+        deleted_intent = delete_entity(
             self.request.session.get('token', False),
             entity_name
         )
 
-        return JsonResponse(deleted, status=deleted['status']['code'])
+        if deleted_intent['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+            message = _('Entity removed')
+        else:
+            level = messages.ERROR
+            message = deleted_intent['status']['info']
+
+        messages.add_message(self.request, level, message)
+
+        return HttpResponseRedirect(redirect_url)
 
 
 @method_decorator(login_required, name='dispatch')

@@ -36,8 +36,8 @@ from studio.views import (
     IntentsView,
     ProxyAiExportView,
     ProxyAiView,
-    ProxyEntityDeleteView,
-    ProxyIntentDeleteView,
+    EntityDeleteView,
+    IntentDeleteView,
     ProxyRegenerateWebhookSecretView,
     RetrainView,
     SkillsView,
@@ -201,15 +201,15 @@ urlpatterns = [
 
     # Remove an intent
     path(
-        'proxy/intent/<uuid:aiid>',
-        ProxyIntentDeleteView.as_view(),
-        name='proxy.intent.delete'
+        'intent/delete/<uuid:aiid>/<slug:intent_name>',
+        IntentDeleteView.as_view(),
+        name='intent.delete'
     ),
 
     # Remove an intent
     path(
-        'proxy/entity',
-        ProxyEntityDeleteView.as_view(),
-        name='proxy.entity.delete'
+        'entity/delete/<uuid:aiid>/<slug:entity_name>',
+        EntityDeleteView.as_view(),
+        name='entity.delete'
     ),
 ]

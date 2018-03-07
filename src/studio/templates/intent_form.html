@@ -91,9 +91,7 @@
                 {% for name in ai_details.intents %}
                   <div class="element element-{{ name }}">
                     <a href="{% url 'studio:intents.edit' ai.aiid name %}" title="edit {{ name }}">{{ name }}</a>
-                    {% if intent_name != name %}
-                      <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:proxy.intent.delete' ai.aiid %}?intent_name={{ name }}" data-id="{{ name }}"></button>
-                    {% endif %}
+                    <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:intent.delete' ai.aiid name %}" data-id="{{ name }}"></button>
                   </div>
                 {% endfor %}
               </div>
