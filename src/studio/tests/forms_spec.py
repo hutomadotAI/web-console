@@ -196,29 +196,24 @@ class TestSkillsForm(TestCase):
 class TestTrainingForm(TestCase):
 
     def test_a_valid_training_file(self):
-        """Provide a Training file"""
+        """Should succeeded a valid form should have some training data"""
 
-        data = factory.build(dict, FACTORY_CLASS=AIImportJSON)
-        training_file = tempfile.NamedTemporaryFile()
-        training_file.write(json.dumps(data).encode('gbk'))
-
-        # First seek to a non zero offset.
-        training_file.seek(2)
-        self.form = TrainingForm({}, {
-            'file': SimpleUploadedFile('training.txt', training_file.read())
+        self.form = TrainingForm({
+            'training_data': """
+            Hi!
+            Hello!
+            """
         })
-
-        print(self.form)
 
         self.assertTrue(
             self.form.is_valid(),
             'All fields submitted, form is valid'
         )
 
-    def test_missing_file(self):
-        """A valid form should have a Training file"""
+    def test_empty_data(self):
+        """Should fail a valid form should have some training data"""
 
-        self.form = TrainingForm({}, {})
+        self.form = TrainingForm({'training_data': ''})
 
         self.assertFalse(
             self.form.is_valid(),
@@ -232,7 +227,6 @@ class TestIntentForm(TestCase):
         """Provide minimal required data"""
 
         data = factory.build(dict, FACTORY_CLASS=IntentFactory)
-
         form = IntentForm(data)
 
         self.assertTrue(

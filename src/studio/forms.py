@@ -4,6 +4,7 @@ import json
 
 from django import forms
 from django.conf import settings
+from django.core.files.base import ContentFile
 from django.core.validators import (
     RegexValidator,
     MaxValueValidator,
@@ -335,20 +336,21 @@ class ImportAIForm(forms.Form):
 
 class TrainingForm(forms.Form):
 
-    file = forms.FileField(
-        label=_('Add training file'),
-        widget=forms.FileInput(attrs={
-            'accept': '.txt, text/plain',
-            'placeholder': _('Select a txt file'),
-            'class': 'form-control'
+    training_data = forms.CharField(
+        label='',
+        widget=forms.Textarea(attrs={
+            'placeholder': _('Pairs of Questions and answers…')
         })
     )
 
     def save(self, token, aiid):
         """Upload a file and start a new training"""
 
-        file = self.cleaned_data['file']
-        training = post_training(token, aiid, file)
+        training_data = self.cleaned_data['training_data']
+
+        logger.warn(training_data)
+
+        training = post_training(token, aiid, training_data)
 
         if training['status']['code'] in [200, 201]:
             return put_training_start(token, aiid)

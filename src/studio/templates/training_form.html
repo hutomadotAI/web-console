@@ -1,6 +1,6 @@
 {% extends 'studio_base.html' %}
 
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags static %}
 
 {% block title %}{% trans 'Bot training' %}{% endblock %}
 
@@ -11,49 +11,41 @@
 {% block content %}
   <div class="content-wrapper">
     <section class="content">
+
+      {% if not ai_details.training_file %}
+        <div class="alert alert-info">
+          <p>
+            {% blocktrans %}Check <a data-toggle="modal" data-target="#sampleTrainingFile">training file example</a> or watch our <a data-toggle="modal" data-target="#TRAINING_VIDEO_TUTORIAL">training video tutorial</a>{% endblocktrans %}
+          </p>
+        </div>
+      {% endif %}
+
       <div class="box box-solid box-clean flat no-shadow">
         <div class="box-header with-border">
-          <div class="box-title"><i class="fa fa-cloud-upload text-info"></i> <b>{% trans 'Upload a text file' %}</b></div>
+          <div class="box-title"><i class="fa fa-graduation-cap text-info"></i> <b>{% trans 'Edit training file' %}</b></div>
+          <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/A_Bot_Training_file/Training_upload_&_progress.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
+            <i class="fa fa-question-circle text-sm text-yellow"></i>
+          </a>
         </div>
 
         <div class="box-body">
-          <form method="post" class="form-training" enctype="multipart/form-data">
+
+          <form id="TRAINIG_FORM" method="post" class="enhanced-textarea-form" enctype="multipart/form-data">
             {% csrf_token %}
 
             {{ form | crispy }}
 
-            <div class="form-group">
-              <button style="width:100px" type="submit" class="btn btn-success flat pull-right"><b>{% trans 'Upload' %}</b></button>
-            </div>
-
           </form>
 
-          <div class="alert alert-dismissable flat alert-base no-margin" id="containerMsgAlertUploadFile" style="margin-bottom: 0px;">
-            <i class="icon fa fa-check" id="iconAlertUploadFile"></i>
-            <span id="msgAlertUploadFile">{% trans 'Upload a plain text file with chat examples to begin training. Look at' %} <a data-toggle="modal" data-target="#sampleTrainingFile" onmouseover="this.style.cursor='pointer'" style="cursor: pointer;">{% trans 'this example' %}</a>.
-            </span>
-          </div>
+          <p class="enhanced-textarea">
+            Attach files by dragging & dropping or <span class="btn-link">selecting them</span>
+            <input accept=".txt" id="FILE" type="file" multiple="multiple" aria-label="Attach files to your comment">
+          </p>
 
         </div>
 
         <div class="box-footer">
-          {% trans 'Check out our' %} <a data-toggle="collapse" href="#collapseVideoTutorialTraining">{% trans 'training video tutorial' %}</a>
-
-          <!-- link sample of training file MODAL-->
-          <div class="pull-right">
-            <a data-toggle="modal" data-target="#sampleTrainingFile" onmouseover="this.style.cursor='pointer'" style="cursor: pointer;">{% trans 'Sample training file' %}</a>
-          </div>
-
-          <!-- video tutorial container -->
-          <div id="collapseVideoTutorialTraining" class="panel-collapse collapse">
-            <div class="box-body flat no-padding center-block" style="max-width: 700px;margin-auto;">
-              <div class="overlay center-block">
-                <div class="embed-responsive embed-responsive-16by9" id="videoTrainingFile">
-                  <iframe src="https://www.youtube.com/embed/iKPthxcs9Wg?t=22s&controls=1&hd=1&enablejsapi=1" frameborder="0" allowfullscreen=""></iframe>
-                </div>
-              </div>
-            </div>
-          </div>
+          <button style="min-width: 100px" form="TRAINIG_FORM" class="btn btn-success flat pull-right"><b>{% trans 'Save' %}</b></button>
         </div>
 
       </div>
@@ -62,4 +54,18 @@
 
   {% include 'modals/training_example.html' %}
 
+  {% include 'modals/video_tutorial_training.html' %}
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/enhanced_textarea.css' %}">
+{% endblock %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script src="{% static 'js/enhanced_textarea.js' %}"></script>
 {% endblock %}

@@ -34,9 +34,7 @@
           <div class="box-body">
             {% if ai_details.training_file %}
 
-              <pre style="height: 160px; overflow: auto; white-space: pre-wrap;">
-                {{ ai_details.training_file }}
-              </pre>
+              <pre style="height: 160px; overflow: auto; white-space: pre-wrap;">{{ ai_details.training_file }}</pre>
 
             {% else %}
 
@@ -48,7 +46,7 @@
 
           {% if ai_details.training_file %}
             <div class="box-footer">
-              <a href="{% url 'studio:training' ai.aiid %}" class="btn btn-primary flat pull-right"><b>{% trans 'Manage training' %}</b></a>
+              <a href="{% url 'studio:training' ai.aiid %}" class="btn btn-primary flat pull-right"><b>{% trans 'Edit training' %}</b></a>
             </div>
           {% endif %}
         </div>

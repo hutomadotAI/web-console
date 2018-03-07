@@ -41,6 +41,7 @@ from studio.services import (
     get_ai_export,
     get_ai_list,
     get_ai_skill,
+    get_ai_training,
     get_entities_list,
     get_entity,
     get_facebook_connect_state,
@@ -766,6 +767,20 @@ class TrainingView(StudioViewMixin, FormView):
     template_name = 'training_form.html'
     success_url = 'studio:training'
     fail_url = 'studio:training'
+
+    def get_initial(self, **kwargs):
+        """Get and prepare Intent data"""
+
+        training = get_ai_training(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        )
+
+        self.initial = {
+            'training_data': training.get('trainingFile', '')
+        }
+
+        return super(TrainingView, self).get_initial(**kwargs)
 
     def form_valid(self, form):
 

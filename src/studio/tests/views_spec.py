@@ -375,13 +375,15 @@ class TestTrainingView(TestCase):
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_training')
     @patch('studio.views.get_ai_details')
     def test_registred(
-        self, mock_get_ai_details, mock_get_ai, mock_get_categories
+        self, mock_get_ai_details, mock_get_ai_training, mock_get_ai, mock_get_categories
     ):
 
         mock_get_ai.return_value = self.ai
         mock_get_categories.return_value = []
+        mock_get_ai_training.return_value = {}
         mock_get_ai_details.return_value = self.ai_details
 
         response = self.client.get(reverse(
@@ -391,6 +393,28 @@ class TestTrainingView(TestCase):
             }
         ))
         self.assertEqual(response.status_code, 200)
+
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    @patch('studio.views.get_ai')
+    @patch('studio.views.get_ai_training')
+    @patch('studio.views.get_ai_details')
+    def test_help_message(
+        self, mock_get_ai_details, mock_get_ai_training, mock_get_ai, mock_get_categories
+    ):
+
+        mock_get_ai.return_value = self.ai
+        mock_get_categories.return_value = []
+        mock_get_ai_training.return_value = {}
+        mock_get_ai_details.return_value = self.ai_details
+
+        response = self.client.get(reverse(
+            'studio:training',
+            kwargs={
+                'aiid': self.ai['aiid']
+            }
+        ))
+
+        self.assertContains(response, 'Check <a data-toggle="modal" data-target="#sampleTrainingFile">training file example</a> or watch our <a data-toggle="modal" data-target="#TRAINING_VIDEO_TUTORIAL">training video tutorial</a>')
 
 
 class TestEntitiesView(TestCase):

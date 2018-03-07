@@ -1,0 +1,29 @@
+.enhanced-textarea-form .form-group {
+  margin: 0;
+}
+
+.enhanced-textarea-form textarea {
+  height: calc(100vh - 378px);
+  resize: none;
+}
+
+.enhanced-textarea {
+  background-color: #333;
+  border-top: 0;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: .5rem 1rem;
+  position: relative;
+}
+
+.enhanced-textarea input {
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
