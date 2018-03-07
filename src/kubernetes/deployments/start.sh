@@ -12,6 +12,11 @@ echo "Checking Django configuration works"
 python manage.py version
 check_return_code
 
+# Process statics so we can run further commands
+echo "Process statics"
+python manage.py collectstatic --noinput
+check_return_code
+
 # Check if database is ready
 echo "Checking Database"
 while ! python manage.py showmigrations 2> /dev/null; do
@@ -27,13 +32,8 @@ while ! curl --insecure --silent --connect-timeout 1 $API_URL/health/ping; do
 done
 
 # Run migrations
-echo "Runing migrations"
+echo "Running migrations"
 python manage.py migrate
-check_return_code
-
-# Process statics
-echo "Process statics"
-python manage.py collectstatic --noinput
 check_return_code
 
 # Launch serve app
