@@ -63,7 +63,7 @@
             <div class="elements">
 
               {% for intent in ai_details.intents|slice:':5' %}
-                <div class="element">{{ intent }}</div>
+                <div class="element"><a href="{% url 'studio:intents.edit' ai.aiid intent %}" title="edit {{ intent }}">{{ intent }}</a></div>
               {% empty %}
 
                 <p class="smallprint">{% blocktrans %}An Intent is a way to flag completion of a specific task during a conversation.{% endblocktrans %}</p>

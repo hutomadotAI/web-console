@@ -20,6 +20,7 @@
   margin: 1px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .form-formset .form-group .controls {
@@ -81,6 +82,10 @@
 }
 
 /* TODO: move to entities stylesheet */
+
+.form-group.entity_name-group {
+  max-width: 30%;
+}
 
 .form-group.n_prompts-group {
   width: 7rem;

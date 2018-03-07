@@ -968,6 +968,8 @@ select:not([multiple]) {
   margin: 1rem;
   display: flex;
   min-height: 300px;
+  /* Fix overflow issues https://css-tricks.com/flexbox-truncated-text/ */
+  min-width: 0;
   flex-direction: column;
 }
 
@@ -1268,10 +1270,14 @@ select:not([multiple]) {
 .box-header > .glyphicon,
 .box-header > .ion,
 .box-header .box-title {
-    display: inline-block;
-    font-size: 18px;
-    margin: 0;
-    line-height: 1;
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+  margin: 0;
+  max-width: calc(100% - 88px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .box-header > .fa,

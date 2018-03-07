@@ -10,6 +10,9 @@
   color: inherit;
   display: block;
   flex-grow: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .element button {
@@ -25,4 +28,8 @@
 
 .element .btn-danger:hover {
   background-color: var(--DANGER);
+}
+
+.element-id {
+  word-wrap: break-word;
 }
