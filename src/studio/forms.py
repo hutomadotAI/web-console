@@ -105,6 +105,7 @@ class EntityFormset(forms.Form):
 
     required = forms.BooleanField(
         label=_('Required'),
+        initial=True,
         required=False,
     )
 
