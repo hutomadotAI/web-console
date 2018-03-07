@@ -42,7 +42,7 @@
 
     <!-- Split button -->
     <div class="btn-group">
-      <button type="button" class="btn btn-primary flat"><b>{% trans 'View Bot' %}</b></button>
+      <a href="{% url 'studio:edit_bot' ai.aiid %}" class="btn btn-primary flat"><b>{% trans 'View Bot' %}</b></a>
       <button type="button" class="btn btn-primary flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>

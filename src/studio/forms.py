@@ -348,8 +348,6 @@ class TrainingForm(forms.Form):
 
         training_data = self.cleaned_data['training_data']
 
-        logger.warn(training_data)
-
         training = post_training(token, aiid, training_data)
 
         if training['status']['code'] in [200, 201]:
