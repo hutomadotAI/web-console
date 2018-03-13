@@ -30,7 +30,7 @@
 
         <div class="box-body">
 
-          <form id="TRAINIG_FORM" method="post" class="enhanced-textarea-form" enctype="multipart/form-data">
+          <form id="TRAINIG_FORM" method="post" class="enhanced-textarea-form persistent">
             {% csrf_token %}
 
             {{ form | crispy }}
@@ -45,7 +45,7 @@
         </div>
 
         <div class="box-footer">
-          <button style="min-width: 100px" form="TRAINIG_FORM" class="btn btn-success flat pull-right"><b>{% trans 'Save' %}</b></button>
+          <button style="min-width: 100px" form="TRAINIG_FORM" class="btn btn-primary flat pull-right"><b>{% trans 'Save' %}</b></button>
         </div>
 
       </div>
