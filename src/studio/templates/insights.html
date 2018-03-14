@@ -23,31 +23,21 @@
         <div class="box box-solid box-clean flat no-shadow">
           <div class="box-header with-border">
             <i class="fa fa-bar-chart-o text-green"></i>
-            <div class="box-title"><b>Charts</b></div>
+            <div class="box-title"><b>{% trans 'Charts' %}</b></div>
           </div>
           <div class="box-body">
 
-            <div style="width:90%; height: 300px; display: block; margin: auto; text-align: center;">
-              <div id="chartSessionsLoading" style="height:100%; width:100%">
-                <span style="display: inline-block; height:50%"></span>
-                <img src="{% static 'images/loader_grey.gif' %}" style="vertical-align: middle;">
-              </div>
-              <div id="chartSessions"></div>
-              <div id="chartSessionsError"
-                   style="width:100%; height:100%; border:1px solid red; display: none;">
-                <span style="line-height:150px">There was an error loading the data for Chat Sessions. Please try again later.</span>
+            <div class="loading chart" id="SESSIONS">
+              <div class="canvas"></div>
+              <div class="alert alert-danger">
+                {% blocktrans %}There was an error loading the data for Chat Sessions. Please try again later.{% endblocktrans %}
               </div>
             </div>
 
-            <div style="width:90%; height: 300px; display: block; margin: auto; text-align: center; vertical-align: middle">
-              <div id="chartInteractionsLoading" style="height:100%; width:100%">
-                <span style="display: inline-block; height:50%"></span>
-                <img src="{% static 'images/loader_grey.gif' %}" style="vertical-align: middle;">
-              </div>
-              <div id="chartInteractions"></div>
-              <div id="chartInteractionsError"
-                   style="width:100%; height:100%; border:1px solid red; display: none;">
-                <span style="line-height:150px">There was an error loading the data for Chat Interactions. Please try again later.</span>
+            <div class="loading chart" id="INTERACTIONS">
+              <div class="canvas"></div>
+              <div class="alert alert-danger">
+                {% blocktrans %}There was an error loading the data for Chat Interactions. Please try again later.{% endblocktrans %}
               </div>
             </div>
 
@@ -61,26 +51,35 @@
 
 {% endblock %}
 
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" integrity="sha256-I4gvabvvRivuPAYFqevVhZl88+vNf2NksupoBxMQi04=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{% static 'css/datapicker.css' %}">
+  <link rel="stylesheet" href="{% static 'css/insights.css' %}">
+{% endblock %}
+
+
 {% block javascripts.vendors %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js" integrity="sha256-TueWqYu0G+lYIimeIcMI8x1m14QH/DQVt4s9m/uuhPw=" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
 {% endblock javascripts.vendors %}
 
 {% block javascripts %}
   {{ block.super }}
 
+  <script src="{% static 'js/charts.js' %}"></script>
   <script src="{% static 'js/insights.js' %}"></script>
 
   <script>
 
-    google.charts.load("current", {packages: ['corechart']});
-    google.charts.setOnLoadCallback(function () {
-      requestInsightsSessions('{{aiid}}', '{{from_date}}', '{{to_date}}', '{{date_interval}}');
-      requestInsightsInteractions('{{aiid}}', '{{from_date}}', '{{to_date}}', '{{date_interval}}');
-    });
+    google.charts.load('current', { packages: [ 'corechart' ] });
 
-    $(document).ready(function(){
-      setupLogDownloadDatePickers();
+    google.charts.setOnLoadCallback(function loadHandler() {
+      fetchData('SESSIONS', '{{from_date}}', '{{to_date}}', '#ffa31a');
+      fetchData('INTERACTIONS', '{{from_date}}', '{{to_date}}', '#4d94ff');
     });
 
   </script>

@@ -1,0 +1,32 @@
+.chart {
+  width: 90%;
+  height: 300px;
+  display: block;
+  margin: auto;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.chart .alert {
+  opacity: 0;
+  margin-top: 15%;
+  transform: translate(0, -50%);
+  text-align: center;
+}
+
+.chart .canvas {
+  opacity: 1;
+}
+
+.chart.loading .canvas {
+  opacity: 0;
+}
+
+.chart.error .alert {
+  opacity: 1;
+}
+
+.chart .canvas,
+.chart .alert {
+  transition: opacity 400ms ease-in;
+}

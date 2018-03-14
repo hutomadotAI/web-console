@@ -161,7 +161,7 @@ urlpatterns = [
 
     # Insights: download chart data for an existing AI
     path(
-        'bots/edit/<uuid:aiid>/insights/chart',
+        'bots/edit/<uuid:aiid>/insights/chart/<slug:metric>',
         ProxyInsightsChartView.as_view(),
         name='insights_chart_data'
     ),

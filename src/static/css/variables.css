@@ -13,6 +13,15 @@
   --HUTOMA-BLUE-700: #1976D2;
   --HUTOMA-BLUE-900: #0D47A1;
 
+  --HUTOMA-GREY-100: #ECEFF1;
+  --HUTOMA-GREY-200: #CFD8DC;
+  --HUTOMA-GREY-300: #B0BEC5;
+  --HUTOMA-GREY-500: #78909C;
+  --HUTOMA-GREY-600: #607D8B;
+  --HUTOMA-GREY-600: #546E7A;
+  --HUTOMA-GREY-800: #37474F;
+  --HUTOMA-GREY-900: #263238;
+
   /* Typography */
   --HUTOMA-TITLE: Futura, 'Century Gothic', sans-serif;
   --HUTOMA-BODY: 'Helvetica Neue', Arial, sans-serif;

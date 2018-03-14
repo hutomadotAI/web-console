@@ -920,20 +920,17 @@ class ProxyInsightsLogsView(View):
 class ProxyInsightsChartView(View):
     """Get chart data from the api and relay json content directly"""
 
-    def post(self, request, aiid, *args, **kwargs):
-
-        token = self.request.session.get('token', False),
-        data_type = request.POST.get('dataType', '')
+    def get(self, request, aiid, metric, *args, **kwargs):
+        token = self.request.session.get('token', False)
 
         # hard code dates to a 30 day window
         today = datetime.date.today()
-        to_date = today.isoformat()
-        from_date = (
+        toDate = today.isoformat()
+        fromDate = (
             datetime.date.today() - datetime.timedelta(days=30)
         ).isoformat()
 
         # relay request to the api
-        response = get_insights_chart(
-            token, aiid, from_date, to_date, data_type
-        )
+        response = get_insights_chart(token, aiid, metric, fromDate, toDate)
+
         return JsonResponse(response)

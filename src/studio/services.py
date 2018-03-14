@@ -670,12 +670,12 @@ def get_insights_chatlogs(token, aiid, fromDate, toDate):
     return response
 
 
-def get_insights_chart(token, aiid, fromDate, toDate, data_type):
+def get_insights_chart(token, aiid, metric, fromDate, toDate):
     """
     get chart data for the specified dates
     """
     path = '/insights/%s/graph/%s?from=%s&to=%s'
-    url = settings.API_URL + path % (aiid, data_type, fromDate, toDate)
+    url = settings.API_URL + path % (aiid, metric, fromDate, toDate)
 
     logger.debug(url)
 

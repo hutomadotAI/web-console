@@ -1,0 +1,66 @@
+.datepicker table tr td {
+  color: white;
+}
+
+.datepicker table tr td.active.active,
+.datepicker table tr td.active.disabled,
+.datepicker table tr td.active.disabled.active,
+.datepicker table tr td.active.disabled.disabled,
+.datepicker table tr td.active.disabled:active,
+.datepicker table tr td.active.disabled:hover,
+.datepicker table tr td.active.disabled:hover.active,
+.datepicker table tr td.active.disabled:hover.disabled,
+.datepicker table tr td.active.disabled:hover:active,
+.datepicker table tr td.active.disabled:hover:hover,
+.datepicker table tr td.active.disabled:hover[disabled],
+.datepicker table tr td.active.disabled[disabled],
+.datepicker table tr td.active:active,
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active:hover.active,
+.datepicker table tr td.active:hover.disabled,
+.datepicker table tr td.active:hover:active,
+.datepicker table tr td.active:hover:hover,
+.datepicker table tr td.active:hover[disabled],
+.datepicker table tr td.active[disabled] {
+  background-image: none;
+  background-color: var(--HUTOMA-BLUE-500);
+  color: white;
+}
+
+.datepicker table tr td.day.focused,
+.datepicker table tr td.day:hover,
+.datepicker .datepicker-switch:hover,
+.datepicker .next:hover,
+.datepicker .prev:hover,
+.datepicker tfoot tr th:hover {
+  background-image: none;
+  background-color: var(--HUTOMA-GREY-500);
+  color: white;
+}
+
+.datepicker table tr td.today,
+.datepicker table tr td.today.disabled,
+.datepicker table tr td.today.disabled:hover,
+.datepicker table tr td.today:hover {
+  background-image: none;
+  background-color: var(--HUTOMA-GREY-600);
+  color: white;
+}
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  color: var(--HUTOMA-GREY-300);
+}
+
+.datepicker-dropdown {
+  background-color: var(--HUTOMA-GREY-800);
+  border-color: var(--HUTOMA-GREY-900);
+}
+
+.datepicker-dropdown:before {
+  border-bottom-color: var(--HUTOMA-GREY-900);
+}
+
+.datepicker-dropdown:after {
+  border-bottom: 6px solid var(--HUTOMA-GREY-800);
+}
