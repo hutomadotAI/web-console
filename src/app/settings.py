@@ -199,12 +199,6 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # We’re using cache-based session storage, this selects the cache to use.
 SESSION_CACHE_ALIAS = 'sessions'
 
-# Since it’s trivial for a packet sniffer (e.g. Firesheep) to hijack a user’s
-# session if the session cookie is sent unencrypted, there’s really no good
-# excuse to leave this off. It will prevent you from using sessions on insecure
-# requests and that’s a good thing.
-# SESSION_COOKIE_SECURE = True
-
 # ------------------------------------------------------------------------------
 #
 # Routing configuration
@@ -577,10 +571,6 @@ elif ENVIRONMENT == 'test':
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': 'simple_test_db'
-        },
-        'core': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'simple_test_db'
         }
     }
 
@@ -667,6 +657,11 @@ elif ENVIRONMENT == 'production':
     ALLOWED_HOSTS_JSON = os.environ.get('ALLOWED_HOSTS', '["localhost"]')
     ALLOWED_HOSTS = json.loads(ALLOWED_HOSTS_JSON)
 
+    # Since it’s trivial for a packet sniffer (e.g. Firesheep) to hijack a user’s
+    # session if the session cookie is sent unencrypted, there’s really no good
+    # excuse to leave this off. It will prevent you from using sessions on insecure
+    # requests and that’s a good thing.
+    #
     # Whether to use a secure cookie for the session cookie. If this is set to
     # True, the cookie will be marked as “secure,” which means browsers may
     # ensure that the cookie is only sent under an HTTPS connection.
