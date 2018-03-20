@@ -7,6 +7,9 @@ import subprocess
 
 from pathlib import Path
 
+import hu_build.build_docker
+from hu_build.build_docker import DockerImage
+
 
 class DockerRunError(Exception):
     pass
@@ -73,15 +76,39 @@ def run_test(src_path: Path, clean_images: bool):
 def main(build_args):
     """Main function"""
     src_path = ROOT_DIR / 'src'
-    build_test(src_path)
-    run_test(src_path, build_args.clean_images)
+    if not build_args.no_test:
+        build_test(src_path)
+        run_test(src_path, build_args.clean_images)
+
+    if build_args.docker_build:
+        tag_version = build_args.version
+        services = []
+        service = DockerImage(
+            src_path,
+            'web/dev_console2',
+            tag_version=tag_version,
+            build_args={'ENVIRONMENT': "production"})
+        services.append(service)
+        hu_build.build_docker.build_images('eu.gcr.io/hutoma-backend',
+                                           services, build_args.docker_push)
 
 
 if __name__ == "__main__":
     PARSER = argparse.ArgumentParser(
         description='Python Django build command-line')
+    PARSER.add_argument('--version', help='build version', default='latest')
     PARSER.add_argument('--no-test', help='skip tests', action="store_true")
     PARSER.add_argument(
-        '--clean-images', help='clean images after build', action="store_true")
+        '--clean-images',
+        help='clean test images after test run',
+        action="store_true")
+    PARSER.add_argument(
+        '--docker-build',
+        help='Build docker image for Django',
+        action="store_true")
+    PARSER.add_argument(
+        '--docker-push',
+        help='Push Django docker images to GCR',
+        action="store_true")
     BUILD_ARGS = PARSER.parse_args()
     main(BUILD_ARGS)
