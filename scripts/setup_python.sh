@@ -44,12 +44,14 @@ source $VE_DIR/bin/activate
 pip install --upgrade pip
 check_return_code
 
+echo "Installing code style requirements"
 pip install --upgrade -r ${SOURCE_DIR}/requirements-code-style.ini
 check_return_code
 if [[ $STYLE_ONLY = true ]]; then
     return
 fi
 
+echo "Installing development requirements"
 pushd ${SOURCE_DIR}
 pip install --upgrade -r development.ini
 check_return_code
