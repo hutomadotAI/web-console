@@ -7,11 +7,14 @@ import subprocess
 
 from pathlib import Path
 
+
 class DockerRunError(Exception):
     pass
 
+
 SCRIPT_PATH = Path(os.path.dirname(os.path.realpath(__file__)))
 ROOT_DIR = SCRIPT_PATH.parent
+
 
 def build_test(src_path):
     """Builds the test docker image"""
@@ -32,6 +35,7 @@ def build_test(src_path):
     cmdline = ["docker-compose", "build", "test"]
     subprocess.run(cmdline, cwd=str(src_path), check=True)
 
+
 def run_test(src_path: Path, clean_images: bool):
     """Runs the test"""
     # Clean any previous test results
@@ -39,19 +43,22 @@ def run_test(src_path: Path, clean_images: bool):
     if test_output.is_dir():
         shutil.rmtree(str(test_output))
 
-    image_name = 'hu_console_v2_test_container'
     container_name = 'hu_console_v2_test_container'
 
     try:
         # run test - it will return non-zero if a test fails, which we will throw later
-        cmdline = ["docker-compose", "run", "--name={}".format(container_name), "test"]
+        cmdline = [
+            "docker-compose", "run", "--name={}".format(container_name), "test"
+        ]
         completed_process = subprocess.run(cmdline, cwd=str(src_path))
-        cmdline = ["docker", "cp", 
-            "{}:/usr/src/app/test_output".format(container_name), 
-            "{}/test_output".format(src_path)]
+        cmdline = [
+            "docker", "cp",
+            "{}:/usr/src/app/test_output".format(container_name),
+            "{}/test_output".format(src_path)
+        ]
         print(cmdline)
         subprocess.run(cmdline, cwd=str(src_path))
-        
+
         if completed_process.returncode != 0:
             raise DockerRunError("docker-compose run failed")
     finally:
@@ -62,15 +69,19 @@ def run_test(src_path: Path, clean_images: bool):
             cmdline = ["docker", "rmi", "hu_console_v2_test"]
             subprocess.run(cmdline, cwd=str(src_path), check=True)
 
+
 def main(build_args):
     """Main function"""
-    src_path = ROOT_DIR/'src'
+    src_path = ROOT_DIR / 'src'
     build_test(src_path)
     run_test(src_path, build_args.clean_images)
 
+
 if __name__ == "__main__":
-    PARSER = argparse.ArgumentParser(description='Python Django build command-line')
+    PARSER = argparse.ArgumentParser(
+        description='Python Django build command-line')
     PARSER.add_argument('--no-test', help='skip tests', action="store_true")
-    PARSER.add_argument('--clean-images', help='clean images after build', action="store_true")
+    PARSER.add_argument(
+        '--clean-images', help='clean images after build', action="store_true")
     BUILD_ARGS = PARSER.parse_args()
     main(BUILD_ARGS)
