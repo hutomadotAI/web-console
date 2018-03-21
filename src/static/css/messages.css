@@ -11,6 +11,10 @@
   border-radius: 0;
 }
 
+.box .alert {
+  display: block;
+}
+
 .alert p {
   margin: 0;
 }
@@ -35,7 +39,7 @@
 
 .alert a {
   color: #fff;
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 .alert .btn {

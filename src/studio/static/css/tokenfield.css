@@ -25,6 +25,10 @@
   }
 }
 
+.tokenfield .token-input {
+  color: white;
+}
+
 .tokenfield .token {
   border: none;
   color: var(--INPUT_BACKGROUND);

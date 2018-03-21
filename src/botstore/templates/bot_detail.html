@@ -25,7 +25,7 @@
             <div class="row no-margin">
 
               <!--title-->
-              <div class="col-xs-8 bot-title">
+              <div class="col-8 bot-title">
                 <span>{{ bot.metadata.name }}</span>
               </div>
 
@@ -34,7 +34,7 @@
             <div class="row no-margin">
 
               <!--description-->
-              <div class="col-xs-9 bot-description">
+              <div class="col-9 bot-description">
                 {{ bot.metadata.description }}
               </div>
 
@@ -45,7 +45,7 @@
               <div class="row no-margin">
 
                 <!--message-->
-                <div class="col-xs-12 bot-msg">
+                <div class="col-12 bot-msg">
                   <i class="fa fa-info-circle text-sm text-yellow"></i>
                   {{ bot.metadata.alertMessage }}
                 </div>
@@ -57,11 +57,11 @@
 
             <div class="row no-margin">
               <!--other-->
-              <div class="col-xs-12 bot-other"></div>
+              <div class="col-12 bot-other"></div>
             </div>
 
             <div class="row no-margin">
-              <div class="col-xs-8 no-padding">
+              <div class="col-8 no-padding">
 
                 <!--licence-->
                 <div class="row no-margin bot-licence">
@@ -76,7 +76,7 @@
                 </div>
               </div>
 
-              <div class="col-xs-4 bot-button">
+              <div class="col-4 bot-button">
                 {% if bot.owned %}
                   <span class="btn btn-primary pull-right flat"><b>{% trans 'Skill purchased' %} </b></span>
                 {% else %}
@@ -92,20 +92,20 @@
         <!-- ================ BOT DETAILS DESCRIPTION INFO ================= -->
         <div class="box-body">
           <div class="row no-margin">
-            <div class="col-xs-12 bot-h2">Description</div>
+            <div class="col-12 bot-h2">Description</div>
           </div>
           <div class="row no-margin" style="padding-bottom:10px;">
-            <div class="col-xs-12 bot-detail">
+            <div class="col-12 bot-detail">
               <span>{{ bot.metadata.longDescription }}</span>
             </div>
           </div>
           <div class="row no-margin" style="padding-top:10px;">
-            <div class="col-xs-12 bot-h2">
+            <div class="col-12 bot-h2">
               Sample Request
             </div>
           </div>
           <div class="row no-margin" style="padding-bottom:10px;">
-            <div class="col-xs-12 text-gray bot-detail">
+            <div class="col-12 text-gray bot-detail">
               <div class="box-body flat" style="background: #343434; border: 1px solid #737373;">
                 <div class="text-gray"><span>{{ bot.metadata.sample }}</span></div>
               </div>
@@ -116,24 +116,24 @@
         <!-- ================ BOT DETAILS FOOTER INFO ======================= -->
         <div class="box-footer">
           <div class="row no-margin">
-            <div class="col-xs-12 bot-h2">
+            <div class="col-12 bot-h2">
               {% trans 'More details' %}
             </div>
           </div>
           <div class="row no-margin">
-            <div class="col-xs-4">
+            <div class="col-4">
               <div class="bot-more-details">{% trans 'Last Update' %}</div>
               <div class="text-left">
                 <span>{{ bot.metadata.lastUpdate|date }}</span>
               </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-4">
               <div class="bot-more-details">{% trans 'Category' %}</div>
               <div class="text-left">
                 <span>{{ bot.metadata.category }}</span>
               </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-4">
               <div class="bot-more-details">{% trans 'Version' %}</div>
               <div class="text-left">
                 <span>{{ bot.metadata.version }}</span>
@@ -142,7 +142,7 @@
           </div>
 
           <div class="row no-margin">
-            <div class="col-xs-4">
+            <div class="col-4">
 
               <div class="bot-more-details">{% trans 'Offer by' %}</div>
               <div class="text-left">
@@ -150,7 +150,7 @@
               </div>
 
             </div>
-            <div class="col-xs-4">
+            <div class="col-4">
 
               <div class="bot-more-details">{% trans 'Classification' %}</div>
               <div class="text-left">
@@ -158,7 +158,7 @@
               </div>
 
             </div>
-            <div class="col-xs-4">
+            <div class="col-4">
 
               <div class="bot-more-details">{% trans 'Privacy' %}</div>
               <div class="text-left">
@@ -166,7 +166,7 @@
               </div>
 
             </div>
-            <div class="col-xs-4">
+            <div class="col-4">
 
               <div class="bot-more-details">{% trans 'Developer' %}</div>
               <div class="text-left">

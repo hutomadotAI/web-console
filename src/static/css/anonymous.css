@@ -1,0 +1,13 @@
+.navbar.bg-dark {
+  background-color: black !important;
+}
+
+.navbar .navbar-collapse {
+  flex-grow: initial;
+  margin-left: auto;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #3c8dbc;
+  font-weight: bold;
+}

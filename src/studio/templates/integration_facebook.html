@@ -33,8 +33,8 @@
       Users can talk to the bot over Facebook Messenger, both in the app and on the web.
     </div>
 
-    <div style="padding-bottom: 20px">
-      <button class="btn btn-primary flat center-block" id="fb-int-connect" style="width: 260px; "><i class="fa fa-facebook text-blue"></i> Connect to Facebook</button>
+    <div class="text-center" style="padding-bottom: 20px;">
+      <button class="btn btn-primary flat" id="fb-int-connect" style="width: 260px; "><i class="fa fa-facebook text-blue"></i> Connect to Facebook</button>
     </div>
 
   </div>
@@ -47,8 +47,8 @@
     <p>Connected to "{{facebook_username}}" Facebook account</p>
   </div>
 
-  <div style="padding-bottom: 20px">
-    <button class="btn btn-primary flat center-block" id="fb-disconnect" style="width: 260px; " alt="disconnect">Disconnect</button>
+  <div class="text-center" style="padding-bottom: 20px">
+    <button class="btn btn-primary flat" id="fb-disconnect" style="width: 260px; " alt="disconnect">Disconnect</button>
   </div>
 
   {% if fb_no_page_selected %}
@@ -87,8 +87,8 @@
           <div class="form-group">
             <label for="fb_page_greeting">Greeting message to display on the welcome screen</label>
             <div class="input-group">
-              <div class="input-group-addon">
-                <i class="icon fa fa-comment-o"></i>
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-comment-o"></i></span>
               </div>
               <input type="text" required maxlength="160" class="form-control flat no-shadow" id="fb_page_greeting" value="{{page_greeting}}">
             </div>
@@ -101,8 +101,8 @@
           <div class="form-group">
             <label for="fb_get_started_payload">Command to send to the bot when the user taps the Get Started button</label>
             <div class="input-group">
-              <div class="input-group-addon">
-                <i class="icon fa fa-play-circle-o"></i>
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="icon fa fa-play-circle-o"></i></span>
               </div>
               <input type="text" required maxlength="160" class="form-control flat no-shadow" id="fb_get_started_payload" value="{{get_started_payload}}">
             </div>
@@ -111,8 +111,8 @@
       </div>
     </form>
 
-    <div style="padding-bottom: 20px">
-      <button class="btn btn-primary flat center-block" form="FB_SETTINGS" style="width: 260px;" alt="save customisations">Save customizations</button>
+    <div class="text-center" style="padding-bottom: 20px">
+      <button class="btn btn-primary flat" form="FB_SETTINGS" style="width: 260px;" alt="save customisations">Save customizations</button>
     </div>
 
     {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-messengermessageus' button_name='Message Us' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us' button_action='to start chatting to this bot on Facebook Messenger.' %}

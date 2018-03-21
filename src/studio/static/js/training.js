@@ -35,7 +35,7 @@ function updateUI(ai) {
   console.debug(ai)
   AI_TRAINING.className = `fa ${ ICONS[ai.training.status] || 'fa-circle' } circle training status-${ ai.training.status } pull-right`
   AI_TRAINING.title = `Training status: ${ ai.training.status }`
-  $(AI_TRAINING).tooltip('fixTitle')
+  $(AI_TRAINING).tooltip('update')
 
   if (TAB === 'training' && ai.training.status === 'completed' && MESSAGE) {
     MESSAGE.classList.add('hide')

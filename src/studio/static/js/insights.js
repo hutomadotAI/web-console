@@ -28,8 +28,8 @@ $(document).ready(function(){
     }
   }
 
-  $('#chatlogsDateTo').datepicker(OPTIONS);
-  $('#chatlogsDateFrom').datepicker(OPTIONS)
+  $('#DATE_TO').datepicker(OPTIONS);
+  $('#DATE_FROM').datepicker(OPTIONS)
     .on('changeDate', changeDateHandler);
 
   // Fix updating loading state

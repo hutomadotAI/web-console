@@ -10,19 +10,30 @@
   <div class="box-body">
     <form action="insights/logs" class="form-inline" method="post" id="LOGS_FORM">
       {% csrf_token %}
-      <div class="form-group col-md-4">
+
+      <div class="form-group col-4">
         <label for="DATE_FROM">{% trans 'From date:' %}</label>
-        <div class="input-group date" id="chatlogsDateFrom">
-          <input type="text" class="form-control" name="from" id="DATE_FROM" value="{{ from_date }}"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        <div class="input-group date mx-sm-3">
+          <input type="text" class="form-control" name="from" id="DATE_FROM" value="{{ from_date }}">
+          <div class="input-group-append">
+            <label for="DATE_FROM" class="input-group-text"><i class="fa fa-calendar"></i></label>
+          </div>
         </div>
       </div>
-      <div class="form-group col-md-4">
+
+      <div class="form-group col-4">
         <label for="DATE_TO">{% trans 'To date:' %}</label>
-        <div class="input-group date" id="chatlogsDateTo">
-          <input type="text" class="form-control" name="to" id="DATE_TO" value="{{ to_date }}"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        <div class="input-group date mx-sm-3">
+          <input type="text" class="form-control" name="to" id="DATE_TO" value="{{ to_date }}">
+          <div class="input-group-append">
+            <label for="DATE_TO" class="input-group-text"><i class="fa fa-calendar"></i></label>
+          </div>
         </div>
       </div>
-      <button style="min-width: 100px" form="LOGS_FORM" class="btn btn-success flat pull-right"><b>{% trans 'Download Logs' %}</b></button>
+
+      <div class="col-4">
+        <button style="min-width: 100px" form="LOGS_FORM" class="btn btn-success flat pull-right"><b>{% trans 'Download Logs' %}</b></button>
+      </div>
     </form>
   </div>
 

@@ -35,9 +35,10 @@
 
 .form-formset .btn {
   background-color: var(--INPUT_BACKGROUND);
-  height: 34px;
+  height: 2.25rem;
   padding: 0 12px;
-  line-height: 34px;
+  line-height: 2.25rem;
+  margin-bottom: 0;
 }
 
 .form-formset .delete {

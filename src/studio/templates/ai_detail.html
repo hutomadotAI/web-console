@@ -14,7 +14,7 @@
       <div class="box box-solid box-clean flat no-shadow">
         <div class="box-header">
           <div class="box-title"><b>{{ ai.name }}</b></div>
-          <div class="pull-right" style="margin: -.9rem 0">
+          <div class="pull-right" style="margin: -0.5rem 0">
             {% if ai_details.intents|length or ai_details.training_file %}<a href="{% url 'studio:retrain' aiid %}" class="btn btn-default flat">{% trans 'Restart Training' %}</a>{% endif %}
             <a href="{% url 'studio:settings' ai.aiid %}" class="btn btn-primary flat"><b>{% trans 'Settings' %}</b></a>
           </div>

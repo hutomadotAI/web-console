@@ -1,41 +1,25 @@
 {% load i18n %}
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid box-clean flat no-shadow" id="newAicontent">
+    <div class="box box-solid box-clean flat no-shadow">
 
       <div class="box-header with-border">
         <div class="box-title"><b>{% blocktrans %}Hu:toma Botstore - transfer skills to your bot in few clicks{% endblocktrans %}</b></div>
       </div>
 
-      <div class="box-body" id="boxNewAIBotstore">
-        <div class="alert alert-dismissable flat alert-info no-margin" id="containerMsgAlertNewAiBotstore" style="padding-bottom: 25px;">
-          <span id="msgAlertNewAiBotstore">
-            <dd>
-              {% url 'studio:add_bot' as link %}
-               {% blocktrans with link=link %}The Hu:toma botstore allows you to purchase skills that you can then transfer to your bot. Mix and match bots together to create new functionalities. Bots purchased here will appear in the skill section when you <a href="{{ link }}">create a new bot</a>.{% endblocktrans %}
-               <br/>
-            </dd>
-          </span>
+      <div class="box-body">
+        <div class="alert flat alert-info no-margin">
+          {% url 'studio:add_bot' as link %}
+          {% blocktrans with link=link %}The Hu:toma botstore allows you to purchase skills that you can then transfer to your bot. Mix and match bots together to create new functionalities. Bots purchased here will appear in the skill section when you <a href="{{ link }}">create a new bot</a>.{% endblocktrans %}
          </div>
       </div>
 
       <div class="box-footer">
-        <span>
-          {% blocktrans %}If you’re stuck check out our <a data-toggle="collapse" href="#collapseCreateBotVideoTutorial">video tutorial</a>{% endblocktrans %}
-        </span>
-
-        <div id="collapseCreateBotVideoTutorial" class="panel-collapse collapse">
-          <div class="box-body flat no-padding center-block" style="max-width: 700px;margin-auto;">
-            <div class="overlay center-block">
-              <div class="embed-responsive embed-responsive-16by9" id="videoCreateBot">
-                <iframe src="https://www.youtube.com/embed/uFj73npjhbk?controls=1&hd=1&enablejsapi=1"frameborder="0" allowfullscreen></iframe>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        {% blocktrans %}If you’re stuck check out our <a data-toggle="modal" data-target="#CREATE_BOT_VIDEO_TUTORIAL">video tutorial</a>{% endblocktrans %}
       </div>
 
     </div>
   </div>
 </div>
+
+{% include 'modals/video_tutorial_creat_bot.html' %}
