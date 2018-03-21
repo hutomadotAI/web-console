@@ -4,7 +4,7 @@
 
 {% block title %}{% trans 'Developer Info' %}{% endblock %}
 
-{% block body.attributes %} class="fixed sidebar-mini"{% endblock body.attributes %}
+{% block body.attributes %} class="fixed workspace"{% endblock body.attributes %}
 
 {% block header %}
   {% include 'console_header.html' %}
@@ -20,29 +20,33 @@
 
 {% block content %}
   <div class="content-wrapper">
-    <section class="content">
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <div class="box-title"><b>{% trans 'Developer Info' %}</b></div>
-        </div>
+    <div class="box box-solid box-clean flat no-shadow">
+      <div class="box-header with-border">
+        <div class="box-title"><b>{% trans 'Developer Info' %}</b></div>
+      </div>
 
-        <div class="box-body">
+      <div class="box-body">
 
-          <form {% if next %}action="?next={{ next }}"{% endif %} method="post" class="form-info" id="info_form">
-            {% csrf_token %}
+        <form {% if next %}action="?next={{ next }}"{% endif %} method="post" class="form-info" id="info_form">
+          {% csrf_token %}
 
-            {{ form | crispy }}
+          {{ form | crispy }}
 
-          </form>
-
-        </div>
-
-        <div class="box-footer">
-            <button style="min-width:100px" type="submit" form="info_form" class="btn btn-success flat pull-right"><b>{% trans 'Save' %}</b></button>
-        </div>
+        </form>
 
       </div>
 
-    </section>
+      <div class="box-footer">
+        <button form="info_form" class="btn btn-success flat pull-right">{% trans 'Save' %}</button>
+      </div>
+
+    </div>
+
   </div>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
 {% endblock %}

@@ -3,38 +3,19 @@
 <div class="box box-solid box-clean flat no-shadow">
 
   <div class="box-header with-border">
-    <div class="box-title"><b>{% blocktrans %}Video Tutorial: Create Your First Bot{% endblocktrans %}</b></div>
-    <a data-toggle="collapse"  href="#collapseFirstTutorial" tabindex="-1">
-      <div class=" pull-right">{% trans 'more info' %}
-        <i class="fa fa-question-circle text-sm text-yellow"></i>
-      </div>
-    </a>
+    <div class="box-title">{% blocktrans %}Video Tutorial: Create Your First Bot{% endblocktrans %}</div>
   </div>
 
   <div class="box-body ">
-    <div id="collapseFirstTutorial" class="panel-collapse collapse">
-      <div class="box-body">
-        <div class="overlay center-block">
-          <section class="content-info" >
-            <div class="box-body">
-              <dl class="dl-horizontal no-margin" style="text-align:justify">
-                {% blocktrans %}This video will guide you through using the Hu:toma platform and have you building your first bot in no time. In this example we create a bot designed to help attendees navigate Mobile World Congress. We advise joining our Slack Community channel so that you can ask questions if you need to.{% endblocktrans %}</dl>
-              </dl>
-            </div>
-          </section>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div id="collapseWelcomeTutorial" class="panel-collapse">
-    <div class="box-body flat center-block" style="max-width: 700px;margin-auto;">
-      <div class="overlay">
-        <div class="embed-responsive embed-responsive-16by9" id="videoWelcome">
-          <iframe src="https://www.youtube.com/embed/uFj73npjhbk?controls=1&hd=1&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
-        </div>
+    <div style="max-width: 768px; margin: 1rem auto;">
+      <div class="modal-body videoWrapper">
+        <iframe src="https://www.youtube.com/embed/uFj73npjhbk?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
       </div>
     </div>
+
+    <div class="alert alert-info">{% blocktrans %}This video will guide you through using the Hu:toma platform and have you building your first bot in no time. In this example we create a bot designed to help attendees navigate Mobile World Congress. We advise joining our Slack Community channel so that you can ask questions if you need to.{% endblocktrans %}</div>
+
   </div>
 
 </div>

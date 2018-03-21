@@ -11,7 +11,7 @@
 {% block content %}
 
   <div class="content-wrapper">
-    <section class="content">
+
       <div class="box box-solid box-clean flat no-shadow">
         <div class="box-header">
           <div class="box-title"><b>{% trans 'Integrations' %}</b></div>
@@ -20,19 +20,19 @@
 
       <div class="box box-solid box-clean flat no-shadow">
         <div class="box-header with-border">
-          <i class="fa fa-facebook text-blue"></i>
-          <div class="box-title"><b>{% trans 'Facebook' %}</b></div>
+          <div class="box-title"><i class="fa fa-facebook text-blue"></i> <b>{% trans 'Facebook' %}</b></div>
         </div>
 
         <div id="facebookState"></div>
 
       </div>
 
-    </section>
   </div>
 {% endblock %}
 
 {% block stylesheets %}
+  {{ block.super }}
+
   <link rel="stylesheet" href="{% static 'css/integration.css' %}">
 {% endblock %}
 

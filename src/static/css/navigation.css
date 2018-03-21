@@ -1,0 +1,162 @@
+/*
+ * Component: navigation
+ * ------------------
+ */
+
+.navigation {
+  background-color: #2E3032;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  left: 0;
+  min-height: 100%;
+  overflow-y: auto;
+  padding-top: 4.125rem;
+  position: fixed;
+  top: 0;
+  width: 13rem;
+  z-index: 810;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navigation.show {
+  display: flex;
+}
+
+@media (max-width: 1023px) {
+  .navigation {
+    transform: translate(-13rem, 0);
+  }
+
+  .navigation.show {
+    transform: translate(0, 0);
+    box-shadow: rgba(0, 0, 0, 0.8) 0 1rem 1rem 0;
+  }
+}
+
+.navigation #account-menu {
+  margin-top: auto;
+  min-height: 85px;
+}
+
+.navigation .header {
+  background-color: #1a2226;
+  color:#8A8A8A;
+  text-align: center;
+}
+
+.navigation a {
+  color: #b8c7ce;
+}
+
+.navigation a:hover {
+  text-decoration: none;
+}
+
+.sidebar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-menu > li {
+  background-color: #2E3032;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.sidebar-menu > li > a {
+  display: block;
+  padding: 12px 5px 12px 15px;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-menu a span  {
+  display: inline-block;
+  max-width: 75%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.sidebar-menu > li > a > .fa,
+.sidebar-menu > li > a > .glyphicon,
+.sidebar-menu > li > a > .ion {
+  width: 20px;
+}
+
+.sidebar-menu > li:hover > a,
+.sidebar-menu > li.active > a {
+  color: #ffffff;
+  background: #1e282c;
+  border-left-color: #3c8dbc;
+}
+
+.sidebar-menu > li .label,
+.sidebar-menu > li .badge {
+  margin-top: 3px;
+  margin-right: 5px;
+}
+
+.sidebar-menu li.header {
+  padding: 10px 25px 10px 15px;
+  font-size: 12px;
+}
+
+.sidebar-menu .treeview-menu {
+  background-color: #2c3b41;
+  list-style: none;
+  margin: 0;
+  padding-left: 5px;
+  padding: 0;
+}
+
+.sidebar-menu .treeview-menu .treeview-menu {
+  padding-left: 20px;
+}
+
+.sidebar-menu .treeview-menu > li {
+  margin: 0;
+}
+
+.sidebar-menu .treeview-menu > li > a {
+  color: #8aa4af;
+  display: block;
+  font-size: 14px;
+  padding: 5px 5px 5px 15px;
+}
+
+.treeview-menu > li.active > a,
+.treeview-menu > li > a:hover {
+  color: #ffffff;
+}
+
+.sidebar-menu .treeview-menu > li > a > .fa,
+.sidebar-menu .treeview-menu > li > a > .glyphicon,
+.sidebar-menu .treeview-menu > li > a > .ion {
+  width: 20px;
+}
+
+.sidebar-menu,
+.navigation .user-panel,
+.sidebar-menu > li.header {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-menu:hover {
+  overflow: visible;
+}
+
+.sidebar-menu li > a {
+  position: relative;
+}
+
+.sidebar-menu li > a > .pull-right {
+  margin-top: -7px;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  width: auto;
+}

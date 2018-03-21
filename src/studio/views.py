@@ -92,9 +92,14 @@ class StudioViewMixin(ContextMixin):
 
 @method_decorator(login_required, name='dispatch')
 class IntegrationView(StudioViewMixin, TemplateView):
-
-    chatable = False
     template_name = 'integration.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IntegrationView, self).get_context_data(**kwargs)
+
+        context['chatable'] = False
+
+        return context
 
     def dispatch(self, request, *args, **kwargs):
 
@@ -872,8 +877,6 @@ class RetrainView(RedirectView):
 
 @method_decorator(login_required, name='dispatch')
 class InsightsView(StudioViewMixin, TemplateView):
-
-    chatable = False
     template_name = 'insights.html'
 
     def get_context_data(self, **kwargs):
@@ -885,6 +888,8 @@ class InsightsView(StudioViewMixin, TemplateView):
         context['from_date'] = (
             datetime.date.today() - datetime.timedelta(days=30)
         ).isoformat()
+
+        context['chatable'] = False
 
         # generate date range description
         context['date_interval'] = "from %s to %s" % (

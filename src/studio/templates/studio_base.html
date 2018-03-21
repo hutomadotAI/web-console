@@ -13,11 +13,27 @@
 {% endblock %}
 
 {% block aside %}
-  <div class="aside">
+
+
+  <div class="aside show" id="ASIDE">
+    {# We hide chat for smaller screen size (need to be here so it don't flicker) #}
+    <script>
+      if (window.matchMedia('(max-width: 1023px)').matches) {
+        document.getElementById('ASIDE').classList.remove('show');
+      }
+    </script>
+
     {% include 'chat.html' with ai=ai %}
     {% include 'logs.html' %}
   </div>
+
 {% endblock aside %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+{% endblock %}
 
 {% block javascripts %}
   <script>

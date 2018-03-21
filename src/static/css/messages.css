@@ -3,6 +3,11 @@
  * ----------------
  */
 
+.messages {
+  bottom: 0;
+  padding: 0 1rem;
+}
+
 .alert {
   align-items: baseline;
   color: #fff;
@@ -37,7 +42,7 @@
   filter: alpha(opacity=50);
 }
 
-.alert a {
+.alert a:not(.btn) {
   color: #fff;
   text-decoration: underline !important;
 }

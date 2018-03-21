@@ -7,179 +7,177 @@
 {% block content %}
 
   <div class="content-wrapper">
-    <section class="content">
 
-      {% include 'botstore_info.html' %}
+    {% include 'botstore_info.html' %}
 
-      <div class="box box-solid box-clean flat no-shadow bot-box">
+    <div class="box box-solid box-clean flat no-shadow bot-box">
 
-        <!-- ================ BOT DETAILS TOP CARD INFO ================= -->
-        <div class="bot-card">
+      <!-- ================ BOT DETAILS TOP CARD INFO ================= -->
+      <div class="bot-card">
 
-          <div class="bot-card-icon left">
-            <img class="bot-card-icon" src="{{ MEDIA_URL }}boticon/{{ bot.metadata.botIcon }}">
-          </div>
-
-          <div class="bot-card-area">
-
-            <div class="row no-margin">
-
-              <!--title-->
-              <div class="col-8 bot-title">
-                <span>{{ bot.metadata.name }}</span>
-              </div>
-
-            </div>
-
-            <div class="row no-margin">
-
-              <!--description-->
-              <div class="col-9 bot-description">
-                {{ bot.metadata.description }}
-              </div>
-
-            </div>
-
-            {% if bot.metadata.alertMessage %}
-
-              <div class="row no-margin">
-
-                <!--message-->
-                <div class="col-12 bot-msg">
-                  <i class="fa fa-info-circle text-sm text-yellow"></i>
-                  {{ bot.metadata.alertMessage }}
-                </div>
-
-              </div>
-
-            {% endif %}
-
-
-            <div class="row no-margin">
-              <!--other-->
-              <div class="col-12 bot-other"></div>
-            </div>
-
-            <div class="row no-margin">
-              <div class="col-8 no-padding">
-
-                <!--licence-->
-                <div class="row no-margin bot-licence">
-                  licence <span>{{ bot.metadata.licenseType }}</span>
-                </div>
-
-                <!--price-->
-                <div class="row no-margin bot-price">
-                  <div class="pull-left text-orange">
-                    price <span>{{ bot.metadata.price }}</span><span class="bot-badge no-padding text-orange"> €</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-4 bot-button">
-                {% if bot.owned %}
-                  <span class="btn btn-primary pull-right flat"><b>{% trans 'Skill purchased' %} </b></span>
-                {% else %}
-                  <a href="{% url 'botstore:purchase' bot.metadata.botId %}" class="btn btn-success pull-right flat" style="width:135px;"><b>{% trans 'Add Skill' %}</b></a>
-                {% endif %}
-              </div>
-            </div>
-
-          </div>
+        <div class="bot-card-icon left">
+          <img class="bot-card-icon" src="{{ MEDIA_URL }}boticon/{{ bot.metadata.botIcon }}">
         </div>
 
+        <div class="bot-card-area">
 
-        <!-- ================ BOT DETAILS DESCRIPTION INFO ================= -->
-        <div class="box-body">
           <div class="row no-margin">
-            <div class="col-12 bot-h2">Description</div>
-          </div>
-          <div class="row no-margin" style="padding-bottom:10px;">
-            <div class="col-12 bot-detail">
-              <span>{{ bot.metadata.longDescription }}</span>
-            </div>
-          </div>
-          <div class="row no-margin" style="padding-top:10px;">
-            <div class="col-12 bot-h2">
-              Sample Request
-            </div>
-          </div>
-          <div class="row no-margin" style="padding-bottom:10px;">
-            <div class="col-12 text-gray bot-detail">
-              <div class="box-body flat" style="background: #343434; border: 1px solid #737373;">
-                <div class="text-gray"><span>{{ bot.metadata.sample }}</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- ================ BOT DETAILS FOOTER INFO ======================= -->
-        <div class="box-footer">
-          <div class="row no-margin">
-            <div class="col-12 bot-h2">
-              {% trans 'More details' %}
+            <!--title-->
+            <div class="col-8 bot-title">
+              <span>{{ bot.metadata.name }}</span>
             </div>
-          </div>
-          <div class="row no-margin">
-            <div class="col-4">
-              <div class="bot-more-details">{% trans 'Last Update' %}</div>
-              <div class="text-left">
-                <span>{{ bot.metadata.lastUpdate|date }}</span>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="bot-more-details">{% trans 'Category' %}</div>
-              <div class="text-left">
-                <span>{{ bot.metadata.category }}</span>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="bot-more-details">{% trans 'Version' %}</div>
-              <div class="text-left">
-                <span>{{ bot.metadata.version }}</span>
-              </div>
-            </div>
+
           </div>
 
           <div class="row no-margin">
-            <div class="col-4">
 
-              <div class="bot-more-details">{% trans 'Offer by' %}</div>
-              <div class="text-left">
-                <span>{{ bot.developer.company }}</span>
+            <!--description-->
+            <div class="col-9 bot-description">
+              {{ bot.metadata.description }}
+            </div>
+
+          </div>
+
+          {% if bot.metadata.alertMessage %}
+
+            <div class="row no-margin">
+
+              <!--message-->
+              <div class="col-12 bot-msg">
+                <i class="fa fa-info-circle text-sm text-yellow"></i>
+                {{ bot.metadata.alertMessage }}
               </div>
 
             </div>
-            <div class="col-4">
 
-              <div class="bot-more-details">{% trans 'Classification' %}</div>
-              <div class="text-left">
-                <span>{{ bot.metadata.classification }}</span>
+          {% endif %}
+
+
+          <div class="row no-margin">
+            <!--other-->
+            <div class="col-12 bot-other"></div>
+          </div>
+
+          <div class="row no-margin">
+            <div class="col-8 no-padding">
+
+              <!--licence-->
+              <div class="row no-margin bot-licence">
+                licence <span>{{ bot.metadata.licenseType }}</span>
               </div>
 
+              <!--price-->
+              <div class="row no-margin bot-price">
+                <div class="pull-left text-orange">
+                  price <span>{{ bot.metadata.price }}</span><span class="bot-badge no-padding text-orange"> €</span>
+                </div>
+              </div>
             </div>
-            <div class="col-4">
 
-              <div class="bot-more-details">{% trans 'Privacy' %}</div>
-              <div class="text-left">
-                <a class="dev-link" href="{{ bot.metadata.privacyPolicy }}" rel="nofollow" target="_blank">View Privacy Policy</a>
-              </div>
-
-            </div>
-            <div class="col-4">
-
-              <div class="bot-more-details">{% trans 'Developer' %}</div>
-              <div class="text-left">
-                <a class="dev-link" href="{{ bot.developer.website }}" rel="nofollow" target="_blank">{% trans 'Visit Website' %}</a>
-              </div>
-
+            <div class="col-4 bot-button">
+              {% if bot.owned %}
+                <span class="btn btn-primary pull-right flat"><b>{% trans 'Skill purchased' %} </b></span>
+              {% else %}
+                <a href="{% url 'botstore:purchase' bot.metadata.botId %}" class="btn btn-success pull-right flat" style="width:135px;"><b>{% trans 'Add Skill' %}</b></a>
+              {% endif %}
             </div>
           </div>
 
         </div>
       </div>
 
-    </section>
+
+      <!-- ================ BOT DETAILS DESCRIPTION INFO ================= -->
+      <div class="box-body">
+        <div class="row no-margin">
+          <div class="col-12 bot-h2">Description</div>
+        </div>
+        <div class="row no-margin" style="padding-bottom:10px;">
+          <div class="col-12 bot-detail">
+            <span>{{ bot.metadata.longDescription }}</span>
+          </div>
+        </div>
+        <div class="row no-margin" style="padding-top:10px;">
+          <div class="col-12 bot-h2">
+            Sample Request
+          </div>
+        </div>
+        <div class="row no-margin" style="padding-bottom:10px;">
+          <div class="col-12 text-gray bot-detail">
+            <div class="box-body flat" style="background: #343434; border: 1px solid #737373;">
+              <div class="text-gray"><span>{{ bot.metadata.sample }}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================ BOT DETAILS FOOTER INFO ======================= -->
+      <div class="box-footer">
+        <div class="row no-margin">
+          <div class="col-12 bot-h2">
+            {% trans 'More details' %}
+          </div>
+        </div>
+        <div class="row no-margin">
+          <div class="col-4">
+            <div class="bot-more-details">{% trans 'Last Update' %}</div>
+            <div class="text-left">
+              <span>{{ bot.metadata.lastUpdate|date }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="bot-more-details">{% trans 'Category' %}</div>
+            <div class="text-left">
+              <span>{{ bot.metadata.category }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="bot-more-details">{% trans 'Version' %}</div>
+            <div class="text-left">
+              <span>{{ bot.metadata.version }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row no-margin">
+          <div class="col-4">
+
+            <div class="bot-more-details">{% trans 'Offer by' %}</div>
+            <div class="text-left">
+              <span>{{ bot.developer.company }}</span>
+            </div>
+
+          </div>
+          <div class="col-4">
+
+            <div class="bot-more-details">{% trans 'Classification' %}</div>
+            <div class="text-left">
+              <span>{{ bot.metadata.classification }}</span>
+            </div>
+
+          </div>
+          <div class="col-4">
+
+            <div class="bot-more-details">{% trans 'Privacy' %}</div>
+            <div class="text-left">
+              <a class="dev-link" href="{{ bot.metadata.privacyPolicy }}" rel="nofollow" target="_blank">View Privacy Policy</a>
+            </div>
+
+          </div>
+          <div class="col-4">
+
+            <div class="bot-more-details">{% trans 'Developer' %}</div>
+            <div class="text-left">
+              <a class="dev-link" href="{{ bot.developer.website }}" rel="nofollow" target="_blank">{% trans 'Visit Website' %}</a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
 {% endblock %}

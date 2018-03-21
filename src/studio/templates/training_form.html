@@ -10,51 +10,50 @@
 
 {% block content %}
   <div class="content-wrapper">
-    <section class="content">
 
-      {% if not ai_details.training_file %}
-        <div class="alert alert-info">
-          <p>
-            {% blocktrans %}Check <a data-toggle="modal" data-target="#sampleTrainingFile">training file example</a> or watch our <a data-toggle="modal" data-target="#TRAINING_VIDEO_TUTORIAL">training video tutorial</a>{% endblocktrans %}
-          </p>
-        </div>
-      {% endif %}
+    {% if not ai_details.training_file %}
+      <div class="alert alert-info">
+        <p>
+          {% blocktrans %}Check <a data-toggle="modal" data-target="#sampleTrainingFile">training file example</a> or watch our <a data-toggle="modal" data-target="#TRAINING_VIDEO_TUTORIAL">training video tutorial</a>{% endblocktrans %}
+        </p>
+      </div>
+    {% endif %}
 
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <div class="box-title"><i class="fa fa-graduation-cap text-info"></i> <b>{% trans 'Edit training file' %}</b></div>
-          <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/A_Bot_Training_file/Training_upload_&_progress.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
-            <i class="fa fa-question-circle text-sm text-yellow"></i>
-          </a>
-        </div>
+    <div class="box box-solid box-clean flat no-shadow">
+      <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-graduation-cap"></i> {% trans 'Edit training file' %}</div>
+        <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/A_Bot_Training_file/Training_upload_&_progress.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
+          <i class="fa fa-question-circle text-sm text-yellow"></i>
+        </a>
+      </div>
 
-        <div class="box-body">
+      <div class="box-body">
 
-          <form id="TRAINIG_FORM" method="post" class="enhanced-textarea-form persistent">
-            {% csrf_token %}
+        <form id="TRAINIG_FORM" method="post" class="enhanced-textarea-form persistent">
+          {% csrf_token %}
 
-            {{ form | crispy }}
+          {{ form | crispy }}
 
-          </form>
+        </form>
 
-          <p class="enhanced-textarea">
-            {% blocktrans %}Attach files by dragging & dropping or <span class="btn-link">selecting them</span>{% endblocktrans %}
-            <input accept=".txt" id="FILE" type="file" multiple="multiple" aria-label="Attach files to your comment">
-          </p>
-
-        </div>
-
-        <div class="box-footer">
-          <button style="min-width: 100px" form="TRAINIG_FORM" class="btn btn-primary flat pull-right"><b>{% trans 'Save' %}</b></button>
-        </div>
+        <p class="enhanced-textarea">
+          {% blocktrans %}Attach files by dragging & dropping or <span class="btn-link">selecting them</span>{% endblocktrans %}
+          <input accept=".txt" id="FILE" type="file" multiple="multiple" aria-label="Attach files to your comment">
+        </p>
 
       </div>
-    </section>
+
+      <div class="box-footer">
+        <button style="min-width: 100px" form="TRAINIG_FORM" class="btn btn-primary flat pull-right"><b>{% trans 'Save' %}</b></button>
+      </div>
+
+    </div>
+
   </div>
 
   {% include 'modals/training_example.html' %}
 
-  {% include 'modals/video_tutorial_training.html' %}
+  {% include 'modals/video_tutorial.html' with id='TRAINING_VIDEO_TUTORIAL' title='Training video tutorial' slug='iKPthxcs9Wg' %}
 
 {% endblock %}
 

@@ -10,43 +10,42 @@
 
 {% block content %}
 <div class="content-wrapper">
-  <section class="content">
-    <div class="row">
-      <div class="col-md-12">
-        {% include "chatlogs_download.html" %}
-      </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      {% include "chatlogs_download.html" %}
     </div>
+  </div>
 
-    <div class="row">
+  <div class="row">
 
-      <div class="col-md-12">
-        <div class="box box-solid box-clean flat no-shadow">
-          <div class="box-header with-border">
-            <i class="fa fa-bar-chart-o text-green"></i>
-            <div class="box-title"><b>{% trans 'Charts' %}</b></div>
-          </div>
-          <div class="box-body">
+    <div class="col-md-12">
+      <div class="box box-solid box-clean flat no-shadow">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o text-green"></i>
+          <div class="box-title"><b>{% trans 'Charts' %}</b></div>
+        </div>
+        <div class="box-body">
 
-            <div class="loading chart" id="SESSIONS">
-              <div class="canvas"></div>
-              <div class="alert alert-danger">
-                {% blocktrans %}There was an error loading the data for Chat Sessions. Please try again later.{% endblocktrans %}
-              </div>
+          <div class="loading chart" id="SESSIONS">
+            <div class="canvas"></div>
+            <div class="alert alert-danger">
+              {% blocktrans %}There was an error loading the data for Chat Sessions. Please try again later.{% endblocktrans %}
             </div>
-
-            <div class="loading chart" id="INTERACTIONS">
-              <div class="canvas"></div>
-              <div class="alert alert-danger">
-                {% blocktrans %}There was an error loading the data for Chat Interactions. Please try again later.{% endblocktrans %}
-              </div>
-            </div>
-
           </div>
+
+          <div class="loading chart" id="INTERACTIONS">
+            <div class="canvas"></div>
+            <div class="alert alert-danger">
+              {% blocktrans %}There was an error loading the data for Chat Interactions. Please try again later.{% endblocktrans %}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
+  </div>
 
-  </section>
 </div>
 
 {% endblock %}

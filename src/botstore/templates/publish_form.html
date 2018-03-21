@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% load i18n crispy_forms_tags static %}
+{% load i18n static crispy_forms_tags %}
 
 {% block title %}{% trans 'Publish' %}{% endblock %}
 
-{% block body.attributes %} class="fixed sidebar-mini"{% endblock body.attributes %}
+{% block body.attributes %} class="fixed workspace"{% endblock body.attributes %}
 
 {% block header %}
   {% include 'console_header.html' %}
@@ -21,57 +21,57 @@
 {% block content %}
 
   <div class="content-wrapper">
-    <section class="content">
-      <div class="alert alert-info">
-        <p>{% blocktrans %}This platform is currently under preview. As such the options and features are actively being developed and will likely change. Submitted bots will be reviewed before publishing.{% endblocktrans %}</p>
+
+    <div class="alert alert-info">
+      <p>{% blocktrans %}This platform is currently under preview. As such the options and features are actively being developed and will likely change. Submitted bots will be reviewed before publishing.{% endblocktrans %}</p>
+    </div>
+
+    <div class="box box-solid box-clean flat no-shadow">
+      <div class="box-header with-border">
+        <div class="box-title"><b>{% trans 'Publish bot' %}</b></div>
       </div>
 
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <div class="box-title"><b>{% trans 'Publish bot' %}</b></div>
-        </div>
+      <div class="box-body">
 
-        <div class="box-body">
+        <form method="post" class="persistent form-publish" id="publish_form" enctype="multipart/form-data">
+          {% csrf_token %}
 
-          <form method="post" class="persistent form-publish" id="publish_form" enctype="multipart/form-data">
-            {% csrf_token %}
+          {{ form | crispy }}
 
-            {{ form | crispy }}
+        </form>
 
-          </form>
-
-          <div class="alert alert-warning">
-            <p>{% blocktrans %}After sending your bot for publishing, it will become Read-Only, meaning you will not be able to make any changes to it! You can, however, export the bot and re-import it as a new one.{% endblocktrans %}</p>
-          </div>
-
-        </div>
-
-        <div class="box-footer">
-          <a href="{% url 'studio:index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
-          <button style="min-width:100px" type="submit" form="publish_form" class="btn btn-success flat pull-right"><b>{% trans 'Publish' %}</b></button>
+        <div class="alert alert-warning">
+          <p>{% blocktrans %}After sending your bot for publishing, it will become Read-Only, meaning you will not be able to make any changes to it! You can, however, export the bot and re-import it as a new one.{% endblocktrans %}</p>
         </div>
 
       </div>
 
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <div class="box-title"><b>{% trans 'Developer Info' %}</b></div>
-        </div>
-
-        <div class="box-body">
-          <div class="form-info">
-            {{ info_form | crispy }}
-          </div>
-        </div>
+      <div class="box-footer">
+        <a href="{% url 'studio:index' %}" class="btn btn-primary flat">{% trans 'Cancel' %}</a>
+        <button form="publish_form" class="btn btn-success flat pull-right">{% trans 'Publish' %}</button>
       </div>
 
-    </section>
+    </div>
+
+    <div class="box box-solid box-clean flat no-shadow">
+      <div class="box-header with-border">
+        <div class="box-title"><b>{% trans 'Developer Info' %}</b></div>
+      </div>
+
+      <div class="box-body">
+        <div class="form-info">
+          {{ info_form | crispy }}
+        </div>
+      </div>
+    </div>
+
   </div>
 {% endblock %}
 
 {% block stylesheets %}
   {{ block.super }}
 
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
   <link rel="stylesheet" href="{% static 'css/publish.css' %}">
 {% endblock %}
 

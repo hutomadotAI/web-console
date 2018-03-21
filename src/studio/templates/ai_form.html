@@ -4,7 +4,7 @@
 
 {% block title %}{% trans 'Create bot' %}{% endblock %}
 
-{% block body.attributes %} class="fixed sidebar-mini"{% endblock body.attributes %}
+{% block body.attributes %} class="fixed workspace"{% endblock body.attributes %}
 
 {% block header %}
   {% include 'console_header.html' %}
@@ -20,56 +20,62 @@
 
 {% block content %}
   <div class="content-wrapper">
-    <section class="content">
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <div class="box-title"><b>{% trans 'Create new bot' %}</b></div>
-        </div>
+    <div class="box box-solid box-clean flat no-shadow">
+      <div class="box-header with-border">
+        <div class="box-title">{% trans 'Create new bot' %}</div>
+      </div>
 
-        <div class="box-body">
+      <div class="box-body">
 
-          <form method="post" class="persistent form-add" id="add_form">
-            {% csrf_token %}
+        <form method="post" class="persistent form-add" id="add_form">
+          {% csrf_token %}
 
-            {{ add_form | crispy }}
+          {{ add_form | crispy }}
 
-          </form>
-
-        </div>
-
-        <div class="box-footer">
-            <a href="{% url 'studio:index' %}" style="width:100px" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
-            <button style="min-width:100px" type="submit" form="add_form" class="btn btn-success flat pull-right"><b>{% trans 'Create' %}</b></button>
-        </div>
+        </form>
 
       </div>
 
-      <hr/>
+      <div class="box-footer">
+          <a href="{% url 'studio:index' %}" class="btn btn-primary flat">{% trans 'Cancel' %}</a>
+          <button form="add_form" class="btn btn-success flat pull-right">{% trans 'Create' %}</button>
+      </div>
 
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <div class="box-title"><b>{% trans 'Import a bot' %}</b></div>
-        </div>
+    </div>
 
-        <div class="box-body">
+    <hr/>
 
-          <form method="post" class="form-import" enctype="multipart/form-data">
-            {% csrf_token %}
+    <div class="box box-solid box-clean flat no-shadow">
+      <div class="box-header with-border">
+        <div class="box-title">{% trans 'Import a bot' %}</div>
+      </div>
 
-            {{ import_form | crispy }}
+      <div class="box-body">
 
-            <div class="form-group">
-              <button style="width:100px" type="submit" class="btn btn-success flat pull-right"><b>{% trans 'Import' %}</b></button>
-            </div>
+        <form method="post" class="form-import" enctype="multipart/form-data">
+          {% csrf_token %}
 
-          </form>
+          {{ import_form | crispy }}
 
-        </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-success flat pull-right">{% trans 'Import' %}</button>
+          </div>
+
+        </form>
 
       </div>
-    </section>
+
+    </div>
+
   </div>
 {% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+{% endblock %}
+
 
 {% block javascripts %}
   <script src="{% static 'js/forms.js' %}"></script>

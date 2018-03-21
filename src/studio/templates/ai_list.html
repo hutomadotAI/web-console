@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}{% trans 'Summary' %}{% endblock %}
 
-{% block body.attributes %} class="fixed sidebar-mini"{% endblock body.attributes %}
+{% block body.attributes %} class="fixed workspace"{% endblock body.attributes %}
 
 {% block header %}
   {% include 'console_header.html' %}
@@ -21,23 +21,26 @@
 {% block content %}
 
   <div class="content-wrapper">
-    <section class="content">
 
-      {% if not ais|length %}
+    {% if not ais|length %}
 
-        {% include 'welcome_video.html' %}
+      {% include 'welcome_video.html' %}
 
-      {% endif %}
+    {% endif %}
 
-      {% include 'create_new_bot.html' %}
+    {% include 'create_new_bot.html' %}
 
-      {% if ais|length %}
-        {% include 'ais.html' %}
-      {% endif %}
+    {% if ais|length %}
+      {% include 'ais.html' %}
+    {% endif %}
 
-    </section>
   </div>
 
-
-
 {% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+{% endblock %}
+

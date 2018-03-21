@@ -48,6 +48,8 @@
 
     {% block stylesheets %}{% endblock %}
 
+    <link rel="stylesheet" href="{% static 'css/print.css' %}" media="print">
+
     {% block gtm.head %}
       <script>
         var dataLayer = []
@@ -88,13 +90,13 @@
 
       {% block navigation %}{% endblock %}
 
+      {% block aside %}{% endblock %}
+
       {% block messages %}
         {% include 'messages.html' %}
       {% endblock %}
 
       {% block content %}{% endblock %}
-
-      {% block aside %}{% endblock %}
 
       {% block footer %}
         {% include 'footer.html' %}

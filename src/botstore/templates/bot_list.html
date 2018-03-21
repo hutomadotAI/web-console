@@ -11,13 +11,11 @@
 {% block content %}
 
   <div class="content-wrapper">
-    <section class="content">
 
-      {% include 'botstore_info.html' %}
+    {% include 'botstore_info.html' %}
 
-      {% include 'category.html' with category=category bots=bots more=False %}
+    {% include 'category.html' with category=category bots=bots more=False %}
 
-    </section>
   </div>
 
 {% endblock %}

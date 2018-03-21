@@ -1,45 +1,44 @@
 {% load i18n %}
 
-<!-- MODAL Example training file -->
-<div class="modal fade" id="sampleTrainingFile" role="dialog">
-  <div class="modal-dialog flat width600">
+<div class="modal fade" tabindex="-1" role="dialog" id="sampleTrainingFile">
+  <div class="modal-dialog modal-dialog-centered modal-info" role="document">
+    <div class="modal-content">
 
-    <!-- Modal content-->
-    <div class="modal-content bordered" style="background-color: #212121">
-      <div class="modal-header bordered">
-        <h4 class="modal-title"><i class="fa fa-file-text-o text-success" style="padding-right:2em"></i> <span>{% trans 'Training file sample' %}</span></h4>
-        <button type="button" class="close text-gray" id="btnModelClose" data-dismiss="modal">&times;</button>
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa fa-file-text-o text-success"></i> <span>{% trans 'Training file sample' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
       </div>
+
       <div class="modal-body">
-        <div class="box-body" id="example-training-file">
-          <span id="contentSampleFile"></span>
-          <dt>{% trans 'What is your name?' %}</dt>
-          <dt>{% trans 'My name is Hu:toma.' %}</dt>
-          </br>
-          <dt>{% trans 'What does Hu:toma mean?' %}</dt>
-          <dt>{% trans 'It is the combination of two words, human and automata.' %}</dt>
-          </br>
-          <dt>{% trans 'What is the meaning of life?' %}</dt>
-          <dt>{% trans 'If you find the answer, let me know.' %}</dt>
-          </br>
-          <dt>{% trans 'Where do you live?' %}</dt>
-          <dt>{% trans 'Barcelona & London.' %}</dt>
-          </br>
-          <dt>{% trans 'How old are you?' %}</dt>
-          <dt>{% trans 'I am 8760 hours old.' %}</dt>
-          </br>
-          <dt>{% trans 'Can we be friends?' %}</dt>
-          <dt>{% trans 'Yes of course we can be friends!' %}</dt>
-          </br>
-          <dt>{% trans 'Good morning Hu:toma' %}</dt>
-          <dt>{% trans 'Good morning to you too my friend.' %}</dt>
-          </br>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary flat" id="btnModalCancelSample" data-dismiss="modal">{% trans 'Cancel' %}</button>
-      </div>
-    </div>
+        <pre>{% blocktrans %}What is your name?
+My name is Hu:toma.
 
+What does Hu:toma mean?
+It is the combination of two words, human and automata.
+
+What is the meaning of life?
+If you find the answer, let me know.
+
+Where do you live?
+Barcelona & London.
+
+How old are you?
+I am 8760 hours old.
+
+Can we be friends?
+Yes of course we can be friends!
+
+Good morning Hu:toma
+Good morning to you too my friend.{% endblocktrans %}</pre>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary flat" data-dismiss="modal">{% trans 'Ok' %}</button>
+      </div>
+
+    </div>
   </div>
 </div>
+

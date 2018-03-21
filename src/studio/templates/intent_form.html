@@ -10,104 +10,93 @@
 
 {% block content %}
   <div class="content-wrapper">
-    <section class="content">
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <div class="box-title"><i class="fa fa-commenting-o text-green"></i> <b>{% if intent_name %}{% trans 'Edit' %} {{ intent_name }}{% else %}{% trans 'Create Intent' %}{% endif %}</b></div>
-          <a data-toggle="collapse" href="#collapseIntentsInfo" aria-expanded="true"><div class="pull-right">{% trans 'more info' %} <i class="fa fa-info-circle text-sm text-yellow"></i></div></a>
-        </div>
 
-        <div class="box-body">
+    <div class="box box-solid box-clean flat no-shadow">
+      <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-commenting-o text-green"></i> <b>{% if intent_name %}{% trans 'Edit' %} {{ intent_name }}{% else %}{% trans 'Create Intent' %}{% endif %}</b></div>
+        <a data-toggle="collapse" href="#collapseIntentsInfo" aria-expanded="true"><div class="pull-right">{% trans 'more info' %} <i class="fa fa-info-circle text-sm text-yellow"></i></div></a>
+      </div>
 
-          <div id="collapseIntentsInfo" class="panel-collapse collapse" aria-expanded="true" style="margin-bottom: 24px">
-            <div class="overlay center-block">
-              <section class="content-info">
-                <div class="box-body">
-                  {% blocktrans %}Let’s say you’re creating a Bot that takes orders in a bar. A user may say “I want to order” — this is their intent. The associated entities could be “beer” “cola” or “wine”.{% endblocktrans %}
-                </div>
-              </section>
-            </div>
-          </div>
+      <div class="box-body">
 
-          <form method="post" class="persistent" id="intent_form">
-            {% csrf_token %}
-
-            {{ form | crispy }}
-
-            <label>Entities</label>
-
-
-
-            {% for form in formset.forms %}
-
-              {% include 'entity_formset.html' with id=forloop.counter0 fields=form %}
-
-              {{ form.errors }}
-
-            {% endfor %}
-
-            {{ formset.management_form }}
-
-          </form>
-
-          <button id="formset_add" class="btn btn-success" data-toggle="tooltip" title="{% trans 'Add this Entity' %}">Add entity</button>
-
-          <script id="empty_formset" type="text/template">
-
-            {% include 'entity_formset.html' with id='__prefix__' fields=formset.empty_form %}
-
-          </script>
-
-        </div>
-
-
-
-        <div class="box-footer">
-          <span style="vertical-align: -8px">If you’re stuck check out our <a data-toggle="collapse" href="#collapseVideoTutorialIntent" class="collapsed" aria-expanded="false">intents tutorial</a></span>
-          <button style="min-width:100px" type="submit" form="intent_form" class="btn btn-primary flat pull-right"><b>{% trans 'Save' %}</b></button>
-        </div>
-
-        <div id="collapseVideoTutorialIntent" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-          <div class="box-body flat no-padding center-block" style="max-width: 700px; margin-auto;">
-            <div class="overlay center-block">
-              <div class="embed-responsive embed-responsive-16by9" id="videoIntents01">
-                  <iframe src="https://www.youtube.com/embed/SI5XgQm660A?controls=1&amp;hd=1&amp;enablejsapi=1" frameborder="0"></iframe>
+        <div id="collapseIntentsInfo" class="panel-collapse collapse" aria-expanded="true" style="margin-bottom: 24px">
+          <div class="overlay center-block">
+            <section class="content-info">
+              <div class="box-body">
+                {% blocktrans %}Let’s say you’re creating a Bot that takes orders in a bar. A user may say “I want to order” — this is their intent. The associated entities could be “beer” “cola” or “wine”.{% endblocktrans %}
               </div>
-            </div>
+            </section>
           </div>
         </div>
+
+        <form method="post" class="persistent" id="intent_form">
+          {% csrf_token %}
+
+          {{ form | crispy }}
+
+          <label>Entities</label>
+
+          {% for form in formset.forms %}
+
+            {% include 'entity_formset.html' with id=forloop.counter0 fields=form %}
+
+            {{ form.errors }}
+
+          {% endfor %}
+
+          {{ formset.management_form }}
+
+        </form>
+
+        <button id="formset_add" class="btn btn-success" data-toggle="tooltip" title="{% trans 'Add this Entity' %}">Add entity</button>
+
+        <script id="empty_formset" type="text/template">
+
+          {% include 'entity_formset.html' with id='__prefix__' fields=formset.empty_form %}
+
+        </script>
 
       </div>
 
-      {% if ai_details.intents|length %}
+      <div class="box-footer">
+        <span style="vertical-align: -8px">If you’re stuck check out our <a data-toggle="modal" data-target="#INTENTS_VIDEO_TUTORIAL">intents video tutorial</a></span>
+        <button form="intent_form" class="btn btn-primary flat pull-right">{% trans 'Save' %}</button>
+      </div>
 
-          <div class="box box-solid box-clean flat no-shadow">
-            <div class="box-header with-border">
-              <div class="box-title"><i class="fa fa-commenting-o text-green"></i> <b>{% trans 'Intents list' %}</b></div>
-            </div>
+    </div>
 
-            <div class="box-body">
-              <div class="elements">
-                {% for name in ai_details.intents %}
-                  <div class="element element-{{ name }}">
-                    <a href="{% url 'studio:intents.edit' ai.aiid name %}" title="edit {{ name }}">{{ name }}</a>
-                    <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:intent.delete' ai.aiid name %}" data-id="{{ name }}"></button>
-                  </div>
-                {% endfor %}
-              </div>
-            </div>
+    {% if ai_details.intents|length %}
 
+        <div class="box box-solid box-clean flat no-shadow">
+          <div class="box-header with-border">
+            <div class="box-title"><i class="fa fa-commenting-o text-green"></i> <b>{% trans 'Intents list' %}</b></div>
           </div>
 
-      {% endif %}
+          <div class="box-body">
+            <div class="elements">
+              {% for name in ai_details.intents %}
+                <div class="element element-{{ name }}">
+                  <a href="{% url 'studio:intents.edit' ai.aiid name %}" title="edit {{ name }}">{{ name }}</a>
+                  <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:intent.delete' ai.aiid name %}" data-id="{{ name }}"></button>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
 
-    </section>
+        </div>
+
+    {% endif %}
+
   </div>
 
 {% endblock %}
 
 {% block modals %}
+
   {% include 'modals/delete_element.html' with id='delete_element' %}
+
+  {% include 'modals/video_tutorial.html' with id='INTENTS_VIDEO_TUTORIAL' title='Intents video tutorial' slug='SI5XgQm660A' %}
+
 {% endblock modals %}
 
 {% block stylesheets.vendors %}

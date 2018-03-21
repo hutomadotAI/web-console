@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="{{ id }}">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">{{ title }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-body videoWrapper">
+          <iframe src="https://www.youtube.com/embed/{{ slug }}?rel=0&showinfo=0&hd=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

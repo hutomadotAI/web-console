@@ -1,9 +1,19 @@
-{% load static %}
+{% load i18n static %}
 
-<header class="main-header">
+<header class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
 
-  <a href="{% url 'studio:index' %}" class="logo" tabindex="-1">
-    <span class="logo-lg"><img src="{% static 'images/logo-white.png' %}" height="40"></span>
-  </a>
+  <a class="navbar-brand" href="/"><img src="{% static 'images/logo-white.png' %}" alt="hutoma logo" height="40"></a>
+
+  <button class="btn toggle-navigation" type="button" data-toggle="collapse" data-target="#NAVIGATION" aria-controls="NAVIGATION" aria-expanded="false" aria-label="{% trans 'Toggle navigation' %}" title="{% trans 'Toggle navigation' %}">
+    <i class="fa fa-bars"></i>
+  </button>
+
+  {% if chatable %}
+
+    <button class="btn toggle-chat" type="button" data-toggle="collapse" data-target="#ASIDE" aria-controls="ASIDE" aria-expanded="false" aria-label="{% trans 'Toggle chat' %}" title="{% trans 'Toggle chat' %}">
+      <i class="fa fa-comments"></i>
+    </button>
+
+  {% endif %}
 
 </header>

@@ -1,41 +1,36 @@
 {% load botstore_tags i18n %}
 
-<aside class="main-sidebar ">
-  <section class="sidebar">
+<aside class="main-sidebar navigation" id="NAVIGATION">
 
-    <ul class="sidebar-menu" style="padding-bottom: 65px;">
-      <li class="header" style="text-align: center;color:#8A8A8A;">{% trans 'CONSOLE' %}</li>
+  <ul class="sidebar-menu">
 
-      <li {% if active == 'summary' %} class="active"{% endif %}><a href="{% url 'studio:index' %}"><i class="fa fa-home text-light-blue active" id="level0"> </i><span>{% trans 'Home' %}</span></a></li>
+    <li {% if active == 'summary' %} class="active"{% endif %}><a href="{% url 'studio:index' %}"><i class="fa fa-home text-light-blue active"> </i><span>{% trans 'Home' %}</span></a></li>
 
-      {% block studio %}{% endblock studio %}
+    {% block studio %}{% endblock studio %}
 
-      <li><a data-toggle="collapse" data-target="#categories"><i class="fa fa-shopping-cart text-green"></i> <span>{% trans 'Botstore' %}</span><i class="fa fa-ellipsis-v pull-right"></i></a>
+    <li><a data-toggle="collapse" data-target="#categories"><i class="fa fa-shopping-cart text-green"></i> <span>{% trans 'Botstore' %}</span><i class="fa fa-ellipsis-v pull-right"></i></a>
 
-      {% botstore_navigation category botstore %}
+    {% botstore_navigation category botstore %}
 
-      </li>
+    </li>
 
-      <li><a href="https://docs.hutoma.ai" target="_blank"><i class="fa fa-book text-purple"></i> <span>{% trans 'Documentation' %}</span></a></li>
+    <li><a href="https://docs.hutoma.ai" target="_blank"><i class="fa fa-book text-purple"></i> <span>{% trans 'Documentation' %}</span></a></li>
 
-      <li><a class="slack-community" target="_blank"><i class="fa fa-slack text-olive"></i> <span>{% trans 'Community' %}</span></a></li>
+    <li><a class="slack-community" target="_blank"><i class="fa fa-slack text-olive"></i> <span>{% trans 'Community' %}</span></a></li>
 
-    </ul>
+  </ul>
 
-    <ul class="sidebar-menu" id="account-menu" style="position: absolute; bottom: 0px; width: 230px; min-height: 85px;">
+  <ul class="sidebar-menu" id="account-menu">
 
-      <li class="header" style="color:#8A8A8A;text-align: center;"><b>{% trans 'MY ACCOUNT' %}</b></li>
+    {% if user.is_authenticated %}
+      <li><a><i class="fa fa-user text-light-blue"></i> {{ user.email }}</a></li>
+      <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off text-red"></i> {% trans 'Logout' %}</a></li>
+    {% else %}
+      <li><a href="{% url 'account_login' %}">{% trans 'Login' %}</a></li>
+      <li><a href="{% url 'account_signup' %}">{% trans 'Sign Up' %}</a></li>
+    {% endif %}
 
-      {% if user.is_authenticated %}
-        <li><a>{{ user.email }}</a></li>
-        <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off text-red"></i> {% trans 'Logout' %}</a></li>
-      {% else %}
-        <li><a href="{% url 'account_login' %}">{% trans 'Login' %}</a></li>
-        <li><a href="{% url 'account_signup' %}">{% trans 'Sign Up' %}</a></li>
-      {% endif %}
-
-    </ul>
-  </section>
+  </ul>
 </aside>
 
 {% block javascript %}{% endblock javascript %}

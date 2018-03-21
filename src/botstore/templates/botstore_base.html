@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}{% trans 'Botstore' %}{% endblock %}
 
-{% block body.attributes %} class="fixed sidebar-mini"{% endblock %}
+{% block body.attributes %} class="fixed workspace"{% endblock %}
 
 {% block header %}
   {% include 'console_header.html' %}
@@ -18,14 +18,8 @@
   {% include 'console_footer.html' %}
 {% endblock %}
 
-{% block content %}
+{% block stylesheets %}
+  {{ block.super }}
 
-  <div class="content-wrapper">
-    <section class="content">
-
-      {% include 'botstore_info.html' %}
-
-    </section>
-  </div>
-
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
 {% endblock %}
