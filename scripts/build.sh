@@ -3,14 +3,14 @@
 
 function check_return_code {
     return_code=$?;
-    if [[ $return_code != 0 ]]; then 
-        exit $return_code; 
+    if [[ $return_code != 0 ]]; then
+        exit $return_code;
     fi
 }
 
 SCRIPT_DIR=`dirname $BASH_SOURCE`
 echo "*** Setting up venv ***"
-source "${SCRIPT_DIR}/setup_python.sh"
+source "${SCRIPT_DIR}/setup_python.sh" --build-only
 check_return_code
 
 echo "*** Doing build ***"

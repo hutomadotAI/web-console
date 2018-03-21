@@ -11,6 +11,7 @@ function check_return_code {
 }
 
 STYLE_ONLY=false
+BUILD_ONLY=false
 POSITIONAL=()
 while [[ $# -gt 0 ]]
     do
@@ -19,6 +20,10 @@ while [[ $# -gt 0 ]]
     case $key in
         --style-only)
         STYLE_ONLY=true
+        shift # past value
+        ;;
+        --build-only)
+        BUILD_ONLY=true
         shift # past value
         ;;
         *)    # unknown option
@@ -48,6 +53,13 @@ echo "Installing code style requirements"
 pip install --upgrade -r ${SOURCE_DIR}/requirements-code-style.ini
 check_return_code
 if [[ $STYLE_ONLY = true ]]; then
+    return
+fi
+
+echo "Installing build requirements"
+pip install --upgrade -r ${SOURCE_DIR}/requirements-build.ini
+check_return_code
+if [[ $BUILD_ONLY = true ]]; then
     return
 fi
 
