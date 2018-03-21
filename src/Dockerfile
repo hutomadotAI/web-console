@@ -1,14 +1,22 @@
 FROM python:3.6.4-slim-jessie
 
+
 # With Debian jessie slim image, need to install the mysql libs
 # Don't be tempted to move to Debian stretch as that will use MariaDB
 # Install translation tools, we build translations locally
-RUN apt-get update && apt-get install -y \
+RUN echo "2018-03-20" > /os_patch_date.txt
+
+RUN apt-get update \
+ && apt upgrade -y \
+ && apt-get install -y \
   build-essential \
   gettext \
   libgettextpo-dev \
   libmysqlclient-dev \
   && rm -rf /var/lib/apt/lists/*
+
+# Update pip
+RUN pip install --no-cache-dir --upgrade pip
 
 # Gather arguments
 ARG ENVIRONMENT=development
@@ -26,7 +34,7 @@ COPY requirements.ini /usr/src/app
 COPY $ENVIRONMENT.ini /usr/src/app
 
 # Install dependencies
-RUN pip install -r $ENVIRONMENT.ini
+RUN pip install --no-cache-dir -r $ENVIRONMENT.ini
 
 # switch to non root user
 # define user IDs as ARG
