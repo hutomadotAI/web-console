@@ -1,26 +1,36 @@
 {% load i18n %}
 
 <div class="box box-solid box-clean flat no-shadow">
-    <div class="box-header with-border">
-        <div class="box-title"><b>{% trans 'Your Bots' %}</b></div>
-    </div>
+  <div class="box-header with-border">
+    <div class="box-title">{% trans 'Your Bots' %}</div>
+  </div>
 
-    <div class="box-body table-responsive no-border" style="padding-top:0;">
-        <table class="table dataTable" id="tableAi">
-            <thead>
-            <tr disabled="">
-                <th class="text-left" style="border:0; width:20%; white-space: nowrap;">{% trans 'Bot Name' %}</th>
-                <th class="text-left" style="border:0; width:20%; white-space: nowrap;">{% trans 'Description' %}</th>
-                <th class="text-center" style="border:0; width:15%; white-space: nowrap;">{% trans '# Skills Linked' %}</th>
-                <th class="text-center" style="border:0; width:15%; white-space: nowrap;">{% trans 'Training Status' %}</th>
-                <th style="border:0; min-width: 240px; width:20%;"></th>
-            </tr>
-            </thead>
-            <tbody id="tableAiList">
-                {% for ai in ais reversed %}
-                  {% include 'ai.html' with ai=ai %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <div class="box-body no-border">
+    <table class="table table-fixed">
+      <thead>
+        <tr>
+          <th class="name-column">
+            {% trans 'Bot Name' %}
+          </th>
+          <th class="description-column">
+            {% trans 'Description' %}
+          </th>
+          <th class="skills-column">
+            {% trans '# Skills Linked' %}
+          </th>
+          <th class="status-column">
+            {% trans 'Training Status' %}
+          </th>
+          <th class="options-column">
+            <span class="sr-only">{% trans 'Options' %}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ai in ais reversed %}
+          {% include 'ai.html' with ai=ai %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>

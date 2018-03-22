@@ -1,3 +1,5 @@
+@import url('tables.css');
+
 html,
 body {
   min-height: 100vh;
@@ -384,23 +386,7 @@ body > section, .footer {
     clear: both;
 }
 
-.ai-list .bot-description,
-.ai-list .bot-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
-.ai-list .bot-name a,
-.ai-list .bot-skills a {
-  color: inherit;
-  display: block;
-}
-
-.ai-list .bot-description {
-  padding-top: 15px;
-  max-width: 512px;
-}
 
 .layout-boxed .wrapper {
     max-width: 1250px;
@@ -1154,10 +1140,6 @@ select:not([multiple]) {
     border-top-left-radius: 3px;
 }
 
-.box-body > .table {
-    margin-bottom: 0;
-}
-
 .box-body .fc {
     margin-top: 5px;
 }
@@ -1234,6 +1216,12 @@ select:not([multiple]) {
   border: 1px solid transparent;
   box-shadow: none;
   min-width: 5.5rem;
+}
+
+.btn-group-sm > .btn,
+.btn-sm {
+  padding: 0.1875rem 0.75rem;
+  line-height: 1.5rem;
 }
 
 .btn-lg {
@@ -1560,66 +1548,6 @@ select:not([multiple]) {
 
 .pagination.pagination-flat > li > a {
     border-radius: 0 !important;
-}
-
-/*
- * Component: Table
- * ----------------
- */
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
-    border-top: 1px solid #404446;
-}
-
-.table > thead > tr > th {
-    border-bottom: 2px solid #404446;
-}
-
-.table tr td .progress {
-    margin-top: 5px;
-}
-
-.table-bordered {
-    border: 1px solid #404446;
-}
-
-.table-bordered > thead > tr > th,
-.table-bordered > tbody > tr > th,
-.table-bordered > tfoot > tr > th,
-.table-bordered > thead > tr > td,
-.table-bordered > tbody > tr > td,
-.table-bordered > tfoot > tr > td {
-    border: 1px solid #f4f4f4;
-}
-
-.table-bordered > thead > tr > th,
-.table-bordered > thead > tr > td {
-    border-bottom-width: 2px;
-}
-
-.table.no-border,
-.table.no-border td,
-.table.no-border th {
-    border: 0;
-}
-
-/* .text-center in tables */
-table.text-center,
-table.text-center td,
-table.text-center th {
-    text-align: center;
-}
-
-.table.align th {
-    text-align: left;
-}
-
-.table.align td {
-    text-align: right;
 }
 
 /*

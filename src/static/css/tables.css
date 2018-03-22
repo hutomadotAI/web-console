@@ -1,0 +1,79 @@
+/*
+ * Component: Table
+ * ----------------
+ */
+
+.table-fixed {
+  table-layout: fixed;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table td {
+  padding: 0.75rem 0.5rem;
+}
+
+.table a {
+  color: inherit;
+}
+
+.table tbody tr td {
+  border-top: 1px solid #444;
+}
+
+.table thead th {
+  background: #222;
+  border: 0;
+  position: sticky;
+  top: 4rem;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.table .name-column,
+.table .description-column {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.table .name-column a,
+.table .description-column a {
+  display: block;
+  overflow: inherit;
+  text-overflow: inherit;
+}
+
+.table .skills-column,
+.table .status-column {
+  text-align: center;
+  width: 16%;
+}
+
+.table .options-column {
+  white-space: nowrap;
+}
+
+.table td.options-column {
+  padding: 0.5rem;
+  text-align: right;
+}
+
+.table .options-column .btn:not(.dropdown-toggle) {
+  min-width: 6rem;
+}
+
+@media (max-width: 1272px) {
+  .table .description-column {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .table .skills-column,
+  .table .status-column {
+    display: none;
+  }
+}
