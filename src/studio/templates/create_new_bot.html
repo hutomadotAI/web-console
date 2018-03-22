@@ -3,23 +3,33 @@
 <div class="box box-solid box-clean flat no-shadow ">
 
   <div class="box-header with-border">
-    <div class="box-title"><b>{% blocktrans %}Welcome to Hu:toma AI - make your knowledge conversational{% endblocktrans %}</b></div>
+
+    <div class="box-title">
+      {% blocktrans %}Welcome to Hu:toma AI - make your knowledge conversational{% endblocktrans %}
+    </div>
+
     <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/Creating_a_bot.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
       <i class="fa fa-question-circle text-sm text-yellow"></i>
     </a>
+
   </div>
 
   <div class='box-body'>
-    <p>{% blocktrans %}Thanks for your support! We're in beta, so your feedback and patience would be incredibly helpful.{% endblocktrans %}</p>
+
+    <p>
+      {% blocktrans %}Thanks for your support! We're in beta, so your feedback and patience would be incredibly helpful.{% endblocktrans %}
+    </p>
 
     <div class="text-center" style="margin: 2rem 0 1rem">
-      <a href="{% url 'studio:add_bot' %}" class="btn btn-success btn-lg flat" id="btnCreateAI">{% trans 'Create New Bot' %} <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="{% url 'studio:add_bot' %}" class="btn btn-success btn-lg flat">{% trans 'Create New Bot' %} <i class="fa fa-arrow-circle-right"></i></a>
     </div>
 
   </div>
 
   <div class="box-footer">
-    {% blocktrans %}If you’re stuck check out our <a data-toggle="modal" data-target="#CREATE_BOT_VIDEO_TUTORIAL">video tutorial</a>, join our <a href="https://hutomadotai.slack.com" target="_blank">Slack community</a>, or ask any questions you have in the chat window in the bottom right.{% endblocktrans %}
+    {% blocktrans %}If you’re stuck check out our <a data-toggle="modal" data-target="#CREATE_BOT_VIDEO_TUTORIAL">video tutorial</a>,
+    join our <a href="https://hutomadotai.slack.com" target="_blank">Slack community</a>,
+    or ask any questions you have in the chat window in the bottom right.{% endblocktrans %}
   </div>
 
 </div>

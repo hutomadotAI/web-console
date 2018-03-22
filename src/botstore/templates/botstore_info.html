@@ -4,17 +4,28 @@
     <div class="box box-solid box-clean flat no-shadow">
 
       <div class="box-header with-border">
-        <div class="box-title">{% blocktrans %}Hu:toma Botstore - transfer skills to your bot in few clicks{% endblocktrans %}</div>
+        <div class="box-title">
+          {% blocktrans %}Hu:toma Botstore — transfer skills to your bot in few
+          clicks{% endblocktrans %}
+        </div>
       </div>
 
       <div class="box-body">
         <div class="alert flat alert-info no-margin">
           {% url 'studio:add_bot' as link %}
-          {% blocktrans with link=link %}The Hu:toma botstore allows you to purchase skills that you can then transfer to your bot. Mix and match bots together to create new functionalities. Bots purchased here will appear in the skill section when you <a href="{{ link }}">create a new bot</a>.{% endblocktrans %}
+          {% blocktrans with link=link %}The Hu:toma botstore allows you to
+          purchase skills that you can then transfer to your bot. Mix and match
+          bots together to create new functionalities. Bots purchased here will
+          appear in the skill section when you
+          <a href="{{ link }}">create a new bot</a>.{% endblocktrans %}
          </div>
       </div>
 
-      <div class="alert alert-info">{% blocktrans %}This video will guide you through using the Hu:toma platform and have you building your first bot in no time. In this example we create a bot designed to help attendees navigate Mobile World Congress. We advise joining our Slack Community channel so that you can ask questions if you need to.{% endblocktrans %}</div>
+      <div class="box-footer">
+        {% blocktrans %}If you’re stuck check out our <a data-toggle="modal" data-target="#CREATE_BOT_VIDEO_TUTORIAL">video tutorial</a>,
+        join our <a href="https://hutomadotai.slack.com" target="_blank">Slack community</a>,
+        or ask any questions you have in the chat window in the bottom right.{% endblocktrans %}
+      </div>
 
     </div>
   </div>
