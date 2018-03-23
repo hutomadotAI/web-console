@@ -430,15 +430,18 @@ if ENVIRONMENT == 'development':
     """
     Development settings
 
+    - Run using tls server
     - Run in Debug mode
-
     - Use local MySQL as database
     - Use Mailhog proxy for outgoing emails
-
     - Add Django Debug Toolbar
     """
 
     import socket   # used by django-debug-toolbar
+
+    INSTALLED_APPS += [
+        "sslserver",        # Provides TLS for local development
+    ]
 
     DEBUG = os.environ.get('DEBUG', True)
 

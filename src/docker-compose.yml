@@ -11,18 +11,18 @@ services:
       context: .
       args:
         ENVIRONMENT: development
-    command: python manage.py runserver 0.0.0.0:8000 --nostatic
+    command: python manage.py runsslserver 0.0.0.0:8000 --nostatic
     depends_on:
       - mysql
       - redis
     env_file: secrets.env
     environment:
       ENVIRONMENT: development
-      DJANGO_STATIC_HOST: http://0.0.0.0.xip.io
+      DJANGO_STATIC_HOST: https://0.0.0.0.xip.io
     volumes:
       - .:/usr/src/app
     ports:
-      - "80:8000"
+      - "443:8000"
 
   #
   # Application container for local testing of production like environement
