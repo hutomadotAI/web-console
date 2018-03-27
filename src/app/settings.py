@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     # Third party apps:
     'allauth',          # For user registration, either via email or social
     'allauth.account',  # For user registration, either via email or social
+    'constance',        # Dynamic Django settings.
     'crispy_forms',     # The best way to have Django DRY forms
     'django_countries',     # Provides country choices for use with forms
     'captcha',          # Django reCAPTCHA form field/widget integration app.
@@ -230,13 +231,13 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.i18n',
                 'django.template.context_processors.static',
                 'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
+                'constance.context_processors.config',
                 'app.context_processors.tag_manager',
             ],
         },
@@ -417,10 +418,50 @@ PUBLIC_API_URL = os.environ.get('PUBLIC_API_URL')
 API_TIMEOUT = 1
 
 # allow five seconds for API calls that make one or more calls to Facebook's API
-API_FACEBOOK_TIMEOUT = 5
+API_FACEBOOK_TIMEOUT = 2
 
 # allow a much longer timeout for async chart loading
 API_LOGS_TIMEOUT = 20
+
+
+# ------------------------------------------------------------------------------
+#
+# Dynamic settings, can be change without deploy. Remember that they are kept in
+# Redis so don't use it for enthing crutial.
+#
+
+CONSTANCE_REDIS_CONNECTION = {
+    'password': os.getenv('CACHE_SERVICE_PASSWORD'),
+    'host': os.getenv('CACHE_SERVICE_HOST', 'redis'),
+    'port': os.getenv('CACHE_SERVICE_PORT', 6379),
+    'db': 0,
+}
+
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'on/off': ['django.forms.fields.ChoiceField', {
+        'widget': 'django.forms.Select',
+        'choices': (('on', 'On'), ('off', 'Off'))
+    }],
+    'timeout': ['django.forms.fields.IntegerField', {
+        'widget': 'django.forms.NumberInput',
+        'widget_kwargs': {
+            'attrs': {
+                'max': 12,
+                'min': API_FACEBOOK_TIMEOUT,
+            }
+        }
+    }],
+}
+
+CONSTANCE_CONFIG = {
+    'FACEBOOK_INTEGRATION': ('on', 'Enable Facebook Integrations', 'on/off'),
+    'FACEBOOK_WARNING': ('', 'Additional warning message for Facebook Integrations'),
+    'API_FACEBOOK_TIMEOUT': (API_FACEBOOK_TIMEOUT, 'Timeouts for Facebook related APIs calls, in seconds, min. 2s max 12s', 'timeout'),
+}
+
+CONSTANCE_CONFIG_FIELDSETS = {
+    'Facebook integration': ['FACEBOOK_INTEGRATION', 'FACEBOOK_WARNING', 'API_FACEBOOK_TIMEOUT']
+}
 
 # ------------------------------------------------------------------------------
 #
@@ -446,6 +487,10 @@ if ENVIRONMENT == 'development':
     DEBUG = os.environ.get('DEBUG', True)
 
     TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
+
+    TEMPLATES[0]['OPTIONS']['context_processors'] += [
+        'django.template.context_processors.debug'
+    ]
 
     # Allow all hosts in development mode
     ALLOWED_HOSTS = ['*']

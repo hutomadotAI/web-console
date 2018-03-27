@@ -7,6 +7,8 @@ from django.conf import settings
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 
+from constance import config
+
 from app.services import set_headers
 
 logger = logging.getLogger(__name__)
@@ -549,7 +551,7 @@ def set_facebook_connect_token(token, aiid, connect_token, redirect_url):
     response = requests.post(
         url,
         headers=set_headers(token),
-        timeout=settings.API_FACEBOOK_TIMEOUT,
+        timeout=config.API_FACEBOOK_TIMEOUT,
         json=payload,
         verify=not settings.DEBUG
     )
@@ -563,8 +565,8 @@ def get_facebook_connect_state(token, aiid):
     """
     read the facebook connection status for this aiid
     """
-    path = '/ai/%s/facebook'
-    url = settings.API_URL + path % aiid
+    path = '/ai/{aiid}/facebook'
+    url = settings.API_URL + path.format(aiid=aiid)
 
     logger.debug(url)
 
@@ -580,20 +582,22 @@ def get_facebook_connect_state(token, aiid):
     return response.json()
 
 
-def facebook_action(token, aiid, params):
-    """
-    take some action on the facebook connection
-    """
+def put_facebook_action(token, aiid, params):
+    """take some action on the facebook connection"""
+
     query_string = urllib.parse.urlencode(params)
-    path = '/ai/%s/facebook?%s'
-    url = settings.API_URL + path % (aiid, query_string)
+    path = '/ai/{aiid}/facebook?{query_string}'
+    url = settings.API_URL + path.format(
+        aiid=aiid,
+        query_string=query_string
+    )
 
     logger.debug(url)
 
     response = requests.put(
         url,
         headers=set_headers(token),
-        timeout=settings.API_FACEBOOK_TIMEOUT,
+        timeout=config.API_FACEBOOK_TIMEOUT,
         verify=not settings.DEBUG
     )
 

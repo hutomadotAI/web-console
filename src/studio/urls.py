@@ -25,28 +25,28 @@ from django.views.generic.base import RedirectView
 
 from studio.views import (
     AICreateView,
-    AIListView,
     AIDetailView,
+    AIListView,
     AIUpdateView,
     EntitiesUpdateView,
     EntitiesView,
-    IntegrationFacebookView,
+    EntityDeleteView,
+    FacebookActionView,
+    FacebookCustomiseView,
+    InsightsView,
     IntegrationView,
+    IntentDeleteView,
     IntentsUpdateView,
     IntentsView,
+    OAuthView,
     ProxyAiExportView,
     ProxyAiView,
-    EntityDeleteView,
-    IntentDeleteView,
+    ProxyInsightsChartView,
+    ProxyInsightsLogsView,
     ProxyRegenerateWebhookSecretView,
     RetrainView,
     SkillsView,
     TrainingView,
-    IntegrationFacebookView,
-    FacebookIntegrationCustomiseView,
-    InsightsView,
-    ProxyInsightsLogsView,
-    ProxyInsightsChartView
 )
 
 app_name = 'studio'
@@ -137,19 +137,25 @@ urlpatterns = [
         name='integrations'
     ),
 
-    # List or update facebook integration for this AI
-    re_path(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/(?P<action>get|page|disconnect)/(?P<id>[0-9]*)$',
-        IntegrationFacebookView.as_view(),
-
-        name='integrations_facebook'
+    # Oauth endpoint used by Facebook
+    path(
+        'oauth',
+        OAuthView.as_view(),
+        name='oauth'
     ),
 
-    # save customisations to facebook integration
+    # Perform actions for facebook integration
+    re_path(
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/(?P<action>connect|page|disconnect)$',
+        FacebookActionView.as_view(),
+        name='facebook_actions'
+    ),
+
+    # Save customisations to facebook integration
     path(
         'bots/edit/<uuid:aiid>/integrations/facebook/customise',
-        FacebookIntegrationCustomiseView.as_view(),
-        name='integrations_facebook_customise'
+        FacebookCustomiseView.as_view(),
+        name='facebook_customise'
     ),
 
     # Insights: download chat logs for an existing AI

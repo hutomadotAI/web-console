@@ -18,14 +18,123 @@
         </div>
       </div>
 
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <div class="box-title"><i class="fa fa-facebook text-blue"></i> <b>{% trans 'Facebook' %}</b></div>
+      {% if config.FACEBOOK_WARNING %}
+        <div class="alert alert-warning">{{ config.FACEBOOK_WARNING }}</div>
+      {% endif %}
+
+      {% if config.FACEBOOK_INTEGRATION == 'on' %}
+
+        <div class="box box-solid box-clean flat no-shadow">
+          <div class="box-header with-border">
+            <div class="box-title"><i class="fa fa-facebook text-blue"></i> {% trans 'Facebook' %}</div>
+          </div>
+
+          <div class="box-body">
+
+            {% if integration.has_access_token %}
+
+              <div class="alert alert-base">
+                <p>Connected to <b>{{ integration.facebook_username }}</b> Facebook account</p>
+              </div>
+
+              <div class="text-center" style="padding-bottom: 20px">
+                <a href="{% url 'studio:facebook_actions' aiid=ai.aiid action='disconnect' %}" class="btn btn-primary" style="width: 260px;">{% trans 'Disconnect' %}</a>
+              </div>
+
+              {% if integration.page_integrated_id %}
+
+                <div class="alert alert-base">
+                  Integrated with page <b><a href="https://www.facebook.com/{{ integration.fb_page_integrated_id }}" target="_blank"> {{ integration.fb_page_integrated_name }}</a></b>.
+                  The bot will respond to all messages sent to that page.
+                </div>
+
+                <form action="{% url 'facebook_customise' %}" id="FB_SETTINGS">
+
+                  <div class="form-group">
+                    <label for="fb_page_greeting">{% blocktrans %}
+                      Greeting message to display on the welcome screen
+                    {% endblocktrans %}</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-comment-o"></i></span>
+                      </div>
+                      <input type="text" required maxlength="160" class="form-control" id="fb_page_greeting" value="{{ integration.page_greeting }}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="fb_get_started_payload">{% blocktrans %}
+                      Command to send to the bot when the user taps the Get Started button
+                    {% endblocktrans %}</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon fa fa-play-circle-o"></i></span>
+                      </div>
+                      <input type="text" required maxlength="160" class="form-control" id="fb_get_started_payload" value="{{ integration.get_started_payload }}">
+                    </div>
+                  </div>
+
+                </form>
+
+                <div class="text-center" style="padding-bottom: 20px">
+                  <button class="btn btn-primary" form="FB_SETTINGS" style="width: 260px;">{% trans 'Save customizations' %}</button>
+                </div>
+
+                {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-messengermessageus' button_name='Message Us' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us' button_action='to start chatting to this bot on Facebook Messenger.' %}
+
+                {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-send-to-messenger' button_name='Send To Messenger' data_ref='RESPOND_TO_THIS' button_action='for this bot to start a conversation with you on Facebook Messenger.' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/send-to-messenger' %}
+
+              {% else %}
+
+                {% if not integration.success %}
+                  <div class="alert alert-error">
+                    {% blocktrans %}Could not get a list of pages from Facebook.{% endblocktrans %}
+                  </div>
+                {% elif integration.fb_empty_pagelist %}
+                  <div class="alert alert-warning">
+                    {% blocktrans %}This account has no Facebook pages that are
+                    suitable for bot integration. Create a new Facebook page or
+                    connect to a different Facebook account.{% endblocktrans %}
+                  </div>
+                {% else %}
+
+                  <div class="alert alert-base">
+                    <p>{% blocktrans %}Select a Facebook page to attach this bot to{% endblocktrans %}</p>
+                  </div>
+
+                  <ul style="padding: 0.75rem 1.25rem; background-color: #424242;">
+                    {% for fb_page_id, fb_page_name in integration.page_list.items %}
+                      <li>
+                        <a href="{% url 'studio:facebook_actions' aiid=ai.aiid action='page' %}?id={{ fb_page_id }}"
+                          style="color: white; cursor: pointer; font-weight: bold;">{{ fb_page_name }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+
+                {% endif %}
+
+              {% endif %}
+
+            {% else %}
+
+              <div class="alert alert-info">
+                {% blocktrans %}
+                  Integrate this bot with a Facebook Page to allow it to respond on your behalf.
+                  Users can talk to the bot over Facebook Messenger, both in the app and on the web.
+                {% endblocktrans %}
+              </div>
+
+              <div class="text-center" style="padding-bottom: 20px;">
+                <button class="btn btn-primary" id="fb-connect" style="width: 260px;"><i class="fa fa-facebook text-blue"></i> {% trans 'Connect to Facebook' %}</button>
+              </div>
+
+            {% endif %}
+
+          </div>
+
         </div>
 
-        <div id="facebookState"></div>
-
-      </div>
+      {% endif %}
 
   </div>
 {% endblock %}
@@ -36,8 +145,35 @@
   <link rel="stylesheet" href="{% static 'css/integration.css' %}">
 {% endblock %}
 
+{{sql_queries}}
+
 {% block javascripts %}
   {{ block.super }}
+
+  <script>
+    const APP_ID = '{{ integration.facebook_app_id }}';
+    const PERMISSIONS = '{{ integration.facebook_request_permissions }}';
+
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: APP_ID,
+        xfbml: true,
+        version: 'v2.9'
+      });
+    };
+
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+  </script>
 
   <script src="{% static 'js/facebook.js' %}"></script>
 
