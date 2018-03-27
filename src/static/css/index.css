@@ -26,7 +26,7 @@ body {
 
 hr {
   border-color: #888;
-  margin: 3rem 0;
+  margin: 0.75rem 0;
 }
 
 iframe {
@@ -61,6 +61,10 @@ pre {
   word-wrap: break-word;
   background-color: #444;
   border-radius: 0;
+}
+
+label {
+  font-weight: bold;
 }
 
 .modal.in .modal-dialog {
@@ -642,10 +646,6 @@ a:focus {
   border-color: none;
   outline: 0;
   box-shadow: none;
-}
-
-.form-control-label {
-  font-weight: bold;
 }
 
 .text-muted {

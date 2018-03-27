@@ -206,7 +206,7 @@ class IntentForm(forms.Form):
     )
 
     webhook = forms.URLField(
-        label=_('WebHook'),
+        label=_('WebHook (optional)'),
         help_text=_('Provide the WebHook endpoint.'),
         required=False,
         widget=forms.URLInput(attrs={

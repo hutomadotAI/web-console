@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'django_countries',     # Provides country choices for use with forms
     'captcha',          # Django reCAPTCHA form field/widget integration app.
     'reversion',        # Provides version control for model instances
+    'widget_tweaks',    # Tweak the form field rendering in templates
 
     # Apps specific for console:
     'botstore',         # Bot store

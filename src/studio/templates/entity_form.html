@@ -13,19 +13,34 @@
 
     <div class="box box-solid box-clean flat no-shadow">
       <div class="box-header with-border">
-        <div class="box-title"><i class="fa fa-sitemap text-yellow"></i> {% if entity_name %}{% trans 'Edit' %} {{ entity_name }}{% else %}{% trans 'Create Entity' %}{% endif %}</div>
-        <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/Adding_intents/Entities.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
-          <i class="fa fa-question-circle text-sm text-yellow"></i>
+        <div class="box-title"><i class="fa fa-sitemap text-yellow"></i>
+          {% if entity_name %}
+            {% trans 'Edit' %} {{ entity_name }}
+          {% else %}
+            {% trans 'Create Entity' %}
+          {% endif %}
+        </div>
+        <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/Adding_intents/Entities.html"
+          class="documentation link"
+          target="_blank"
+          data-toggle="tooltip"
+          title="{% trans 'Documentation' %}">
+            <i class="fa fa-question-circle text-sm text-yellow"></i>
         </a>
       </div>
 
       <div class="box-body">
 
         <div class="alert alert-info">
-          {% blocktrans %}Entities are objects that might be required to fulfill an Intent. Imagine you are creating a Bot that takes orders in a bar, a customer may ask “I would like to order ‘X’”. X here is an entity you would want the Bot to extract from a conversation. These could include “beer”, “wine” or “cola” which fall into the drinks category. You could list further entities under food.{% endblocktrans %}
+          {% blocktrans %}Entities are objects that might be required to fulfill
+          an Intent. Imagine you are creating a Bot that takes orders in a bar,
+          a customer may ask “I would like to order ‘X’”. X here is an entity
+          you would want the Bot to extract from a conversation. These could
+          include “beer”, “wine” or “cola” which fall into the drinks category.
+          You could list further entities under food.{% endblocktrans %}
         </div>
 
-        <form method="post" class="persistent" id="entity_form">
+        <form method="post" class="persistent" id="ENTITY_FORM">
           {% csrf_token %}
 
           {{ form | crispy }}
@@ -36,24 +51,14 @@
 
       <div class="box-footer">
         <span style="vertical-align: -8px">If you’re stuck check out our <a data-toggle="modal" data-target="#ENTITIES_VIDEO_TUTORIAL">entities video tutorial</a></span>
-        <button form="entity_form" class="btn btn-primary flat pull-right">{% trans 'Save' %}</button>
-      </div>
-
-      <div id="collapseVideoTutorialEntity" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-        <div class="box-body flat no-padding center-block" style="max-width: 700px; margin-auto;">
-          <div class="overlay center-block">
-            <div class="embed-responsive embed-responsive-16by9" id="videoIntents01">
-              <iframe src="https://www.youtube.com/embed/SI5XgQm660A?controls=1&amp;hd=1&amp;enablejsapi=1" frameborder="0"></iframe>
-            </div>
-          </div>
-        </div>
+        <button form="ENTITY_FORM" class="btn btn-primary pull-right">{% trans 'Save' %}</button>
       </div>
 
     </div>
 
     <div class="box box-solid box-clean flat no-shadow">
       <div class="box-header with-border">
-        <div class="box-title"><i class="fa fa-sitemap text-yellow"></i> <b>{% trans 'Entities list' %}</b></div>
+        <div class="box-title"><i class="fa fa-sitemap text-yellow"></i> {% trans 'Entities list' %}</div>
       </div>
 
       <div class="box-body">
