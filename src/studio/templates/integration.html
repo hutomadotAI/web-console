@@ -48,7 +48,7 @@
                   The bot will respond to all messages sent to that page.
                 </div>
 
-                <form action="{% url 'facebook_customise' %}" id="FB_SETTINGS">
+                <form action="{% url 'studio:facebook_customise' aiid=ai.aiid %}" id="FB_SETTINGS">
 
                   <div class="form-group">
                     <label for="fb_page_greeting">{% blocktrans %}
@@ -58,7 +58,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-comment-o"></i></span>
                       </div>
-                      <input type="text" required maxlength="160" class="form-control" id="fb_page_greeting" value="{{ integration.page_greeting }}">
+                      <input type="text" required maxlength="160" class="form-control" id="fb_page_greeting" value="{{ customisations.page_greeting }}">
                     </div>
                   </div>
 
@@ -70,7 +70,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="icon fa fa-play-circle-o"></i></span>
                       </div>
-                      <input type="text" required maxlength="160" class="form-control" id="fb_get_started_payload" value="{{ integration.get_started_payload }}">
+                      <input type="text" required maxlength="160" class="form-control" id="fb_get_started_payload" value="{{ customisations.get_started_payload }}">
                     </div>
                   </div>
 
@@ -80,9 +80,13 @@
                   <button class="btn btn-primary" form="FB_SETTINGS" style="width: 260px;">{% trans 'Save customizations' %}</button>
                 </div>
 
-                {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-messengermessageus' button_name='Message Us' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/message-us' button_action='to start chatting to this bot on Facebook Messenger.' %}
+                {% trans 'Message Us' as button_name %}
+                {% trans 'to start chatting to this bot on Facebook Messenger.' as button_action %}
+                {% include 'integration_code.html' with class='fb-messengermessageus' reference='message-us' %}
 
-                {% include 'integration_facebook_messenger.html' with appid=fb_app_id pageid=fb_page_integrated_id plugin_class='fb-send-to-messenger' button_name='Send To Messenger' data_ref='RESPOND_TO_THIS' button_action='for this bot to start a conversation with you on Facebook Messenger.' plugin_reference='https://developers.facebook.com/docs/messenger-platform/plugin-reference/send-to-messenger' %}
+                {% trans 'Send To Messenger' as button_name %}
+                {% trans 'for this bot to start a conversation with you on Facebook Messenger' as button_action %}
+                {% include 'integration_code.html' with class='fb-send-to-messenger' reference='send-to-messenger' data_ref='RESPOND_TO_THIS' %}
 
               {% else %}
 
@@ -105,7 +109,7 @@
                   <ul style="padding: 0.75rem 1.25rem; background-color: #424242;">
                     {% for fb_page_id, fb_page_name in integration.page_list.items %}
                       <li>
-                        <a href="{% url 'studio:facebook_actions' aiid=ai.aiid action='page' %}?id={{ fb_page_id }}"
+                        <a href="{% url 'studio:facebook_actions' aiid=ai.id action='page' %}?id={{ fb_page_id }}"
                           style="color: white; cursor: pointer; font-weight: bold;">{{ fb_page_name }}</a>
                       </li>
                     {% endfor %}

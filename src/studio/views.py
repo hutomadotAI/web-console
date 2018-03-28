@@ -103,6 +103,9 @@ class IntegrationView(StudioViewMixin, TemplateView):
 
         context['integration'] = get_facebook_connect_state(token, aiid)
 
+        if context['integration'].get('page_integrated_id'):
+            context['customisations'] = get_facebook_customisations(token, aiid)
+
         return context
 
 
