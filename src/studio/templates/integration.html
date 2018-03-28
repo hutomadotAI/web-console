@@ -109,7 +109,7 @@
                   <ul style="padding: 0.75rem 1.25rem; background-color: #424242;">
                     {% for fb_page_id, fb_page_name in integration.page_list.items %}
                       <li>
-                        <a href="{% url 'studio:facebook_actions' aiid=ai.id action='page' %}?id={{ fb_page_id }}"
+                        <a href="{% url 'studio:facebook_actions' aiid=ai.aiid action='page' %}?id={{ fb_page_id }}"
                           style="color: white; cursor: pointer; font-weight: bold;">{{ fb_page_name }}</a>
                       </li>
                     {% endfor %}
