@@ -1,34 +1,37 @@
-const CHAT_ID_KEY = `${AI.id}_chat_id`
-const HISTORY_KEY = `${AI.id}_history`
+const CHAT_ID_KEY = `${AI.id}_chat_id`;
+const HISTORY_KEY = `${AI.id}_history`;
 
-const HISTORY = JSON.parse(sessionStorage.getItem(HISTORY_KEY)) || []
+const HISTORY = JSON.parse(sessionStorage.getItem(HISTORY_KEY)) || [];
 
-var showJsonWindow = true // json window showed for default
-var speechResponse = false
-var recording = false
+var showJsonWindow = true; // json window showed for default
+var speechResponse = false;
+var recording = false;
 
-var waiting = false
+var waiting = false;
 
 // Attach listeners
-document.getElementById('action.logs:toggle').addEventListener('click', toggleLogs)
-document.getElementById('action.history:clear').addEventListener('click', clearHistory)
+document.getElementById('action.logs:toggle')
+  .addEventListener('click', toggleLogs);
+
+document.getElementById('action.history:clear')
+.addEventListener('click', clearHistory);
 
 // Enable features
 if ('speechSynthesis' in window) {
-  document.getElementById('action.speech:toggle').addEventListener('click', toggleSpeech)
+  document.getElementById('action.speech:toggle').addEventListener('click', toggleSpeech);
 } else {
-  document.getElementById('action.speech:toggle').classList.toggle('disabled')
+  document.getElementById('action.speech:toggle').classList.toggle('disabled');
 }
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-  document.getElementById('action.speech:dictate').addEventListener('click', dictateSpeech)
+  document.getElementById('action.speech:dictate').addEventListener('click', dictateSpeech);
 } else {
-  document.getElementById('action.speech:dictate').disabled = true
-  document.getElementById('action.speech:dictate').setAttribute('title', 'Your browser dosn’t support it')
+  document.getElementById('action.speech:dictate').disabled = true;
+  document.getElementById('action.speech:dictate').setAttribute('title', 'Your browser dosn’t support it');
 }
 
 // Read the chat history
-loadHistory()
+loadHistory();
 
 /**
  * Add Authorization headers to an AJAX call
@@ -50,8 +53,8 @@ function setAuthorization(request) {
  * @return {undefined}
  */
 function updateHistory(caller, data) {
-  HISTORY.push([caller, data])
-  sessionStorage.setItem(HISTORY_KEY, JSON.stringify(HISTORY))
+  HISTORY.push([caller, data]);
+  sessionStorage.setItem(HISTORY_KEY, JSON.stringify(HISTORY));
 }
 
 /**
@@ -60,9 +63,9 @@ function updateHistory(caller, data) {
  * @return {undefined}
  */
 function clearHistory() {
-  HISTORY.splice(0, HISTORY.length)
-  sessionStorage.removeItem(HISTORY_KEY)
-  document.getElementById('messages').innerHTML = ''
+  HISTORY.splice(0, HISTORY.length);
+  sessionStorage.removeItem(HISTORY_KEY);
+  document.getElementById('messages').innerHTML = '';
 }
 
 /**
@@ -71,50 +74,50 @@ function clearHistory() {
  * @return {undefined}
  */
 function loadHistory() {
-  HISTORY.forEach(entry => createMessage(...entry))
-  $('#messages').scrollTop($('#messages').prop('scrollHeight'))
+  HISTORY.forEach(entry => createMessage(...entry));
+  $('#messages').scrollTop($('#messages').prop('scrollHeight'));
 }
 
 
 function createMessage(creator, data) {
-  switch(creator){
-    case 'BOT':
-      createBotMessage(...data, false);
-      break;
-    case 'USER':
-      createUserMessage(...data, false);
-      break;
+  switch(creator) {
+  case 'BOT':
+    createBotMessage(...data, false);
+    break;
+  case 'USER':
+    createUserMessage(...data, false);
+    break;
   }
 }
 
 function toggleSpeech() {
-  speechResponse = !speechResponse
-  this.text = speechResponse ? 'Turn Off Speech' : 'Turn On Speech'
+  speechResponse = !speechResponse;
+  this.text = speechResponse ? 'Turn Off Speech' : 'Turn On Speech';
 }
 
 function dictateSpeech() {
   var button = this;
-  button.classList.toggle('record')
+  button.classList.toggle('record');
 
   if (recording) {
-    recording = stopDictation(recording)
+    recording = stopDictation(recording);
   } else {
     recording = startDictation(function (results) {
-      waiting = true
-      var message = results.error || results[0][0].transcript
-      var level = results.error ? 'error' : 'normal'
-      createUserMessage(USER.name, message, Date.now(), level)
+      waiting = true;
+      var message = results.error || results[0][0].transcript;
+      var level = results.error ? 'error' : 'normal';
+      createUserMessage(USER.name, message, Date.now(), level);
       if (level === 'normal') {
-        requestAnswerAI(message)
+        requestAnswerAI(message);
       }
-      recording = false
-      button.classList.remove('record')
-    })
+      recording = false;
+      button.classList.remove('record');
+    });
   }
 }
 
 function keyboardChat(e) {
-  if (e.keyCode === 13 && document.getElementById("message").value) {
+  if (e.keyCode === 13 && document.getElementById('message').value) {
     createNodeChat();
   }
 }
@@ -123,10 +126,10 @@ function createNodeChat() {
   var message = $('#message').val().trim();
 
   if (message && !waiting) {
-    waiting = true
-    disableChat()
-    createUserMessage(USER.name, message, Date.now(), 'normal')
-    requestAnswerAI(message)
+    waiting = true;
+    disableChat();
+    createUserMessage(USER.name, message, Date.now(), 'normal');
+    requestAnswerAI(message);
   }
 }
 
@@ -145,7 +148,7 @@ function cutText(phrase) {
 
 function createUserMessage(name, message, timestamp, level, save=true) {
   if (save) {
-    updateHistory('USER', [...arguments])
+    updateHistory('USER', [...arguments]);
   }
 
   var height = parseInt($('#messages').scrollTop());
@@ -170,18 +173,18 @@ function createUserMessage(name, message, timestamp, level, save=true) {
   document.getElementById('messages').appendChild(comment);
 
   function scroll() {
-    if (parseInt($("#messages")[0].scrollHeight) < parseInt(height)) {
-      clearInterval(interval)
+    if (parseInt($('#messages')[0].scrollHeight) < parseInt(height)) {
+      clearInterval(interval);
     }
-    height = parseInt(height) + 5
-    $('#messages').scrollTop(height)
+    height = parseInt(height) + 5;
+    $('#messages').scrollTop(height);
   }
 
 }
 
-function createBotMessage(name, message, timestamp, level, score, save=true) {
+function createBotMessage(name, message, timestamp, level, score, log, save=true) {
   if (save) {
-    updateHistory('BOT', [...arguments])
+    updateHistory('BOT', [...arguments]);
   }
 
   if (save) {
@@ -205,6 +208,8 @@ function createBotMessage(name, message, timestamp, level, score, save=true) {
     ${ score }
   `;
 
+  comment.addEventListener('click', () => printLog(log));
+
   document.getElementById('messages').appendChild(comment);
 
   if (speechResponse) {
@@ -214,17 +219,22 @@ function createBotMessage(name, message, timestamp, level, score, save=true) {
   }
 
   function scroll() {
-    if (parseInt($("#messages")[0].scrollHeight) < parseInt(height)) {
-      clearInterval(interval)
+    if (parseInt($('#messages')[0].scrollHeight) < parseInt(height)) {
+      clearInterval(interval);
     }
     height = parseInt(height) + 5
     $('#messages').scrollTop(height)
   }
 }
 
+function printLog(entry) {
+  document.getElementById('MSG_JSON').innerText = JSON.stringify(entry, undefined, 2);
+  Prism.highlightAll();
+}
+
 function requestAnswerAI(message) {
 
-  console.debug(message)
+  console.debug(message);
 
   $.ajax({
     url: API_URL + `/ai/${AI.id}/chat`,
@@ -235,51 +245,51 @@ function requestAnswerAI(message) {
       q: message
     },
     complete: function () {
-      waiting = false
+      waiting = false;
     },
     success: function (response) {
 
-      console.debug(response)
+      console.debug(response);
 
-      var level = 'error'
-      var message = 'Oops, there was an error…'
-      var score = -1
+      var level = 'error';
+      var message = 'Oops, there was an error…';
+      var score = -1;
 
       if (response) {
         // Write response in JSON message box
-        document.getElementById('msgJSON').innerText = JSON.stringify(response, undefined, 2);
+        printLog(response);
 
         if (response.chatId) {
           // save the chatID
-          sessionStorage.setItem(CHAT_ID_KEY, response.chatId)
+          sessionStorage.setItem(CHAT_ID_KEY, response.chatId);
 
           if (response.status.code == 200) {
-            level = 'success'
-            message = response.result.answer
-            score = response.result.score
+            level = 'success';
+            message = response.result.answer;
+            score = response.result.score;
           } else {
-            message = response.status.info
+            message = response.status.info;
           }
 
         } else {
-          level = 'error'
-          message = 'No chat id returned'
+          level = 'error';
+          message = 'No chat id returned';
         }
       }
 
-      createBotMessage(AI.name, message, Date.now(), level, score)
+      createBotMessage(AI.name, message, Date.now(), level, score, response);
     },
     error: function (jqXHR, textStatus, errorThrown) {
 
-      console.debug(jqXHR, textStatus, errorThrown)
+      console.debug(jqXHR, textStatus, errorThrown);
 
       if (textStatus === 'timeout') {
-        createBotMessage(AI.name, 'Cannot contact the server', Date.now(), 'error', -1)
+        createBotMessage(AI.name, 'Cannot contact the server', Date.now(), 'error', -1, jqXHR);
       } else if (jqXHR.status >= 500) {
-        createBotMessage(AI.name, 'Internal server error', Date.now(), 'error', -1)
+        createBotMessage(AI.name, 'Internal server error', Date.now(), 'error', -1, jqXHR);
       } else {
-        var message = jqXHR.responseJSON.status ? jqXHR.responseJSON.status.info : 'Something unexpected occurred'
-        createBotMessage(AI.name, message, Date.now(), 'error', -1)
+        var message = jqXHR.responseJSON.status ? jqXHR.responseJSON.status.info : 'Something unexpected occurred';
+        createBotMessage(AI.name, message, Date.now(), 'error', -1, jqXHR);
       }
 
     }
@@ -290,7 +300,7 @@ function enableChat() {
   document.getElementById('messages').style.cursor = 'auto';
   document.getElementById('message').disabled = false;
   document.getElementById('message').value = '';
-  document.getElementById("message").focus();
+  document.getElementById('message').focus();
 }
 
 function disableChat() {
@@ -302,7 +312,7 @@ function disableChat() {
 function toggleLogs() {
   this.innerHTML = ( !showJsonWindow ) ? '  Hide JSON Message' : '  Show JSON Message';
   // toggle json window
-  $('#jsonBox').toggle();
+  $('#LOGS').toggle();
   showJsonWindow = !showJsonWindow;
 }
 

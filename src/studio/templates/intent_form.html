@@ -11,16 +11,18 @@
 {% block content %}
   <div class="content-wrapper">
 
-    <div class="box box-solid box-clean flat no-shadow">
+    <div class="box">
       <div class="box-header with-border">
-        <div class="box-title">
+
+        <h2 class="box-title">
           <i class="fa fa-commenting-o text-green"></i>
             {% if intent_name %}
               {% trans 'Edit' %} {{ intent_name }}
             {% else %}
               {% trans 'Create Intent' %}
             {% endif %}
-        </div>
+        </h2>
+
         <a href="#"
           class="documentation link"
           target="_blank"
@@ -28,6 +30,7 @@
           title="{% trans 'Documentation' %}">
             <i class="fa fa-question-circle text-sm text-yellow"></i>
         </a>
+
       </div>
 
       <div class="box-body">
@@ -97,19 +100,24 @@
       </div>
 
       <div class="box-footer">
-        {% blocktrans %}If you’re stuck check out our <a data-toggle="modal" data-target="#INTENTS_VIDEO_TUTORIAL">intents video tutorial</a>{% endblocktrans %}
-        <button form="INTENT_FORM" class="btn btn-primary pull-right">{% trans 'Save' %}</button>
+
+        <p>
+          {% blocktrans %}If you’re stuck check out our <a data-toggle="modal" data-target="#INTENTS_VIDEO_TUTORIAL">intents video tutorial</a>{% endblocktrans %}
+        </p>
+
+        <button form="INTENT_FORM" class="btn btn-primary">{% trans 'Save' %}</button>
+
       </div>
 
     </div>
 
     {% if ai_details.intents|length %}
 
-        <div class="box box-solid box-clean flat no-shadow">
+        <div class="box">
           <div class="box-header with-border">
-            <div class="box-title">
+            <h2 class="box-title">
               <i class="fa fa-commenting-o text-green"></i> {% trans 'Intents list' %}
-            </div>
+            </h2>
           </div>
 
           <div class="box-body">
@@ -144,6 +152,8 @@
 {% endblock modals %}
 
 {% block stylesheets.vendors %}
+  {{ block.super }}
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha256-4qBzeX420hElp9/FzsuqUNqVobcClz1BjnXoxUDSYQ0=" crossorigin="anonymous">
 {% endblock %}
 
@@ -157,6 +167,8 @@
 {% endblock %}
 
 {% block javascripts.vendors %}
+  {{ block.super }}
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha256-jdwX0QzXB7z7Xc7Vz0ovtIHWO5qIZWg0aLcGv44JDgE=" crossorigin="anonymous"></script>
 {% endblock %}
 

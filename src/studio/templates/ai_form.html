@@ -20,9 +20,10 @@
 
 {% block content %}
   <div class="content-wrapper">
-    <div class="box box-solid box-clean flat no-shadow">
+    <div class="box">
+
       <div class="box-header with-border">
-        <div class="box-title">{% trans 'Create new bot' %}</div>
+        <h2 class="box-title">{% trans 'Create new bot' %}</h2>
       </div>
 
       <div class="box-body">
@@ -37,15 +38,14 @@
       </div>
 
       <div class="box-footer">
-          <a href="{% url 'studio:index' %}" class="btn btn-primary flat">{% trans 'Cancel' %}</a>
-          <button form="add_form" class="btn btn-success flat pull-right">{% trans 'Create' %}</button>
+          <a href="{% url 'studio:index' %}" class="btn btn-primary">{% trans 'Cancel' %}</a>
+          <button form="add_form" class="btn btn-success">{% trans 'Create' %}</button>
       </div>
 
     </div>
 
-    <hr/>
+    <div class="box">
 
-    <div class="box box-solid box-clean flat no-shadow">
       <div class="box-header with-border">
         <div class="box-title">{% trans 'Import a bot' %}</div>
       </div>
@@ -58,7 +58,7 @@
           {{ import_form | crispy }}
 
           <div class="form-group">
-            <button type="submit" class="btn btn-success flat pull-right">{% trans 'Import' %}</button>
+            <button type="submit" class="btn btn-success pull-right">{% trans 'Import' %}</button>
           </div>
 
         </form>

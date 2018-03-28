@@ -11,23 +11,25 @@
 {% block content %}
   <div class="content-wrapper">
 
-    <div class="box box-solid box-clean flat no-shadow">
+    <div class="box">
       <div class="box-header">
-        <div class="box-title"><b>{{ ai.name }}</b></div>
-        <div class="pull-right" style="margin: -0.5rem 0">
-          {% if ai_details.intents|length or ai_details.training_file %}
-            <a href="{% url 'studio:retrain' aiid %}" class="btn btn-default">{% trans 'Restart Training' %}</a>
-          {% endif %}
-          <a href="{% url 'studio:settings' ai.aiid %}" class="btn btn-primary">{% trans 'Settings' %}</a>
-        </div>
+
+        <h2 class="box-title">{{ ai.name }}</h2>
+
+        {% if ai_details.intents|length or ai_details.training_file %}
+          <a href="{% url 'studio:retrain' aiid %}" class="btn btn-default">{% trans 'Restart Training' %}</a>
+        {% endif %}
+        <a href="{% url 'studio:settings' ai.aiid %}" class="btn btn-primary">{% trans 'Settings' %}</a>
       </div>
     </div>
 
     <div class="box-row">
 
-      <div class="box box-solid box-clean flat no-shadow">
+      <div class="box">
         <div class="box-header with-border">
-          <div class="box-title">{% trans 'Training' %}</div>
+
+          <h2 class="box-title">{% trans 'Training' %}</h2>
+
           <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/A_Bot_Training_file/Training_upload_&_progress.html"
             class="documentation link"
             target="_blank"
@@ -55,17 +57,20 @@
 
         {% if ai_details.training_file %}
           <div class="box-footer">
-            <a href="{% url 'studio:training' ai.aiid %}" class="btn btn-primary pull-right"><b>{% trans 'Edit training' %}</b></a>
+            <a href="{% url 'studio:training' ai.aiid %}" class="btn btn-primary">{% trans 'Edit training' %}</a>
           </div>
         {% endif %}
       </div>
 
-      <div class="box box-solid box-clean flat no-shadow">
+      <div class="box">
         <div class="box-header with-border">
-          <div class="box-title">{% trans 'Intents' %}</div>
+
+          <h2 class="box-title">{% trans 'Intents' %}</h2>
+
           <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/Adding_intents/Intents.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
             <i class="fa fa-question-circle text-sm text-yellow"></i>
           </a>
+
         </div>
 
         <div class="box-body">
@@ -89,18 +94,21 @@
 
         {% if ai_details.intents|length %}
           <div class="box-footer">
-            <a href="{% url 'studio:intents' ai.aiid %}" class="btn btn-primary flat pull-right">{% trans 'Edit intents' %}</a>
+            <a href="{% url 'studio:intents' ai.aiid %}" class="btn btn-primary">{% trans 'Edit intents' %}</a>
           </div>
         {% endif %}
 
       </div>
 
-      <div class="box box-solid box-clean flat no-shadow">
+      <div class="box">
         <div class="box-header with-border">
-          <div class="box-title">{% trans 'Skills' %}</div>
+
+          <h2 class="box-title">{% trans 'Skills' %}</h2>
+
           <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/Extend_a_Bot/Add_skills_to_your_bot.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
             <i class="fa fa-question-circle text-sm text-yellow"></i>
           </a>
+
         </div>
 
         <div class="box-body">
@@ -122,7 +130,7 @@
 
         {% if ai_details.skills|length %}
           <div class="box-footer">
-            <a href="{% url 'studio:skills' ai.aiid %}" class="btn btn-primary pull-right">{% trans 'Edit skills' %}</a>
+            <a href="{% url 'studio:skills' ai.aiid %}" class="btn btn-primary">{% trans 'Edit skills' %}</a>
           </div>
         {% endif %}
 

@@ -11,15 +11,17 @@
 {% block content %}
   <div class="content-wrapper">
 
-    <div class="box box-solid box-clean flat no-shadow">
+    <div class="box">
       <div class="box-header with-border">
-        <div class="box-title"><i class="fa fa-sitemap text-yellow"></i>
+
+        <h2 class="box-title"><i class="fa fa-sitemap text-yellow"></i>
           {% if entity_name %}
             {% trans 'Edit' %} {{ entity_name }}
           {% else %}
             {% trans 'Create Entity' %}
           {% endif %}
-        </div>
+        </h2>
+
         <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/Adding_intents/Entities.html"
           class="documentation link"
           target="_blank"
@@ -27,6 +29,7 @@
           title="{% trans 'Documentation' %}">
             <i class="fa fa-question-circle text-sm text-yellow"></i>
         </a>
+
       </div>
 
       <div class="box-body">
@@ -50,15 +53,19 @@
       </div>
 
       <div class="box-footer">
-        <span style="vertical-align: -8px">If you’re stuck check out our <a data-toggle="modal" data-target="#ENTITIES_VIDEO_TUTORIAL">entities video tutorial</a></span>
-        <button form="ENTITY_FORM" class="btn btn-primary pull-right">{% trans 'Save' %}</button>
+        <p>
+          {% blocktrans %}If you’re stuck check out our <a data-toggle="modal" data-target="#ENTITIES_VIDEO_TUTORIAL">entities video tutorial</a>{% endblocktrans %}
+        </p>
+        <button form="ENTITY_FORM" class="btn btn-primary">{% trans 'Save' %}</button>
       </div>
 
     </div>
 
-    <div class="box box-solid box-clean flat no-shadow">
+    <div class="box">
       <div class="box-header with-border">
-        <div class="box-title"><i class="fa fa-sitemap text-yellow"></i> {% trans 'Entities list' %}</div>
+        <h2 class="box-title">
+          <i class="fa fa-sitemap text-yellow"></i> {% trans 'Entities list' %}
+        </h2>
       </div>
 
       <div class="box-body">
@@ -91,6 +98,8 @@
 {% endblock modals %}
 
 {% block stylesheets.vendors %}
+  {{ block.super }}
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha256-4qBzeX420hElp9/FzsuqUNqVobcClz1BjnXoxUDSYQ0=" crossorigin="anonymous">
 {% endblock %}
 
@@ -102,6 +111,8 @@
 {% endblock %}
 
 {% block javascripts.vendors %}
+  {{ block.super }}
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha256-jdwX0QzXB7z7Xc7Vz0ovtIHWO5qIZWg0aLcGv44JDgE=" crossorigin="anonymous"></script>
 {% endblock %}
 

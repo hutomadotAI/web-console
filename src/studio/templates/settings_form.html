@@ -11,9 +11,9 @@
 {% block content %}
   <div class="content-wrapper">
 
-    <div class="box box-solid box-clean flat no-shadow">
+    <div class="box">
       <div class="box-header with-border">
-        <div class="box-title"><b>{% trans 'Basic Bot Settings' %}</b></div>
+        <h2 class="box-title"><i class="fa fa-gear text-red"></i> {% trans 'Basic Bot Settings' %}</h2>
       </div>
 
       <div class="box-body">
@@ -28,28 +28,26 @@
       </div>
 
       <div class="box-footer">
-          <a href="{% url 'studio:index' %}" class="btn btn-primary flat" id="btnCancel"><b>{% trans 'Cancel' %}</b></a>
-          <div class="pull-right">
-            <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" download="bot-{{ ai.aiid }}.json" class="btn btn-primary flat"><b>{% trans 'Export bot' %}</b></a>
-            <button type="submit" form="settings_form" class="btn btn-success flat"><b>{% trans 'Save' %}</b></button>
-          </div>
+        <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" class="btn btn-primary" download="bot-{{ ai.aiid }}.json" >{% trans 'Export bot' %}</a>
+        <button type="submit" form="settings_form" class="btn btn-success">{% trans 'Save' %}</button>
       </div>
 
     </div>
 
-    <div class="box box-solid box-clean flat no-shadow">
+    <div class="box">
+
       <div class="box-header with-border">
-        <div class="box-title"><b>{% trans 'API tokens' %}</b></div>
+        <h2 class="box-title">{% trans 'API tokens' %}</h2>
       </div>
 
       <div class="box-body">
 
         <div class="form-group">
-          <label for="id_file" class="control-label  requiredField">{% trans 'Developer ID (private)' %}</label>
+          <label for="DEV_ID">{% trans 'Developer ID (private)' %}</label>
           <div class="input-group">
-            <input type="text" readonly class="form-control" id="dev_id" value="{{ request.session.dev_id }}">
+            <input class="form-control" readonly id="DEV_ID" value="{{ request.session.dev_id }}">
             <div class="input-group-append">
-              <button class="btn btn-default fa fa-clipboard" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#dev_id">
+              <button class="btn btn-default fa fa-clipboard" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#DEV_ID">
                 <span class="sr-only">{% trans 'Copy to clipboard' %}</span>
               </button>
             </div>
@@ -57,11 +55,14 @@
         </div>
 
         <div class="form-group">
-          <label for="id_file" class="control-label  requiredField">{% trans 'Dev token (private)' %}</label>
+          <label for="DEV_TOKEN">{% trans 'Dev token (private)' %}</label>
           <div class="input-group">
-            <input type="text" readonly class="form-control" id="dev_token" value="{{ request.session.token }}">
+            <input class="form-control" readonly id="DEV_TOKEN" value="{{ request.session.token }}">
             <div class="input-group-append">
-              <button class="btn btn-default fa fa-clipboard" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#dev_token">
+              <button class="btn btn-default fa fa-clipboard"
+                data-toggle="tooltip"
+                title="{% trans 'Copy to clipboard' %}"
+                data-clipboard-target="#DEV_TOKEN">
                 <span class="sr-only">{% trans 'Copy to clipboard' %}</span>
               </button>
             </div>
@@ -69,11 +70,14 @@
         </div>
 
         <div class="form-group">
-          <label for="id_file" class="control-label  requiredField">{% trans 'Client token (public)' %}</label>
+          <label for="CLIENT_TOKEN">{% trans 'Client token (public)' %}</label>
           <div class="input-group">
-            <input type="text" readonly class="form-control" id="client_token" value="{{ ai.client_token }}">
+            <input class="form-control" readonly id="CLIENT_TOKEN" value="{{ ai.client_token }}">
             <div class="input-group-append">
-              <button class="btn btn-default fa fa-clipboard" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#client_token">
+              <button class="btn btn-default fa fa-clipboard"
+                data-toggle="tooltip"
+                title="{% trans 'Copy to clipboard' %}"
+                data-clipboard-target="#CLIENT_TOKEN">
                 <span class="sr-only">{% trans 'Copy to clipboard' %}</span>
               </button>
             </div>
@@ -84,23 +88,29 @@
 
     </div>
 
-    <div class="box box-solid box-danger flat no-shadow">
+    <div class="box box-danger">
       <div class="box-header with-border">
-        <div class="box-title"><b>{% trans 'Danger zone' %}</b></div>
+        <h2 class="box-title">{% trans 'Danger zone' %}</h2>
       </div>
 
       <div class="box-body">
 
-        <div class="alert alert-info">{% trans 'If you change any of those settings it can break your bot, there is no going back. Please be certain.' %}</div>
+        <div class="alert alert-info">
+          {% blocktrans %}If you change any of those settings it can break your
+          bot, there is no going back. Please be certain.{% endblocktrans %}
+        </div>
 
         <div class="form-webhook">
 
           <div class="form-group">
-            <label for="id_file" class="control-label  requiredField">{% trans 'Webhook signing secret' %}</label>
+            <label for="WEBHOOK_SIGNING_SECRET">{% trans 'Webhook signing secret' %}</label>
             <div class="input-group">
-              <input type="text" readonly class="textinput textInput form-control" id="webhook_signing_secret">
+              <input type="text" readonly class="textinput textInput form-control" id="WEBHOOK_SIGNING_SECRET">
               <div class="input-group-append">
-                <button class="btn btn-default fa fa-clipboard" data-toggle="tooltip" title="{% trans 'Copy to clipboard' %}" data-clipboard-target="#webhook_signing_secret">
+                <button class="btn btn-default fa fa-clipboard"
+                  data-toggle="tooltip"
+                  title="{% trans 'Copy to clipboard' %}"
+                  data-clipboard-target="#WEBHOOK_SIGNING_SECRET">
                   <span class="sr-only">{% trans 'Copy to clipboard' %}</span>
                 </button>
               </div>
@@ -108,7 +118,7 @@
           </div>
 
           <div class="form-group">
-            <button data-toggle="modal" data-target="#regenerate_webhook_secret" class="btn btn-primary flat pull-right"><b>Generate</b></button>
+            <button data-toggle="modal" data-target="#regenerate_webhook_secret" class="btn btn-primary pull-right">Generate</button>
           </div>
 
         </div>
@@ -116,7 +126,7 @@
       </div>
 
       <div class="box-footer">
-        <button data-toggle="modal" data-target="#delete_AI" class="btn btn-danger flat pull-right"><b>{% trans 'Delete bot' %}</b></button>
+        <button data-toggle="modal" data-target="#delete_AI" class="btn btn-danger">{% trans 'Delete bot' %}</button>
       </div>
 
     </div>
@@ -130,6 +140,8 @@
 {% endblock %}
 
 {% block stylesheets.vendors %}
+  {{ block.super }}
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha256-4qBzeX420hElp9/FzsuqUNqVobcClz1BjnXoxUDSYQ0=" crossorigin="anonymous" />
 {% endblock %}
 
@@ -140,6 +152,8 @@
 {% endblock %}
 
 {% block javascripts.vendors %}
+  {{ block.super }}
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha256-jdwX0QzXB7z7Xc7Vz0ovtIHWO5qIZWg0aLcGv44JDgE=" crossorigin="anonymous"></script>
 {% endblock %}
 

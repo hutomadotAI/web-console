@@ -80,3 +80,7 @@
 #INTENT_FORM .advanced-toggle.collapsed::after {
   content: '\f077';
 }
+
+#FIELD_ID_USER_SAYS .token {
+  background-color: var(--HUTOMA-BLUE-500);
+}
