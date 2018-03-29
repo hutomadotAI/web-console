@@ -1,0 +1,74 @@
+{% load i18n %}
+
+<div class="alert alert-base">
+
+  <div class="integration-plugin {{ class }}"
+    messenger_app_id="{{ integration.facebook_app_id }}"
+    page_id="{{ integration.page_integrated_id }}"
+    {% if data_ref %} data-ref="{{ data_ref }}"{% endif %}
+    color="blue"
+    size="large">
+  </div>
+
+  <span>&nbsp;&nbsp;{{ button_action }} <a data-toggle="collapse" href="#{{ class }}">Create your own {{ button_name }} button</a></span>
+
+</div>
+
+<div id="{{ class }}" class="comment-text integration-code collapse">
+  <div class="integration-code-title">Setup</div>
+  <div>
+    <pre class="integration-code-block"><code>
+  &lt;script&gt;
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '{{ integration.facebook_app_id }}',
+            xfbml: true,
+            version: 'v2.9'
+        });
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+  &lt;/script&gt;
+    </code></pre>
+  </div>
+  <div class="integration-code-title">Plugin Code</div>
+  <div>
+    <pre class="integration-code-block"><code>
+&lt;div class=&quot;{{ class }}&quot;
+  messenger_app_id=&quot;{{ integration.facebook_app_id }}&quot;
+  page_id=&quot;{{ integration.page_integrated_id }}&quot;{% if data_ref %}
+  data-ref=&quot;{{ data_ref }}&quot;{% endif %}
+  color=&quot;blue&quot;
+  size=&quot;standard&quot; &gt;
+&lt;/div&gt;
+    </code></pre>
+  </div>
+
+  {% if data_ref %}
+    <p>
+      {% blocktrans %}Replace <code>{{ data_ref }}</code> with the text that
+      will be sent to your bot when the user presses the button. Your bot should
+      respond to this text with a greeting, menu or instructions.{% endblocktrans %}
+    </p>
+  {% endif %}
+  <p>
+    {% blocktrans %}See the <a target="plugin-reference" href="https://developers.facebook.com/docs/messenger-platform/plugin-reference/{{ reference }}">Facebook
+    plugin reference</a> for details on customising this code in your web-page.{% endblocktrans %}
+  </p>
+
+  <div><a data-toggle="collapse" href="#{{ class }}">Hide this panel</a></div>
+
+</div>
+

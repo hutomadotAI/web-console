@@ -7,7 +7,7 @@ $(document).on('click', '#fb-connect', function handleFacebookConnect() {
     aiid: AI.id
   };
 
-  window.location.href = 'https://www.facebook.com/v2.12/dialog/oauth'
+  window.location.href = 'https://www.facebook.com/v2.9/dialog/oauth'
     + '?client_id=' + APP_ID
     + '&scope=' + PERMISSIONS
     + '&redirect_uri=' + location.origin + '/oauth'
@@ -38,6 +38,8 @@ $(document).on('submit', '#FB_SETTINGS', function saveFacebookCustomisations(eve
       'get_started_payload': get_started_payload
     }),
     complete: function () {
+      $('[form=FB_SETTINGS]').removeClass('loading');
+      $('[form=FB_SETTINGS]').removeAttr('disabled');
     },
     success: function () {
       $('[form=FB_SETTINGS]').text('Save customisations');
