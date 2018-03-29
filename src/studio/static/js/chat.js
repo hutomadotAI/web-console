@@ -1,3 +1,5 @@
+const LOGS = document.getElementById('LOGS');
+
 const CHAT_ID_KEY = `${AI.id}_chat_id`;
 const HISTORY_KEY = `${AI.id}_history`;
 
@@ -10,11 +12,10 @@ var recording = false;
 var waiting = false;
 
 // Attach listeners
-document.getElementById('action.logs:toggle')
-  .addEventListener('click', toggleLogs);
+document.getElementById('action.logs:toggle').addEventListener('click', toggleLogs);
+document.getElementById('action.logs:wrap').addEventListener('click', wrapLines);
 
-document.getElementById('action.history:clear')
-.addEventListener('click', clearHistory);
+document.getElementById('action.history:clear').addEventListener('click', clearHistory);
 
 // Enable features
 if ('speechSynthesis' in window) {
@@ -65,6 +66,7 @@ function updateHistory(caller, data) {
 function clearHistory() {
   HISTORY.splice(0, HISTORY.length);
   sessionStorage.removeItem(HISTORY_KEY);
+  sessionStorage.removeItem(CHAT_ID_KEY);
   document.getElementById('messages').innerHTML = '';
 }
 
@@ -90,9 +92,9 @@ function createMessage(creator, data) {
   }
 }
 
-function toggleSpeech() {
+function toggleSpeech(event) {
+  event.target.classList.toggle('checked');
   speechResponse = !speechResponse;
-  this.text = speechResponse ? 'Turn Off Speech' : 'Turn On Speech';
 }
 
 function dictateSpeech() {
@@ -228,7 +230,7 @@ function createBotMessage(name, message, timestamp, level, score, log, save=true
 }
 
 function printLog(entry) {
-  document.getElementById('MSG_JSON').innerText = JSON.stringify(entry, undefined, 2);
+  document.getElementById('MSG_JSON').textContent = JSON.stringify(entry, null, 2);
   Prism.highlightAll();
 }
 
@@ -237,7 +239,7 @@ function requestAnswerAI(message) {
   console.debug(message);
 
   $.ajax({
-    url: API_URL + `/ai/${AI.id}/chat`,
+    url: API_URL + `/ai/${ AI.id }/chat`,
     contentType: 'application/json; charset=utf-8',
     beforeSend: setAuthorization,
     data: {
@@ -248,8 +250,6 @@ function requestAnswerAI(message) {
       waiting = false;
     },
     success: function (response) {
-
-      console.debug(response);
 
       var level = 'error';
       var message = 'Oops, there was an error…';
@@ -309,15 +309,19 @@ function disableChat() {
   document.getElementById('message').value = '';
 }
 
-function toggleLogs() {
-  this.innerHTML = ( !showJsonWindow ) ? '  Hide JSON Message' : '  Show JSON Message';
-  // toggle json window
-  $('#LOGS').toggle();
-  showJsonWindow = !showJsonWindow;
+function toggleLogs(event) {
+  event.target.classList.toggle('checked');
+  LOGS.classList.toggle('open');
+}
+
+function wrapLines(event) {
+  event.target.classList.toggle('checked');
+  $('#LOGS .output').toggleClass('wrap-lines');
+  Prism.highlightAll();
 }
 
 function cleanChat(msg) {
-  msg = msg.replace('\&', '&#38');
-  msg = msg.replace('\/', '&#47');
-  return msg.replace('\<', '&#60').replace('\>', '&#62;').trim();
+  msg = msg.replace('&', '&#38');
+  msg = msg.replace('/', '&#47');
+  return msg.replace('<', '&#60').replace('\>', '&#62;').trim();
 }

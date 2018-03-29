@@ -37,6 +37,18 @@ pre[class*="language-"] {
   overflow: auto;
 }
 
+pre.line-numbers {
+  padding-left: 3.8em;
+}
+
+pre.wrap-lines {
+  white-space: pre-wrap;
+}
+
+pre.wrap-lines span {
+  word-break: break-word;
+}
+
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
   background: #2d2d2d;

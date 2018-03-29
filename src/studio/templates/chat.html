@@ -5,7 +5,7 @@
   <div class="sidebar-header">
     <h2>{% trans 'Chat' %}</h2>
 
-    <button class="btn btn-default fa fa-gears text-gray dropdown-toggle"
+    <button class="btn btn-default fa fa-ellipsis-v text-gray dropdown-toggle"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false">
@@ -13,10 +13,12 @@
     </button>
 
     <div class="dropdown-menu">
-      <a class="dropdown-item" id="action.speech:toggle">{% trans 'Turn On Speech' %}</a>
-      <a class="dropdown-item" id="action.logs:toggle">{% trans 'Hide JSON logs' %}</a>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" id="action.history:clear">{% trans 'Clear history' %}</a>
+      <a class="dropdown-item"
+        id="action.speech:toggle">{% trans 'Voiceover' %}</a>
+      <a class="dropdown-item"
+        data-toggle="tooltip"
+        title="{% trans 'Removes the history and resets chat session' %}"
+        id="action.history:clear">{% trans 'Clear history' %}</a>
     </div>
   </div>
 

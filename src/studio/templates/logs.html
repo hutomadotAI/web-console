@@ -1,12 +1,24 @@
 {% load i18n static %}
 
-<div class="logs" id="LOGS">
+<div class="logs open" id="LOGS">
 
   <div class="sidebar-header">
     <h2>{% trans 'Chat logs' %}</h2>
+
+    <button class="btn btn-default fa fa-ellipsis-v text-gray dropdown-toggle"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false">
+      <span class="sr-only">{% trans 'Toggle options' %}</span>
+    </button>
+
+    <div class="dropdown-menu">
+      <a class="dropdown-item checked" id="action.logs:toggle">{% trans 'JSON logs' %}</a>
+      <a class="dropdown-item checked" id="action.logs:wrap">{% trans 'Wrap lines' %}</a>
+    </div>
   </div>
 
-  <pre class="text-gray output"><code class="language-json" id="MSG_JSON"></code></pre>
+  <pre class="text-gray output line-numbers wrap-lines"><code class="language-json" id="MSG_JSON"></code></pre>
 
   <div class="sidebar-footer text-center">
     <button class="btn btn-success btn-sm"
