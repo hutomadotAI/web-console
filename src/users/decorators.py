@@ -11,17 +11,25 @@ logger = logging.getLogger(__name__)
 
 
 def has_info(function):
-    """Check if user has a developer info"""
+    """Check if user has a developer info, if not move them to info form"""
 
     def wrap(request, *args, **kwargs):
-        info = get_info(request.session['token'], request.session['dev_id'])
-
-        if info['status']['code'] == 200:
+        try:
+            get_info(
+                request.session['token'],
+                request.session['dev_id']
+            )
             return function(request, *args, **kwargs)
-        else:
-            messages.warning(request, _('This is your first bot. Before publishing this to our store we need to collect some developer details.'))
+        except Exception as e:
+            messages.warning(
+                request,
+                _('This is your first bot. Before publishing this to our store we need to collect some developer details.')
+            )
             return HttpResponseRedirect(
-                '%s?next=%s' % (reverse('users:info'), request.path_info)
+                '{path}?next={next}'.format(
+                    path=reverse('users:info'),
+                    next=request.path_info
+                )
             )
 
     wrap.__doc__ = function.__doc__

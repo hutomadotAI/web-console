@@ -26,14 +26,14 @@ def user_logged_in(sender, user, request, **kwargs):
     request.session['token'] = api_user['dev_token']
     request.session['dev_id'] = profile.dev_id
 
-    logger.info('User {0} has logged in'.format(user))
+    logger.info('User {user} has logged in'.format(user=user))
 
 
 @receiver(user_logged_out)
 def user_logged_out(sender, user, request, **kwargs):
     """User performed a logout"""
 
-    logger.info('User {0} has logged out'.format(user))
+    logger.info('User {user} has logged out'.format(user=user))
 
 
 @receiver(pre_save, sender=User)
@@ -46,7 +46,7 @@ def create_API_user(sender, instance, *args, **kwargs):
             instance
         )
 
-        logger.info('create_API_user for %s' % instance.email)
+        logger.info('create_API_user for {email}'.format(email=instance.email))
 
 
 @receiver(post_save, sender=User)
@@ -59,4 +59,4 @@ def create_profile(sender, instance, created, **kwargs):
             dev_id=instance.api_user['devid']
         )
 
-        logger.info('Create profile for %s' % instance.email)
+        logger.info('Create profile for {email}'.format(email=instance.email))

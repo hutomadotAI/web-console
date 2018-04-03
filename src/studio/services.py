@@ -1,188 +1,146 @@
 import logging
 import urllib
 
-import requests
-
 from django.conf import settings
-from django.http import Http404
-from django.utils.translation import ugettext_lazy as _
-
 from constance import config
-
-from app.services import set_headers
+from app.services import fetch_api
 
 logger = logging.getLogger(__name__)
 
 
-def get_ai(token, aiid):
-    """Returns a particular AI data"""
+def delete_ai(token, aiid):
+    """Deletes a particular AI"""
+    return fetch_api('/ai/{aiid}', token=token, aiid=aiid, method='delete')
 
-    path = '/ui/ai/%s'
-    url = settings.API_URL + path % aiid
 
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
+def delete_entity(token, entity_name):
+    """Delete an entity"""
+    return fetch_api(
+        '/entity?entity_name={entity_name}',
+        token=token,
+        entity_name=entity_name,
+        method='delete'
     )
 
-    logger.debug(response)
 
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404(_('AI id %s doesn’t exist') % aiid)
+def delete_intent(token, aiid, intent_name):
+    """Delete an Intent"""
+    return fetch_api(
+        '/intent/{aiid}?intent_name={intent_name}',
+        token=token,
+        aiid=aiid,
+        intent_name=intent_name,
+        method='delete'
+    )
 
-    return response.json()
+
+def get_ai(token, aiid):
+    """Returns a particular AI data"""
+    return fetch_api('/ui/ai/{aiid}', token=token, aiid=aiid)
 
 
 def get_ai_details(token, aiid):
-    """Returns a particular AI data"""
-
-    path = '/ui/ai/%s/details'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404(_('AI id %s doesn’t exist') % aiid)
-
-    return response.json()
-
-
-def delete_ai(token, aiid):
-    """Returns a particular AI data"""
-
-    path = '/ai/%s'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.delete(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404(_('AI id %s doesn’t exist') % aiid)
-
-    return response.json()
+    """Returns a particular AI detailed data"""
+    return fetch_api('/ui/ai/{aiid}/details', token=token, aiid=aiid)
 
 
 def get_ai_export(token, aiid):
     """Returns an AI export JSON data"""
-
-    path = '/ai/%s/export'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404(_('AI id %s doesn’t exist') % aiid)
-
-    return response.json()
+    return fetch_api('/ai/{aiid}/export', token=token, aiid=aiid)
 
 
 def get_ai_list(token):
     """Returns a list of all bots created by a user"""
-
-    path = '/ai'
-    url = settings.API_URL + path
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    if response.status_code == 200:
-        responseJSON = response.json()
-        ai_list = responseJSON['ai_list']
-    else:
-        ai_list = None
-
-    logger.debug(ai_list)
-
-    return ai_list
+    return fetch_api('/ai', token=token)
 
 
 def get_ai_skill(token, aiid):
     """Get skills linked with an AI"""
-
-    path = '/ai/%s/bots'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    headers = set_headers(token)
-
-    response = requests.get(
-        url,
-        headers=headers,
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()
+    return fetch_api('/ai/{aiid}/bots', token=token, aiid=aiid)
 
 
 def get_ai_training(token, aiid):
     """Get training content of an AI"""
+    return fetch_api('/ai/{aiid}/training/materials', token=token, aiid=aiid)
 
-    path = '/ai/%s/training/materials'
-    url = settings.API_URL + path % aiid
 
-    logger.debug(url)
+def get_entities_list(token):
+    """Returns a list of all entities for a user"""
+    return fetch_api('/entities', token=token)
 
-    headers = set_headers(token)
 
-    response = requests.get(
-        url,
-        headers=headers,
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
+def get_entity(token, entity_name):
+    """Returns a particular entity data"""
+    return fetch_api(
+        '/entity?entity_name={entity_name}',
+        token=token,
+        entity_name=entity_name
     )
 
-    logger.debug(response)
 
-    return response.json()
+def get_intent_list(token, aiid):
+    """Returns a list of all intents for a particular AI"""
+    return fetch_api('/intents/{aiid}', token=token, aiid=aiid)
+
+
+def get_intent(token, aiid, intent_name):
+    """Returns a particular intent data"""
+    return fetch_api(
+        '/intent/{aiid}?intent_name={intent_name}',
+        token=token,
+        aiid=aiid,
+        intent_name=intent_name
+    )
+
+
+def get_facebook_connect_state(token, aiid):
+    """Reads the facebook connection status for this aiid"""
+    return fetch_api(
+        '/ai/{aiid}/facebook',
+        token=token,
+        aiid=aiid,
+        timeout=config.API_FACEBOOK_TIMEOUT
+    )
+
+
+def get_facebook_customisations(token, aiid):
+    """load customisations for the page"""
+    return fetch_api(
+        '/ai/{aiid}/facebook/custom',
+        token=token,
+        aiid=aiid,
+        timeout=config.API_FACEBOOK_TIMEOUT
+    )
+
+
+def get_insights_chart(token, aiid, metric, fromDate, toDate):
+    """get chart data for the specified dates"""
+    return fetch_api(
+        '/insights/{aiid}/graph/{metric}?from={fromDate}&to={toDate}',
+        token=token,
+        aiid=aiid,
+        metric=metric,
+        fromDate=fromDate,
+        toDate=toDate,
+        timeout=settings.API_LOGS_TIMEOUT,
+    )
+
+
+def get_insights_chatlogs(token, aiid, fromDate, toDate):
+    """Gets chat logs for the specified dates"""
+    return fetch_api(
+        '/insights/{aiid}/chatlogs?format=csv&from={fromDate}&to={toDate}',
+        token=token,
+        aiid=aiid,
+        fromDate=fromDate,
+        toDate=toDate,
+        timeout=settings.API_LOGS_TIMEOUT,
+        raw=True
+    )
 
 
 def post_ai(token, ai_data, aiid=''):
     """Creates or updates an AI instance"""
-
     ai_default = {
         'voice': 1,
         'is_private': False,
@@ -191,505 +149,129 @@ def post_ai(token, ai_data, aiid=''):
         'locale': 'en-US',
     }
 
-    path = '/ai/%s'
-    url = settings.API_URL + path % aiid
-
-    logger.debug([url, ai_data])
-
-    response = requests.post(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        data={**ai_default, **ai_data},
-        verify=not settings.DEBUG
+    return fetch_api(
+        '/ai/{aiid}',
+        token=token,
+        aiid=aiid,
+        method='post',
+        data={**ai_default, **ai_data}
     )
-
-    logger.debug(response)
-
-    return response.json()
 
 
 def post_import_ai(token, ai_data):
     """Creates a new AI instance based on provided JSON file"""
-
-    path = '/ai/import'
-    url = settings.API_URL + path
-
-    logger.debug(url)
-
-    headers = set_headers(token)
-    headers['Content-type'] = 'application/json'
-
-    response = requests.post(
-        url,
-        headers=headers,
-        timeout=settings.API_TIMEOUT,
-        data=ai_data,
-        verify=not settings.DEBUG
+    return fetch_api(
+        '/ai/import',
+        token=token,
+        method='post',
+        headers={'Content-type': 'application/json'},
+        data=ai_data
     )
-
-    logger.debug(response)
-
-    return response.json()
 
 
 def post_ai_skill(token, aiid, skills_data):
     """Updates skills linked with an AI"""
-
-    path = '/ai/%s/bots?bot_list=%s'
-    url = settings.API_URL + path % (
-        aiid,
-        ','.join(skills_data['skills'])
+    return fetch_api(
+        '/ai/{aiid}/bots?bot_list={bot_list}',
+        token=token,
+        aiid=aiid,
+        bot_list=','.join(skills_data['skills']),
+        method='post',
+        headers={'Content-type': 'application/json'},
     )
-
-    logger.debug(url)
-
-    headers = set_headers(token)
-
-    response = requests.post(
-        url,
-        headers=headers,
-        timeout=settings.API_TIMEOUT,
-        data=skills_data,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()
 
 
 def post_training(token, aiid, training_file):
     """Updates bot Training file"""
-
-    path = '/ai/%s/training?source_type=0'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.post(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        files={
-            'file': training_file
-        },
-        verify=not settings.DEBUG
+    return fetch_api(
+        '/ai/{aiid}/training?source_type=0',
+        token=token,
+        aiid=aiid,
+        files={'file': training_file},
+        method='post'
     )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def put_training_update(token, aiid):
-    """Update AI training"""
-
-    path = '/ai/%s/training/update'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.put(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def put_training_start(token, aiid):
-    """Start an AI training"""
-
-    path = '/ai/%s/training/start'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.put(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()
 
 
 def post_regenerate_webhook_secret(token, aiid):
     """Generate a new Webhook secret"""
-
-    path = '/ai/%s/regenerate_webhook_secret'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.post(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
+    return fetch_api(
+        '/ai/{aiid}/regenerate_webhook_secret',
+        token=token,
+        aiid=aiid,
+        method='post'
     )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def get_entities_list(token):
-    """Returns a list of all entities for a user"""
-
-    path = '/entities/'
-    url = settings.API_URL + path
-
-    logger.debug([url, token])
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404(_('AI doesn’t exist'))
-
-    return response.json()
-
-
-def get_entity(token, entity_name):
-    """Returns a particular entity data"""
-
-    path = '/entity?entity_name=%s'
-    url = settings.API_URL + path % entity_name
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    if response.status_code in [401, 403, 404]:
-        raise Http404(_('entity %s doesn’t exist') % entity_name)
-
-    return response.json()
 
 
 def post_entity(payload, token, **kwargs):
     """Create or update an entity"""
-
-    path = '/entity?entity_name=%s'
-    url = settings.API_URL + path % kwargs.get(
-        'entity_name',
-        payload.get('entity_name')
-    )
-
-    logger.debug([url, payload])
-
-    response = requests.post(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
+    return fetch_api(
+        '/entity?entity_name={entity_name}',
+        token=token,
+        entity_name=kwargs.get('entity_name', payload.get('entity_name')),
         json=payload,
-        verify=not settings.DEBUG
+        method='post'
     )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def delete_entity(token, entity_name):
-    """Delete an entity"""
-
-    path = '/entity?entity_name=%s'
-    url = settings.API_URL + path % entity_name
-
-    logger.debug(url)
-
-    response = requests.delete(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def get_intent_list(token, aiid):
-    """Returns a list of all intents for a particular AI"""
-
-    path = '/intents/%s'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404('AI id %s doesn’t exist' % aiid)
-
-    return response.json()
-
-
-def get_intent(token, aiid, intent_name):
-    """Returns a particular intent data"""
-
-    path = '/intent/%s?intent_name=%s'
-    url = settings.API_URL + path % (aiid, intent_name)
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404('AI id %s doesn’t exists' % aiid)
-
-    return response.json()
 
 
 def post_intent(payload, token, aiid):
     """Create or update an Intent"""
-
-    path = '/intent/%s'
-    url = settings.API_URL + path % aiid
-
-    logger.debug([url, payload])
-
-    response = requests.post(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
+    return fetch_api(
+        '/intent/{aiid}',
+        token=token,
+        aiid=aiid,
         json=payload,
-        verify=not settings.DEBUG
+        method='post'
     )
 
-    logger.debug(response)
 
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404('AI id %s doesn’t exists' % aiid)
-
-    return response.json()
-
-
-def delete_intent(token, aiid, intent_name):
-    """Delete an Intent"""
-
-    path = '/intent/%s?intent_name=%s'
-    url = settings.API_URL + path % (
-        aiid,
-        intent_name
-    )
-
-    logger.debug(url)
-
-    response = requests.delete(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    if response.status_code in [401, 403, 404]:
-        # We don't reveal if AI exist
-        raise Http404('AI id %s doesn’t exists' % aiid)
-
-    return response.json()
-
-
-def set_facebook_connect_token(token, aiid, connect_token, redirect_url):
-    """ Registers a connect token once the user has completed a
+def post_facebook_connect_token(token, aiid, payload):
+    """
+        Registers a connect token once the user has completed a
         connect operation on the front-end
     """
-
-    path = '/ai/%s/facebook/connect'
-    url = settings.API_URL + path % aiid
-
-    payload = {
-        'connect_token': connect_token,
-        'redirect_uri': redirect_url
-    }
-
-    logger.debug(url)
-
-    response = requests.post(
-        url,
-        headers=set_headers(token),
-        timeout=config.API_FACEBOOK_TIMEOUT,
+    return fetch_api(
+        '/ai/{aiid}/facebook/connect',
+        token=token,
+        aiid=aiid,
         json=payload,
-        verify=not settings.DEBUG
+        timeout=config.API_FACEBOOK_TIMEOUT,
+        method='post'
     )
 
-    logger.debug(response)
 
-    return response.json()
-
-
-def get_facebook_connect_state(token, aiid):
-    """
-    read the facebook connection status for this aiid
-    """
-    path = '/ai/{aiid}/facebook'
-    url = settings.API_URL + path.format(aiid=aiid)
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
+def post_facebook_customisations(token, aiid, payload):
+    """save customisations for the page"""
+    return fetch_api(
+        '/ai/{aiid}/facebook/custom',
+        token=token,
+        aiid=aiid,
+        json=payload,
+        timeout=config.API_FACEBOOK_TIMEOUT,
+        method='post'
     )
 
-    logger.debug(response)
 
-    return response.json()
+def put_training_update(token, aiid):
+    """Update AI training"""
+    return fetch_api(
+        '/ai/{aiid}/training/update', token=token, aiid=aiid, method='put'
+    )
+
+
+def put_training_start(token, aiid):
+    """Start an AI training"""
+    return fetch_api(
+        '/ai/{aiid}/training/start', token=token, aiid=aiid, method='put'
+    )
 
 
 def put_facebook_action(token, aiid, params):
     """take some action on the facebook connection"""
-
-    query_string = urllib.parse.urlencode(params)
-    path = '/ai/{aiid}/facebook?{query_string}'
-    url = settings.API_URL + path.format(
+    return fetch_api(
+        '/ai/{aiid}/facebook?{query_string}',
+        token=token,
         aiid=aiid,
-        query_string=query_string
-    )
-
-    logger.debug(url)
-
-    response = requests.put(
-        url,
-        headers=set_headers(token),
+        query_string=urllib.parse.urlencode(params),
         timeout=config.API_FACEBOOK_TIMEOUT,
-        verify=not settings.DEBUG
+        method='put'
     )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def get_facebook_customisations(token, aiid):
-    """
-    load customisations for the page
-    """
-    path = '/ai/%s/facebook/custom'
-    url = settings.API_URL + path % aiid
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def set_facebook_customisations(token, aiid, page_greeting, get_started):
-    """
-    save customisations for the page
-    """
-    path = '/ai/%s/facebook/custom'
-    url = settings.API_URL + path % aiid
-
-    payload = {
-        'page_greeting': page_greeting,
-        'get_started_payload': get_started
-    }
-
-    logger.debug(url)
-
-    response = requests.post(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        json=payload,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def get_insights_chatlogs(token, aiid, fromDate, toDate):
-    """
-    get chat logs for the specified dates
-    """
-    path = '/insights/%s/chatlogs?format=csv&from=%s&to=%s'
-    url = settings.API_URL + path % (aiid, fromDate, toDate)
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_LOGS_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-    return response
-
-
-def get_insights_chart(token, aiid, metric, fromDate, toDate):
-    """
-    get chart data for the specified dates
-    """
-    path = '/insights/%s/graph/%s?from=%s&to=%s'
-    url = settings.API_URL + path % (aiid, metric, fromDate, toDate)
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_LOGS_TIMEOUT,
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    return response.json()

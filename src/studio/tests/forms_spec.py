@@ -124,13 +124,15 @@ class TestSkillsForm(TestCase):
     def setUp(self):
         """Provide purchased bots"""
 
-        self.purchased = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=MetadataFactory,
-                botId=index
-            ) for index in range(1, 6)
-        ]
+        self.purchased = {
+            'bots': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=MetadataFactory,
+                    botId=index
+                ) for index in range(1, 6)
+            ]
+        }
 
     @patch('studio.forms.get_purchased')
     def test_no_linked_skills(self, mock_get_purchased):

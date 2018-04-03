@@ -26,30 +26,26 @@ def lookup(dictionary, key):
 
 @register.inclusion_tag('botstore_navigation.html')
 def botstore_navigation(active, botstore):
-    """
-    Renders a botstore Naviagtion menu based on API proviaded data
-    """
-    icons = {
-        "entertainment": "fa-film",
-        "education": "fa-graduation-cap",
-        "events": "fa-calendar-check-o",
-        "finance": "fa-eur",
-        "fitness": "fa-bicycle",
-        "games": "fa-gamepad",
-        "health & beauty": "fa-heartbeat",
-        "internet of things": "fa-laptop",
-        "news": "fa-newspaper-o",
-        "personal": "fa-male",
-        "other": "fa-search",
-        "shopping": "fa-cart-plus",
-        "social": "fa-thumbs-o-up",
-        "travel": "fa-plane",
-        "virtual assistants": "fa-headphones",
-    }
-    categories = get_categories()
+    """Renders a botstore Naviagtion menu based on API proviaded data"""
     return {
-        'categories': categories,
+        'categories': get_categories().get('categories'),
         'active': active,
         'botstore': botstore,
-        'icons': icons
+        'icons': {
+            'entertainment': 'fa-film',
+            'education': 'fa-graduation-cap',
+            'events': 'fa-calendar-check-o',
+            'finance': 'fa-eur',
+            'fitness': 'fa-bicycle',
+            'games': 'fa-gamepad',
+            'health & beauty': 'fa-heartbeat',
+            'internet of things': 'fa-laptop',
+            'news': 'fa-newspaper-o',
+            'personal': 'fa-male',
+            'other': 'fa-search',
+            'shopping': 'fa-cart-plus',
+            'social': 'fa-thumbs-o-up',
+            'travel': 'fa-plane',
+            'virtual assistants': 'fa-headphones',
+        }
     }

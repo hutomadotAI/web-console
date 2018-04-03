@@ -43,7 +43,7 @@ class TestSummaryView(TestCase):
         """If user is logged in he can access summary"""
 
         # We mock ai_list
-        mock_get.return_value.json.return_value = []
+        mock_get.return_value = {'ai_list': []}
         response = self.client.get(reverse('studio:summary'))
         self.assertEqual(response.status_code, 200)
 
@@ -55,7 +55,7 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = []
+        mock_get.return_value = {'ai_list': []}
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
@@ -75,9 +75,12 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(dict, FACTORY_CLASS=AiFactory)
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(dict, FACTORY_CLASS=AiFactory)
+            ]
+        }
+
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
@@ -96,13 +99,15 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_training_complete'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_training_complete'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Completed')
 
@@ -113,13 +118,15 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_undefined'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_undefined'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Not Started')
 
@@ -130,13 +137,15 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_training_queued'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_training_queued'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Queued')
 
@@ -147,13 +156,15 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_training'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_training'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'In Progress')
 
@@ -164,30 +175,32 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_training_stopped'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_training_stopped'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Stopped')
 
     @patch('studio.views.get_ai_list')
     def test_ai_error(self, mock_get):
-        """
-        Label should reflect AIs training status
-        """
+        """Label should reflect AIs training status"""
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_error'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_error'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Error')
 
@@ -198,13 +211,15 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_error'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_error'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Error')
 
@@ -215,13 +230,15 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                publishing_state='PUBLISHED'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    publishing_state='PUBLISHED'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Published')
 
@@ -232,13 +249,15 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                publishing_state='SUBMITTED'
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    publishing_state='SUBMITTED'
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Request Sent')
 
@@ -249,14 +268,16 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_training_complete',
-                linked_bots=[],
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_training_complete',
+                    linked_bots=[],
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertNotContains(
             response,
@@ -274,16 +295,18 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-                ai_status='ai_training_complete',
-                linked_bots=[
-                    1
-                ]
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                    ai_status='ai_training_complete',
+                    linked_bots=[
+                        1
+                    ]
+                )
+            ]
+        }
 
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(
@@ -298,12 +321,14 @@ class TestSummaryView(TestCase):
         """
 
         # We mock ai_list
-        mock_get.return_value = [
-            factory.build(
-                dict,
-                FACTORY_CLASS=AiFactory,
-            )
-        ]
+        mock_get.return_value = {
+            'ai_list': [
+                factory.build(
+                    dict,
+                    FACTORY_CLASS=AiFactory,
+                )
+            ]
+        }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(
             response,
@@ -750,21 +775,6 @@ class TestSkillsUpdateView(TestCase):
         ))
         self.assertEqual(response.status_code, 200)
 
-    @patch('studio.services.requests.get')
-    def test_unauthorised(self, mock_get_ai):
-        """Return 404 if user doesn't have access to the AI"""
-
-        # We mock ai_list
-        mock_get_ai.return_value.status_code = 403
-
-        response = self.client.get(reverse(
-            'studio:skills',
-            kwargs={
-                'aiid': self.ai['aiid']
-            }
-        ))
-        self.assertEqual(response.status_code, 404)
-
 
 class TestIntentsView(TestCase):
 
@@ -862,18 +872,3 @@ class TestIntentsView(TestCase):
         self.assertContains(response, 'intent_4')
         self.assertContains(response, 'intent_5')
         self.assertContains(response, 'intent_6')
-
-    @patch('studio.services.requests.get')
-    def test_unauthorised(self, mock_get_ai):
-        """Return 404 if user doesn't have access to the AI"""
-
-        # We mock API calls
-        mock_get_ai.return_value.status_code = 403
-
-        response = self.client.get(reverse(
-            'studio:intents',
-            kwargs={
-                'aiid': self.ai['aiid']
-            }
-        ))
-        self.assertEqual(response.status_code, 404)
