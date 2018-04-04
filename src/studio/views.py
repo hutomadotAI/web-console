@@ -46,6 +46,7 @@ from studio.services import (
     get_insights_chart,
     get_insights_chatlogs,
     get_intent,
+    get_intent_list,
     post_regenerate_webhook_secret,
     put_training_start,
     put_training_update,
@@ -458,20 +459,36 @@ class EntitiesUpdateView(EntitiesView):
 
 
 @method_decorator(login_required, name='dispatch')
-class IntentsView(StudioViewMixin, FormView):
+class IntentsView(StudioViewMixin, ListView):
+    """List of AIs, current homepage"""
+    context_object_name = 'intents'
+    template_name = 'intents_list.html'
+
+    def get_queryset(self, **kwargs):
+        intents = get_intent_list(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        ).get('intent_name')
+
+        if not intents:
+            self.template_name = 'intents_empty.html'
+
+        return intents
+
+
+@method_decorator(login_required, name='dispatch')
+class IntentsEditView(StudioViewMixin, FormView):
     """Manage AI Intents and theirs relations with Entities"""
 
     form_class = IntentForm
     template_name = 'intent_form.html'
-    success_url = 'studio:intents'
-    fail_url = 'studio:intents'
     formset = formset_factory(EntityFormset, extra=0, can_delete=True)
     formset_prefix = 'entities'
 
     def get_context_data(self, **kwargs):
         """Update context with Intents list and Entities formset"""
 
-        context = super(IntentsView, self).get_context_data(**kwargs)
+        context = super(IntentsEditView, self).get_context_data(**kwargs)
 
         # Get entities
         entities = get_entities_list(
@@ -508,7 +525,7 @@ class IntentsView(StudioViewMixin, FormView):
 
             redirect_url = HttpResponseRedirect(
                 reverse_lazy(
-                    self.success_url,
+                    'studio:intents',
                     kwargs={**self.kwargs}
                 )
             )
@@ -568,7 +585,7 @@ class IntentsView(StudioViewMixin, FormView):
 
 
 @method_decorator(login_required, name='dispatch')
-class IntentsUpdateView(IntentsView):
+class IntentsUpdateView(IntentsEditView):
     """Single Intent view"""
 
     success_url = 'studio:intents.edit'

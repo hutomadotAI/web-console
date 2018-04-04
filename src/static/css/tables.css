@@ -23,6 +23,10 @@
   border-top: 1px solid #444;
 }
 
+.table tbody tr:hover {
+  background-color: #333;
+}
+
 .table thead th {
   background: #222;
   border: 0;

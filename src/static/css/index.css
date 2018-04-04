@@ -830,16 +830,6 @@ select:not([multiple]) {
     color: #ffffff;
 }
 
-/*.box-header:before,
-.box-body:before,
-.box-footer:before,
-.box-header:after,
-.box-body:after,
-.box-footer:after {
-    content: " ";
-    display: table;
-}*/
-
 .box-header:after,
 .box-body:after,
 .box-footer:after {
@@ -1382,11 +1372,14 @@ select:not([multiple]) {
   background-color: var(--HUTOMA-GREY-500);
   border-radius: 1rem;
   color: white;
-  font-weight: bold;
   margin: 0.5rem 0;
   max-width: 75%;
   padding: 0.25rem 0.75rem;
   position: relative;
+}
+
+.user .direct-chat-text {
+  background-color: var(--HUTOMA-BLUE-500);
 }
 
 .direct-chat-info {

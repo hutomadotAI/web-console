@@ -264,7 +264,7 @@ function requestAnswerAI(message) {
           sessionStorage.setItem(CHAT_ID_KEY, response.chatId);
 
           if (response.status.code == 200) {
-            level = 'success';
+            level = 'normal';
             message = response.result.answer;
             score = response.result.score;
           } else {

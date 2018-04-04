@@ -34,6 +34,7 @@ from studio.views import (
     FacebookActionView,
     FacebookCustomiseView,
     InsightsView,
+    IntentsEditView,
     IntegrationView,
     IntentDeleteView,
     IntentsUpdateView,
@@ -116,16 +117,23 @@ urlpatterns = [
         name='entities.edit'
     ),
 
-    # Update Intents of an existing AI
+    # Intents list or create your first intent
     path(
         'bots/edit/<uuid:aiid>/intents',
         IntentsView.as_view(),
         name='intents'
     ),
 
+    # Add a new intent
+    path(
+        'bots/edit/<uuid:aiid>/intents/add',
+        IntentsEditView.as_view(),
+        name='intents.add'
+    ),
+
     # Update an Intent of an existing AI
     path(
-        'bots/edit/<uuid:aiid>/intents/<slug:intent_name>',
+        'bots/edit/<uuid:aiid>/intents/edit/<slug:intent_name>',
         IntentsUpdateView.as_view(),
         name='intents.edit'
     ),

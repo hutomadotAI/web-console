@@ -50,7 +50,7 @@
   position: relative;
 }
 
-#INTENT_FORM .fa {
+#INTENT_FORM h5 .fa {
   color: var(--HUTOMA-GREY-200);
   font-size: 1rem;
   height: 1.5rem;
@@ -83,4 +83,74 @@
 
 #FIELD_ID_USER_SAYS .token {
   background-color: var(--HUTOMA-BLUE-500);
+}
+
+#WELCOME {
+  height: calc(100vh - 10rem);
+  min-height: 32rem;
+}
+
+#WELCOME .box-body {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+}
+
+#WELCOME .box-body .title {
+  color: #98A8BA;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#WELCOME .box-body img {
+  margin: 1.5rem;
+}
+
+#WELCOME .box-body p {
+  margin-bottom: 1.5rem;
+  max-width: 20rem;
+  text-align: center;
+}
+
+.expressions-column {
+  width: 30%;
+}
+
+.responses-column {
+  width: 40%;
+}
+
+.name-column {
+  width: 10%;
+}
+
+.actions-column {
+  width: 2rem;
+}
+
+.actions-column .btn {
+  border: none;
+  background-color: transparent;
+}
+
+.bubble {
+  display: block;
+  background-color: var(--HUTOMA-GREY-500);
+  line-height: 1.5rem;
+  padding: 0.25rem 0.75rem;
+  color: white;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.expressions-column .bubble {
+  background-color: var(--HUTOMA-BLUE-500);
+  display: inline-block;
 }

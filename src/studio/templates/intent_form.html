@@ -28,7 +28,7 @@
           target="_blank"
           data-toggle="tooltip"
           title="{% trans 'Documentation' %}">
-            <i class="fa fa-question-circle text-sm text-yellow"></i>
+            <i class="fa fa-question-circle text-sm text-white"></i>
         </a>
 
       </div>
@@ -111,41 +111,11 @@
 
     </div>
 
-    {% if ai_details.intents|length %}
-
-        <div class="box">
-          <div class="box-header with-border">
-            <h2 class="box-title">
-              <i class="fa fa-commenting-o text-green"></i> {% trans 'Intents list' %}
-            </h2>
-          </div>
-
-          <div class="box-body">
-            <div class="elements">
-              {% for name in ai_details.intents %}
-                <div class="element element-{{ name }}">
-                  <a href="{% url 'studio:intents.edit' ai.aiid name %}" title="edit {{ name }}">{{ name }}</a>
-                  <button class="btn btn-danger fa fa-trash"
-                    data-toggle="modal"
-                    data-target="#delete_element"
-                    data-id="{{ name }}"
-                    data-action="{% url 'studio:intent.delete' ai.aiid name %}" ></button>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-
-        </div>
-
-    {% endif %}
-
   </div>
 
 {% endblock %}
 
 {% block modals %}
-
-  {% include 'modals/delete_element.html' with id='delete_element' %}
 
   {% include 'modals/video_tutorial.html' with id='INTENTS_VIDEO_TUTORIAL' title='Intents video tutorial' slug='SI5XgQm660A' %}
 
@@ -161,7 +131,6 @@
   {{ block.super }}
 
   <link rel="stylesheet" href="{% static 'css/intents.css' %}">
-  <link rel="stylesheet" href="{% static 'css/elements.css' %}">
   <link rel="stylesheet" href="{% static 'css/formset.css' %}">
   <link rel="stylesheet" href="{% static 'css/tokenfield.css' %}">
 {% endblock %}
@@ -176,7 +145,6 @@
   {{ block.super }}
 
   <script src="{% static 'js/messages.js' %}"></script>
-  <script src="{% static 'js/elements.js' %}"></script>
   <script src="{% static 'js/formset.js' %}"></script>
   <script src="{% static 'js/tokenfield.js' %}"></script>
 

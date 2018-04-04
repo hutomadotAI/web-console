@@ -1,0 +1,67 @@
+{% load i18n %}
+
+<div class="box">
+
+  <div class="box-header with-border">
+    <h2 class="box-title">
+      <i class="fa fa-commenting-o text-green"></i> {% trans 'Intents list' %}
+    </h2>
+  </div>
+
+  <div class="box-body">
+
+    <table class="table table-fixed">
+
+      <thead>
+        <tr>
+          <th class="name-column">{% trans 'Name' %}</th>
+          <th class="expressions-column">{% trans 'Expressions' %}</th>
+          <th class="responses-column">{% trans 'Responses' %}</th>
+          <th class="actions-column"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for intent in ai_details.intents %}
+          <tr>
+            <td class="name-column">
+              <a href="{% url 'studio:intents.edit' ai.aiid intent %}"
+                 data-toggle="tooltip"
+                title="edit {{ intent }}">{{ intent }}</a>
+            </td>
+            <td class="expressions-column">
+              {% for expression in intent.expressions %}
+                <span class="bubble">{{ expression }}</span>
+              {% endfor %}
+            </td>
+            <td class="responses-column">
+              {% for response in intent.responses %}
+                <span class="bubble">{{ response }}</span>
+              {% endfor %}
+            </td>
+            <td class="actions-column">
+              <button class="btn btn-default fa fa-ellipsis-v text-gray"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                <span class="sr-only">{% trans 'Toggle options' %}</span>
+              </button>
+
+              <div class="dropdown-menu dropdown-menu-right">
+                <a href="{% url 'studio:intents.edit' ai.aiid intent %}" class="dropdown-item">{% trans 'edit' %}</a>
+                <a class="dropdown-item"
+                  data-toggle="modal"
+                  data-target="#delete_element"
+                  data-id="{{ name }}"
+                  data-action="{% url 'studio:intent.delete' ai.aiid intent %}">{% trans 'delete' %}</a>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
