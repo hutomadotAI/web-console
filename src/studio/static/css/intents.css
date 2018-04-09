@@ -35,7 +35,6 @@
 }
 
 .advanced {
-  display: none;
   margin: 0 0 1.5rem;
 }
 
@@ -127,6 +126,7 @@
 }
 
 .actions-column {
+  text-align: right;
   width: 2rem;
 }
 

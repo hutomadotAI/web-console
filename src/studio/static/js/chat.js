@@ -38,10 +38,10 @@ if ('speechSynthesis' in window) {
   document.getElementById('action.speech:toggle').classList.remove('disabled');
   document.getElementById('action.speech:getVoices').classList.remove('disabled');
   document.getElementById('action.speech:toggle').addEventListener('click', toggleSpeech);
-  speechSynthesis.getVoices();
 
   if ('onvoiceschanged' in window.speechSynthesis) {
     window.speechSynthesis.addEventListener('voiceschanged', getVoices);
+    speechSynthesis.getVoices();
   } else {
     getVoices();
   }
@@ -53,12 +53,11 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 }
 
 if ('speechSynthesis' in window) {
-  speechSynthesis.getVoices();
 
-  if ('onvoiceschanged' in window.speechSynthesis) {
-    window.speechSynthesis.addEventListener('voiceschanged', getVoices);
-  } else {
+  if (speechSynthesis.getVoices().length) {
     getVoices();
+  } else {
+    window.speechSynthesis.addEventListener('voiceschanged', getVoices);
   }
 }
 
@@ -279,8 +278,8 @@ function wrapLines(event) {
 
 function getVoices() {
   VOICE_LIST.innerHTML = speechSynthesis.getVoices().map((voice, index) => `
-    <label class=dropdown-item>
-      <input type=radio name=voices ${ voice.default ? 'checked' : '' } value=${ index }> ${ voice.name }
+    <label class=dropdown-item title="${ voice.name } (${ voice.lang })">
+      <input type=radio name=voices ${ voice.default ? 'checked' : '' } value=${ index }> ${ voice.name } (${ voice.lang })
     </label>
   `).join('');
 }

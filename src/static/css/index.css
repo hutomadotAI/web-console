@@ -582,9 +582,16 @@ a:focus {
   font-size: 0.875rem;
 }
 
+.dropdown-item + .dropdown-menu {
+  display: block;
+  opacity: 0;
+  transition: opacity .3s 1s;
+}
+
 .dropdown-item:hover + .dropdown-menu,
 .dropdown-menu:hover {
-  display: block;
+  opacity: 1;
+  transition: opacity .3s .1s;
 }
 
 .dropdown-menu .dropdown-menu {
@@ -1360,11 +1367,13 @@ select:not([multiple]) {
 }
 
 .direct-chat-msg .slug {
+  display: inline-block;
   position: relative;
 }
 
 .direct-chat-msg .slug::before {
   position: absolute;
+  vertical-align: top;
 }
 
 .direct-chat-msg .slug.score-1::before,
@@ -1375,7 +1384,7 @@ select:not([multiple]) {
 
 .direct-chat-msg .slug.score-4::before,
 .direct-chat-msg .slug.score-5::before,
-.direct-chat-msg .slug.score-6::before, {
+.direct-chat-msg .slug.score-6::before {
   color: var(--HUTOMA-YELLOW-500);
 }
 
