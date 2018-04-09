@@ -1,11 +1,11 @@
 {% load i18n %}
 
-<div class="chat">
+<div class="chat" id ="CHAT">
 
   <div class="sidebar-header">
     <h2>{% trans 'Chat' %}</h2>
 
-    <button class="btn btn-default fa fa-ellipsis-v text-gray dropdown-toggle"
+    <button class="btn btn-default fa fa-ellipsis-v text-gray settings"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false">
@@ -13,32 +13,40 @@
     </button>
 
     <div class="dropdown-menu">
-      <a class="dropdown-item"
-        id="action.speech:toggle">{% trans 'Voiceover' %}</a>
-      <a class="dropdown-item"
+      <button class="dropdown-item disabled"
+        data-toggle="tooltip"
+        title="{% trans 'Voiceover for bot responses' %}"
+        id="action.speech:toggle">{% trans 'Voiceover' %}</button>
+      <button class="dropdown-item sub-menu disabled"
+        data-toggle="tooltip"
+        title="{% trans 'Select bot voice' %}"
+        id="action.speech:getVoices">{% trans 'Voices' %}</button>
+      <div class="dropdown-menu" id="VOICE_LIST"></div>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item"
         data-toggle="tooltip"
         title="{% trans 'Removes the history and resets chat session' %}"
-        id="action.history:clear">{% trans 'Clear history' %}</a>
+        id="action.history:clear">{% trans 'Clear history' %}</button>
     </div>
   </div>
 
-  <div class="direct-chat-messages" id="messages"></div>
+  <div class="direct-chat-messages" id="CHAT_MESSAGES"></div>
 
-  <div class="direct-chat-input" id="chat-footer">
+  <div class="direct-chat-input">
     <div class="input-group">
 
       <input class="form-control"
         tabindex="-1"
-        id="message"
-        placeholder="{% trans 'Type a message…' %}"
-        onkeydown="keyboardChat(event)">
+        id="CHAT_INPUT"
+        placeholder="{% trans 'Type a message…' %}">
 
       <div class="input-group-append">
         <button class="btn direct-chat-dictate"
           id="action.speech:dictate"
+          disabled
           data-toggle="tooltip"
           title="{% trans 'Click to record' %}" >
-          <i class="fa fa-microphone" id="microphone"></i>
+          <i class="fa fa-microphone" id="CHAT_MICROPHONE"></i>
         </button>
       </div>
 

@@ -60,11 +60,11 @@
 
                   <div class="dropdown-menu dropdown-menu-right">
                     <a href="{% url 'studio:intents.edit' ai.aiid intent %}" class="dropdown-item">{% trans 'edit' %}</a>
-                    <a class="dropdown-item"
+                    <button class="dropdown-item"
                       data-toggle="modal"
                       data-target="#delete_element"
                       data-id="{{ name }}"
-                      data-action="{% url 'studio:intent.delete' ai.aiid intent %}">{% trans 'delete' %}</a>
+                      data-action="{% url 'studio:intent.delete' ai.aiid intent %}">{% trans 'delete' %}</button>
                   </div>
                 </td>
               </tr>

@@ -65,7 +65,7 @@
 
           </h5>
 
-          <div class="advanced">
+          <div class="advanced collapse {% if form.webhook.value or formset.forms|length %}show{% endif %}">
 
             {% include 'forms/field.html' with field=form.webhook %}
 
@@ -85,10 +85,10 @@
 
             </div>
 
-            <a class="btn btn-success btn-block"
+            <button class="btn btn-success btn-block"
               data-toggle="tooltip"
               title="{% trans 'Add a new Entity' %}"
-              id="FORMSET_ADD">{% trans 'Add Entity' %}</a>
+              id="FORMSET_ADD">{% trans 'Add Entity' %}</button>
           </div>
 
         </form>

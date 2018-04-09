@@ -582,6 +582,52 @@ a:focus {
   font-size: 0.875rem;
 }
 
+.dropdown-item:hover + .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+}
+
+.dropdown-menu .dropdown-menu {
+  max-height: 75vh;
+  overflow: auto;
+  top: 0;
+  transform: translateX(-100%);
+}
+
+.dropdown-item {
+  padding: .25rem 0.75rem;
+}
+
+.dropdown-item::before {
+  -webkit-font-smoothing: antialiased;
+
+  content: '';
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  margin-right: 0.5rem;
+  opacity: 0;
+  width: 1rem;
+  text-align: center;
+}
+
+.dropdown-item.checked::before {
+  content: '\f00c';
+  opacity: 1;
+}
+
+.dropdown-menu .dropdown-item.sub-menu::before {
+  content: '\f0d9';
+  opacity: 1;
+}
+
+.dropdown-menu input[type=radio] {
+  margin-right: 0.25rem;
+  margin-left: -0.75rem;
+  vertical-align: text-top;
+}
+
 .dropdown-menu a:not([href]):not([tabindex]):focus,
 .dropdown-menu a:not([href]):not([tabindex]):hover {
   color: initial;
@@ -1267,7 +1313,7 @@ select:not([multiple]) {
   flex: 7;
 }
 
-.sidebar-header .dropdown-toggle {
+.sidebar-header .settings {
   background-color: transparent;
   border: none;
   font-size: 1rem;
@@ -1277,30 +1323,6 @@ select:not([multiple]) {
   padding: 0;
   right: 1rem;
   width: 1.5rem;
-}
-
-.sidebar-header .dropdown-toggle::after {
-  display: none;
-}
-
-.sidebar-header .dropdown-item {
-  padding: .25rem 0.75rem;
-}
-
-.sidebar-header .dropdown-item::before {
-  -webkit-font-smoothing: antialiased;
-
-  content: '\f00c';
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  margin-right: 0.5rem;
-  opacity: 0;
-}
-
-.sidebar-header .dropdown-item.checked::before {
-  opacity: 1;
 }
 
 .sidebar-header {
@@ -1328,11 +1350,80 @@ select:not([multiple]) {
 
 .direct-chat-messages {
   background-color: #444;
+  display: flex;
+  flex-direction: column;
   flex-grow: 2;
   margin: 0 1rem;
   padding: 0.5rem;
   height: 15rem;
   overflow: auto;
+}
+
+.direct-chat-msg .slug {
+  position: relative;
+}
+
+.direct-chat-msg .slug::before {
+  position: absolute;
+}
+
+.direct-chat-msg .slug.score-1::before,
+.direct-chat-msg .slug.score-2::before,
+.direct-chat-msg .slug.score-3::before {
+  color: var(--HUTOMA-RED-500);
+}
+
+.direct-chat-msg .slug.score-4::before,
+.direct-chat-msg .slug.score-5::before,
+.direct-chat-msg .slug.score-6::before, {
+  color: var(--HUTOMA-YELLOW-500);
+}
+
+.direct-chat-msg .slug.score-7::before,
+.direct-chat-msg .slug.score-8::before,
+.direct-chat-msg .slug.score-9::before,
+.direct-chat-msg .slug.score-10::before {
+  color: var(--SUCCESS);
+}
+
+.direct-chat-msg .slug.score-1::before {
+  content: '■'
+}
+
+.direct-chat-msg .slug.score-2::before {
+  content: '■■'
+}
+
+.direct-chat-msg .slug.score-3::before {
+  content: '■■■'
+}
+
+.direct-chat-msg .slug.score-4::before {
+  content: '■■■■'
+}
+
+.direct-chat-msg .slug.score-5::before {
+  content: '■■■■■'
+}
+
+.direct-chat-msg .slug.score-6::before {
+  content: '■■■■■■'
+}
+
+.direct-chat-msg .slug.score-7::before {
+  content: '■■■■■■■'
+}
+
+.direct-chat-msg .slug.score-8::before {
+  content: '■■■■■■■■'
+}
+
+.direct-chat-msg .slug.score-9::before {
+  content: '■■■■■■■■■'
+}
+
+.direct-chat-msg .slug.score-10::before {
+  content: '■■■■■■■■■■'
 }
 
 .direct-chat-input {
@@ -1341,24 +1432,11 @@ select:not([multiple]) {
 
 .direct-chat-msg,
 .direct-chat-text {
-    display: block;
-    color: #444444;
     word-wrap: break-word;
 }
 
 .direct-chat-msg {
-    margin-bottom: 10px;
-    overflow: hidden;
-}
-
-.direct-chat-msg:before,
-.direct-chat-msg:after {
-    content: " ";
-    display: table;
-}
-
-.direct-chat-msg:after {
-    clear: both;
+  margin-bottom: 0.5rem;
 }
 
 .direct-chat-messages {
@@ -1378,26 +1456,25 @@ select:not([multiple]) {
   position: relative;
 }
 
+.direct-chat-meta {
+  display: flex;
+  font-size: 12px;
+}
+
 .user .direct-chat-text {
   background-color: var(--HUTOMA-BLUE-500);
 }
 
-.direct-chat-info {
-    display: block;
-    margin-bottom: 2px;
-    font-size: 12px;
+.user .direct-chat-meta {
+  flex-direction: row-reverse;
 }
 
 .user .direct-chat-text {
   float: right;
 }
 
-.user .direct-chat-info {
-  text-align: right;
-}
-
 .direct-chat-name {
-    font-weight: 600;
+  font-weight: bold;
 }
 
 .direct-chat-timestamp {
@@ -1405,6 +1482,7 @@ select:not([multiple]) {
   opacity: 0;
   transition: opacity 400ms ease-in;
   transition-delay: 1s;
+  margin: 0 0.5rem;
 }
 
 .direct-chat-msg:hover .direct-chat-timestamp {
