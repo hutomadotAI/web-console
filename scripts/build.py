@@ -82,15 +82,14 @@ def main(build_args):
 
     if build_args.docker_build:
         tag_version = build_args.version
-        services = []
-        service = DockerImage(
+        docker_image = DockerImage(
             src_path,
             'web/dev_console2',
-            tag_version=tag_version,
+            image_tag=tag_version,
+            registry='eu.gcr.io/hutoma-backend',
             build_args={'ENVIRONMENT': "production"})
-        services.append(service)
-        hu_build.build_docker.build_images('eu.gcr.io/hutoma-backend',
-                                           services, build_args.docker_push)
+        hu_build.build_docker.build_single_image(
+            "web-django", docker_image, push=build_args.docker_push)
 
 
 if __name__ == "__main__":
