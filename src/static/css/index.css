@@ -14,14 +14,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  background-color: #424242;
+  color: #ADADAD;
   font-family: 'Roboto', sans-serif;
   font-size: 0.875rem;
+  font-smoothing: antialiased;
   font-weight: 400;
   line-height: 1.5rem;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: #424242;
-  color: #ADADAD;
+  text-rendering: optimizeLegibility;
 }
 
 hr {
@@ -1367,8 +1369,10 @@ select:not([multiple]) {
 }
 
 .direct-chat-msg .slug {
+  color: #222;
   display: inline-block;
   position: relative;
+  margin-left: 0.5rem;
 }
 
 .direct-chat-msg .slug::before {
@@ -1467,10 +1471,10 @@ select:not([multiple]) {
 
 .direct-chat-meta {
   display: flex;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
-.user .direct-chat-text {
+.user .direct-chat-text.chat-normal {
   background-color: var(--HUTOMA-BLUE-500);
 }
 
