@@ -33,7 +33,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for intent in ai_details.intents %}
+            {% for intent in intents %}
               <tr>
                 <td class="name-column">
                   <a href="{% url 'studio:intents.edit' ai.aiid intent %}"
