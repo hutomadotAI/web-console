@@ -1,0 +1,13 @@
+{% load widget_tweaks %}
+
+<div id="FIELD_{{ field.id_for_label|upper }}" class="form-group">
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+  {% render_field field|add_class:'form-control' %}
+
+  {% if field.help_text %}
+    <small class="form-text text-muted">
+      {{ field.help_text }}
+    </small>
+  {% endif %}
+</div>

@@ -31,7 +31,6 @@ from studio.forms import (
     TrainingForm,
 )
 from studio.services import (
-    delete_ai,
     delete_entity,
     delete_intent,
     put_facebook_action,
@@ -39,7 +38,6 @@ from studio.services import (
     get_ai_details,
     get_ai_export,
     get_ai_list,
-    get_ai_skill,
     get_ai_training,
     get_entities_list,
     get_entity,
@@ -49,12 +47,11 @@ from studio.services import (
     get_insights_chatlogs,
     get_intent,
     get_intent_list,
-    post_intent,
     post_regenerate_webhook_secret,
     put_training_start,
     put_training_update,
-    set_facebook_connect_token,
-    set_facebook_customisations,
+    post_facebook_connect_token,
+    post_facebook_customisations,
 )
 
 logger = logging.getLogger(__name__)
@@ -233,7 +230,14 @@ class AIListView(ListView):
     template_name = 'ai_list.html'
 
     def get_queryset(self, **kwargs):
-        return get_ai_list(self.request.session.get('token', False))
+        try:
+            ai_list = get_ai_list(
+                self.request.session.get('token', False)
+            ).get('ai_list')
+        except Exception as e:
+            ai_list = []
+
+        return ai_list
 
 
 @method_decorator(login_required, name='dispatch')
@@ -455,20 +459,36 @@ class EntitiesUpdateView(EntitiesView):
 
 
 @method_decorator(login_required, name='dispatch')
-class IntentsView(StudioViewMixin, FormView):
+class IntentsView(StudioViewMixin, ListView):
+    """List of AIs, current homepage"""
+    context_object_name = 'intents'
+    template_name = 'intents_list.html'
+
+    def get_queryset(self, **kwargs):
+        intents = get_intent_list(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        ).get('intent_name')
+
+        if not intents:
+            self.template_name = 'intents_empty.html'
+
+        return intents
+
+
+@method_decorator(login_required, name='dispatch')
+class IntentsEditView(StudioViewMixin, FormView):
     """Manage AI Intents and theirs relations with Entities"""
 
     form_class = IntentForm
     template_name = 'intent_form.html'
-    success_url = 'studio:intents'
-    fail_url = 'studio:intents'
     formset = formset_factory(EntityFormset, extra=0, can_delete=True)
     formset_prefix = 'entities'
 
     def get_context_data(self, **kwargs):
         """Update context with Intents list and Entities formset"""
 
-        context = super(IntentsView, self).get_context_data(**kwargs)
+        context = super(IntentsEditView, self).get_context_data(**kwargs)
 
         # Get entities
         entities = get_entities_list(
@@ -503,10 +523,15 @@ class IntentsView(StudioViewMixin, FormView):
         if intent['status']['code'] in [200, 201]:
             level = messages.SUCCESS
 
+            logger.warn(intent)
+
             redirect_url = HttpResponseRedirect(
                 reverse_lazy(
-                    self.success_url,
-                    kwargs={**self.kwargs}
+                    'studio:intents.edit',
+                    kwargs={
+                        'aiid': self.kwargs['aiid'],
+                        'intent_name': intent['cleaned_data']['intent_name']
+                    }
                 )
             )
 
@@ -565,7 +590,7 @@ class IntentsView(StudioViewMixin, FormView):
 
 
 @method_decorator(login_required, name='dispatch')
-class IntentsUpdateView(IntentsView):
+class IntentsUpdateView(IntentsEditView):
     """Single Intent view"""
 
     success_url = 'studio:intents.edit'
@@ -755,9 +780,7 @@ class InsightsView(StudioViewMixin, TemplateView):
         context['chatable'] = False
 
         # generate date range description
-        context['date_interval'] = "from %s to %s" % (
-            context['from_date'], context['to_date']
-        )
+        context['date_interval'] = 'from {from_date} to {to_date}'.format(**context)
 
         return context
 
@@ -782,11 +805,13 @@ class FacebookActionView(RedirectView):
         # Perform action
 
         if action == 'connect':
-            results = set_facebook_connect_token(
+            results = post_facebook_connect_token(
                 self.request.session.get('token', False),
                 aiid,
-                self.request.GET.get('code'),
-                self.request.build_absolute_uri('/oauth')
+                payload={
+                    'connect_token': self.request.GET.get('code'),
+                    'redirect_uri': self.request.build_absolute_uri('/oauth')
+                }
             )
         else:
             results = put_facebook_action(
@@ -820,15 +845,12 @@ class FacebookCustomiseView(View):
     def post(self, request, aiid, *args, **kwargs):
         token = request.session.get('token', False)
         # pull the data from the json payload
-        message = json.loads(request.body)
-        page_greeting = message.get('page_greeting', '')
-        get_started_payload = message.get('get_started_payload', '')
+        payload = json.loads(request.body)
         # call the API
-        result = set_facebook_customisations(
+        result = post_facebook_customisations(
             token,
             aiid,
-            page_greeting,
-            get_started_payload
+            payload=payload
         )
         # return an error unless we got a 200 in JSON from the API
         if bool(result and result.get('status')):

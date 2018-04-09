@@ -55,7 +55,7 @@ class EntityForm(forms.Form):
         label=_('Name'),
         widget=forms.TextInput(attrs={
             'pattern': SLUG_PATTERN,
-            'maxlength': 250,
+            'maxlength': 128,
             'placeholder': _('Entity name'),
             'title': _('Enter a valid “Entity name” consisting of letters, numbers, underscores or hyphens.')
         })
@@ -171,10 +171,11 @@ class IntentForm(forms.Form):
 
     intent_name = forms.CharField(
         label=_('Name'),
-        max_length=250,
+        max_length=32,
         validators=[RegexValidator(regex=SLUG_PATTERN)],
         widget=forms.TextInput(attrs={
             'pattern': SLUG_PATTERN,
+            'maxlength': 32,
             'placeholder': _('Intent name'),
             'title': _('Enter a valid “Name” consisting of letters, numbers, underscores or hyphens.')
         })
@@ -206,7 +207,7 @@ class IntentForm(forms.Form):
     )
 
     webhook = forms.URLField(
-        label=_('WebHook'),
+        label=_('WebHook (optional)'),
         help_text=_('Provide the WebHook endpoint.'),
         required=False,
         widget=forms.URLInput(attrs={
@@ -248,7 +249,10 @@ class IntentForm(forms.Form):
             entity for entity in kwargs.pop('variables') if not entity['DELETE']
         ]
 
-        return post_intent(self.cleaned_data, **kwargs)
+        return {
+            **post_intent(self.cleaned_data, **kwargs),
+            'cleaned_data': self.cleaned_data
+        }
 
 
 class AddAIForm(forms.Form):
@@ -374,8 +378,9 @@ class SkillsForm(forms.Form):
 
         self.token = kwargs.pop('token', None)
         self.aiid = kwargs.pop('aiid', None)
+        bots = get_purchased(self.token).get('bots', [])
         skills = [
-            (skill['botId'], skill) for skill in get_purchased(self.token)
+            (skill['botId'], skill) for skill in bots
         ]
         super(SkillsForm, self).__init__(*args, **kwargs)
         self.fields['skills'].choices = skills

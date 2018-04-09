@@ -41,7 +41,9 @@ class TestPublishView(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response.url,
-            reverse('account_login') + '?next=/botstore/publish/%s' % ai['aiid']
+            reverse('account_login') + '?next=/botstore/publish/{aiid}'.format(
+                aiid=ai['aiid']
+            )
         )
 
     @patch('users.decorators.get_info')
@@ -64,7 +66,9 @@ class TestPublishView(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response.url,
-            reverse('users:info') + '?next=/botstore/publish/%s' % ai['aiid']
+            reverse('users:info') + '?next=/botstore/publish/{aiid}'.format(
+                aiid=ai['aiid']
+            )
         )
 
     @patch('botstore.views.get_ai')

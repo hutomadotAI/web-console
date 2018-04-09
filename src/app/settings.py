@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'django_countries',     # Provides country choices for use with forms
     'captcha',          # Django reCAPTCHA form field/widget integration app.
     'reversion',        # Provides version control for model instances
+    'widget_tweaks',    # Tweak the form field rendering in templates
 
     # Apps specific for console:
     'botstore',         # Bot store
@@ -314,10 +315,10 @@ CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': [
-            'redis://:%s@%s:%s/1' % (
-                os.getenv('CACHE_SERVICE_PASSWORD'),
-                os.getenv('CACHE_SERVICE_HOST', 'redis'),
-                os.getenv('CACHE_SERVICE_PORT', 6379)
+            'redis://:{password}@{host}:{port}/1'.format(
+                password=os.getenv('CACHE_SERVICE_PASSWORD'),
+                host=os.getenv('CACHE_SERVICE_HOST', 'redis'),
+                port=os.getenv('CACHE_SERVICE_PORT', 6379)
             ),
         ],
         'OPTIONS': {
@@ -327,10 +328,10 @@ CACHES = {
     'sessions': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': [
-            'redis://:%s@%s:%s/2' % (
-                os.getenv('CACHE_SERVICE_PASSWORD'),
-                os.getenv('CACHE_SERVICE_HOST', 'redis'),
-                os.getenv('CACHE_SERVICE_PORT', 6379)
+            'redis://:{password}@{host}:{port}/2'.format(
+                password=os.getenv('CACHE_SERVICE_PASSWORD'),
+                host=os.getenv('CACHE_SERVICE_HOST', 'redis'),
+                port=os.getenv('CACHE_SERVICE_PORT', 6379)
             ),
         ],
         'OPTIONS': {
@@ -509,7 +510,7 @@ if ENVIRONMENT == 'development':
     #
     # Logs would be colored using `coloredlogs`
 
-    DJANGO_LOG_LEVEL = 'INFO'
+    LOG_LEVEL = 'INFO'
 
     LOGGING = {
         'version': 1,
@@ -537,23 +538,27 @@ if ENVIRONMENT == 'development':
         'loggers': {
             'django': {
                 'handlers': ['console', 'elastic'],
-                'level': os.environ.get('LOG_LEVEL', DJANGO_LOG_LEVEL),
+                'level': os.environ.get('DJANGO_LOG_LEVEL', LOG_LEVEL),
+            },
+            'app': {
+                'handlers': ['console', 'elastic'],
+                'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             },
             'botstore': {
                 'handlers': ['console', 'elastic'],
-                'level': os.environ.get('LOG_LEVEL', DJANGO_LOG_LEVEL),
+                'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             },
             'studio': {
                 'handlers': ['console', 'elastic'],
-                'level': os.environ.get('LOG_LEVEL', DJANGO_LOG_LEVEL),
+                'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             },
             'users': {
                 'handlers': ['console', 'elastic'],
-                'level': os.environ.get('LOG_LEVEL', DJANGO_LOG_LEVEL),
+                'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             },
             'hu_logging': {
                 'handlers': ['console', 'elastic'],
-                'level': os.environ.get('LOG_LEVEL', DJANGO_LOG_LEVEL),
+                'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             }
         },
     }

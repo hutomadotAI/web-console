@@ -15,12 +15,16 @@
   padding: 0.75rem 0.5rem;
 }
 
-.table a {
+.table a:not(.btn) {
   color: inherit;
 }
 
 .table tbody tr td {
   border-top: 1px solid #444;
+}
+
+.table tbody tr:hover {
+  background-color: #333;
 }
 
 .table thead th {

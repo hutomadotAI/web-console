@@ -1,31 +1,56 @@
 {% load i18n %}
 
-<div class="chat">
-  <div class="box-header no-border text-gray text-center" style="background:#1e282c; color:#8A8A8A; padding-top:10px;">
-    <div class="box-title text-gray" style="font-size: 12px">{% trans 'Chat' %}</div>
+<div class="chat" id ="CHAT">
 
-    <button type="button" class="btn btn-default fa fa-gears text-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <div class="sidebar-header">
+    <h2>{% trans 'Chat' %}</h2>
+
+    <button class="btn btn-default fa fa-ellipsis-v text-gray settings"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false">
       <span class="sr-only">{% trans 'Toggle options' %}</span>
     </button>
 
     <div class="dropdown-menu">
-      <a class="dropdown-item" id="action.speech:toggle">{% trans 'Turn On Speech' %}</a>
-      <a class="dropdown-item" id="action.logs:toggle">{% trans 'Hide JSON logs' %}</a>
+      <button class="dropdown-item disabled"
+        data-toggle="tooltip"
+        title="{% trans 'Will read bot answers' %}"
+        id="action.speech:toggle">{% trans 'Text to voice' %}</button>
+      <button class="dropdown-item sub-menu disabled"
+        data-toggle="tooltip"
+        title="{% trans 'Select bot voice' %}"
+        id="action.speech:getVoices">{% trans 'Voices' %}</button>
+      <div class="dropdown-menu" id="VOICE_LIST"></div>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" id="action.history:clear">{% trans 'Clear history' %}</a>
+      <button class="dropdown-item"
+        data-toggle="tooltip"
+        title="{% trans 'Removes the history and resets chat session' %}"
+        id="action.history:clear">{% trans 'Clear history' %}</button>
     </div>
   </div>
 
-  <div class="direct-chat-messages" id="messages"></div>
+  <div class="direct-chat-messages" id="CHAT_MESSAGES"></div>
 
-  <div class="direct-chat-input flat" id="chat-footer">
+  <div class="direct-chat-input">
     <div class="input-group">
-      <input type="text" id="message" placeholder="{% trans 'Type a message…' %}" class="form-control flat no-shadow" onkeydown="keyboardChat(event)" tabindex="-1">
-      <span class="input-group-btn">
-        <button class="btn flat direct-chat-dictate" id="action.speech:dictate" title="{% trans 'Click to record' %}" data-toggle="tooltip"><i class="fa fa-microphone" id="microphone"></i></button>
-      </span>
+
+      <input class="form-control"
+        tabindex="-1"
+        id="CHAT_INPUT"
+        placeholder="{% trans 'Type a message…' %}">
+
+      <div class="input-group-append">
+        <button class="btn direct-chat-dictate"
+          id="action.speech:dictate"
+          disabled
+          data-toggle="tooltip"
+          title="{% trans 'Click to record' %}" >
+          <i class="fa fa-microphone" id="CHAT_MICROPHONE"></i>
+        </button>
+      </div>
+
     </div>
   </div>
-</div>
 
-<a class="dropdown-toggle" data-toggle="dropdown" title="voice options" tabindex="-1" style="position: absolute; right: 0;line-height: 36px;top: 0;padding: 0 12px;"><i class="fa fa-gears text-gray text-sm"></i></a>
+</div>

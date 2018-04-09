@@ -25,7 +25,7 @@
 
 .form-formset .form-group .controls {
   background-color: var(--INPUT_BACKGROUND);
-  min-height: 34px;
+  min-height: 2.25rem;
   margin-top: auto;
 }
 

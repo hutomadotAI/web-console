@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 @method_decorator(login_required, name='dispatch')
 class PurchaseView(RedirectView):
     """Purchase a bot"""
-
     permanent = False
     query_string = True
     pattern_name = 'botstore:detail'
@@ -56,7 +55,6 @@ class PurchaseView(RedirectView):
 @method_decorator(has_info, name='dispatch')
 class PublishView(FormView):
     """Publish a bot"""
-
     form_class = PublishForm
     template_name = 'publish_form.html'
     success_url = 'studio:summary'
@@ -88,8 +86,6 @@ class PublishView(FormView):
         return initial
 
     def form_valid(self, form):
-        """
-        """
 
         published = form.save(
             aiid=self.kwargs['aiid'],
@@ -112,21 +108,19 @@ class PublishView(FormView):
 
 
 class BotDetailView(DetailView):
-    """
-    Detail view of a particular bot
-    """
+    """Detail view of a particular bot"""
     context_object_name = 'bot'
     template_name = 'bot_detail.html'
 
     def get_object(self, **kwargs):
         pk = self.kwargs.get('bot_id', None)
-        return get_bot(pk, self.request.session.get('token', False))
+        return get_bot(
+            pk, self.request.session.get('token', False)
+        ).get('item')
 
 
 class BotListView(ListView):
-    """
-    List view of bots, filterable by category
-    """
+    """List view of bots, filterable by category"""
     context_object_name = 'bots'
     template_name = 'bot_list.html'
 
@@ -142,15 +136,15 @@ class BotListView(ListView):
         return get_bots(
             token=self.request.session.get('token', False),
             category=urllib.parse.unquote(category)
-        )
+        ).get('items')
 
 
 class CategoriesListView(ListView):
-    """
-    List of categories
-    """
+    """List of categories"""
     context_object_name = 'categories'
     template_name = 'categorie_list.html'
 
     def get_queryset(self, **kwargs):
-        return get_categories(self.request.session.get('token', False))
+        return get_categories(
+            self.request.session.get('token', False)
+        ).get('categories')

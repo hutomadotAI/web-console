@@ -12,9 +12,11 @@
 
   <div class="content-wrapper">
 
-      <div class="box box-solid box-clean flat no-shadow">
+      <div class="box">
         <div class="box-header">
-          <div class="box-title"><b>{% trans 'Integrations' %}</b></div>
+          <h2 class="box-title">
+            <i class="fa fa-puzzle-piece text-blue"></i> {% trans 'Integrations' %}
+          </h2>
         </div>
       </div>
 
@@ -24,9 +26,11 @@
 
       {% if config.FACEBOOK_INTEGRATION == 'on' %}
 
-        <div class="box box-solid box-clean flat no-shadow">
+        <div class="box">
           <div class="box-header with-border">
-            <div class="box-title"><i class="fa fa-facebook text-blue"></i> {% trans 'Facebook' %}</div>
+            <h2 class="box-title">
+              <i class="fa fa-facebook text-blue"></i> {% trans 'Facebook' %}
+            </h2>
           </div>
 
           <div class="box-body">

@@ -1,108 +1,43 @@
 import logging
-import requests
 
-import urllib.parse # used for encoding new user creation
+import urllib.parse     # used for encoding new user creation
 
-from django.conf import settings
-
-from app.services import set_headers
+from app.services import fetch_api
 
 logger = logging.getLogger(__name__)
 
 
 def get_user_token(api_admin_token, user_id):
-    """
-    Returns a user API Authentication Token
-    """
-
-    path = '/admin/%s/devToken/' % user_id
-    url = settings.API_URL + path
-
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(api_admin_token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
+    """Returns a user API Authentication Token"""
+    return fetch_api(
+        '/admin/{user_id}/devToken/', token=api_admin_token, user_id=user_id
     )
-
-    logger.debug(response)
-
-    return response.json()
-
-
-def post_user(api_admin_token, user_data):
-    """Create a user"""
-
-    path = '/admin/?email={0}&username={1}&first_name={2}&last_name={3}'
-    url = settings.API_URL + path.format(
-        urllib.parse.quote_plus(user_data.email),
-        urllib.parse.quote_plus(user_data.username),
-        urllib.parse.quote_plus(user_data.first_name),
-        urllib.parse.quote_plus(user_data.last_name)
-    )
-
-    logger.debug([url, api_admin_token])
-
-    response = requests.post(
-        url,
-        headers=set_headers(api_admin_token),
-        timeout=settings.API_TIMEOUT,
-        data={
-            'email': user_data.email,
-            'username': user_data.username,
-            'first_name': user_data.first_name,
-            'last_name': user_data.last_name,
-        },
-        verify=not settings.DEBUG
-    )
-
-    logger.debug(response)
-
-    response = response.json()
-
-    logger.debug(response)
-
-    return response
 
 
 def get_info(token, dev_id):
     """Request a developer info"""
+    return fetch_api('/developer/{dev_id}', token=token, dev_id=dev_id)
 
-    path = '/developer/%s' % dev_id
-    url = settings.API_URL + path
 
-    logger.debug(url)
-
-    response = requests.get(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
-        verify=not settings.DEBUG
+def post_user(api_admin_token, user_data):
+    """Create a user"""
+    return fetch_api(
+        '/admin/?email={email}&username={username}&first_name={first_name}&last_name={last_name}',
+        token=api_admin_token,
+        email=urllib.parse.quote_plus(user_data.email),
+        username=urllib.parse.quote_plus(user_data.username),
+        first_name=urllib.parse.quote_plus(user_data.first_name),
+        last_name=urllib.parse.quote_plus(user_data.last_name),
+        method='post'
     )
-
-    logger.debug(response)
-
-    return response.json()
 
 
 def post_info(token, dev_id, info_data):
     """Save developer info"""
-
-    path = '/developer/%s' % dev_id
-    url = settings.API_URL + path
-
-    logger.debug(url)
-
-    response = requests.post(
-        url,
-        headers=set_headers(token),
-        timeout=settings.API_TIMEOUT,
+    return fetch_api(
+        '/developer/{dev_id}',
+        token=token,
+        dev_id=dev_id,
         data=info_data,
-        verify=not settings.DEBUG
+        method='post'
     )
-
-    logger.debug(response)
-
-    return response.json()

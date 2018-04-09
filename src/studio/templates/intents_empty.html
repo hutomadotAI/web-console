@@ -1,0 +1,51 @@
+{% extends 'studio_base.html' %}
+
+{% load i18n widget_tweaks static %}
+
+{% block title %}{% trans 'Bot intents' %}{% endblock %}
+
+{% block navigation %}
+  {% include 'studio_navigation.html' with ai=ai active='intents' %}
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+
+    <div class="box" id="WELCOME">
+      <div class="box-header with-border">
+
+        <h2 class="box-title">
+          <i class="fa fa-commenting-o text-green"></i> {% trans 'Intents' %}
+        </h2>
+
+      </div>
+
+      <div class="box-body">
+
+        <h3 class="title">{% trans 'Creat your first intent' %}</h3>
+
+        <img src="{% static 'images/intents.png' %}" alt="{% trans 'Intents illustration' %}"/>
+
+        <p>
+          {% blocktrans %}You're amongst the very first people to have access to our
+          platform! Thanks for your support! We're in beta, so your feedback and
+          patience would be incredibly helpful. example file{% endblocktrans %}
+        </p>
+
+        <div class="actiones">
+          <a href="{% url 'studio:intents.add' ai.aiid %}" class="btn btn-success btn-lg" title="{% trans 'Add a new intent' %}">{% trans 'Add intent' %}</a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/intents.css' %}">
+{% endblock %}

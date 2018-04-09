@@ -11,38 +11,79 @@
 {% block content %}
 <div class="content-wrapper">
 
-  <div class="row">
-    <div class="col-md-12">
-      {% include "chatlogs_download.html" %}
+  <div class="box">
+
+    <div class="box-header with-border">
+
+      <h2 class="box-title">
+        <i class="fa fa-cloud-download text-light-blue"></i> {% trans 'Download chat logs' %}
+      </h2>
     </div>
+
+    <div class="box-body">
+      <form action="insights/logs" class="form-inline" method="post" id="LOGS_FORM">
+        {% csrf_token %}
+
+        <div class="form-group col-4">
+          <label for="DATE_FROM">{% trans 'From date:' %}</label>
+          <div class="input-group date mx-sm-3">
+            <input type="text" class="form-control" name="from" id="DATE_FROM" value="{{ from_date }}">
+            <div class="input-group-append">
+              <label for="DATE_FROM" class="input-group-text"><i class="fa fa-calendar"></i></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-4">
+          <label for="DATE_TO">{% trans 'To date:' %}</label>
+          <div class="input-group date mx-sm-3">
+            <input type="text" class="form-control" name="to" id="DATE_TO" value="{{ to_date }}">
+            <div class="input-group-append">
+              <label for="DATE_TO" class="input-group-text"><i class="fa fa-calendar"></i></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <button style="min-width: 100px" form="LOGS_FORM" class="btn btn-success flat pull-right"><b>{% trans 'Download Logs' %}</b></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="box-footer">
+      <p>
+        {% blocktrans %}If you're stuck, first check out our <a href="https://docs.hutoma.ai" target="_blank">docs website</a>, join our <a href="https://hutomadotai.slack.com" target="_blank">Slack community</a>, or ask any questions you have in the chat window in the bottom right.{% endblocktrans %}
+      </p>
+    </div>
+
   </div>
 
-  <div class="row">
+  <div class="box">
 
-    <div class="col-md-12">
-      <div class="box box-solid box-clean flat no-shadow">
-        <div class="box-header with-border">
-          <i class="fa fa-bar-chart-o text-green"></i>
-          <div class="box-title"><b>{% trans 'Charts' %}</b></div>
-        </div>
-        <div class="box-body">
+    <div class="box-header with-border">
+      <h2 class="box-title">
+        <i class="fa fa-bar-chart-o text-light-blue"></i> {% trans 'Charts' %}
+      </h2>
+    </div>
 
-          <div class="loading chart" id="SESSIONS">
-            <div class="canvas"></div>
-            <div class="alert alert-danger">
-              {% blocktrans %}There was an error loading the data for Chat Sessions. Please try again later.{% endblocktrans %}
-            </div>
-          </div>
+    <div class="box-body">
 
-          <div class="loading chart" id="INTERACTIONS">
-            <div class="canvas"></div>
-            <div class="alert alert-danger">
-              {% blocktrans %}There was an error loading the data for Chat Interactions. Please try again later.{% endblocktrans %}
-            </div>
-          </div>
-
+      <div class="loading chart" id="SESSIONS">
+        <div class="canvas"></div>
+        <div class="alert alert-danger">
+          {% blocktrans %}There was an error loading the data for Chat Sessions.
+          Please try again later.{% endblocktrans %}
         </div>
       </div>
+
+      <div class="loading chart" id="INTERACTIONS">
+        <div class="canvas"></div>
+        <div class="alert alert-danger">
+          {% blocktrans %}There was an error loading the data for Chat
+          Interactions. Please try again later.{% endblocktrans %}
+        </div>
+      </div>
+
     </div>
   </div>
 

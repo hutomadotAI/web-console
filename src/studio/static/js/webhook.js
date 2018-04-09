@@ -13,7 +13,7 @@ document.getElementById('regenerate_webhook').addEventListener('submit', functio
     .then(response => response.json())
     .then(webhookSecret => {
       console.debug(webhookSecret);
-      document.getElementById('webhook_signing_secret').value = webhookSecret.status.info
+      document.getElementById('WEBHOOK_SIGNING_SECRET').value = webhookSecret.status.info
       for(let button of SUBMIT_BUTTONS) {
         button.disabled = false
         button.classList.remove('loading')

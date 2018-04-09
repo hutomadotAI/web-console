@@ -11,20 +11,17 @@
 {% block content %}
   <div class="content-wrapper">
 
-    {% if not ai_details.training_file %}
-      <div class="alert alert-info">
-        <p>
-          {% blocktrans %}Check <a data-toggle="modal" data-target="#sampleTrainingFile">training file example</a> or watch our <a data-toggle="modal" data-target="#TRAINING_VIDEO_TUTORIAL">training video tutorial</a>{% endblocktrans %}
-        </p>
-      </div>
-    {% endif %}
-
-    <div class="box box-solid box-clean flat no-shadow">
+    <div class="box">
       <div class="box-header with-border">
-        <div class="box-title"><i class="fa fa-graduation-cap"></i> {% trans 'Edit training file' %}</div>
+
+        <h2 class="box-title">
+          <i class="fa fa-graduation-cap"></i> {% trans 'Edit training file' %}
+        </h2>
+
         <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/A_Bot_Training_file/Training_upload_&_progress.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
           <i class="fa fa-question-circle text-sm text-yellow"></i>
         </a>
+
       </div>
 
       <div class="box-body">
@@ -44,7 +41,12 @@
       </div>
 
       <div class="box-footer">
-        <button style="min-width: 100px" form="TRAINIG_FORM" class="btn btn-primary flat pull-right"><b>{% trans 'Save' %}</b></button>
+
+        <p>
+          {% blocktrans %}Check <a data-toggle="modal" data-target="#sampleTrainingFile">training file example</a> or watch our <a data-toggle="modal" data-target="#TRAINING_VIDEO_TUTORIAL">training video tutorial</a>{% endblocktrans %}
+        </p>
+
+        <button form="TRAINIG_FORM" class="btn btn-primary">{% trans 'Save' %}</button>
       </div>
 
     </div>
