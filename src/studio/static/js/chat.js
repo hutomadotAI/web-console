@@ -176,7 +176,7 @@ function renderMessage(author, name, message, timestamp, level, score=false, log
     innerHTML: `
       <div class="direct-chat-meta">
         <span class="direct-chat-name">${ name }</span>
-        ${ score ? `<span class="slug score-${ score * 10}" data-toggle="tooltip" title="score: ${ score }">■■■■■■■■■■</span>` : '' }
+        ${ score !== false ? `<span class="slug score-${ score * 10}" data-toggle="tooltip" title="score: ${ score }">■■■■■■■■■■</span>` : '' }
         <span class="direct-chat-timestamp">${ new Date(timestamp).toDateString() } ${ new Date(timestamp).toLocaleTimeString() }</span>
       </div>
       <div class="direct-chat-text chat-${ level }">
