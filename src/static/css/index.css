@@ -826,6 +826,7 @@ select:not([multiple]) {
   display: flex;
   margin: -0.5rem -0.5rem 0.5rem;
   min-height: 24rem;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 1024px) {
@@ -842,9 +843,9 @@ select:not([multiple]) {
   margin: 0.5rem;
   display: flex;
   flex: 1 1 0;
-  min-height: 300px;
+  min-height: 19rem;
   /* Fix overflow issues https://css-tricks.com/flexbox-truncated-text/ */
-  min-width: 0;
+  min-width: 16rem;
   flex-direction: column;
 }
 
@@ -865,7 +866,7 @@ select:not([multiple]) {
 .box {
   position: relative;
   background: #232426;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .box.box-solid > .box-header .btn.btn-success:hover {
