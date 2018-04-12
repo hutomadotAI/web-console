@@ -208,9 +208,13 @@ input::selection {
   transform: scale(.94);
 }
 
-.form-signup #div_id_captcha .controls {
+.form-signup #div_id_captcha > div {
   /* trick to position reCaptcha */
-  margin-left: -5px;
+  margin-left: -8px;
+}
+
+.form-signup #div_id_agree .asteriskField {
+  display: none;
 }
 
 @media (max-width: 480px) {
