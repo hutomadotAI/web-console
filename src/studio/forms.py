@@ -182,7 +182,7 @@ class IntentForm(forms.Form):
     )
 
     user_says = forms.CharField(
-        label=_('Expressions'),
+        label=_('Human Says'),
         help_text=_('Give the bot examples of how a user would express this intent. To create a new expression press enter'),
         widget=forms.TextInput(attrs={
             'data-minLength': 1,
@@ -195,7 +195,7 @@ class IntentForm(forms.Form):
     )
 
     responses = forms.CharField(
-        label=_('Responses'),
+        label=_('Bot Responds'),
         help_text=_('Give the bot examples of how it should respond to a user’s intent. To create a new response press enter'),
         widget=forms.TextInput(attrs={
             'data-minLength': 1,

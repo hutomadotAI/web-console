@@ -13,6 +13,7 @@
 .tokenfield {
   display: flex;
   flex-direction: column-reverse;
+  position: relative;
 }
 
 @keyframes heightGrow {
@@ -27,6 +28,12 @@
 
 .tokenfield .token-input {
   color: white;
+  height: auto;
+  padding: 1px 0;
+}
+
+.tokenfield .token-input::placeholder {
+  color: #999;
 }
 
 .tokenfield .token {
@@ -84,5 +91,6 @@
 .tokenfield [data-tokenfield] {
   left: 0 !important; /* Overwrites in-line styling */
   opacity: 0;
+  top: 0;
   z-index: -1;
 }

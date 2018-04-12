@@ -165,6 +165,7 @@ input::selection {
 }
 
 .documentation.link {
+  color: #999;
   position: absolute;
   right: 1rem;
   top: 1rem;
@@ -208,9 +209,13 @@ input::selection {
   transform: scale(.94);
 }
 
-.form-signup #div_id_captcha .controls {
+.form-signup #div_id_captcha > div {
   /* trick to position reCaptcha */
-  margin-left: -5px;
+  margin-left: -8px;
+}
+
+.form-signup #div_id_agree .asteriskField {
+  display: none;
 }
 
 @media (max-width: 480px) {
@@ -434,10 +439,11 @@ body > section, .footer {
 }
 
 .main-footer {
-    background: #000000;
-    padding: 15px;
-    color: #8A8A8A;
-    border-top: 1px solid #434343;
+  background: black;
+  box-sizing: border-box;
+  color: inherit;
+  line-height: 1.5rem;
+  padding: 0.75rem 1rem;
 }
 
 /* Fixed layout */
@@ -826,6 +832,7 @@ select:not([multiple]) {
   display: flex;
   margin: -0.5rem -0.5rem 0.5rem;
   min-height: 24rem;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 1024px) {
@@ -842,9 +849,9 @@ select:not([multiple]) {
   margin: 0.5rem;
   display: flex;
   flex: 1 1 0;
-  min-height: 300px;
+  min-height: 19rem;
   /* Fix overflow issues https://css-tricks.com/flexbox-truncated-text/ */
-  min-width: 0;
+  min-width: 16rem;
   flex-direction: column;
 }
 
@@ -865,7 +872,7 @@ select:not([multiple]) {
 .box {
   position: relative;
   background: #232426;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .box.box-solid > .box-header .btn.btn-success:hover {
