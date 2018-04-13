@@ -31,33 +31,6 @@
   </td>
 
   <td class="options-column">
-    {% if ai.publishing_state == 'PUBLISHED' %}
-      <a class="btn btn-sm btn-success disabled">{% trans 'Published' %}</a>
-    {% elif ai.publishing_state == 'SUBMITTED' %}
-      <a class="btn btn-sm btn-info disabled">{% trans 'Request Sent' %}</a>
-    {% elif ai.publishing_state == 'NOT_PUBLISHED' %}
-        {% if ai.ai_status != 'ai_training_complete' %}
-          {# Bot need to be trained before being published #}
-          <span class="btn btn-sm btn-warning"
-            data-toggle="tooltip"
-            title="{% trans 'The bot needs to be fully trained before being published.' %}">
-            <i class="fa fa-globe"></i> {% trans 'Publish Bot' %}
-          </span>
-        {% elif ai.linked_bots|length > 0 %}
-          {# We don't support linked bots in Bot store, yet #}
-          <span class="btn btn-sm btn-primary disabled"
-            data-toggle="tooltip"
-            title="{% trans 'We do not currently support publishing bots with linked skills. Please remove them if you’d like your bot to be published.' %}">
-            <i class="fa fa-globe"></i> {% trans 'Publish Bot' %}
-          </span>
-        {% else %}
-          {# Everything is 👍, you can publish. Are you 😀? #}
-          <a href="{% url 'botstore:publish' ai.aiid %}" class="btn btn-sm btn-primary">
-            <i class="fa fa-globe"></i> {% trans 'Publish Bot' %}
-          </a>
-        {% endif %}
-    {% endif %}
-
     <!-- Split button -->
     <div class="btn-group">
       <a href="{% url 'studio:edit_bot' ai.aiid %}" class="btn btn-sm btn-primary">{% trans 'View Bot' %}</a>
@@ -79,5 +52,4 @@
       </div>
     </div>
   </td>
-
 </tr>

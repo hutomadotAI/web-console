@@ -27,8 +27,12 @@
   background-color: #333;
 }
 
+.table tbody tr:hover td > a:not(.btn) {
+  text-decoration: underline;
+}
+
 .table thead th {
-  background: #222;
+  background: #242426;
   border: 0;
   position: sticky;
   top: 4rem;
@@ -57,7 +61,7 @@
 }
 
 .table .options-column {
-  white-space: nowrap;
+  width: 9rem;
 }
 
 .table td.options-column {

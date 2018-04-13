@@ -94,9 +94,7 @@ class TestSummaryView(TestCase):
 
     @patch('studio.views.get_ai_list')
     def test_ai_training_complete(self, mock_get):
-        """
-        Label should reflect AIs training status
-        """
+        """Label should reflect AIs training status"""
 
         # We mock ai_list
         mock_get.return_value = {
@@ -113,9 +111,7 @@ class TestSummaryView(TestCase):
 
     @patch('studio.views.get_ai_list')
     def test_ai_undefined(self, mock_get):
-        """
-        Label should reflect AIs training status
-        """
+        """Label should reflect AIs training status"""
 
         # We mock ai_list
         mock_get.return_value = {
@@ -132,9 +128,7 @@ class TestSummaryView(TestCase):
 
     @patch('studio.views.get_ai_list')
     def test_ai_training_queued(self, mock_get):
-        """
-        Label should reflect AIs training status
-        """
+        """Label should reflect AIs training status"""
 
         # We mock ai_list
         mock_get.return_value = {
@@ -151,9 +145,7 @@ class TestSummaryView(TestCase):
 
     @patch('studio.views.get_ai_list')
     def test_ai_training(self, mock_get):
-        """
-        Label should reflect AIs training status
-        """
+        """Label should reflect AIs training status"""
 
         # We mock ai_list
         mock_get.return_value = {
@@ -170,9 +162,7 @@ class TestSummaryView(TestCase):
 
     @patch('studio.views.get_ai_list')
     def test_ai_training_stopped(self, mock_get):
-        """
-        Label should reflect AIs training status
-        """
+        """Label should reflect AIs training status"""
 
         # We mock ai_list
         mock_get.return_value = {
@@ -203,137 +193,6 @@ class TestSummaryView(TestCase):
         }
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Error')
-
-    @patch('studio.views.get_ai_list')
-    def test_ai_error(self, mock_get):
-        """
-        Label should reflect AIs training status
-        """
-
-        # We mock ai_list
-        mock_get.return_value = {
-            'ai_list': [
-                factory.build(
-                    dict,
-                    FACTORY_CLASS=AiFactory,
-                    ai_status='ai_error'
-                )
-            ]
-        }
-        response = self.client.get(reverse('studio:summary'))
-        self.assertContains(response, 'Error')
-
-    @patch('studio.views.get_ai_list')
-    def test_published(self, mock_get):
-        """
-        A published AI should have a proper button label
-        """
-
-        # We mock ai_list
-        mock_get.return_value = {
-            'ai_list': [
-                factory.build(
-                    dict,
-                    FACTORY_CLASS=AiFactory,
-                    publishing_state='PUBLISHED'
-                )
-            ]
-        }
-        response = self.client.get(reverse('studio:summary'))
-        self.assertContains(response, 'Published')
-
-    @patch('studio.views.get_ai_list')
-    def test_submitted(self, mock_get):
-        """
-        A published AI should have a proper button label
-        """
-
-        # We mock ai_list
-        mock_get.return_value = {
-            'ai_list': [
-                factory.build(
-                    dict,
-                    FACTORY_CLASS=AiFactory,
-                    publishing_state='SUBMITTED'
-                )
-            ]
-        }
-        response = self.client.get(reverse('studio:summary'))
-        self.assertContains(response, 'Request Sent')
-
-    @patch('studio.views.get_ai_list')
-    def test_publish_ready(self, mock_get):
-        """
-        A trained AI with no linked skills can be published
-        """
-
-        # We mock ai_list
-        mock_get.return_value = {
-            'ai_list': [
-                factory.build(
-                    dict,
-                    FACTORY_CLASS=AiFactory,
-                    ai_status='ai_training_complete',
-                    linked_bots=[],
-                )
-            ]
-        }
-        response = self.client.get(reverse('studio:summary'))
-        self.assertNotContains(
-            response,
-            'The bot needs to be fully trained before being published.'
-        )
-        self.assertNotContains(
-            response,
-            'We do not currently support publishing bots with linked skills. Please remove them if you’d like your bot to be published.'
-        )
-
-    @patch('studio.views.get_ai_list')
-    def test_publish_linked_bots(self, mock_get):
-        """
-        A trained AI with linked skills can't be published
-        """
-
-        # We mock ai_list
-        mock_get.return_value = {
-            'ai_list': [
-                factory.build(
-                    dict,
-                    FACTORY_CLASS=AiFactory,
-                    ai_status='ai_training_complete',
-                    linked_bots=[
-                        1
-                    ]
-                )
-            ]
-        }
-
-        response = self.client.get(reverse('studio:summary'))
-        self.assertContains(
-            response,
-            'We do not currently support publishing bots with linked skills. Please remove them if you’d like your bot to be published.'
-        )
-
-    @patch('studio.views.get_ai_list')
-    def test_publish_not_ready(self, mock_get):
-        """
-        An untrained AI can't be publish
-        """
-
-        # We mock ai_list
-        mock_get.return_value = {
-            'ai_list': [
-                factory.build(
-                    dict,
-                    FACTORY_CLASS=AiFactory,
-                )
-            ]
-        }
-        response = self.client.get(reverse('studio:summary'))
-        self.assertContains(
-            response,
-            'The bot needs to be fully trained before being published.'
-        )
 
 
 class TestAICreateView(TestCase):
