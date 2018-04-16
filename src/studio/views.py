@@ -465,10 +465,51 @@ class IntentsView(StudioViewMixin, ListView):
     template_name = 'intents_list.html'
 
     def get_queryset(self, **kwargs):
+        import random
+
         intents = get_intent_list(
             self.request.session.get('token', False),
             self.kwargs['aiid']
         ).get('intent_name')
+
+        expressions = [
+            'Where are your TLC’s?',
+            'What are your terms and conditions?',
+            'How do I add a teammate?',
+            'How do I add a new user?',
+            'How do I add a colleague?',
+            'Can I add a new teammate?',
+            'Can I add a teammate?',
+            'Can I add a new user?',
+            'Can I have your Terms & Conditions?',
+            'What are your terms and conditions?',
+            'Can I have your T&C’s?',
+            'Where are your T&C’s?',
+            'What are your terms?',
+            'What are your T&C’s?'
+        ]
+
+        responses = [
+            'You can do that here: https://support.helpdocs.io/category/dXXjtYlXf…',
+            'Here’s how you install with Slack https://support.helpdocs.io/article/imYgNyEqQk-using-the-slack-integration and here is some info on how to configure this. https://support.helpdocs.io/article/mt50MKKOyP-configuring-your-slack-integration',
+            'A bot or chatbot is an Artificial Intelligence machine that responds to user input, as entered in normal, “natural" language. The bot’s response is also in natural language so that the user has a "conversation” with the bot.',
+            'One of the unique features of the Hu:toma platform is the ability to use bots created by others in our store.',
+            'A client is a way for an end-user to access your bot. This could be hosted on your website, or integrated to some third party service such as Facebook Messenger or Slack.',
+            'The developer console is a website that a registered user of our platform goes to if they want to',
+            'An entity is a category of items like Cities in the USA or Coffee types available on my menu, along with a list of valid values for that category. One or more entities are required by an intent.',
+            'An intent is the capability to capture context data from your chat users that allows you to take an action, either in your client or using a webhook.',
+        ]
+
+        # indices = random.sample(range(len(expressions)), random.randint(1, 6))
+
+        intents = map(lambda intent_name: {
+            'name': intent_name,
+            'expressions': random.sample(expressions, random.randint(1, 6)),
+            'responses': random.sample(responses, random.randint(1, 2)),
+            'updated': datetime.date.fromtimestamp(
+                random.randint(1423546798, 1523546798)
+            )
+        }, intents)
 
         if not intents:
             self.template_name = 'intents_empty.html'
