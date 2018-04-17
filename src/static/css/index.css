@@ -1383,27 +1383,9 @@ select:not([multiple]) {
 }
 
 .direct-chat-msg .slug::before {
+  color: white;
   position: absolute;
   vertical-align: top;
-}
-
-.direct-chat-msg .slug.score-1::before,
-.direct-chat-msg .slug.score-2::before,
-.direct-chat-msg .slug.score-3::before {
-  color: var(--HUTOMA-RED-500);
-}
-
-.direct-chat-msg .slug.score-4::before,
-.direct-chat-msg .slug.score-5::before,
-.direct-chat-msg .slug.score-6::before {
-  color: var(--HUTOMA-YELLOW-500);
-}
-
-.direct-chat-msg .slug.score-7::before,
-.direct-chat-msg .slug.score-8::before,
-.direct-chat-msg .slug.score-9::before,
-.direct-chat-msg .slug.score-10::before {
-  color: var(--SUCCESS);
 }
 
 .direct-chat-msg .slug.score-1::before {
