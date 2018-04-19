@@ -196,8 +196,6 @@
   font-size: 0.875rem;
   margin: 0 0 0.5rem;
   position: relative;
-  /*white-space: nowrap;*/
-  /*text-overflow: ellipsis;*/
   overflow: hidden;
 }
 
