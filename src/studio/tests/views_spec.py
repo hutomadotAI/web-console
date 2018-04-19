@@ -719,8 +719,13 @@ class TestIntentsView(TestCase):
         mock_get_entities_list.return_value.json.return_value = []
         mock_get_categories.return_value = []
 
-        mock_get_intent_list.return_value = {'intent_name': [
-            'intent_1', 'intent_2', 'intent_3', 'intent_4', 'intent_5', 'intent_6'
+        mock_get_intent_list.return_value = {'intents': [
+            {'intent_name': 'intent_1'},
+            {'intent_name': 'intent_2'},
+            {'intent_name': 'intent_3'},
+            {'intent_name': 'intent_4'},
+            {'intent_name': 'intent_5'},
+            {'intent_name': 'intent_6'}
         ]}
 
         response = self.client.get(reverse(

@@ -50,14 +50,18 @@
             {% for intent in intents %}
               <tr>
                 <td class="name-column">
-                  <a href="{% url 'studio:intents.edit' ai.aiid intent.name %}"
+                  <a href="{% url 'studio:intents.edit' ai.aiid intent.intent_name %}"
                      data-toggle="tooltip"
-                    title="edit {{ intent.name }}">{{ intent.name }}</a>
+                    title="edit {{ intent.intent_name }}">{{ intent.intent_name }}</a>
                 </td>
                 <td class="expressions-column">
-                  {% for expression in intent.expressions %}
+                  {% for expression in intent.user_says|slice:':5' %}
                     <span class="bubble">{{ expression }}</span>
                   {% endfor %}
+
+                  {% if intent.user_says|length > 5 %}
+                    <span class="bubble">+{{ intent.user_says|length|add:-5 }} more</span>
+                  {% endif %}
                 </td>
                 <td class="responses-column">
                   {% for response in intent.responses %}
@@ -76,12 +80,12 @@
                   </button>
 
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{% url 'studio:intents.edit' ai.aiid intent.name %}" class="dropdown-item">{% trans 'edit' %}</a>
+                    <a href="{% url 'studio:intents.edit' ai.aiid intent.intent_name %}" class="dropdown-item">{% trans 'edit' %}</a>
                     <button class="dropdown-item"
                       data-toggle="modal"
                       data-target="#delete_element"
-                      data-id="{{ intent.name }}"
-                      data-action="{% url 'studio:intent.delete' ai.aiid intent.name %}">{% trans 'delete' %}</button>
+                      data-id="{{ intent.intent_name }}"
+                      data-action="{% url 'studio:intent.delete' ai.aiid intent.intent_name %}">{% trans 'delete' %}</button>
                   </div>
                 </td>
               </tr>
