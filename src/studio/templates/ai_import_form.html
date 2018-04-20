@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% load i18n crispy_forms_tags static %}
+
+{% block title %}{% trans 'Import bot' %}{% endblock %}
+
+{% block body.attributes %} class="fixed workspace"{% endblock body.attributes %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+
+    <div class="box">
+
+      <div class="box-header with-border">
+        <div class="box-title">{% trans 'Import a bot' %}</div>
+      </div>
+
+      <div class="box-body">
+
+        <form action="{{ request.build_absolute_uri }}" method="post" id="IMPORT_FORM" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {{ form | crispy }}
+
+        </form>
+
+      </div>
+
+      <div class="box-footer">
+        <a href="{% url 'studio:ai.wizard' %}" class="btn btn-primary">{% trans 'Back' %}</a>
+        <button form="IMPORT_FORM" class="btn btn-success">{% trans 'Import' %}</button>
+      </div>
+
+    </div>
+
+  </div>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+{% endblock %}
+
+
+{% block javascripts %}
+  <script src="{% static 'js/forms.js' %}"></script>
+{% endblock javascripts %}

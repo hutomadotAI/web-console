@@ -1,0 +1,8 @@
+#SETTINGS_FORM {
+  display: flex;
+  flex-direction: column;
+}
+
+#div_id_aiid {
+  order: -1;
+}

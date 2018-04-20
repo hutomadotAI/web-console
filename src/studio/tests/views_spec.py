@@ -213,18 +213,18 @@ class TestAICreateView(TestCase):
         """Anonymous can't access create view"""
 
         self.client.logout()
-        response = self.client.get(reverse('studio:add_bot'))
+        response = self.client.get(reverse('studio:ai.wizard'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response.url,
-            reverse('account_login') + '?next=/bots/add'
+            reverse('account_login') + '?next=/bots/wizard'
         )
 
     def test_ai_create_registred(self):
         """Logged-in users can access create view"""
 
         # We mock ai_list
-        response = self.client.get(reverse('studio:add_bot'))
+        response = self.client.get(reverse('studio:ai.wizard'))
         self.assertEqual(response.status_code, 200)
 
 

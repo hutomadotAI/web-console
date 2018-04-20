@@ -14,9 +14,7 @@
     <div class="card-author no-shadow">{% trans 'by' %} {{ developer.company }}</div>
   {% endblock author %}
 
-  {% block actions %}
-    <a class="card-testBotLink" href="{% url 'studio:add_bot' %}" target="_top" style="display:none;">{% trans 'Test Bot' %}</a>
-  {% endblock actions %}
+  {% block actions %}{% endblock actions %}
 
   {% block price %}
     <div class="box-card-footer flat">

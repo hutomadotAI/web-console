@@ -35,31 +35,25 @@
             target="_blank"
             data-toggle="tooltip"
             title="{% trans 'Documentation' %}">
-              <i class="fa fa-question-circle text-sm text-yellow"></i>
+              <i class="fa fa-question-circle"></i>
           </a>
         </div>
 
         <div class="box-body">
           {% if ai_details.training_file %}
 
-            <pre style="height: 160px; overflow: auto; white-space: pre-wrap;">{{ ai_details.training_file }}</pre>
+            <pre class="content" style="overflow: auto; white-space: pre-wrap;">{{ ai_details.training_file }}</pre>
 
           {% else %}
-
-            <p class="smallprint">
-              {% blocktrans %}Simply upload historical conversations or conversation samples between your users.{% endblocktrans %}
-            </p>
-
-            <a href="{% url 'studio:training' ai.aiid %}" class="btn btn-success btn-lg single"><b>{% trans 'Add training file' %}</b></a>
-
+            <i class="fa fa-comments icon-image"></i>
+            <p>{% blocktrans %}Simply upload historical conversations or conversation samples between your users.{% endblocktrans %}</p>
           {% endif %}
         </div>
 
-        {% if ai_details.training_file %}
-          <div class="box-footer">
-            <a href="{% url 'studio:training' ai.aiid %}" class="btn btn-primary">{% trans 'Edit training' %}</a>
-          </div>
-        {% endif %}
+        <div class="box-footer">
+          <a href="{% url 'studio:training' ai.aiid %}" class="btn btn-link">{% trans 'Edit training' %} <i class="fa fa-chevron-right"></i></a>
+        </div>
+
       </div>
 
       <div class="box">
@@ -68,35 +62,29 @@
           <h2 class="box-title">{% trans 'Intents' %}</h2>
 
           <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/Adding_intents/Intents.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
-            <i class="fa fa-question-circle text-sm text-yellow"></i>
+            <i class="fa fa-question-circle"></i>
           </a>
 
         </div>
 
         <div class="box-body">
-          <div class="elements">
 
-            {% for intent in ai_details.intents|slice:':5' %}
-              <div class="element"><a href="{% url 'studio:intents.edit' ai.aiid intent %}" title="edit {{ intent }}">{{ intent }}</a></div>
-            {% empty %}
-
-              <p class="smallprint">
-                {% blocktrans %}An Intent is a way to flag completion of a specific task during a conversation.{% endblocktrans %}
-              </p>
-
-              <a href="{% url 'studio:intents' ai.aiid %}" class="btn btn-success btn-lg single">{% trans 'Add intents' %}</a>
-
-            {% endfor %}
-
-          </div>
+          {% if ai_details.intents %}
+            <div class="elements content">
+              {% for intent in ai_details.intents|slice:':5' %}
+                <div class="element"><a href="{% url 'studio:intents.edit' ai.aiid intent %}" title="edit {{ intent }}">{{ intent }}</a></div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <i class="fa fa-sitemap icon-image"></i>
+            <p>{% blocktrans %}An Intent is a way to flag completion of a specific task during a conversation.{% endblocktrans %}</p>
+          {% endif %}
 
         </div>
 
-        {% if ai_details.intents|length %}
-          <div class="box-footer">
-            <a href="{% url 'studio:intents' ai.aiid %}" class="btn btn-primary">{% trans 'Edit intents' %}</a>
-          </div>
-        {% endif %}
+        <div class="box-footer">
+          <a href="{% url 'studio:intents' ai.aiid %}" class="btn btn-link">{% trans 'Edit intents' %} <i class="fa fa-chevron-right"></i></a>
+        </div>
 
       </div>
 
@@ -106,33 +94,29 @@
           <h2 class="box-title">{% trans 'Skills' %}</h2>
 
           <a href="https://docs.hutoma.ai/The_Anatomy_of_a_Bot/Extend_a_Bot/Add_skills_to_your_bot.html" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
-            <i class="fa fa-question-circle text-sm text-yellow"></i>
+            <i class="fa fa-question-circle"></i>
           </a>
 
         </div>
 
         <div class="box-body">
-          <div class="elements">
 
-            {% for skill in ai_details.skills|slice:':5' %}
-              <div class="element">{{ skill.name }}</div>
-            {% empty %}
+          {% if ai_details.skills %}
+            <div class="elements content">
+              {% for skill in ai_details.skills|slice:':5' %}
+                <div class="element">{{ skill.name }}</div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <i class="fa fa-plus icon-image"></i>
+            <p>{% blocktrans %}Think of bot skills as Lego pieces that you can mix and match together to build your own AI.{% endblocktrans %}</p>
+          {% endif %}
 
-              <p class="smallprint">
-                {% blocktrans %}Think of bot skills as Lego pieces that you can mix and match together to build your own AI.{% endblocktrans %}
-              </p>
-
-              <a href="{% url 'studio:skills' ai.aiid %}" class="btn btn-success btn-lg single">{% trans 'Add skills' %}</a>
-
-            {% endfor %}
-          </div>
         </div>
 
-        {% if ai_details.skills|length %}
-          <div class="box-footer">
-            <a href="{% url 'studio:skills' ai.aiid %}" class="btn btn-primary">{% trans 'Edit skills' %}</a>
-          </div>
-        {% endif %}
+        <div class="box-footer">
+          <a href="{% url 'studio:intents' ai.aiid %}" class="btn btn-link">{% trans 'Edit skills' %} <i class="fa fa-chevron-right"></i></a>
+        </div>
 
       </div>
 

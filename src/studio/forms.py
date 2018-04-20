@@ -4,7 +4,6 @@ import json
 
 from django import forms
 from django.conf import settings
-from django.core.files.base import ContentFile
 from django.core.validators import (
     RegexValidator,
     MaxValueValidator,
@@ -16,7 +15,6 @@ from app.validators import MaxSelectedValidator
 
 from studio.services import (
     delete_ai,
-    get_entities_list,
     post_ai,
     post_ai_skill,
     post_entity,
@@ -24,7 +22,7 @@ from studio.services import (
     post_intent,
     post_regenerate_webhook_secret,
     post_training,
-    put_training_start,
+    put_training_start
 )
 from botstore.services import get_purchased
 
@@ -76,7 +74,7 @@ class EntityForm(forms.Form):
 
     def clean_entity_values(self):
         """Split values"""
-        split_list =  self.cleaned_data['entity_values'].split(
+        split_list = self.cleaned_data['entity_values'].split(
             settings.TOKENFIELD_DELIMITER
         )
         stripped_list = [item.strip() for item in split_list]
@@ -258,6 +256,69 @@ class IntentForm(forms.Form):
 class AddAIForm(forms.Form):
     TIMEZONES = [(tz, tz) for tz in pytz.common_timezones]
 
+    name = forms.CharField(
+        help_text=_('Consisting of letters, numbers, spaces, underscores or hyphens.'),
+        label=_('Name'),
+        max_length=50,
+        validators=[RegexValidator(regex=NAME_PATTERN)],
+        widget=forms.TextInput(attrs={
+            'pattern': NAME_PATTERN,
+            'placeholder': _('My bot'),
+            'title': _('Enter a valid “Name” consisting of letters, numbers, spaces, underscores or hyphens.'),
+            'tabindex': 1
+        })
+    )
+
+    description = forms.CharField(
+        label=_('Description'),
+        max_length=250,
+        widget=forms.TextInput(attrs={
+            'placeholder': _('Something about the bot'),
+            'tabindex': 2
+        })
+    )
+
+    timezone = forms.ChoiceField(
+        initial='Europe/London',
+        label=_('Timezone'),
+        choices=TIMEZONES,
+        widget=forms.Select(attrs={
+            'tabindex': 3
+        })
+    )
+
+    default_chat_responses = forms.CharField(
+        help_text=_('To create a new response press enter'),
+        label=_('Default Response <small>This is sent when the bot doesn’t understand the user.</small>'),
+        initial=_('We didn’t understand that, can you try asking another question or rephrasing.'),
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'data-minLength': 1,
+            'data-maxlength': 250,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
+            'required': True,
+            'placeholder': _('Edit bot response here'),
+            'tabindex': 4
+        })
+    )
+
+    def clean_default_chat_responses(self):
+        """Split responses and build a list string"""
+
+        return json.dumps(
+            self.cleaned_data['default_chat_responses'].split(
+                settings.TOKENFIELD_DELIMITER
+            )
+        )
+
+    def save(self, *args, **kwargs):
+        return post_ai(ai_data=self.cleaned_data, **kwargs)
+
+
+class SettingsAIForm(AddAIForm):
+
     aiid = forms.CharField(
         label=_('Bot ID'),
         max_length=36,
@@ -280,46 +341,6 @@ class AddAIForm(forms.Form):
             'title': _('Enter a valid “Name” consisting of letters, numbers, spaces, underscores or hyphens.')
         })
     )
-
-    description = forms.CharField(
-        label=_('Description'),
-        max_length=250,
-        widget=forms.TextInput(attrs={'placeholder': _('Something about the bot')})
-    )
-
-    timezone = forms.ChoiceField(
-        initial='Europe/London',
-        label=_('Timezone'),
-        choices=TIMEZONES,
-        widget=forms.Select()
-    )
-
-    default_chat_responses = forms.CharField(
-        help_text=_('To create a new response press enter'),
-        label=_('Default responses for when the bot doesn’t understand the user'),
-        max_length=255,
-        required=False,
-        widget=forms.TextInput(attrs={
-            'data-minLength': 1,
-            'data-maxlength': 250,
-            'data-delimiter': settings.TOKENFIELD_DELIMITER,
-            'data-tokenfield': True,
-            'required': True,
-            'placeholder': _('Erm… What?')
-        })
-    )
-
-    def clean_default_chat_responses(self):
-        """Split responses and build a list string"""
-
-        return json.dumps(
-            self.cleaned_data['default_chat_responses'].split(
-                settings.TOKENFIELD_DELIMITER
-            )
-        )
-
-    def save(self, *args, **kwargs):
-        return post_ai(ai_data=self.cleaned_data, **kwargs)
 
 
 class ImportAIForm(forms.Form):
@@ -419,4 +440,3 @@ class ProxyRegenerateWebhookSecretForm(forms.Form):
             kwargs['token'],
             self.cleaned_data['aiid']
         )
-
