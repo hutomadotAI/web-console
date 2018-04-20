@@ -22,12 +22,13 @@
 from django.urls import path, re_path
 
 from django.views.generic.base import RedirectView
-
 from studio.views import (
     AICreateView,
     AIDetailView,
+    AIImportView,
     AIListView,
     AIUpdateView,
+    AIWizardView,
     EntitiesUpdateView,
     EntitiesView,
     EntityDeleteView,
@@ -68,11 +69,25 @@ urlpatterns = [
         name='summary'
     ),
 
+    # AI wizard view
+    path(
+        'bots/wizard',
+        AIWizardView.as_view(),
+        name='ai.wizard'
+    ),
+
     # Create a new AI
     path(
         'bots/add',
         AICreateView.as_view(),
-        name='add_bot'
+        name='ai.add'
+    ),
+
+    # Import a new AI
+    path(
+        'bots/import',
+        AIImportView.as_view(),
+        name='ai.import'
     ),
 
     # Edit an existing AI
@@ -80,6 +95,13 @@ urlpatterns = [
         'bots/edit/<uuid:aiid>',
         AIDetailView.as_view(),
         name='edit_bot'
+    ),
+
+    # Edit an existing AI
+    path(
+        'bots/dashboard/<uuid:aiid>',
+        AIDetailView.as_view(),
+        name='ai.dashboard'
     ),
 
     # Update training of an existing AI

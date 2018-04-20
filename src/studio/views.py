@@ -21,6 +21,7 @@ from django.views.generic.edit import FormView
 
 from studio.forms import (
     AddAIForm,
+    SettingsAIForm,
     ImportAIForm,
     IntentForm,
     EntityForm,
@@ -248,35 +249,17 @@ class AIDetailView(StudioViewMixin, TemplateView):
 
 
 @method_decorator(login_required, name='dispatch')
+class AIWizardView(TemplateView):
+    template_name = 'ai_wizard.html'
+
+
+@method_decorator(login_required, name='dispatch')
 class AICreateView(FormView):
     """Create a new AI or import one from an export JSON file"""
 
     form_class = AddAIForm
-    template_name = 'ai_form.html'
-    success_url = 'studio:edit_bot'
-    fail_url = 'studio:add_bot'
-
-    def get_context_data(self, **kwargs):
-        """
-        Updates context base on provided data, if there is a form parameter, we
-        are dealing with an invalid form and we need to feel the form with
-        provided data. If not build new empty form.
-        """
-        if 'form' in kwargs and isinstance(kwargs['form'], AddAIForm):
-            kwargs['add_form'] = kwargs['form']
-        if 'form' in kwargs and isinstance(kwargs['form'], ImportAIForm):
-            kwargs['import_form'] = kwargs['form']
-        if 'add_form' not in kwargs:
-            kwargs['add_form'] = AddAIForm()
-            # We must enter a name
-            del kwargs['add_form'].fields['name'].widget.attrs['readonly']
-            # We must enter a name
-            del kwargs['add_form'].fields['aiid']
-            del kwargs['add_form'].fields['default_chat_responses']
-        if 'import_form' not in kwargs:
-            kwargs['import_form'] = ImportAIForm()
-
-        return super().get_context_data(**kwargs)
+    template_name = 'ai_add_form.html'
+    success_url = 'studio:ai.dashboard'
 
     def form_valid(self, form):
         """
@@ -291,47 +274,58 @@ class AICreateView(FormView):
         if new_ai['status']['code'] in [200, 201]:
             level = messages.SUCCESS
             redirect_url = reverse_lazy(
-                self.success_url,
+                self.request.GET.get('next', self.success_url),
                 kwargs={'aiid': new_ai['aiid']}
             )
         else:
             level = messages.ERROR
-            redirect_url = reverse_lazy(self.fail_url)
+            redirect_url = reverse_lazy('studio:ai.add')
 
         messages.add_message(self.request, level, new_ai['status']['info'])
 
         return HttpResponseRedirect(redirect_url)
 
-    def post(self, request, *args, **kwargs):
+
+@method_decorator(login_required, name='dispatch')
+class AIImportView(FormView):
+    """Create a new AI or import one from an export JSON file"""
+
+    form_class = ImportAIForm
+    template_name = 'ai_import_form.html'
+    success_url = 'studio:edit_bot'
+
+    def form_valid(self, form):
         """
-        Determine which form is being submitted if there is a file in request
-        it would be an Import form, if not and there is a `name` in POST part
-        it's an Add form.
+        Send new AI to API, if successful redirects to second step using AIID
+        as a parameter, if not raises a error message and redirect back to the
+        form.
         """
 
-        if request.FILES:
-            form_class = ImportAIForm
-        elif 'name' in request.POST:
-            form_class = AddAIForm
+        new_ai = form.save(token=self.request.session.get('token', False))
 
-        # get the form
-        form = self.get_form(form_class=form_class)
-
-        # validate
-        if form.is_valid():
-            return self.form_valid(form)
+        # Check if save was successful
+        if new_ai['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+            redirect_url = reverse_lazy(
+                self.request.GET.get('next', self.success_url),
+                kwargs={'aiid': new_ai['aiid']}
+            )
         else:
-            return self.form_invalid(form)
+            level = messages.ERROR
+            redirect_url = reverse_lazy('studio:ai.import')
+
+        messages.add_message(self.request, level, new_ai['status']['info'])
+
+        return HttpResponseRedirect(redirect_url)
 
 
 @method_decorator(login_required, name='dispatch')
 class AIUpdateView(StudioViewMixin, FormView):
     """Manage AI settings"""
 
-    form_class = AddAIForm
+    form_class = SettingsAIForm
     template_name = 'settings_form.html'
     success_url = 'studio:settings'
-    fail_url = 'studio:settings'
 
     def get_initial(self):
         """Returns the initial data to use for forms on this view."""
@@ -356,17 +350,13 @@ class AIUpdateView(StudioViewMixin, FormView):
 
         # Check if save was successful
         if ai['status']['code'] not in [200, 201]:
-            url = self.fail_url
             level = messages.ERROR
         else:
-            url = self.success_url
             level = messages.SUCCESS
 
         redirect_url = reverse_lazy(
-            url,
-            kwargs={
-                'aiid': self.kwargs['aiid']
-            }
+            self.success_url,
+            kwargs={'aiid': self.kwargs['aiid']}
         )
         messages.add_message(self.request, level, ai['status']['info'])
 

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% load i18n crispy_forms_tags static %}
+
+{% block title %}{% trans 'Create bot' %}{% endblock %}
+
+{% block body.attributes %} class="fixed workspace"{% endblock body.attributes %}
+
+{% block header %}
+  {% include 'console_header.html' %}
+{% endblock %}
+
+{% block navigation %}
+  {% include 'navigation.html' %}
+{% endblock %}
+
+{% block footer %}
+  {% include 'console_footer.html' %}
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <div class="box">
+
+      <div class="box-header with-border">
+        <h2 class="box-title">{% trans 'Create new bot' %}</h2>
+      </div>
+
+      <div class="box-body">
+
+        <form action="{{ request.build_absolute_uri }}" method="post" class="persistent" id="add_form">
+          {% csrf_token %}
+
+          {{ form | crispy }}
+        </form>
+
+      </div>
+
+      <div class="box-footer">
+        <a href="{% url 'studio:ai.wizard' %}" class="btn btn-primary">{% trans 'Back' %}</a>
+        <button form="add_form" class="btn btn-success" tabindex="6">{% trans 'Create' %}</button>
+      </div>
+
+    </div>
+
+  </div>
+{% endblock %}
+
+{% block stylesheets.vendors %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha256-4qBzeX420hElp9/FzsuqUNqVobcClz1BjnXoxUDSYQ0=" crossorigin="anonymous" />
+{% endblock %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tokenfield.css' %}">
+{% endblock %}
+
+{% block javascripts.vendors %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha256-jdwX0QzXB7z7Xc7Vz0ovtIHWO5qIZWg0aLcGv44JDgE=" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script src="{% static 'js/tokenfield.js' %}"></script>
+  <script src="{% static 'js/forms.js' %}"></script>
+{% endblock javascripts %}
