@@ -21,34 +21,55 @@
         <a href="{% url 'studio:intents.add' ai.aiid %}" class="btn btn-success">{% trans 'New intent' %}</a>
       </div>
 
-      <div class="box-body">
+      <div id="INTENTS_LIST" class="box-body">
 
-        <table class="table table-fixed">
+        <div id="FIELD_{{ field.id_for_label|upper }}" class="form-group">
+          <input class="search form-control" placeholder="Search" />
+          {% render_field field|add_class:'form-control' %}
+        </div>
+
+        <table class="table table-fixed intents">
           <thead>
             <tr>
-              <th class="name-column">{% trans 'Name' %}</th>
-              <th class="expressions-column">{% trans 'Expressions' %}</th>
-              <th class="responses-column">{% trans 'Responses' %}</th>
+              <th class="name-column sort" data-sort="name-column">
+                {% trans 'Name' %}
+              </th>
+              <th class="expressions-column">
+                {% trans 'Human Says' %}
+              </th>
+              <th class="responses-column">
+                {% trans 'Bot Responds' %}
+              </th>
+              <th class="updated-column sort" data-sort="updated-column">
+                {% trans 'Last Updated' %}
+              </th>
               <th class="actions-column"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="list">
             {% for intent in intents %}
               <tr>
                 <td class="name-column">
-                  <a href="{% url 'studio:intents.edit' ai.aiid intent %}"
+                  <a href="{% url 'studio:intents.edit' ai.aiid intent.intent_name %}"
                      data-toggle="tooltip"
-                    title="edit {{ intent }}">{{ intent }}</a>
+                    title="edit {{ intent.intent_name }}">{{ intent.intent_name }}</a>
                 </td>
                 <td class="expressions-column">
-                  {% for expression in intent.expressions %}
+                  {% for expression in intent.user_says|slice:':5' %}
                     <span class="bubble">{{ expression }}</span>
                   {% endfor %}
+
+                  {% if intent.user_says|length > 5 %}
+                    <span class="bubble">+{{ intent.user_says|length|add:-5 }} more</span>
+                  {% endif %}
                 </td>
                 <td class="responses-column">
                   {% for response in intent.responses %}
                     <span class="bubble">{{ response }}</span>
                   {% endfor %}
+                </td>
+                <td class="updated-column" data-timestamp="{{ intent.updated|date:'U' }}">
+                  {{ intent.updated|timesince }}
                 </td>
                 <td class="actions-column">
                   <button class="btn btn-default fa fa-ellipsis-v text-gray"
@@ -59,12 +80,12 @@
                   </button>
 
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{% url 'studio:intents.edit' ai.aiid intent %}" class="dropdown-item">{% trans 'edit' %}</a>
+                    <a href="{% url 'studio:intents.edit' ai.aiid intent.intent_name %}" class="dropdown-item">{% trans 'edit' %}</a>
                     <button class="dropdown-item"
                       data-toggle="modal"
                       data-target="#delete_element"
-                      data-id="{{ name }}"
-                      data-action="{% url 'studio:intent.delete' ai.aiid intent %}">{% trans 'delete' %}</button>
+                      data-id="{{ intent.intent_name }}"
+                      data-action="{% url 'studio:intent.delete' ai.aiid intent.intent_name %}">{% trans 'delete' %}</button>
                   </div>
                 </td>
               </tr>
@@ -93,8 +114,27 @@
   <link rel="stylesheet" href="{% static 'css/elements.css' %}">
 {% endblock %}
 
+{% block javascripts.vendors %}
+  {{ block.super }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js" integrity="sha256-YqOIp4MygNx9/lcWr5lpcR88Ki/MNMWvJJkH0eK+fHM=" crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block javascripts %}
   {{ block.super }}
 
   <script src="{% static 'js/elements.js' %}"></script>
+
+  <script>
+    var options = {
+      valueNames: [
+        'name-column',
+        'expressions-column',
+        'responses-column',
+        { attr: 'data-timestamp', name: 'updated-column' }
+      ]
+    };
+
+    var userList = new List('INTENTS_LIST', options);
+  </script>
 {% endblock %}
