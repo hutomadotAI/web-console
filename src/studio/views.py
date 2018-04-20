@@ -6,7 +6,6 @@ import datetime
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.messages import get_messages
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import redirect
@@ -465,8 +464,6 @@ class IntentsView(StudioViewMixin, ListView):
     template_name = 'intents_list.html'
 
     def get_queryset(self, **kwargs):
-        import random
-
         intents = get_intent_list(
             self.request.session.get('token', False),
             self.kwargs['aiid']
