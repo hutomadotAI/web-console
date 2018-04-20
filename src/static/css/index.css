@@ -1476,15 +1476,21 @@ select:not([multiple]) {
 }
 
 .direct-chat-name {
+  flex-shrink: 1;
   font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .direct-chat-timestamp {
   color: #999;
-  opacity: 0;
-  transition: opacity 400ms ease-in;
-  transition-delay: 1s;
   margin: 0 0.5rem;
+  opacity: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition-delay: 1s;
+  transition: opacity 400ms ease-in;
+  white-space: nowrap;
 }
 
 .direct-chat-msg:hover .direct-chat-timestamp {
