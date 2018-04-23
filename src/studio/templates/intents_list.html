@@ -1,6 +1,6 @@
 {% extends 'studio_base.html' %}
 
-{% load i18n widget_tweaks static %}
+{% load i18n widget_tweaks static tz studio_tags %}
 
 {% block title %}{% trans 'Bot intents' %}{% endblock %}
 
@@ -68,9 +68,12 @@
                     <span class="bubble">{{ response }}</span>
                   {% endfor %}
                 </td>
-                <td class="updated-column" data-timestamp="{{ intent.updated|date:'U' }}">
-                  {{ intent.updated|timesince }}
-                </td>
+                {% with updated=intent.last_updated|to_date:'%Y-%m-%dT%H:%M:%S.%fZ' %}
+                   <td class="updated-column" data-timestamp="{{ updated|date:'U' }}">
+                     {{ updated|timesince }}
+                   </td>
+                {% endwith %}
+
                 <td class="actions-column">
                   <button class="btn btn-default fa fa-ellipsis-v text-gray"
                     data-toggle="dropdown"
