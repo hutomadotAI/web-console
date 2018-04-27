@@ -41,10 +41,7 @@ def create_API_user(sender, instance, *args, **kwargs):
     """Try to create a API user do it only on creation time"""
 
     if instance.pk is None:
-        instance.api_user = post_user(
-            settings.API_ADMIN_TOKEN,
-            instance
-        )
+        instance.api_user = post_user(settings.API_ADMIN_TOKEN)
 
         logger.info('create_API_user for {email}'.format(email=instance.email))
 
