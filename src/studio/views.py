@@ -512,15 +512,25 @@ class IntentsEditView(StudioViewMixin, FormView):
         if intent['status']['code'] in [200, 201]:
             level = messages.SUCCESS
 
-            redirect_url = HttpResponseRedirect(
-                reverse_lazy(
+            redirect = self.request.GET.get('next', False)
+
+            if redirect:
+                messages.add_message(
+                    self.request, messages.SUCCESS, _('Intent saved')
+                )
+
+                response = HttpResponseRedirect(reverse_lazy(
+                    redirect,
+                    kwargs={'aiid': self.kwargs['aiid']}
+                ))
+            else:
+                response = HttpResponseRedirect(reverse_lazy(
                     'studio:intents.edit',
                     kwargs={
                         'aiid': self.kwargs['aiid'],
                         'intent_name': intent['cleaned_data']['intent_name']
                     }
-                )
-            )
+                ))
 
             template = 'messages/retrain.html'
             message = loader.get_template(template)
@@ -533,13 +543,13 @@ class IntentsEditView(StudioViewMixin, FormView):
 
         else:
             level = messages.ERROR
-            redirect_url = self.render_to_response(
+            response = self.render_to_response(
                 self.get_context_data(form=form)
             )
 
             messages.add_message(self.request, level, intent['status']['info'])
 
-        return redirect_url
+        return response
 
     def form_invalid(self, form, formset):
         """If the form or formset is invalid, render the invalid form."""

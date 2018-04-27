@@ -975,6 +975,7 @@ select:not([multiple]) {
   padding: 0 1rem;
 }
 
+.box-footer .btn + .btn,
 .box-header .btn + .btn {
   margin-left: 0.2rem;
 }

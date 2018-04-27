@@ -66,7 +66,7 @@ document.addEventListener('change', function handleChange(event) {
  */
 function handleChange(event) {
   if (event.target.form && event.target.form.classList.contains('persistent')) {
-    const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.form.id || 'none'}]`)
+    const SUBMIT_BUTTONS = document.querySelectorAll(`.btn-primary[form=${event.target.form.id || 'none'}]`)
 
     for(let button of SUBMIT_BUTTONS) {
       button.classList.add('btn-success')
