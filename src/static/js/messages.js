@@ -1,18 +1,22 @@
-const MESSAGES = document.querySelector('.messages')
+const MESSAGES = document.querySelector('.messages');
 
 /**
  * Add a new message
  *
  * @param  {string} level    Message level in  order `error`, `warning`,
  *                           `success` or `info`
- * @param  {string} messsage Actual message to be presented
+ * @param  {string} message Actual message to be presented
  *
  * @return {HTMLElement}     Message element
  */
-function messageAdd (level, messsage) {
-  var message = document.createElement('div')
-  message.classList.add('alert', `alert-${ level }`)
-  message.innerText = messsage
+function messageCreate(level, message) {
+  return `<div class="alert alert-${ level }">${ message }</div>`;
+}
 
-  return message
+function messageAdd(level, message) {
+  MESSAGES.innerHTML += messageCreate(level, message);
+}
+
+function messageClear() {
+  MESSAGES.innerHTML = '';
 }

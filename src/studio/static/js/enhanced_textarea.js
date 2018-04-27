@@ -2,14 +2,60 @@
   const TEXTAREA = document.getElementById('id_training_data');
   const FILE = document.getElementById('FILE');
 
+  const MIMETYPE_BIANRY = {
+    '89504E47': 'image/png',
+    '47494638': 'image/gif',
+    '25504446': 'application/pdf',
+    'FFD8FFDB': 'image/jpeg',
+    'FFD8FFE0': 'image/jpeg',
+    '504B0304': 'application/zip'
+  };
+
   /**
-   * Updates textarea and removes loading class
+   * Check first 4 bites if they correspond to a binary file signature. More
+   * info:
+   * https://medium.com/the-everyday-developer/detect-file-mime-type-using-magic-numbers-and-javascript-16bc513d4e1e
+   *
+   * @param  {[type]}  bytesArray   First bytes used to match the file signature
+   * @return {Boolean}              Binary or not :)
+   */
+  function isBinary(bytesArray) {
+    const HEX = bytesArray.map(byte => byte.toString(16)).join('').toUpperCase();
+    return HEX in MIMETYPE_BIANRY;
+  }
+
+  /**
+   * If file is text not binary updates textarea and removes loading class.
+   * Decodes UTF-8 buffer into string using TextDecoder.
    *
    * @param  {Event object} event
    */
-  function loadHandler(event) {
+  function loadHandler() {
+    const UINT = new Uint8Array(this.result);
+
+    if(isBinary(UINT.slice(0, 4))) {
+      messageAdd('error', 'File type not supported, use a text file');
+    } else {
+      TEXTAREA.value += new TextDecoder().decode(UINT);
+    }
+
     TEXTAREA.classList.remove('loading');
-    TEXTAREA.value += this.result;
+
+  }
+
+  /**
+   * If file is the right size process it's content
+   *
+   * @param  {File object} file
+   */
+  function processFile(file) {
+    if (file.size > 1000000) {
+      throw(`<b>${ file.name }</b>, File size is to big max. 1mb`);
+    }
+
+    let reader = new FileReader();
+    reader.addEventListener('load', loadHandler);
+    reader.readAsArrayBuffer(file);
   }
 
   /**
@@ -19,6 +65,7 @@
    */
   function fileHandler(event) {
     event.preventDefault();
+    messageClear();
 
     TEXTAREA.value = '';
 
@@ -26,10 +73,16 @@
 
     TEXTAREA.classList.add('loading');
 
-    for (file of files) {
-      let reader = new FileReader();
-      reader.addEventListener('load', loadHandler);
-      reader.readAsText(file);
+    for (let file of files) {
+      try {
+        processFile(file);
+      }
+      catch(error) {
+        messageAdd('error', error);
+        console.error(error);
+
+        TEXTAREA.classList.remove('loading');
+      }
     }
 
   }
@@ -39,8 +92,8 @@
    *
    * @param  {Event object} event
    */
-  function syntheticChange(event) {
-    TEXTAREA.dispatchEvent(new Event('change', { 'bubbles': true }))
+  function syntheticChange() {
+    TEXTAREA.dispatchEvent(new Event('change', { 'bubbles': true }));
   }
 
   TEXTAREA.addEventListener('drop', fileHandler);

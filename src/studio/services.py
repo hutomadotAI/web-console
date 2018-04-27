@@ -146,7 +146,7 @@ def post_ai(token, ai_data, aiid=''):
         'is_private': False,
         'personality': 0,
         'confidence': 0.4,
-        'locale': 'en-US',
+        'locale': 'en-US'
     }
 
     return fetch_api(
