@@ -512,8 +512,6 @@ class IntentsEditView(StudioViewMixin, FormView):
         if intent['status']['code'] in [200, 201]:
             level = messages.SUCCESS
 
-            logger.warn(intent)
-
             redirect_url = HttpResponseRedirect(
                 reverse_lazy(
                     'studio:intents.edit',

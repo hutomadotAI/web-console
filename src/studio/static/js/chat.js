@@ -217,9 +217,14 @@ function requestAnswerAI(message) {
           sessionStorage.setItem(CHAT_ID_KEY, response.chatId);
 
           if (response.status.code == 200) {
-            level = 'normal';
-            message = response.result.answer;
-            score = response.result.score;
+            if (response.result.chatTarget == 'other') {
+              level = 'warning';
+              message = 'Chat disabled — handed over to external agent';
+            } else {
+              level = 'normal';
+              message = response.result.answer;
+              score = response.result.score;
+            }
           } else {
             message = response.status.info;
           }

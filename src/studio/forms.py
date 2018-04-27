@@ -342,6 +342,54 @@ class SettingsAIForm(AddAIForm):
         })
     )
 
+    handover_message = forms.CharField(
+        help_text=_('This is sent when the bot doesn\'t understand the user and will no longer respond until a human takes over.'),
+        label='',
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'data-limit': 1,
+            'data-minLength': 1,
+            'data-maxlength': 250,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
+            'required': False,
+            'placeholder': _('add bot handover message'),
+            'tabindex': 5
+        })
+    )
+
+    handover_reset_timeout_seconds = forms.IntegerField(
+        label=_('Handover Reset Timeout'),
+        required=False,
+        validators=[
+            MinValueValidator(1)
+        ],
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'min': 1,
+            'required': False,
+            'placeholder': _('ex. 15'),
+        })
+    )
+
+    error_threshold_handover = forms.ChoiceField(
+        label=_('Handover responses'),
+        required=False,
+        choices=[
+            (-1, _('Off')),
+            (0, _('Handover immediately')),
+            (1, _('Handover after 1 default error response')),
+            (2, _('Handover after 2 default error responses')),
+            (3, _('Handover after 3 default error responses')),
+            (4, _('Handover after 4 default error responses'))
+        ],
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'required': False
+        })
+    )
+
 
 class ImportAIForm(forms.Form):
 

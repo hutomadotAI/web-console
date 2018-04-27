@@ -37,41 +37,8 @@
   padding: 0;
 }
 
-#INTENT_FORM h5 {
-  width: 100%;
-  display: flex;
-  margin: 0 0 1.5rem;
-}
-
 .advanced {
   margin: 0 0 1.5rem;
-}
-
-#INTENT_FORM .advanced-toggle {
-  padding: 0.75rem 0;
-  margin-right: auto;
-  flex-grow: 1;
-  font-size: 0.875rem;
-  font-weight: bold;
-  color: #98A8BA;
-  line-height: 1.5rem;
-  position: relative;
-}
-
-#INTENT_FORM h5 .fa {
-  color: #999;
-  font-size: 0.875rem;
-  height: 1.5rem;
-  line-height: 1.5rem;
-  margin: 0.75rem 0;
-  text-align: center;
-  width: 1.5rem;
-}
-
-#INTENT_FORM h5 button {
-  background-color: transparent;
-  border: none;
-  text-align: left;
 }
 
 #INTENT_FORM .advanced-toggle::after {

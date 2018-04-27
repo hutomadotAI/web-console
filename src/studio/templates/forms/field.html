@@ -1,7 +1,9 @@
 {% load widget_tweaks %}
 
 <div id="FIELD_{{ field.id_for_label|upper }}" class="form-group">
-  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {% if field.label %}
+    <label for="{{ field.id_for_label }}">{{ field.label|safe  }}</label>
+  {% endif %}
 
   {% render_field field|add_class:'form-control' %}
 

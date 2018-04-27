@@ -94,3 +94,8 @@
   top: 0;
   z-index: -1;
 }
+
+/* Hide input for single token fields */
+.tokenfield [data-limit="1"] ~ .token + input {
+  display: none;
+}

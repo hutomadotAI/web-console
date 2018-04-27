@@ -6,3 +6,31 @@
 #div_id_aiid {
   order: -1;
 }
+
+.form-group.entity_name-group {
+  max-width: 30%;
+}
+
+.form-group.n_prompts-group {
+  width: 7rem;
+}
+
+#FIELD_ID_ERROR_THRESHOLD_HANDOVER {
+  flex-grow: 2;
+}
+
+#FIELD_ID_HANDOVER_MESSAGE {
+  order: 1;
+  width: 100%;
+}
+
+.form-group.prompts-group .control-label {
+  display: none;
+}
+
+.form-group.required-group .controls {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 6rem;
+}

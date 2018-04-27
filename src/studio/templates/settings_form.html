@@ -1,6 +1,6 @@
 {% extends 'studio_base.html' %}
 
-{% load i18n crispy_forms_tags static %}
+{% load i18n widget_tweaks static %}
 
 {% block title %}{% trans 'Bot Settings' %}{% endblock %}
 
@@ -21,7 +21,58 @@
         <form method="post" class="persistent" id="SETTINGS_FORM">
           {% csrf_token %}
 
-          {{ form | crispy }}
+          {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+
+          {% include 'forms/field.html' with field=form.aiid %}
+
+          {% include 'forms/field.html' with field=form.name %}
+
+          {% include 'forms/field.html' with field=form.description %}
+
+          {% include 'forms/field.html' with field=form.timezone %}
+
+          <hr>
+
+          <h5>
+
+            <span class="text">{% trans 'Bot responses' %}</span>
+
+            <a href="#"
+              class="fa fa-question-circle"
+              target="_blank"
+              data-toggle="tooltip"
+              title="{% trans 'Documentation' %}"></a>
+
+          </h5>
+
+          {% include 'forms/field.html' with field=form.default_chat_responses %}
+
+          <div class="form-formset">
+            {% include 'forms/field.html' with field=form.error_threshold_handover %}
+
+            {% with field=form.handover_reset_timeout_seconds %}
+
+              <div id="FIELD_{{ field.id_for_label|upper }}" class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label|safe  }}</label>
+
+                <div class="input-group">
+                  {% render_field field|add_class:'form-control' %}
+
+                  <div class="input-group-append">
+                    <span class="input-group-text">{% trans 'in minutes' %}</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+            {% endwith %}
+
+            {% include 'forms/field.html' with field=form.handover_message %}
+
+          </div>
 
         </form>
 
@@ -149,6 +200,7 @@
   {{ block.super }}
 
   <link rel="stylesheet" href="{% static 'css/tokenfield.css' %}">
+  <link rel="stylesheet" href="{% static 'css/formset.css' %}">
   <link rel="stylesheet" href="{% static 'css/settings.css' %}">
 {% endblock %}
 
