@@ -378,7 +378,6 @@ class SettingsAIForm(AddAIForm):
         required=False,
         choices=[
             (-1, _('Off')),
-            (0, _('Handover immediately')),
             (1, _('Handover after 1 default error response')),
             (2, _('Handover after 2 default error responses')),
             (3, _('Handover after 3 default error responses')),
@@ -389,6 +388,11 @@ class SettingsAIForm(AddAIForm):
             'required': False
         })
     )
+
+    def clean_handover_reset_timeout_seconds(self):
+        """Change minutes to seconds"""
+
+        return self.cleaned_data['handover_reset_timeout_seconds'] * 60
 
 
 class ImportAIForm(forms.Form):

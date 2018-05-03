@@ -337,6 +337,8 @@ class AIUpdateView(StudioViewMixin, FormView):
         initial['default_chat_responses'] = settings.TOKENFIELD_DELIMITER.join(
             initial['default_chat_responses']
         )
+
+        initial['handover_reset_timeout_seconds'] = int(initial['handover_reset_timeout_seconds'] / 60)
         return initial
 
     def form_valid(self, form):
