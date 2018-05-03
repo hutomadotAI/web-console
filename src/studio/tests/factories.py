@@ -26,6 +26,9 @@ class AiFactory(factory.Factory):
     linked_bots = [
         1
     ]
+    handover_reset_timeout_seconds = 0
+    error_threshold_handover = -1
+    handover_message = 'Some default response'
 
 
 class AIDetails(factory.Factory):
