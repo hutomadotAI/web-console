@@ -436,9 +436,9 @@ class TestAIDetailView(TestCase):
             kwargs={'aiid': self.ai['aiid']}
         ))
 
-        self.assertContains(response, 'Simply upload historical conversations or conversation samples between your users.')
-        self.assertContains(response, 'An Intent is a way to flag completion of a specific task during a conversation.')
-        self.assertContains(response, 'Think of bot skills as Lego pieces that you can mix and match together to build your own AI.')
+        self.assertContains(response, 'Build a bot from text-based simple Q&A using the inline editor.')
+        self.assertContains(response, 'Want to structure your dialog, build more complex Q&A or connect to 3rd party services.')
+        self.assertContains(response, 'Speed up your bot building process by starting with one of our Templates from the store.')
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai')
@@ -525,7 +525,7 @@ class TestAIDetailView(TestCase):
         self.assertContains(response, 'bot 4')
         self.assertContains(response, 'bot 5')
         self.assertNotContains(response, 'bot 6')
-        self.assertNotContains(response, 'Think of bot skills as Lego pieces that you can mix and match together to build your own AI.')
+        self.assertNotContains(response, 'Speed up your bot building process by starting with one of our Templates from the store.')
 
 
 class TestAIUpdateView(TestCase):
