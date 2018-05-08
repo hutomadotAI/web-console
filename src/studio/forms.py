@@ -290,7 +290,7 @@ class AddAIForm(forms.Form):
     default_chat_responses = forms.CharField(
         help_text=_('To create a new response press enter'),
         label=_('Default Response <small>This is sent when the bot doesn’t understand the user.</small>'),
-        initial=_('We didn’t understand that, can you try asking another question or rephrasing.'),
+        initial=_('We didn\'t understand that, can you try asking another question or rephrasing.'),
         max_length=255,
         required=False,
         widget=forms.TextInput(attrs={
