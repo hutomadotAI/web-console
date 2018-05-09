@@ -364,11 +364,11 @@ class SettingsAIForm(AddAIForm):
         label=_('Handover Reset Timeout'),
         required=False,
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(0)
         ],
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
-            'min': 1,
+            'min': 0,
             'required': False,
             'placeholder': _('ex. 15'),
         })
