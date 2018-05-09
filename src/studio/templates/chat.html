@@ -27,6 +27,11 @@
         data-toggle="tooltip"
         title="{% trans 'Removes the history and resets chat session' %}"
         id="action.history:clear">{% trans 'Clear history' %}</button>
+      <button class="dropdown-item"
+        action="{% url 'studio:proxy.handover.reset' ai.aiid %}"
+        data-toggle="tooltip"
+        title="{% trans 'Handle back chat to bot instad of human agant' %}"
+        id="action.handle:reset">{% trans 'Reset handover to human' %}</button>
     </div>
   </div>
 

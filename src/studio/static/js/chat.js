@@ -15,6 +15,7 @@ var waiting = false;
 // Attach listeners
 document.getElementById('action.logs:toggle').addEventListener('click', toggleLogs);
 document.getElementById('action.logs:wrap').addEventListener('click', wrapLines);
+document.getElementById('action.handle:reset').addEventListener('click', resetHandle);
 document.getElementById('action.history:clear').addEventListener('click', clearHistory);
 document.addEventListener('keyup', function historyStepsHandler(event) {
   if (event.target == CHAT_INPUT){
@@ -25,6 +26,36 @@ document.addEventListener('keyup', function historyStepsHandler(event) {
     }
   }
 });
+
+function resetHandle() {
+  fetch(this.getAttribute('action'), {
+    credentials: 'same-origin',
+    method: 'post',
+    headers: {
+      'X-CSRFToken': Cookies.get('csrftoken'),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      chatId: sessionStorage.getItem(CHAT_ID_KEY)
+    })
+  })
+    .then(response => response.json())
+    .then(response => {
+      if (response.status.code == 200) {
+        createBotMessage(response.status.info, 'success', 1, response);
+      } else {
+        throw({
+          message: response.status.info,
+          response: response
+        });
+      }
+    })
+    .catch(error => {
+      let level = error.response.status.code < 500 ? 'warning' : 'error';
+      createBotMessage(error.message, level, -1, error.response);
+      console.error(error);
+    });
+}
 
 function historyStepper(shift) {
   var userEntries = HISTORY.filter(entry => entry[0] == 'USER');
@@ -217,13 +248,14 @@ function requestAnswerAI(message) {
           sessionStorage.setItem(CHAT_ID_KEY, response.chatId);
 
           if (response.status.code == 200) {
-            if (response.result.chatTarget == 'other') {
-              level = 'warning';
-              message = 'Chat disabled — handed over to external agent';
-            } else {
+            if (response.result.chatTarget === 'ai') {
               level = 'normal';
               message = response.result.answer;
               score = response.result.score;
+            } else {
+              level = 'warning';
+              message = response.result.answer || 'Chat disabled — handed over to external agent';
+              score = 0;
             }
           } else {
             message = response.status.info;

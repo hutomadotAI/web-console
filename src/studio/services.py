@@ -251,6 +251,19 @@ def post_facebook_customisations(token, aiid, payload):
     )
 
 
+def post_handover_reset(token, aiid, chatId, target='ai'):
+    """Reset handover status"""
+    return fetch_api(
+        '/ai/{aiid}/chat/target?chatId={chatId}&target={target}',
+        token=token,
+        aiid=aiid,
+        chatId=chatId,
+        target=target,
+        timeout=config.API_FACEBOOK_TIMEOUT,
+        method='post'
+    )
+
+
 def put_training_update(token, aiid):
     """Update AI training"""
     return fetch_api(

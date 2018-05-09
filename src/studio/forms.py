@@ -344,6 +344,7 @@ class SettingsAIForm(AddAIForm):
 
     handover_message = forms.CharField(
         help_text=_('This is sent when the bot doesn\'t understand the user and will no longer respond until a human takes over.'),
+        initial=_('Chat disabled — handed over to external agent'),
         label='',
         max_length=255,
         required=False,

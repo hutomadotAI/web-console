@@ -52,6 +52,7 @@ from studio.services import (
     put_training_update,
     post_facebook_connect_token,
     post_facebook_customisations,
+    post_handover_reset,
 )
 
 logger = logging.getLogger(__name__)
@@ -898,3 +899,19 @@ class ProxyInsightsChartView(View):
         response = get_insights_chart(token, aiid, metric, fromDate, toDate)
 
         return JsonResponse(response)
+
+
+@method_decorator(login_required, name='dispatch')
+class ProxyHandoverResetView(View):
+    """Reset handover to human state"""
+
+    def post(self, request, aiid, *args, **kwargs):
+
+        # get date params from the request body
+        chatId = json.loads(request.body).get('chatId', '')
+
+        return JsonResponse(post_handover_reset(
+            self.request.session.get('token', False),
+            aiid,
+            chatId
+        ))
