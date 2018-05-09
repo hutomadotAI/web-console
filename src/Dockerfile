@@ -1,4 +1,4 @@
-FROM python:3.6.4-slim-jessie
+FROM python:3.6.5-slim-jessie
 
 
 # With Debian jessie slim image, need to install the mysql libs
