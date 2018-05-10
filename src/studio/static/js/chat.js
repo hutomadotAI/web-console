@@ -136,9 +136,18 @@ function toggleSpeech(event) {
   speechResponse = !speechResponse;
 }
 
+/**
+ * Starts recording and enables text to speech if not enabled yet.
+ *
+ * @return {undefined}
+ */
 function dictateSpeech() {
   var button = this;
   button.classList.toggle('record');
+
+  if (!speechResponse) {
+    document.getElementById('action.speech:toggle').click();
+  }
 
   if (recording) {
     recording = stopDictation(recording);
