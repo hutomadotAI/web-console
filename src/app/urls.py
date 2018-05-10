@@ -97,7 +97,7 @@ urlpatterns = [
     path(
         'cookies',
         RedirectView.as_view(
-            url='https://www.hutoma.ai/cookiepolicy.pdf',
+            url='https://c.fastcdn.co/u/97a8436d/27853407-0-cookiepolicy.pdf',
             permanent=True
         ),
         name='cookies'
