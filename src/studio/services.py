@@ -1,11 +1,23 @@
 import logging
 import urllib
 
-from django.conf import settings
 from constance import config
+from django.conf import settings
 from app.services import fetch_api
 
+from redis.exceptions import ResponseError, ConnectionError
+
 logger = logging.getLogger(__name__)
+
+try:
+    API_LOGS_TIMEOUT = config.API_LOGS_TIMEOUT
+    API_FACEBOOK_TIMEOUT = config.API_FACEBOOK_TIMEOUT
+    API_CHAT_TIMEOUT = config.API_CHAT_TIMEOUT
+except (ConnectionError, ResponseError) as e:
+    logger.warning('Django constance failed to use Redis, falling back to Settings')
+    API_LOGS_TIMEOUT = settings.API_LOGS_TIMEOUT
+    API_FACEBOOK_TIMEOUT = settings.API_FACEBOOK_TIMEOUT
+    API_CHAT_TIMEOUT = settings.API_CHAT_TIMEOUT
 
 
 def delete_ai(token, aiid):
@@ -99,7 +111,7 @@ def get_facebook_connect_state(token, aiid):
         '/ai/{aiid}/facebook',
         token=token,
         aiid=aiid,
-        timeout=config.API_FACEBOOK_TIMEOUT
+        timeout=API_FACEBOOK_TIMEOUT
     )
 
 
@@ -109,7 +121,7 @@ def get_facebook_customisations(token, aiid):
         '/ai/{aiid}/facebook/custom',
         token=token,
         aiid=aiid,
-        timeout=config.API_FACEBOOK_TIMEOUT
+        timeout=API_FACEBOOK_TIMEOUT
     )
 
 
@@ -122,7 +134,7 @@ def get_insights_chart(token, aiid, metric, fromDate, toDate):
         metric=metric,
         fromDate=fromDate,
         toDate=toDate,
-        timeout=settings.API_LOGS_TIMEOUT,
+        timeout=API_LOGS_TIMEOUT,
     )
 
 
@@ -134,7 +146,7 @@ def get_insights_chatlogs(token, aiid, fromDate, toDate):
         aiid=aiid,
         fromDate=fromDate,
         toDate=toDate,
-        timeout=settings.API_LOGS_TIMEOUT,
+        timeout=API_LOGS_TIMEOUT,
         raw=True
     )
 
@@ -230,7 +242,8 @@ def post_chat(token, aiid, payload):
         '/ai/{aiid}/chat',
         token=token,
         aiid=aiid,
-        params=payload
+        params=payload,
+        timeout=API_CHAT_TIMEOUT
     )
 
 
@@ -244,7 +257,7 @@ def post_facebook_connect_token(token, aiid, payload):
         token=token,
         aiid=aiid,
         json=payload,
-        timeout=config.API_FACEBOOK_TIMEOUT,
+        timeout=API_FACEBOOK_TIMEOUT,
         method='post'
     )
 
@@ -256,7 +269,7 @@ def post_facebook_customisations(token, aiid, payload):
         token=token,
         aiid=aiid,
         json=payload,
-        timeout=config.API_FACEBOOK_TIMEOUT,
+        timeout=API_FACEBOOK_TIMEOUT,
         method='post'
     )
 
@@ -269,7 +282,7 @@ def post_handover_reset(token, aiid, chatId, target='ai'):
         aiid=aiid,
         chatId=chatId,
         target=target,
-        timeout=config.API_FACEBOOK_TIMEOUT,
+        timeout=API_FACEBOOK_TIMEOUT,
         method='post'
     )
 
@@ -295,6 +308,6 @@ def put_facebook_action(token, aiid, params):
         token=token,
         aiid=aiid,
         query_string=urllib.parse.urlencode(params),
-        timeout=config.API_FACEBOOK_TIMEOUT,
+        timeout=API_FACEBOOK_TIMEOUT,
         method='put'
     )

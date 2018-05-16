@@ -1,8 +1,11 @@
 import logging
 from requests import Request, Session, packages
+from constance import config
 
 from django.conf import settings
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+from redis.exceptions import ResponseError, ConnectionError
 
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
@@ -10,7 +13,12 @@ from django.utils.translation import ugettext_lazy as _
 logger = logging.getLogger(__name__)
 packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-TIMEOUT = settings.API_TIMEOUT
+try:
+    TIMEOUT = config.API_DEFAULT_TIMEOUT
+except (ConnectionError, ResponseError) as e:
+    logger.warning('Django constance failed to use Redis, falling back to Settings')
+    TIMEOUT = settings.API_DEFAULT_TIMEOUT
+
 VERIFY = not settings.DEBUG
 
 
