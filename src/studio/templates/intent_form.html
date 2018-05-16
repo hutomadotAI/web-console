@@ -52,7 +52,7 @@
 
           <h5>
 
-            <button class="text advanced-toggle {% if not form.webhook.value and formset.forms|length %}collapsed{% endif %}"
+            <button class="text advanced-toggle {% if not form.webhook.value or formset.forms|length %}collapsed{% endif %}"
               tabindex="-1"
               type="button"
               data-toggle="collapse"
