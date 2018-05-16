@@ -224,6 +224,16 @@ def post_intent(payload, token, aiid):
     )
 
 
+def post_chat(token, aiid, payload):
+    """Send chat message"""
+    return fetch_api(
+        '/ai/{aiid}/chat',
+        token=token,
+        aiid=aiid,
+        params=payload
+    )
+
+
 def post_facebook_connect_token(token, aiid, payload):
     """
         Registers a connect token once the user has completed a

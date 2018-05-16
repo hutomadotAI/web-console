@@ -2,8 +2,8 @@ const LOGS = document.getElementById('LOGS');
 const CHAT_MESSAGES = document.getElementById('CHAT_MESSAGES');
 const CHAT_INPUT = document.getElementById('CHAT_INPUT');
 const VOICE_LIST = document.getElementById('VOICE_LIST');
-const CHAT_ID_KEY = `${AI.id}_chat_id`;
-const HISTORY_KEY = `${AI.id}_history`;
+const CHAT_ID_KEY = `${ AI.id }_chat_id`;
+const HISTORY_KEY = `${ AI.id }_history`;
 const HISTORY = JSON.parse(sessionStorage.getItem(HISTORY_KEY)) || [];
 var historyIndex = 0;
 
@@ -26,43 +26,6 @@ document.addEventListener('keyup', function historyStepsHandler(event) {
     }
   }
 });
-
-function resetHandle() {
-  fetch(this.getAttribute('action'), {
-    credentials: 'same-origin',
-    method: 'post',
-    headers: {
-      'X-CSRFToken': Cookies.get('csrftoken'),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      chatId: sessionStorage.getItem(CHAT_ID_KEY)
-    })
-  })
-    .then(response => response.json())
-    .then(response => {
-      if (response.status.code == 200) {
-        createBotMessage(response.status.info, 'success', 1, response);
-      } else {
-        throw({
-          message: response.status.info,
-          response: response
-        });
-      }
-    })
-    .catch(error => {
-      let level = error.response.status.code < 500 ? 'warning' : 'error';
-      createBotMessage(error.message, level, -1, error.response);
-      console.error(error);
-    });
-}
-
-function historyStepper(shift) {
-  var userEntries = HISTORY.filter(entry => entry[0] == 'USER');
-  historyIndex = Math.max(1, historyIndex + shift);
-  historyIndex = Math.min(historyIndex, userEntries.length);
-  CHAT_INPUT.value = userEntries.reverse()[historyIndex - 1][1][1];
-}
 
 // Enable features
 if ('speechSynthesis' in window) {
@@ -95,15 +58,36 @@ if ('speechSynthesis' in window) {
 // Read the chat history
 loadHistory();
 
-/**
- * Add Authorization headers to an AJAX call
- *
- * @param  {object} request AJAX call request
- *
- * @return {undefined}
- */
-function setAuthorization(request) {
-  request.setRequestHeader('Authorization', `Bearer ${ USER.token }`);
+function resetHandle() {
+  fetch(this.getAttribute('action'), {
+    credentials: 'same-origin',
+    method: 'post',
+    headers: {
+      'X-CSRFToken': Cookies.get('csrftoken'),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      chatId: sessionStorage.getItem(CHAT_ID_KEY)
+    })
+  })
+    .then(resolveStatus)
+    .catch(handleErrors)
+    .then(response => response.json())
+    .then(response => [ response.status.info, 'success', 1, response ])
+    .catch(error => error.response.json().then(response => [
+      response.status ? response.status.info : error.message,
+      'warning',
+      -1,
+      response || error
+    ]))
+    .then(data => createBotMessage(...data));
+}
+
+function historyStepper(shift) {
+  var userEntries = HISTORY.filter(entry => entry[0] == 'USER');
+  historyIndex = Math.max(1, historyIndex + shift);
+  historyIndex = Math.min(historyIndex, userEntries.length);
+  CHAT_INPUT.value = userEntries.reverse()[historyIndex - 1][1][1];
 }
 
 /**
@@ -230,74 +214,49 @@ function requestAnswerAI(message) {
 
   console.debug(message);
 
-  $.ajax({
-    url: API_URL + `/ai/${ AI.id }/chat`,
-    contentType: 'application/json; charset=utf-8',
-    beforeSend: setAuthorization,
-    data: {
+  fetch(`/proxy/ai/${ AI.id }/chat`, {
+    credentials: 'same-origin',
+    method: 'post',
+    headers: {
+      'X-CSRFToken': Cookies.get('csrftoken'),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
       chatId: sessionStorage.getItem(CHAT_ID_KEY),
       q: message
-    },
-    complete: function () {
-      waiting = false;
-      enableChat();
-    },
-    success: function (response) {
+    })
+  })
+    .then(resolveStatus)
+    .catch(handleErrors)
+    .then(response => response.json())
+    .then(resolveChatID)
+    .then(printLog)
+    .then(response => [
+      response.result.answer || 'Chat disabled — handed over to external agent',
+      response.result.chatTarget === 'ai' ? 'normal' : 'warning',
+      response.result.score,
+      response
+    ])
+    .catch(error => [ error.message, 'error', -1, error ])
+    .then(data => createBotMessage(...data))
+    .then(() => {
+      waiting = enableChat();
+    });
+}
 
-      var level = 'error';
-      var message = 'Oops, there was an error…';
-      var score = -1;
-
-      if (response) {
-        // Write response in JSON message box
-        printLog(response);
-
-        if (response.chatId) {
-          // save the chatID
-          sessionStorage.setItem(CHAT_ID_KEY, response.chatId);
-
-          if (response.status.code == 200) {
-            if (response.result.chatTarget === 'ai') {
-              level = 'normal';
-              message = response.result.answer;
-              score = response.result.score;
-            } else {
-              level = 'warning';
-              message = response.result.answer || 'Chat disabled — handed over to external agent';
-              score = 0;
-            }
-          } else {
-            message = response.status.info;
-          }
-
-        } else {
-          message = 'No chat id returned';
-        }
-      }
-
-      createBotMessage(message, level, score, response);
-
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-
-      console.debug(jqXHR, textStatus, errorThrown);
-
-      var message = jqXHR.responseJSON.status ? jqXHR.responseJSON.status.info : 'Something unexpected occurred';
-
-      if (textStatus === 'timeout') {
-        message = 'Cannot contact the server';
-      } else if (jqXHR.status >= 500) {
-        message = 'Internal server error';
-      }
-
-      createBotMessage(message, 'error', -1, jqXHR);
-    }
-  });
+function resolveChatID(response) {
+  if (response.chatId) {
+    sessionStorage.setItem(CHAT_ID_KEY, response.chatId);
+    return response;
+  } else {
+    throw({ message: 'No chat id returned', response: response });
+  }
 }
 
 function printLog(entry) {
   document.getElementById('MSG_JSON').textContent = JSON.stringify(entry, null, 2);
   Prism.highlightAll();
+  return entry;
 }
 
 function enableChat() {
@@ -305,12 +264,14 @@ function enableChat() {
   CHAT_INPUT.disabled = false;
   CHAT_INPUT.value = '';
   CHAT_INPUT.focus();
+  return CHAT_INPUT.disabled;
 }
 
 function disableChat() {
   CHAT_MESSAGES.style.cursor = 'progress';
   CHAT_INPUT.disabled = true;
   CHAT_INPUT.value = '';
+  return CHAT_INPUT.disabled;
 }
 
 function toggleLogs(event) {

@@ -46,7 +46,7 @@
 
   {{ block.super }}
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.14.0/prism.min.js" integrity="sha256-jTGzLAqOAcOL+ALD2f2tvFY7fs6dwkOeo88xiuVHaRk=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.14.0/prism.min.js" integrity="sha256-jTGzLAqOAcOL+ALD2f2tvFY7fs6dwkOeo88xiuVHaRk=" crossorigin="anonymous" data-manual></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.14.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha256-JfF9MVfGdRUxzT4pecjOZq6B+F5EylLQLwcQNg+6+Qk=" crossorigin="anonymous"></script>
 
@@ -60,13 +60,14 @@
 
 {% block javascripts %}
   <script>
-    const API_URL = '{{ api_url }}'
+    const API_URL = '{{ api_url }}';
     const AI = {
       id: '{{ ai.aiid }}',
       name: '{{ ai.name }}'
-    }
+    };
   </script>
 
+  <script src="{% static 'js/fetch.js' %}"></script>
   <script src="{% static 'js/forms.js' %}"></script>
   <script src="{% static 'js/sanitize.js' %}"></script>
   <script src="{% static 'js/clipboard.js' %}"></script>

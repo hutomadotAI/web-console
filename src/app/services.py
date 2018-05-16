@@ -23,14 +23,14 @@ def set_headers(token):
     return headers
 
 
-def fetch_api(path, token, method='GET', data={}, json={}, files={}, headers={}, timeout=TIMEOUT, verify=VERIFY, **kwargs):
+def fetch_api(path, token, method='GET', data={}, json={}, files={}, headers={}, params={}, timeout=TIMEOUT, verify=VERIFY, **kwargs):
 
     url = settings.API_URL + path.format(**kwargs)
     headers = {**headers, **set_headers(token)}
 
     session = Session()
     request = Request(
-        method, url, data=data, json=json, files=files, headers=headers
+        method, url, data=data, json=json, files=files, headers=headers, params=params
     )
     response = session.send(request.prepare(), timeout=timeout, verify=verify)
 

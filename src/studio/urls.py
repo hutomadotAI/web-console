@@ -43,6 +43,7 @@ from studio.views import (
     OAuthView,
     ProxyAiExportView,
     ProxyAiView,
+    ProxyChatView,
     ProxyHandoverResetView,
     ProxyInsightsChartView,
     ProxyInsightsLogsView,
@@ -240,6 +241,12 @@ urlpatterns = [
         'proxy/ai/<uuid:aiid>/regenerate_webhook_secret',
         ProxyRegenerateWebhookSecretView.as_view(),
         name='proxy.ai.regenerate_webhook_secret'
+    ),
+
+    path(
+        'proxy/ai/<uuid:aiid>/chat',
+        ProxyChatView.as_view(),
+        name='proxy.ai.chat'
     ),
 
     # Remove an intent

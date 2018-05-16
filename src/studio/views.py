@@ -50,10 +50,12 @@ from studio.services import (
     post_regenerate_webhook_secret,
     put_training_start,
     put_training_update,
+    post_chat,
     post_facebook_connect_token,
     post_facebook_customisations,
     post_handover_reset,
 )
+from studio.decorators import json_login_required
 
 logger = logging.getLogger(__name__)
 
@@ -128,15 +130,15 @@ class ProxyRegenerateWebhookSecretView(View):
             return redirect('studio:summary')
 
 
-@method_decorator(login_required, name='dispatch')
 class ProxyAiView(View):
     """Temporary proxy until we open the full API to the world"""
 
+    @method_decorator(json_login_required)
     def get(self, request, aiid, *args, **kwargs):
-        ai = get_ai(self.request.session.get('token', False), aiid)
+        response = get_ai(self.request.session.get('token', False), aiid)
+        return JsonResponse(response, status=response['status']['code'])
 
-        return JsonResponse(ai, status=ai['status']['code'])
-
+    @method_decorator(login_required)
     def post(self, request, aiid, *args, **kwargs):
         """We use forms to secure POST requests"""
         form = ProxyDeleteAIForm(request.POST)
@@ -901,17 +903,28 @@ class ProxyInsightsChartView(View):
         return JsonResponse(response)
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(json_login_required, name='dispatch')
 class ProxyHandoverResetView(View):
     """Reset handover to human state"""
 
     def post(self, request, aiid, *args, **kwargs):
 
-        # get date params from the request body
-        chatId = json.loads(request.body).get('chatId', '')
-
-        return JsonResponse(post_handover_reset(
+        response = post_handover_reset(
             self.request.session.get('token', False),
             aiid,
-            chatId
-        ))
+            chatId=json.loads(request.body).get('chatId', '')
+        )
+        return JsonResponse(response, status=response['status']['code'])
+
+
+@method_decorator(json_login_required, name='dispatch')
+class ProxyChatView(View):
+    """Send chat message"""
+
+    def post(self, request, aiid, *args, **kwargs):
+        response = post_chat(
+            self.request.session.get('token', False),
+            aiid,
+            payload=json.loads(request.body)
+        )
+        return JsonResponse(response, status=response['status']['code'])
