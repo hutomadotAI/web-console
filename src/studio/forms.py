@@ -417,7 +417,13 @@ class TrainingForm(forms.Form):
     training_data = forms.CharField(
         label='',
         widget=forms.Textarea(attrs={
-            'placeholder': _('Pairs of Questions and answers…')
+            'placeholder': _("""Pairs of Questions and answers:
+
+    What is your name?
+    My name is Hu:toma.
+
+    What does Hu:toma mean?
+    It is the combination of two words, human and automata.""")
         })
     )
 
