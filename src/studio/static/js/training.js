@@ -2,12 +2,12 @@ const INTERVAL = 2000;
 const AI_TRAINING = document.getElementById('AI_TRAINING');
 const ICONS = {
   'empty': 'fa-circle-o',
-  'training': 'fa-cog fa-spin'
+  'training': 'fa-cog fa-spin',
+  'error': 'fa-exclamation-circle'
 };
-const MESSAGE = document.querySelector('.messages .alert-success');
 
 // Initial poll
-setTimeout(pollStatus, INTERVAL);
+var timeoutID = setTimeout(pollStatus, INTERVAL);
 
 /**
  * Updates HTML
@@ -17,13 +17,20 @@ setTimeout(pollStatus, INTERVAL);
  * @return {undefined}
  */
 function updateUI(ai) {
+
+
   console.debug(ai);
-  AI_TRAINING.className = `fa ${ ICONS[ai.training.status] || 'fa-circle' } circle training status-${ ai.training.status } pull-right`;
+  AI_TRAINING.className = `fa ${ ICONS[ai.training.status] || 'fa-circle' } circle training status-${ ai.training.status } pull-right`
   AI_TRAINING.title = `Training status: ${ ai.training.status }`;
   $(AI_TRAINING).tooltip('update');
 
-  if (TAB === 'training' && ai.training.status === 'completed' && MESSAGE) {
-    MESSAGE.classList.add('hide');
+  if(ai.training.status === 'error') {
+    MESSAGES.innerHTML = messageCreate('error', ai.training.message);
+    clearTimeout(timeoutID);
+  }
+
+  if (ai.training.status === 'completed') {
+    messageClear();
   }
 }
 
@@ -44,8 +51,7 @@ function updateInterval(response) {
   }
 
   localStorage.setItem('AI_status_interval', interval);
-
-  setTimeout(pollStatus, interval);
+  timeoutID = setTimeout(pollStatus, interval);
 
   return response;
 }

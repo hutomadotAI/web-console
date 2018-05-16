@@ -78,14 +78,13 @@
 {% block javascripts %}
 
   <script src="{% static 'js/forms.js' %}"></script>
-  <script src="{% static 'js/messages.js' %}"></script>
   <script src="{% static 'js/image_upload.js' %}"></script>
 
   <script>
     const AI = {
       id: '{{ ai.aiid }}',
       name: '{{ ai.name }}'
-    }
+    };
   </script>
 
 {% endblock %}

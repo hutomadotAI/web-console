@@ -1,6 +1,6 @@
 document.getElementById('regenerate_webhook').addEventListener('submit', function getSecret(event) {
-  event.preventDefault()
-  const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`)
+  event.preventDefault();
+  const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`);
 
   fetch(this.getAttribute('action'), {
     credentials: 'same-origin',
@@ -13,14 +13,14 @@ document.getElementById('regenerate_webhook').addEventListener('submit', functio
     .then(response => response.json())
     .then(webhookSecret => {
       console.debug(webhookSecret);
-      document.getElementById('WEBHOOK_SIGNING_SECRET').value = webhookSecret.status.info
+      document.getElementById('WEBHOOK_SIGNING_SECRET').value = webhookSecret.status.info;
       for(let button of SUBMIT_BUTTONS) {
-        button.disabled = false
-        button.classList.remove('loading')
+        button.disabled = false;
+        button.classList.remove('loading');
       }
-      $('#regenerate_webhook_secret').modal('hide')
+      $('#regenerate_webhook_secret').modal('hide');
     })
     .catch(error => {
-      console.error(error)
-    })
-})
+      console.error(error);
+    });
+});

@@ -149,7 +149,6 @@
 {% block javascripts %}
   {{ block.super }}
 
-  <script src="{% static 'js/messages.js' %}"></script>
   <script src="{% static 'js/formset.js' %}"></script>
   <script src="{% static 'js/tokenfield.js' %}"></script>
 
@@ -177,7 +176,7 @@
 
         // Update Entities forms counter
         TOTAL_FORMS.value++;
-      })
+      });
   </script>
 
 {% endblock %}

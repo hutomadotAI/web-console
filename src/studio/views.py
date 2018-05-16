@@ -135,8 +135,13 @@ class ProxyAiView(View):
 
     @method_decorator(json_login_required)
     def get(self, request, aiid, *args, **kwargs):
-        response = get_ai(self.request.session.get('token', False), aiid)
-        return JsonResponse(response, status=response['status']['code'])
+        ai = get_ai(self.request.session.get('token', False), aiid)
+
+        if ai['training']['status'] == 'error':
+            template = loader.get_template('messages/retrain_error.html')
+            ai['training']['message'] = template.render({'aiid': aiid})
+
+        return JsonResponse(ai, status=ai['status']['code'])
 
     @method_decorator(login_required)
     def post(self, request, aiid, *args, **kwargs):
