@@ -171,10 +171,11 @@ class ProxyAiExportView(View):
     """Temporary proxy until we open the full API to the world"""
 
     def get(self, request, aiid, *args, **kwargs):
-        return JsonResponse(get_ai_export(
+        bot = get_ai_export(
             self.request.session.get('token', False),
             aiid
-        )['bot'])
+        )['bot']
+        return JsonResponse(bot, json_dumps_params={'indent': 2})
 
 
 @method_decorator(login_required, name='dispatch')
