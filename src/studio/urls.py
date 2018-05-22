@@ -24,6 +24,7 @@ from django.urls import path, re_path
 from django.views.generic.base import RedirectView
 from studio.views import (
     AICreateView,
+    AICloneView,
     AIDetailView,
     AIImportView,
     AIListView,
@@ -83,6 +84,13 @@ urlpatterns = [
         'bots/add',
         AICreateView.as_view(),
         name='ai.add'
+    ),
+
+    # Clone a bot
+    path(
+        'bots/clone/<uuid:aiid>',
+        AICloneView.as_view(),
+        name='ai.clone'
     ),
 
     # Import a new AI

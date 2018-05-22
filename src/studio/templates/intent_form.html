@@ -122,7 +122,8 @@
 
 {% block modals %}
 
-  {% include 'modals/video_tutorial.html' with id='INTENTS_VIDEO_TUTORIAL' title='Intents video tutorial' slug='SI5XgQm660A' %}
+  {% trans 'Intents video tutorial' as title %}
+  {% include 'modals/video_tutorial.html' with id='INTENTS_VIDEO_TUTORIAL' title=title slug='SI5XgQm660A' %}
 
 {% endblock modals %}
 

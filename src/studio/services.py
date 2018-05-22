@@ -170,7 +170,26 @@ def post_ai(token, ai_data, aiid=''):
     )
 
 
-def post_import_ai(token, ai_data):
+def post_clone_ai(token, ai_data, aiid=''):
+    """Creates or updates an AI instance"""
+    ai_default = {
+        'voice': 1,
+        'is_private': False,
+        'personality': 0,
+        'confidence': 0.4,
+        'locale': 'en-US'
+    }
+
+    return fetch_api(
+        '/ai/{aiid}/clone',
+        token=token,
+        aiid=aiid,
+        method='post',
+        data={**ai_default, **ai_data}
+    )
+
+
+def post_import_ai(token, ai_data, aiid=''):
     """Creates a new AI instance based on provided JSON file"""
     return fetch_api(
         '/ai/import',

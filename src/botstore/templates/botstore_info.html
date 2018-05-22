@@ -33,4 +33,5 @@
   </div>
 </div>
 
-{% include 'modals/video_tutorial.html' with id='CREATE_BOT_VIDEO_TUTORIAL' title='Create bot video tutorial' slug='uFj73npjhbk' %}
+{% trans 'Create bot video tutorial' as title %}
+{% include 'modals/video_tutorial.html' with id='CREATE_BOT_VIDEO_TUTORIAL' title=title slug='uFj73npjhbk' %}

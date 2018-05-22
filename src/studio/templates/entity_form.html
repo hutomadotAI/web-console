@@ -14,7 +14,7 @@
     <div class="box">
       <div class="box-header with-border">
 
-        <h2 class="box-title"><i class="fa fa-sitemap text-yellow"></i>
+        <h2 class="box-title"><i class="fa fa-tag text-yellow"></i>
           {% if entity_name %}
             {% trans 'Edit' %} {{ entity_name }}
           {% else %}
@@ -27,7 +27,7 @@
           target="_blank"
           data-toggle="tooltip"
           title="{% trans 'Documentation' %}">
-            <i class="fa fa-question-circle text-sm text-yellow"></i>
+            <i class="fa fa-question-circle"></i>
         </a>
 
       </div>
@@ -64,7 +64,7 @@
     <div class="box">
       <div class="box-header with-border">
         <h2 class="box-title">
-          <i class="fa fa-sitemap text-yellow"></i> {% trans 'Entities list' %}
+          <i class="fa fa-tag text-yellow"></i> {% trans 'Entities list' %}
         </h2>
       </div>
 
@@ -73,9 +73,9 @@
           {% for entity in entities|dictsort:'entity_name'|dictsort:'is_system' %}
             <div class="element element-{{ entity.entity_name }}">
               {% if entity.is_system %}
-                <span><span class="badge badge-primary">system</span> {{ entity.entity_name }}</span>
+                <span><span class="badge badge-primary">{% trans 'system' %}</span> {{ entity.entity_name }}</span>
               {% else %}
-                <a href="{% url 'studio:entities.edit' ai.aiid entity.entity_name %}" title="edit {{ entity.entity_name }}"><span class="badge badge-success">users</span> {{ entity.entity_name }}</a>
+                <a href="{% url 'studio:entities.edit' ai.aiid entity.entity_name %}" title="edit {{ entity.entity_name }}"><span class="badge badge-success">{% trans 'users' %}</span> {{ entity.entity_name }}</a>
                 <button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:entity.delete' ai.aiid entity.entity_name %}" data-id="{{ entity.entity_name }}"></button>
               {% endif %}
             </div>
@@ -93,7 +93,8 @@
 
   {% include 'modals/delete_element.html' with id='delete_element' %}
 
-  {% include 'modals/video_tutorial.html' with id='ENTITIES_VIDEO_TUTORIAL' title='Entities video tutorial' slug='SI5XgQm660A' %}
+  {% trans 'Entities video tutorial' as title %}
+  {% include 'modals/video_tutorial.html' with id='ENTITIES_VIDEO_TUTORIAL' title=title slug='SI5XgQm660A' %}
 
 {% endblock modals %}
 

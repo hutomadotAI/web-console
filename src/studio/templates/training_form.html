@@ -2,10 +2,10 @@
 
 {% load i18n crispy_forms_tags static %}
 
-{% block title %}{% trans 'Bot training' %}{% endblock %}
+{% block title %}{% trans 'Bot Simple Q&A' %}{% endblock %}
 
 {% block navigation %}
-  {% include 'studio_navigation.html' with ai=ai active='training' %}
+  {% include 'studio_navigation.html' with ai=ai active='Simple Q&A' %}
 {% endblock %}
 
 {% block content %}
@@ -15,11 +15,15 @@
       <div class="box-header with-border">
 
         <h2 class="box-title">
-          <i class="fa fa-graduation-cap"></i> {% trans 'Edit training file' %}
+          <i class="fa fa-comments"></i> {% trans 'Edit training file' %}
         </h2>
 
-        <a href="https://help.hutoma.ai/article/3x8gqu2dg5-uploading-simple-questions-answers" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
-          <i class="fa fa-question-circle text-sm text-yellow"></i>
+        <a href="https://help.hutoma.ai/article/3x8gqu2dg5-uploading-simple-questions-answers"
+          class="documentation link"
+          target="_blank"
+          data-toggle="tooltip"
+          title="{% trans 'Documentation' %}">
+            <i class="fa fa-question-circle"></i>
         </a>
 
       </div>
@@ -55,7 +59,8 @@
 
   {% include 'modals/training_example.html' %}
 
-  {% include 'modals/video_tutorial.html' with id='TRAINING_VIDEO_TUTORIAL' title='Training video tutorial' slug='iKPthxcs9Wg' %}
+  {% trans 'Training video tutorial' as title %}
+  {% include 'modals/video_tutorial.html' with id='TRAINING_VIDEO_TUTORIAL' title=title slug='iKPthxcs9Wg' %}
 
 {% endblock %}
 

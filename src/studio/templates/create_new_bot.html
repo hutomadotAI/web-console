@@ -8,8 +8,12 @@
       {% blocktrans %}Welcome to Hu:toma AI - make your knowledge conversational{% endblocktrans %}
     </h2>
 
-    <a href="https://help.hutoma.ai/article/wlcnf354z1-creating-a-bot" class="documentation link" target="_blank"  data-toggle="tooltip" title="{% trans 'Documentation' %}">
-      <i class="fa fa-question-circle text-sm text-yellow"></i>
+    <a href="https://help.hutoma.ai/article/wlcnf354z1-creating-a-bot"
+      class="documentation link"
+      target="_blank"
+      data-toggle="tooltip"
+      title="{% trans 'Documentation' %}">
+        <i class="fa fa-question-circle"></i>
     </a>
 
   </div>
@@ -39,4 +43,5 @@
 
 </div>
 
-{% include 'modals/video_tutorial.html' with id='CREATE_BOT_VIDEO_TUTORIAL' title='Create bot video tutorial' slug='uFj73npjhbk' %}
+{% trans 'Create bot video tutorial' as title %}
+{% include 'modals/video_tutorial.html' with id='CREATE_BOT_VIDEO_TUTORIAL' title=title slug='uFj73npjhbk' %}

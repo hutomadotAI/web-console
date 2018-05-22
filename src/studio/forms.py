@@ -16,6 +16,7 @@ from app.validators import MaxSelectedValidator
 from studio.services import (
     delete_ai,
     post_ai,
+    post_clone_ai,
     post_ai_skill,
     post_entity,
     post_import_ai,
@@ -315,6 +316,11 @@ class AddAIForm(forms.Form):
 
     def save(self, *args, **kwargs):
         return post_ai(ai_data=self.cleaned_data, **kwargs)
+
+
+class CloneAIForm(AddAIForm):
+    def save(self, *args, **kwargs):
+        return post_clone_ai(ai_data=self.cleaned_data, **kwargs)
 
 
 class SettingsAIForm(AddAIForm):

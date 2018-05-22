@@ -20,6 +20,7 @@ from django.views.generic.edit import FormView
 
 from studio.forms import (
     AddAIForm,
+    CloneAIForm,
     SettingsAIForm,
     ImportAIForm,
     IntentForm,
@@ -196,7 +197,6 @@ class IntentDeleteView(View):
             template = 'messages/retrain.html'
             message_template = loader.get_template(template)
             message = message_template.render({'aiid': aiid})
-
         else:
             level = messages.ERROR
             message = deleted_intent['status']['info']
@@ -233,30 +233,24 @@ class EntityDeleteView(RedirectView):
 @method_decorator(login_required, name='dispatch')
 class AIListView(ListView):
     """List of AIs, current homepage"""
-
     context_object_name = 'ais'
     template_name = 'ai_list.html'
 
     def get_queryset(self, **kwargs):
-        try:
-            ai_list = get_ai_list(
-                self.request.session.get('token', False)
-            ).get('ai_list')
-        except Exception as e:
-            ai_list = []
-
-        return ai_list
+        return get_ai_list(
+            self.request.session.get('token', False)
+        ).get('ai_list', [])
 
 
 @method_decorator(login_required, name='dispatch')
 class AIDetailView(StudioViewMixin, TemplateView):
     """Summary of an AI"""
-
     template_name = 'ai_detail.html'
 
 
 @method_decorator(login_required, name='dispatch')
 class AIWizardView(TemplateView):
+    """Summary of an AI"""
     template_name = 'ai_wizard.html'
 
 
@@ -275,59 +269,63 @@ class AICreateView(FormView):
         form.
         """
 
-        new_ai = form.save(token=self.request.session.get('token', False))
+        ai = form.save(
+            token=self.request.session.get('token', False),
+            aiid=self.kwargs.get('aiid', '')
+        )
 
         # Check if save was successful
-        if new_ai['status']['code'] in [200, 201]:
+        if ai['status']['code'] in [200, 201]:
             level = messages.SUCCESS
-            redirect_url = reverse_lazy(
-                self.request.GET.get('next', self.success_url),
-                kwargs={'aiid': new_ai['aiid']}
+            redirect_url = HttpResponseRedirect(
+                reverse_lazy(
+                    self.request.GET.get('next', self.success_url),
+                    kwargs={'aiid': ai.get('aiid', self.kwargs.get('aiid'))}
+                )
             )
         else:
             level = messages.ERROR
-            redirect_url = reverse_lazy('studio:ai.add')
+            redirect_url = self.render_to_response(
+                self.get_context_data(form=form)
+            )
 
-        messages.add_message(self.request, level, new_ai['status']['info'])
+        messages.add_message(self.request, level, ai['status']['info'])
 
-        return HttpResponseRedirect(redirect_url)
+        return redirect_url
 
 
 @method_decorator(login_required, name='dispatch')
-class AIImportView(FormView):
+class AICloneView(AICreateView):
+    form_class = CloneAIForm
+
+    def get_initial(self, **kwargs):
+        # Get AI data
+        ai = get_ai(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        )
+
+        ai['name'] = 'Copy of {name}'.format(name=ai['name'])
+        ai['default_chat_responses'] = settings.TOKENFIELD_DELIMITER.join(
+            ai['default_chat_responses']
+        )
+
+        self.initial = ai
+
+        return super(AICloneView, self).get_initial(**kwargs)
+
+
+@method_decorator(login_required, name='dispatch')
+class AIImportView(AICreateView):
     """Create a new AI or import one from an export JSON file"""
 
     form_class = ImportAIForm
     template_name = 'ai_import_form.html'
-    success_url = 'studio:edit_bot'
-
-    def form_valid(self, form):
-        """
-        Send new AI to API, if successful redirects to second step using AIID
-        as a parameter, if not raises a error message and redirect back to the
-        form.
-        """
-
-        new_ai = form.save(token=self.request.session.get('token', False))
-
-        # Check if save was successful
-        if new_ai['status']['code'] in [200, 201]:
-            level = messages.SUCCESS
-            redirect_url = reverse_lazy(
-                self.request.GET.get('next', self.success_url),
-                kwargs={'aiid': new_ai['aiid']}
-            )
-        else:
-            level = messages.ERROR
-            redirect_url = reverse_lazy('studio:ai.import')
-
-        messages.add_message(self.request, level, new_ai['status']['info'])
-
-        return HttpResponseRedirect(redirect_url)
+    success_url = 'studio:ai.dashboard'
 
 
 @method_decorator(login_required, name='dispatch')
-class AIUpdateView(StudioViewMixin, FormView):
+class AIUpdateView(StudioViewMixin, AICreateView):
     """Manage AI settings"""
 
     form_class = SettingsAIForm
@@ -348,28 +346,6 @@ class AIUpdateView(StudioViewMixin, FormView):
 
         initial['handover_reset_timeout_seconds'] = int(initial['handover_reset_timeout_seconds'] / 60)
         return initial
-
-    def form_valid(self, form):
-        """Update an AI"""
-
-        ai = form.save(
-            aiid=self.kwargs['aiid'],
-            token=self.request.session.get('token', False)
-        )
-
-        # Check if save was successful
-        if ai['status']['code'] not in [200, 201]:
-            level = messages.ERROR
-        else:
-            level = messages.SUCCESS
-
-        redirect_url = reverse_lazy(
-            self.success_url,
-            kwargs={'aiid': self.kwargs['aiid']}
-        )
-        messages.add_message(self.request, level, ai['status']['info'])
-
-        return HttpResponseRedirect(redirect_url)
 
 
 @method_decorator(login_required, name='dispatch')

@@ -41,13 +41,14 @@
         <span class="sr-only">{% trans 'Open bot options' %}</span>
       </button>
       <div class="dropdown-menu dropdown-menu-right">
-        <a href="{% url 'studio:training' ai.aiid %}" class="dropdown-item">{% trans 'Training' %}</a>
-        <a href="{% url 'studio:skills' ai.aiid %}" class="dropdown-item">{% trans 'Skills' %}</a>
-        <a href="{% url 'studio:entities' ai.aiid %}" class="dropdown-item">{% trans 'Entities' %}</a>
+        <a href="{% url 'studio:training' ai.aiid %}" class="dropdown-item">{% trans 'Simple Q&A' %}</a>
         <a href="{% url 'studio:intents' ai.aiid %}" class="dropdown-item">{% trans 'Intents' %}</a>
+        <a href="{% url 'studio:entities' ai.aiid %}" class="dropdown-item">{% trans 'Entities' %}</a>
+        <a href="{% url 'studio:skills' ai.aiid %}" class="dropdown-item">{% trans 'Templates' %}</a>
         <a href="{% url 'studio:integrations' ai.aiid %}" class="dropdown-item">{% trans 'Integrations' %}</a>
         <a href="{% url 'studio:insights' ai.aiid %}" class="dropdown-item">{% trans 'Insights' %}</a>
         <div class="dropdown-divider"></div>
+        <a href="{% url 'studio:ai.clone' ai.aiid %}" class="dropdown-item">{% trans 'Duplicate' %}</a>
         <a href="{% url 'studio:settings' ai.aiid %}" class="dropdown-item">{% trans 'Settings' %}</a>
       </div>
     </div>
