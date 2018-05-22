@@ -38,7 +38,9 @@
             {% if integration.has_access_token %}
 
               <div class="alert alert-base">
-                <p>Connected to <b>{{ integration.facebook_username }}</b> Facebook account</p>
+                <p>
+                  {% blocktrans with username=integration.facebook_username %}Connected to <b>{{ username }}</b> Facebook account{% endblocktrans %}
+                </p>
               </div>
 
               <div class="text-center" style="padding-bottom: 20px">
@@ -55,14 +57,16 @@
                 <form action="{% url 'studio:facebook_customise' aiid=ai.aiid %}" id="FB_SETTINGS">
 
                   <div class="form-group">
-                    <label for="fb_page_greeting">{% blocktrans %}
-                      Greeting message to display on the welcome screen
-                    {% endblocktrans %}</label>
+                    <label for="fb_page_greeting">
+                      {% blocktrans %}Greeting message to display on the welcome screen{% endblocktrans %}
+                    </label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-comment-o"></i></span>
                       </div>
-                      <input type="text" required maxlength="160" class="form-control" id="fb_page_greeting" value="{{ customisations.page_greeting }}">
+                      <input type="text" maxlength="160" class="form-control"
+                        id="fb_page_greeting"
+                        value="{{ customisations.page_greeting }}">
                     </div>
                   </div>
 
@@ -74,7 +78,9 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="icon fa fa-play-circle-o"></i></span>
                       </div>
-                      <input type="text" required maxlength="160" class="form-control" id="fb_get_started_payload" value="{{ customisations.get_started_payload }}">
+                      <input type="text" maxlength="160" class="form-control"
+                        id="fb_get_started_payload"
+                        value="{{ customisations.get_started_payload }}">
                     </div>
                   </div>
 
