@@ -50,8 +50,9 @@
               {% if integration.page_integrated_id %}
 
                 <div class="alert alert-base">
-                  Integrated with page <b><a href="https://www.facebook.com/{{ integration.fb_page_integrated_id }}" target="_blank"> {{ integration.fb_page_integrated_name }}</a></b>.
-                  The bot will respond to all messages sent to that page.
+                  {% blocktrans with id=integration.page_integrated_id name=integration.page_integrated_name %}
+                    Integrated with page <b><a href="https://www.facebook.com/{{ id }}" target="_blank"> {{ name }}</a></b>. The bot will respond to all messages sent to that page.
+                  {% endblocktrans %}
                 </div>
 
                 <form action="{% url 'studio:facebook_customise' aiid=ai.aiid %}" id="FB_SETTINGS">
@@ -71,9 +72,9 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="fb_get_started_payload">{% blocktrans %}
-                      Command to send to the bot when the user taps the Get Started button
-                    {% endblocktrans %}</label>
+                    <label for="fb_get_started_payload">
+                      {% blocktrans %}Command to send to the bot when the user taps the Get Started button{% endblocktrans %}
+                    </label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="icon fa fa-play-circle-o"></i></span>
@@ -113,7 +114,9 @@
                 {% else %}
 
                   <div class="alert alert-base">
-                    <p>{% blocktrans %}Select a Facebook page to attach this bot to{% endblocktrans %}</p>
+                    <p>
+                      {% blocktrans %}Select a Facebook page to attach this bot to{% endblocktrans %}
+                    </p>
                   </div>
 
                   <ul style="padding: 0.75rem 1.25rem; background-color: #424242;">
