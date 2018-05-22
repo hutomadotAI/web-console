@@ -415,7 +415,6 @@ MEDIA_URL = os.environ.get('MEDIA_URL')
 #
 
 API_URL = os.environ.get('API_URL')
-PUBLIC_API_URL = os.environ.get('PUBLIC_API_URL')
 
 # allow five seconds for API calls that make one or more calls to Facebook's API
 API_DEFAULT_TIMEOUT = 1
