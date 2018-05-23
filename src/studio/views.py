@@ -592,7 +592,7 @@ class IntentsUpdateView(IntentsEditView):
 
             # Prepare data for the form
             # TODO: should be a better way to do it in the form itself?
-            intent['webhook'] = intent['webhook']['endpoint']
+            intent['webhook'] = '' if intent['webhook'] is None else intent['webhook']['endpoint']
             intent['responses'] = settings.TOKENFIELD_DELIMITER.join(
                 intent['responses']
             )
