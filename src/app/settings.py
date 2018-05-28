@@ -418,7 +418,7 @@ API_URL = os.environ.get('API_URL')
 
 # allow five seconds for API calls that make one or more calls to Facebook's API
 API_DEFAULT_TIMEOUT = 1
-API_FACEBOOK_TIMEOUT = 2
+API_FACEBOOK_TIMEOUT = 20
 API_CHAT_TIMEOUT = 8
 
 # allow a much longer timeout for async chart loading
