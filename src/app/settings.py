@@ -255,7 +255,7 @@ TEMPLATES = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-TOKENFIELD_DELIMITER = '\u2028'
+TOKENFIELD_DELIMITER = '\x9D'
 
 
 # ------------------------------------------------------------------------------

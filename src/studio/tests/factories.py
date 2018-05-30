@@ -55,21 +55,21 @@ class AIImportJSON(factory.Factory):
 
 class EntityFactory(factory.Factory):
     entity_name = 'sys.places'
-    entity_values = 'Value 1\u2028Value 2\u2028Value 3'
+    entity_values = 'Value 1\x9DValue 2\x9DValue 3'
 
 
 class EntityFormsetFactory(factory.Factory):
     entity_name = 'sys.places'
     required = True
     n_prompts = 3
-    prompts = 'User prompt 1\u2028User prompt 2\u2028User prompt 3'
+    prompts = 'User prompt 1\x9DUser prompt 2\x9DUser prompt 3'
     label = 'entity_label'
 
 
 class IntentFactory(factory.Factory):
     intent_name = 'Intent_name'
-    responses = 'Response 1\u2028Response 2\u2028Response 3'
-    user_says = 'User say 1\u2028User say 2\u2028User say 3'
+    responses = 'Response 1\x9DResponse 2\x9DResponse 3'
+    user_says = 'User say 1\x9DUser say 2\x9DUser say 3'
     variables = []
     webhook = ''
 
