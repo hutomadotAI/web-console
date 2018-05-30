@@ -1,4 +1,5 @@
 import logging
+
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -17,7 +18,7 @@ class UserAdmin(VersionAdmin):
         'is_superuser',
         'is_staff',
         'is_active',
-        'get_dev_id'
+        'dev_id'
     )
     list_filter = [
         'is_superuser',
@@ -28,10 +29,16 @@ class UserAdmin(VersionAdmin):
     ordering = ['date_joined']
     search_fields = ['username', 'email', 'profile__dev_id']
 
-    def get_dev_id(self, obj):
+    def get_queryset(self, request):
+        """Prefetch profile data"""
+        return super(UserAdmin, self).get_queryset(request).select_related(
+            'profile'
+        )
+
+    def dev_id(self, obj):
         return obj.profile.dev_id
-    get_dev_id.admin_order_field = 'profile__dev_id'
-    get_dev_id.short_description = 'Dev ID'
+    dev_id.admin_order_field = 'profile__dev_id'
+
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

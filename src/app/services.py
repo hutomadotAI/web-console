@@ -1,4 +1,5 @@
 import logging
+
 from requests import Request, Session, packages
 from constance import config
 
@@ -56,7 +57,7 @@ def fetch_api(path, token, method='GET', data={}, json={}, files={}, headers={},
 
 
 def to_curl(request):
-    """Log a CURL command for better debuging"""
+    """Log a CURL command for better debugging"""
 
     command = "curl --request {method} --header {headers} --data '{data}' '{uri}' {insecure}"
 

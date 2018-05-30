@@ -1,8 +1,13 @@
 import logging
+from hashlib import blake2b
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.contrib.auth.signals import (
+    user_logged_in,
+    user_logged_out,
+    user_login_failed
+)
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
@@ -26,14 +31,35 @@ def user_logged_in(sender, user, request, **kwargs):
     request.session['token'] = api_user['dev_token']
     request.session['dev_id'] = profile.dev_id
 
-    logger.info('User {user} has logged in'.format(user=user))
+    logger.info('User {dev_id} has logged in'.format(
+        dev_id=user.profile.dev_id
+    ))
 
 
 @receiver(user_logged_out)
 def user_logged_out(sender, user, request, **kwargs):
-    """User performed a logout"""
+    """
+    User performed a logout, we test for user as test client.logout() is
+    sending NoneType instead
+    """
 
-    logger.info('User {user} has logged out'.format(user=user))
+    if user:
+        logger.info('User {dev_id} has logged out'.format(
+            dev_id=user.profile.dev_id
+        ))
+
+
+@receiver(user_login_failed)
+def user_login_failed(sender, credentials, request, **kwargs):
+    """User failed to log in"""
+
+    logger.info('User {hash} has failed to log in'.format(
+        hash=blake2b(
+            credentials['email'].encode('utf-8'),
+            digest_size=4,
+            key=settings.SECRET_KEY
+        ).hexdigest()
+    ))
 
 
 @receiver(pre_save, sender=User)
@@ -43,7 +69,9 @@ def create_API_user(sender, instance, *args, **kwargs):
     if instance.pk is None:
         instance.api_user = post_user(settings.API_ADMIN_TOKEN)
 
-        logger.info('create_API_user for {email}'.format(email=instance.email))
+        logger.info('create_API_user for {dev_id}'.format(
+            dev_id=instance.api_user['devid']
+        ))
 
 
 @receiver(post_save, sender=User)
@@ -56,4 +84,6 @@ def create_profile(sender, instance, created, **kwargs):
             dev_id=instance.api_user['devid']
         )
 
-        logger.info('Create profile for {email}'.format(email=instance.email))
+        logger.info('Create profile for {dev_id}'.format(
+            dev_id=instance.api_user['devid']
+        ))

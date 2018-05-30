@@ -151,7 +151,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # Default way how User should be showed, we use email rather than username
 ACCOUNT_USER_DISPLAY = lambda user: user.get_full_name()
 
-
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 16
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_USERNAME_REQUIRED = False
