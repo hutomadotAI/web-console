@@ -414,8 +414,9 @@ MEDIA_URL = os.environ.get('MEDIA_URL')
 API_URL = os.environ.get('API_URL')
 
 # allow five seconds for API calls that make one or more calls to Facebook's API
-API_DEFAULT_TIMEOUT = 1
+API_DEFAULT_TIMEOUT = 2
 API_FACEBOOK_TIMEOUT = 20
+
 API_CHAT_TIMEOUT = 8
 
 # allow a much longer timeout for async chart loading
@@ -444,8 +445,8 @@ CONSTANCE_ADDITIONAL_FIELDS = {
         'widget': 'django.forms.NumberInput',
         'widget_kwargs': {
             'attrs': {
-                'max': 24,
-                'min': API_FACEBOOK_TIMEOUT,
+                'max': 60,
+                'min': API_DEFAULT_TIMEOUT,
             }
         }
     }],
@@ -454,10 +455,10 @@ CONSTANCE_ADDITIONAL_FIELDS = {
 CONSTANCE_CONFIG = {
     'FACEBOOK_INTEGRATION': ('on', 'Enable Facebook Integrations', 'on/off'),
     'FACEBOOK_WARNING': ('', 'Additional warning message for Facebook Integrations'),
-    'API_DEFAULT_TIMEOUT': (API_DEFAULT_TIMEOUT, 'Timeouts for most of the API calls, in seconds, min. 2s max 24s. Please be careful. Nothing is safe - @davidmg', 'timeout'),
-    'API_CHAT_TIMEOUT': (API_CHAT_TIMEOUT, 'Timeouts for Chat related APIs calls, in seconds, min. 2s max 24s', 'timeout'),
-    'API_LOGS_TIMEOUT': (API_LOGS_TIMEOUT, 'Timeouts for Logs related APIs calls, in seconds, min. 2s max 24s', 'timeout'),
-    'API_FACEBOOK_TIMEOUT': (API_FACEBOOK_TIMEOUT, 'Timeouts for Facebook related APIs calls, in seconds, min. 2s max 24s', 'timeout'),
+    'API_DEFAULT_TIMEOUT': (API_DEFAULT_TIMEOUT, 'Timeouts for most of the API calls, in seconds, max 60s. Please be careful. Nothing is safe - @davidmg', 'timeout'),
+    'API_CHAT_TIMEOUT': (API_CHAT_TIMEOUT, 'Timeouts for Chat related APIs calls, in seconds, max 60s', 'timeout'),
+    'API_LOGS_TIMEOUT': (API_LOGS_TIMEOUT, 'Timeouts for Logs related APIs calls, in seconds, max 60s', 'timeout'),
+    'API_FACEBOOK_TIMEOUT': (API_FACEBOOK_TIMEOUT, 'Timeouts for Facebook related APIs calls, in seconds, max 60s', 'timeout'),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
