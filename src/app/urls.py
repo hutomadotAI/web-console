@@ -25,6 +25,8 @@ from django.urls import include, path
 from django.views import defaults, generic
 from django.views.generic.base import RedirectView
 
+from users.views import PasswordChangeView
+
 
 # Ugly but, Simple is better than complex
 admin.site.site_header = 'Hu:toma admin'
@@ -46,6 +48,12 @@ urlpatterns = [
     path(
         'admin/',
         admin.site.urls
+    ),
+
+    path(
+        'accounts/password/change/',
+        PasswordChangeView.as_view(),
+        name='password_change'
     ),
 
     # Used to support authentication and users management

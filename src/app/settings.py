@@ -140,8 +140,6 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # alternative to setting this to True.
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
-# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True ??
-
 # The user is required to hand over an e-mail address when signing up.
 ACCOUNT_EMAIL_REQUIRED = True
 

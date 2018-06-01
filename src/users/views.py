@@ -1,5 +1,7 @@
 import logging
 
+from allauth.account.views import PasswordChangeView
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -10,6 +12,12 @@ from django.views.generic.edit import FormView
 from users.forms import DeveloperInfoForm
 
 logger = logging.getLogger(__name__)
+
+
+@method_decorator(login_required, name='dispatch')
+class PasswordChangeView(PasswordChangeView):
+    """Custom class to override the password change view, redirect o homepage"""
+    success_url = '/'
 
 
 @method_decorator(login_required, name='dispatch')
