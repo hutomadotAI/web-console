@@ -28,7 +28,10 @@
   justify-content: flex-end;
 }
 
-#INTENT_FORM hr,
+#FIELD_ID_CONDITIONS_DEFAULT_RESPONSE {
+  margin-top: 1rem;
+}
+
 #INTENT_FORM .advanced {
   width: 100%;
 }
@@ -93,6 +96,10 @@
   margin-bottom: 1.5rem;
   max-width: 20rem;
   text-align: center;
+}
+
+#FIELD_ID_RESET_CONTEXT_ON_EXIT {
+  margin-top: 1.5rem;
 }
 
 .intents.table .expressions-column {
@@ -169,4 +176,38 @@
 .expressions-column .bubble {
   background-color: var(--HUTOMA-BLUE-500);
   display: inline-block;
+}
+
+.form-group.variable-group,
+.form-group.value-group {
+  flex-grow: 2;
+}
+
+.form-group.entity_name-group {
+  max-width: 30%;
+}
+
+.form-group.n_prompts-group {
+  width: 7rem;
+}
+
+.form-group.entity-name-group,
+.form-group.label-group {
+  flex-grow: 2;
+}
+
+.form-group.prompts-group {
+  order: 1;
+  width: 100%;
+}
+
+.form-group.prompts-group .control-label {
+  display: none;
+}
+
+.form-group.required-group .controls {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 6rem;
 }

@@ -2,7 +2,7 @@
 
 <div class="form-formset">
 
-  <input type="checkbox" class="delete" name="entities-{{ id }}-DELETE" id="id_entities-{{ id }}-DELETE">
+  <input type="checkbox" class="delete" name="{{ formset }}-{{ id }}-DELETE" id="id_{{ formset }}-{{ id }}-DELETE">
 
   {% for field in fields %}
 
@@ -21,7 +21,7 @@
 
   <div class="form-group delete-group">
     <div class="controls">
-      <label class="btn formset-remove fa fa-trash" for="id_entities-{{ id }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove the Entity' %}"></label>
+      <label class="btn formset-remove fa fa-trash" for="id_{{ formset }}-{{ id }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove' %}"></label>
     </div>
   </div>
 

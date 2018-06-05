@@ -8,6 +8,11 @@
  *
  */
 
+.form-section {
+  margin: 1rem 0 1.5rem;
+  width: 100%;
+}
+
 .form-formset {
   display: flex;
   margin: 0 -1rem 2rem;
@@ -82,33 +87,3 @@
   border-radius: 0;
 }
 
-/* TODO: move to entities stylesheet */
-
-.form-group.entity_name-group {
-  max-width: 30%;
-}
-
-.form-group.n_prompts-group {
-  width: 7rem;
-}
-
-.form-group.entity-name-group,
-.form-group.label-group {
-  flex-grow: 2;
-}
-
-.form-group.prompts-group {
-  order: 1;
-  width: 100%;
-}
-
-.form-group.prompts-group .control-label {
-  display: none;
-}
-
-.form-group.required-group .controls {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  width: 6rem;
-}

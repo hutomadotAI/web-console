@@ -85,6 +85,81 @@ class EntityForm(forms.Form):
         return post_entity(self.cleaned_data, **kwargs)
 
 
+class ContextFormset(forms.Form):
+    """Used adding context variables on Intents tab"""
+
+    variable = forms.CharField(
+        label=_('Variable'),
+        validators=[RegexValidator(regex=SLUG_PATTERN)],
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'pattern': SLUG_PATTERN,
+            'maxlength': 250,
+            'required': True,
+            'placeholder': _('ex. variable_1')
+        }),
+        required=True
+    )
+
+    value = forms.CharField(
+        label=_('Value'),
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'pattern': SLUG_PATTERN,
+            'maxlength': 250,
+            'required': True,
+        }),
+        required=True
+    )
+
+
+class ConditionsFormset(forms.Form):
+    """Used adding conditions on Intents tab"""
+
+    variable = forms.CharField(
+        label=_('Variable'),
+        validators=[RegexValidator(regex=SLUG_PATTERN)],
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'pattern': SLUG_PATTERN,
+            'maxlength': 250,
+            'required': True,
+            'placeholder': _('ex. variable_1'),
+            'title': _('A valid “Variable” consisting of letters, numbers, underscores or hyphens.')
+        }),
+        required=True
+    )
+
+    operator = forms.ChoiceField(
+        label='',
+        choices=[
+            ('SET', _('Set')),
+            ('NOT_SET', _('Not Set')),
+            ('EQUALS', _('Equals')),
+            ('NOT_EQUALS', _('Not Equals')),
+            ('SMALLER_THAN', _('Smaller Than')),
+            ('GREATER_THAN', _('Greater Than'))
+        ],
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'required': True
+        }),
+        required=True
+    )
+
+    value = forms.CharField(
+        label=_('Value'),
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'pattern': SLUG_PATTERN,
+            'maxlength': 250,
+            'required': True,
+            'placeholder': _('ex. true')
+        }),
+        required=True
+    )
+
+
 class EntityFormset(forms.Form):
     """Used as base for formset on Intents tab"""
 
@@ -205,6 +280,20 @@ class IntentForm(forms.Form):
         })
     )
 
+    conditions_default_response = forms.CharField(
+        label=_('Fall-back response (optional)'),
+        help_text=_('Bot would use it if any of the conditions fails'),
+        required=False,
+        widget=forms.TextInput(attrs={
+            'data-limit': 1,
+            'data-minLength': 1,
+            'data-maxlength': 250,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
+            'placeholder': _('ex. Please provide X…'),
+        })
+    )
+
     webhook = forms.URLField(
         label=_('WebHook (optional)'),
         help_text=_('Provide the WebHook endpoint.'),
@@ -212,6 +301,12 @@ class IntentForm(forms.Form):
         widget=forms.URLInput(attrs={
             'placeholder': _('ex. https://hutoma.ai/webhook_url'),
         })
+    )
+
+    reset_context_on_exit = forms.BooleanField(
+        label=_('Reset context when the intent is completed'),
+        required=False,
+        widget=forms.CheckboxInput()
     )
 
     def clean_user_says(self):
@@ -243,9 +338,22 @@ class IntentForm(forms.Form):
         # TODO: Remove after we refactor Intent API code
         self.cleaned_data['webhook']['aiid'] = str(kwargs['aiid'])
 
-        # TODO: Rename to entities after we refactor Intent API code
+        # TODO: remove deleted formsets
+
+        self.cleaned_data['conditions_in'] = [
+            condition for condition in kwargs.pop('conditions') if not condition['DELETE']
+        ]
+
+        self.cleaned_data['context_in'] = {
+            variable.get('variable'): variable.get('value') for variable in kwargs.pop('context_in') if not variable['DELETE']
+        }
+
+        self.cleaned_data['context_out'] = {
+            variable.get('variable'): variable.get('value') for variable in kwargs.pop('context_out') if not variable['DELETE']
+        }
+
         self.cleaned_data['variables'] = [
-            entity for entity in kwargs.pop('variables') if not entity['DELETE']
+            entity for entity in kwargs.pop('entities') if not entity['DELETE']
         ]
 
         return {

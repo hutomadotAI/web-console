@@ -1,0 +1,18 @@
+{% load widget_tweaks %}
+
+<div id="FIELD_{{ field.id_for_label|upper }}" class="form-check">
+
+  {% render_field field|add_class:'form-check-input' %}
+
+  {% if field.label %}
+    <label class="form-check-label" for="{{ field.id_for_label }}">
+      {{ field.label|safe  }}
+    </label>
+  {% endif %}
+
+  {% if field.help_text %}
+    <small class="form-text text-muted">
+      {{ field.help_text }}
+    </small>
+  {% endif %}
+</div>

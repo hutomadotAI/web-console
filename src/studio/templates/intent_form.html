@@ -44,6 +44,60 @@
 
           {% include 'forms/field.html' with field=form.intent_name %}
 
+          <hr/>
+
+          <h5>
+
+            <button class="text advanced-toggle {% if not formsets.conditions.forms|length %}collapsed{% endif %}"
+              tabindex="-1"
+              type="button"
+              data-toggle="collapse"
+              data-target="#CONDITIONS">{% trans 'Conditions' %}</button>
+
+            <a href="#"
+              class="fa fa-question-circle"
+              target="_blank"
+              data-toggle="tooltip"
+              title="{% trans 'Documentation' %}"></a>
+
+          </h5>
+
+          <div id="CONDITIONS" class="form-section collapse {% if formsets.conditions.forms|length %}show{% endif %}">
+
+            <div class="alert alert-info">
+              {% blocktrans %}
+                Fire this intent when a human says input occurs and all of these conditions are true.
+              {% endblocktrans %}
+            </div>
+
+            <div class="formset" id="CONDITIONS_FORMSET">
+
+              {% for form in formsets.conditions.forms %}
+
+                {% include 'formset.html' with formset='CONDITIONS' id=forloop.counter0 fields=form %}
+
+                {{ form.errors }}
+
+              {% endfor %}
+
+              {{ formsets.conditions.management_form }}
+
+            </div>
+
+            <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
+              title="{% trans 'Add a new Condition' %}"
+              data-formset="CONDITIONS">{% trans 'Add Condition' %}</button>
+
+            {% include 'forms/field.html' with field=form.conditions_default_response %}
+
+          </div>
+
+          <hr/>
+
+          <h5>
+            <span class="text">{% trans 'Dialog' %}</span>
+          </h5>
+
           {% include 'forms/field.html' with field=form.user_says %}
 
           {% include 'forms/field.html' with field=form.responses %}
@@ -52,11 +106,11 @@
 
           <h5>
 
-            <button class="text advanced-toggle {% if not form.webhook.value and not formset.forms|length %}collapsed{% endif %}"
+            <button class="text advanced-toggle {% if not formsets.context_in.forms|length %}collapsed{% endif %}"
               tabindex="-1"
               type="button"
               data-toggle="collapse"
-              data-target=".advanced">{% trans 'Webhook and Entities' %}</button>
+              data-target="#CONTEXT_IN">{% trans 'Memory variables' %}</button>
 
             <a href="https://help.hutoma.ai/article/xc5zkhbg3a-adding-entities"
               class="fa fa-question-circle"
@@ -66,38 +120,162 @@
 
           </h5>
 
-          <div class="advanced collapse {% if form.webhook.value or formset.forms|length %}show{% endif %}">
+          <div id="CONTEXT_IN" class="form-section collapse {% if formsets.context_in.forms|length %}show{% endif %}">
 
-            {% include 'forms/field.html' with field=form.webhook %}
+            <div class="alert alert-info">
+              {% blocktrans %}
+                Assign those memory variables when this intent is being triggered.
+              {% endblocktrans %}
+            </div>
 
-            <div id="ENTITIES">
+            <div class="formset" id="CONTEXT_IN_FORMSET">
 
-              <label>{% trans 'Entities (optional)' %}</label>
+              {% for form in formsets.context_in.forms %}
 
-              {% for form in formset.forms %}
-
-                {% include 'entity_formset.html' with id=forloop.counter0 fields=form %}
+                {% include 'formset.html' with formset='CONTEXT_IN' id=forloop.counter0 fields=form %}
 
                 {{ form.errors }}
 
               {% endfor %}
 
-              {{ formset.management_form }}
+              {{ formsets.context_in.management_form }}
 
             </div>
 
-            <button class="btn btn-success btn-block"
-              data-toggle="tooltip"
+            <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
+              title="{% trans 'Add a new variable' %}"
+              data-formset="CONTEXT_IN">{% trans 'Add variable' %}</button>
+
+          </div>
+
+          <hr/>
+
+          <h5>
+
+            <button class="text advanced-toggle {% if not entities_formset.forms|length %}collapsed{% endif %}"
+              tabindex="-1"
               type="button"
+              data-toggle="collapse"
+              data-target="#ENTITIES">{% trans 'Entities' %}</button>
+
+            <a href="#"
+              class="fa fa-question-circle"
+              target="_blank"
+              data-toggle="tooltip"
+              title="{% trans 'Documentation' %}"></a>
+
+          </h5>
+
+          <div id="ENTITIES" class="form-section collapse {% if formsets.entities.forms|length %}show{% endif %}">
+
+            <div class="formset" id="ENTITIES_FORMSET">
+
+              {% for form in formsets.entities.forms %}
+
+                {% include 'formset.html' with formset='ENTITIES' id=forloop.counter0 fields=form %}
+
+                {{ form.errors }}
+
+              {% endfor %}
+
+              {{ formsets.entities.management_form }}
+
+            </div>
+
+            <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
               title="{% trans 'Add a new Entity' %}"
-              id="FORMSET_ADD">{% trans 'Add Entity' %}</button>
+              data-formset="ENTITIES">{% trans 'Add Entity' %}</button>
+
+          </div>
+
+          <hr/>
+
+          <h5>
+
+            <button class="text advanced-toggle {% if not form.webhook.value %}collapsed{% endif %}"
+              tabindex="-1"
+              type="button"
+              data-toggle="collapse"
+              data-target="#WEBHOOK">{% trans 'Webhook' %}</button>
+
+            <a href="#"
+              class="fa fa-question-circle"
+              target="_blank"
+              data-toggle="tooltip"
+              title="{% trans 'Documentation' %}"></a>
+
+          </h5>
+
+          <div id="WEBHOOK" class="form-section collapse {% if form.webhook.value %}show{% endif %}">
+
+            {% include 'forms/field.html' with field=form.webhook %}
+
+          </div>
+
+          <hr/>
+
+          <h5>
+
+            <button class="text advanced-toggle {% if not formsets.context_out.forms|length %}collapsed{% endif %}"
+              tabindex="-1"
+              type="button"
+              data-toggle="collapse"
+              data-target="#CONTEXT_OUT">{% trans 'Context out' %}</button>
+
+            <a href="#"
+              class="fa fa-question-circle"
+              target="_blank"
+              data-toggle="tooltip"
+              title="{% trans 'Documentation' %}"></a>
+
+          </h5>
+
+          <div id="CONTEXT_OUT" class="form-section collapse {% if formsets.context_in.forms|length %}show{% endif %}">
+
+            <div class="alert alert-info">
+              {% blocktrans %}
+                Assign those memory variables when this intent is being triggered.
+              {% endblocktrans %}
+            </div>
+
+            <div class="formset" id="CONTEXT_OUT_FORMSET">
+
+              {% for form in formsets.context_out.forms %}
+
+                {% include 'formset.html' with formset='CONTEXT_OUT' id=forloop.counter0 fields=form %}
+
+                {{ form.errors }}
+
+              {% endfor %}
+
+              {{ formsets.context_out.management_form }}
+
+            </div>
+
+            <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
+              title="{% trans 'Add a new variable' %}"
+              data-formset="CONTEXT_OUT">{% trans 'Add variable' %}</button>
+
+            {% include 'forms/checkbox.html' with field=form.reset_context_on_exit %}
 
           </div>
 
         </form>
 
-        <script id="EMPTY_FORMSET" type="text/template">
-          {% include 'entity_formset.html' with id='__prefix__' fields=formset.empty_form %}
+        <script id="CONDITIONS_TEMPLATE" type="text/template">
+          {% include 'formset.html' with formset='CONDITIONS' id='__prefix__' fields=formsets.conditions.empty_form  %}
+        </script>
+
+        <script id="ENTITIES_TEMPLATE" type="text/template">
+          {% include 'formset.html' with formset='ENTITIES' id='__prefix__' fields=formsets.entities.empty_form  %}
+        </script>
+
+        <script id="CONTEXT_IN_TEMPLATE" type="text/template">
+          {% include 'formset.html' with formset='CONTEXT_IN' id='__prefix__' fields=formsets.context_in.empty_form  %}
+        </script>
+
+        <script id="CONTEXT_OUT_TEMPLATE" type="text/template">
+          {% include 'formset.html' with formset='CONTEXT_OUT' id='__prefix__' fields=formsets.context_out.empty_form  %}
         </script>
 
       </div>
@@ -152,32 +330,5 @@
 
   <script src="{% static 'js/formset.js' %}"></script>
   <script src="{% static 'js/tokenfield.js' %}"></script>
-
-  <script>
-
-    const TOTAL_FORMS = document.getElementById('id_entities-TOTAL_FORMS');
-    const ENTITIES = document.getElementById('ENTITIES');
-    const EMPTY_FORMSET = document.getElementById('EMPTY_FORMSET');
-
-    $(document).on('click', '#FORMSET_ADD', function (event) {
-        // get form html
-        var div = document.createElement('div');
-
-        // replace prefix with entities forms counter
-        div.innerHTML = EMPTY_FORMSET.innerHTML.replace(
-          /__prefix__/g,
-          TOTAL_FORMS.value
-        );
-
-        // Append new form to the ma
-        var newEntity = ENTITIES.appendChild(div.firstElementChild);
-
-        // Enable tokenfield
-        $(newEntity).find('[data-tokenfield]').tokenfield(TOKENFIELD_OPTIONS);
-
-        // Update Entities forms counter
-        TOTAL_FORMS.value++;
-      });
-  </script>
 
 {% endblock %}
