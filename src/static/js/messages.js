@@ -17,6 +17,7 @@ function messageAdd(level, message) {
   MESSAGES.innerHTML += messageCreate(level, message);
 }
 
-function messageClear() {
-  MESSAGES.innerHTML = '';
+function messageClear(level) {
+  var selector = level ? `.messages .alert-${ level }` : '.messages .alert';
+  document.querySelectorAll(selector).forEach(node => node.remove());
 }

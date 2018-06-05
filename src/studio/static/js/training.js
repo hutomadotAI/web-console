@@ -30,7 +30,7 @@ function updateUI(ai) {
   }
 
   if (ai.training.status === 'completed') {
-    messageClear();
+    messageClear('success');
   }
 }
 
