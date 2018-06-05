@@ -126,7 +126,8 @@ class ConditionsFormset(forms.Form):
             'maxlength': 250,
             'required': True,
             'placeholder': _('ex. variable_1'),
-            'title': _('A valid “Variable” consisting of letters, numbers, underscores or hyphens.')
+            'title': _('A valid “Variable” consisting of letters, numbers, '
+                       'underscores or hyphens.')
         }),
         required=True
     )
@@ -349,11 +350,13 @@ class IntentForm(forms.Form):
         ]
 
         self.cleaned_data['context_in'] = {
-            variable.get('variable'): variable.get('value') for variable in kwargs.pop('context_in') if not variable['DELETE']
+            variable.get('variable'): variable.get('value')
+            for variable in kwargs.pop('context_in') if not variable['DELETE']
         }
 
         self.cleaned_data['context_out'] = {
-            variable.get('variable'): variable.get('value') for variable in kwargs.pop('context_out') if not variable['DELETE']
+            variable.get('variable'): variable.get('value')
+            for variable in kwargs.pop('context_out') if not variable['DELETE']
         }
 
         self.cleaned_data['variables'] = [

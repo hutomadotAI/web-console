@@ -59,7 +59,10 @@ def fetch_api(
         raise Http404(_('Resource doesn’t exist'))
 
     if response.status_code == 400:
-        logger.warning('Bad Request for {url}, using headers {headers}'.format(url=url, headers=headers))
+        logger.warning('Bad Request for {url}, using headers {headers}'.format(
+            url=url,
+            headers=headers)
+        )
 
     if kwargs.get('raw'):
         return response
