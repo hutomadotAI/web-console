@@ -485,6 +485,8 @@ CONSTANCE_CONFIG_FIELDSETS = {
     ]
 }
 
+EMAIL_BACKEND = 'app.mail.backends.smtp.EmailBackend'
+
 # ------------------------------------------------------------------------------
 #
 # Environments specific settings

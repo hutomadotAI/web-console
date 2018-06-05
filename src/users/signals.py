@@ -1,6 +1,8 @@
 import logging
 from hashlib import blake2b
 
+from allauth.account.signals import password_changed, password_reset
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.signals import (
@@ -59,6 +61,24 @@ def user_login_failed(sender, credentials, request, **kwargs):
             digest_size=4,
             key=settings.SECRET_KEY
         ).hexdigest()
+    ))
+
+
+@receiver(password_changed)
+def password_changed(sender, user, request, **kwargs):
+    """User changed password"""
+
+    logger.info('User {dev_id} has changed password'.format(
+        dev_id=user.profile.dev_id
+    ))
+
+
+@receiver(password_reset)
+def password_reset(sender, user, request, **kwargs):
+    """User reset password"""
+
+    logger.info('User {dev_id} has reset password'.format(
+        dev_id=user.profile.dev_id
     ))
 
 
