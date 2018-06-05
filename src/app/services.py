@@ -48,7 +48,15 @@ def fetch_api(path, token, method='GET', data={}, json={}, files={}, headers={},
 
     if response.status_code in [401, 403, 404]:
         # We don't reveal if Resource exists
+        logger.warning('Failed ({code}) request {url} using headers {headers}'.format(
+            code=response.status_code,
+            headers=headers,
+            url=url
+        ))
         raise Http404(_('Resource doesn’t exist'))
+
+    if response.status_code == 400:
+        logger.warning('Bad Request for {url}, using headers {headers}'.format(url=url, headers=headers))
 
     if kwargs.get('raw'):
         return response
