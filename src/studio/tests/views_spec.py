@@ -298,7 +298,12 @@ class TestTrainingView(TestCase):
             }
         ))
 
-        self.assertContains(response, 'Check <a data-toggle="modal" data-target="#sampleTrainingFile">training file example</a> or watch our <a data-toggle="modal" data-target="#TRAINING_VIDEO_TUTORIAL">training video tutorial</a>')
+        self.assertContains(response, 'Check <a data-toggle="modal" '
+                                      'data-target="#sampleTrainingFile">'
+                                      'training file example</a> or watch our '
+                                      '<a data-toggle="modal" '
+                                      'data-target="#TRAINING_VIDEO_TUTORIAL">'
+                                      'training video tutorial</a>')
 
 
 class TestEntitiesView(TestCase):
@@ -417,7 +422,8 @@ class TestAIDetailView(TestCase):
         ))
 
         self.assertNotContains(response, 'chatable')
-        self.assertContains(response, 'To start chatting with your bot either upload a training file, add a skill, or add an intent')
+        self.assertContains(response, 'To start chatting with your bot either '
+                                      'upload a training file, add a skill, or add an intent')
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai')
@@ -436,9 +442,12 @@ class TestAIDetailView(TestCase):
             kwargs={'aiid': self.ai['aiid']}
         ))
 
-        self.assertContains(response, 'Build a bot from text-based simple Q&A using the inline editor.')
-        self.assertContains(response, 'Want to structure your dialog, build more complex Q&A or connect to 3rd party services.')
-        self.assertContains(response, 'Speed up your bot building process by starting with one of our Templates from the store.')
+        self.assertContains(response, 'Build a bot from text-based simple Q&A '
+                                      'using the inline editor.')
+        self.assertContains(response, 'Want to structure your dialog, build more '
+                                      'complex Q&A or connect to 3rd party services.')
+        self.assertContains(response, 'Speed up your bot building process by '
+                                      'starting with one of our Templates from the store.')
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai')
@@ -462,7 +471,8 @@ class TestAIDetailView(TestCase):
         ))
 
         self.assertContains(response, 'This is my training file')
-        self.assertNotContains(response, 'Simply upload historical conversations or conversation samples between your users.')
+        self.assertNotContains(response, 'Simply upload historical conversations '
+                                         'or conversation samples between your users.')
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai')
@@ -491,7 +501,8 @@ class TestAIDetailView(TestCase):
         self.assertContains(response, 'intent_4')
         self.assertContains(response, 'intent_5')
         self.assertNotContains(response, 'intent_6')
-        self.assertNotContains(response, 'An Intent is a way to flag completion of a specific task during a conversation.')
+        self.assertNotContains(response, 'An Intent is a way to flag completion '
+                                         'of a specific task during a conversation.')
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai')
@@ -525,7 +536,8 @@ class TestAIDetailView(TestCase):
         self.assertContains(response, 'bot 4')
         self.assertContains(response, 'bot 5')
         self.assertNotContains(response, 'bot 6')
-        self.assertNotContains(response, 'Speed up your bot building process by starting with one of our Templates from the store.')
+        self.assertNotContains(response, 'Speed up your bot building process by '
+                                         'starting with one of our Templates from the store.')
 
 
 class TestAIUpdateView(TestCase):
@@ -609,7 +621,9 @@ class TestSkillsUpdateView(TestCase):
     @patch('studio.forms.get_purchased')
     @patch('studio.views.get_ai')
     @patch('studio.views.get_ai_details')
-    def test_registred(self, mock_get_ai_details, mock_get_ai, mock_get_purchased, mock_get_categories):
+    def test_registred(
+        self, mock_get_ai_details, mock_get_ai, mock_get_purchased, mock_get_categories
+    ):
         """
         Logged-in users can access update skills. We need to mock `get_aiid`
         and `get_purchased` skill to build the form. `get_categories` is mocked
@@ -666,7 +680,6 @@ class TestIntentsView(TestCase):
             response.url,
             reverse('account_login') + '?next=/bots/edit/%s/intents' % self.ai['aiid']
         )
-
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_intent_list')

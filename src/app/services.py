@@ -32,7 +32,10 @@ def set_headers(token):
     return headers
 
 
-def fetch_api(path, token, method='GET', data={}, json={}, files={}, headers={}, params={}, timeout=TIMEOUT, verify=VERIFY, **kwargs):
+def fetch_api(
+    path, token, method='GET', data={}, json={}, files={}, headers={}, params={},
+    timeout=TIMEOUT, verify=VERIFY, **kwargs
+):
 
     url = settings.API_URL + path.format(**kwargs)
     headers = {**headers, **set_headers(token)}

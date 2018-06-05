@@ -16,6 +16,8 @@ class PBKDF2WrappedSHA256PasswordHasher(PBKDF2PasswordHasher):
         return super(PBKDF2WrappedSHA256PasswordHasher, self).encode(sha256_hash, salt, iterations)
 
     def encode(self, password, salt, iterations=None):
-        sha256_hash = hashlib.sha256(force_bytes(password + settings.LEGACY_SALT + salt)).hexdigest()
+        sha256_hash = hashlib.sha256(
+            force_bytes(password + settings.LEGACY_SALT + salt)
+        ).hexdigest()
         encoded = self.encode_sha256_hash(sha256_hash, salt, iterations)
         return encoded

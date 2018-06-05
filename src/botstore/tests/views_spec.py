@@ -1,6 +1,6 @@
 import factory
 
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 from django.urls import reverse
 from django.contrib.auth.signals import user_logged_in

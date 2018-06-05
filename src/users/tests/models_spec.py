@@ -3,8 +3,6 @@ from test_plus.test import TestCase
 from users.tests.factories import UserFactory
 from users.models import Profile
 
-from django.contrib.auth.models import User
-
 
 class TestUser(TestCase):
 

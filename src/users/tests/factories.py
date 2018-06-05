@@ -2,10 +2,8 @@ import factory
 
 from django.contrib.auth.models import AnonymousUser, User
 from django.db.models.signals import pre_save, post_save
-from django.contrib.auth.signals import user_logged_in, user_logged_out
 
 from users.models import Profile
-from users.signals import create_API_user, create_profile
 
 
 class AnonymousUserFactory(factory.Factory):

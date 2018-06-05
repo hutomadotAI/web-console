@@ -56,7 +56,8 @@ class EntityForm(forms.Form):
             'pattern': SLUG_PATTERN,
             'maxlength': 128,
             'placeholder': _('Entity name'),
-            'title': _('Enter a valid “Entity name” consisting of letters, numbers, underscores or hyphens.')
+            'title': _('Enter a valid “Entity name” consisting of letters, '
+                       'numbers, underscores or hyphens.')
         })
     )
 
@@ -217,7 +218,8 @@ class EntityFormset(forms.Form):
             'maxlength': 250,
             'required': True,
             'placeholder': _('Unique label'),
-            'title': _('Enter a valid “Label” consisting of letters, numbers, underscores or hyphens.')
+            'title': _('Enter a valid “Label” consisting of letters, numbers, '
+                       'underscores or hyphens.')
         })
     )
 
@@ -251,7 +253,8 @@ class IntentForm(forms.Form):
             'pattern': SLUG_PATTERN,
             'maxlength': 32,
             'placeholder': _('Intent name'),
-            'title': _('Enter a valid “Name” consisting of letters, numbers, underscores or hyphens.')
+            'title': _('Enter a valid “Name” consisting of letters, numbers, '
+                       'underscores or hyphens.')
         })
     )
 
@@ -264,7 +267,8 @@ class IntentForm(forms.Form):
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a user expression'),
-            'title': _('Enter a valid input consisting of letters, numbers, spaces, underscores or hyphens.')
+            'title': _('Enter a valid input consisting of letters, numbers, '
+                       'spaces, underscores or hyphens.')
         })
     )
 
@@ -373,7 +377,8 @@ class AddAIForm(forms.Form):
         widget=forms.TextInput(attrs={
             'pattern': NAME_PATTERN,
             'placeholder': _('My bot'),
-            'title': _('Enter a valid “Name” consisting of letters, numbers, spaces, underscores or hyphens.'),
+            'title': _('Enter a valid “Name” consisting of letters, numbers, '
+                       'spaces, underscores or hyphens.'),
             'tabindex': 1
         })
     )
@@ -398,8 +403,10 @@ class AddAIForm(forms.Form):
 
     default_chat_responses = forms.CharField(
         help_text=_('To create a new response press enter'),
-        label=_('Default Response <small>This is sent when the bot doesn’t understand the user.</small>'),
-        initial=_('We didn\'t understand that, can you try asking another question or rephrasing.'),
+        label=_('Default Response <small>This is sent when the bot doesn’t '
+                'understand the user.</small>'),
+        initial=_('We didn\'t understand that, can you try asking another '
+                  'question or rephrasing.'),
         max_length=255,
         required=False,
         widget=forms.TextInput(attrs={
@@ -452,12 +459,14 @@ class SettingsAIForm(AddAIForm):
             'pattern': NAME_PATTERN,
             'placeholder': _('My bot'),
             'readonly': True,
-            'title': _('Enter a valid “Name” consisting of letters, numbers, spaces, underscores or hyphens.')
+            'title': _('Enter a valid “Name” consisting of letters, numbers, '
+                       'spaces, underscores or hyphens.')
         })
     )
 
     handover_message = forms.CharField(
-        help_text=_('This is sent when the bot doesn\'t understand the user and will no longer respond until a human takes over.'),
+        help_text=_('This is sent when the bot doesn\'t understand the user and '
+                    'will no longer respond until a human takes over.'),
         initial=_('Chat disabled — handed over to external agent'),
         label='',
         max_length=255,

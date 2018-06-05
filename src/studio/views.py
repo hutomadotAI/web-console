@@ -86,7 +86,9 @@ class StudioViewMixin(ContextMixin):
         )
 
         if not context['chatable']:
-            messages.info(self.request, _('To start chatting with your bot either upload a training file, add a skill, or add an intent.'))
+            messages.info(self.request, _('To start chatting with your bot '
+                                          'either upload a training file, add a '
+                                          'skill, or add an intent.'))
 
         return context
 
@@ -346,7 +348,9 @@ class AIUpdateView(StudioViewMixin, AICreateView):
             initial['default_chat_responses']
         )
 
-        initial['handover_reset_timeout_seconds'] = int(initial['handover_reset_timeout_seconds'] / 60)
+        initial['handover_reset_timeout_seconds'] = int(
+            initial['handover_reset_timeout_seconds'] / 60
+        )
         return initial
 
 

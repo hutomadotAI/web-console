@@ -3,7 +3,7 @@ import factory
 import tempfile
 
 from test_plus.test import TestCase
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 

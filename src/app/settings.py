@@ -146,8 +146,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 # User is blocked from logging in until the email address is verified.
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-# Default way how User should be showed, we use email rather than username
-ACCOUNT_USER_DISPLAY = lambda user: user.get_full_name()
+# Default way how User should be showed, we use full name rather than username
+ACCOUNT_USER_DISPLAY = lambda user: user.get_full_name()  # noqa: E731, need to be a callable
 
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 16
 ACCOUNT_LOGOUT_ON_GET = True
@@ -455,10 +455,27 @@ CONSTANCE_ADDITIONAL_FIELDS = {
 CONSTANCE_CONFIG = {
     'FACEBOOK_INTEGRATION': ('on', 'Enable Facebook Integrations', 'on/off'),
     'FACEBOOK_WARNING': ('', 'Additional warning message for Facebook Integrations'),
-    'API_DEFAULT_TIMEOUT': (API_DEFAULT_TIMEOUT, 'Timeouts for most of the API calls, in seconds, max 60s. Please be careful. Nothing is safe - @davidmg', 'timeout'),
-    'API_CHAT_TIMEOUT': (API_CHAT_TIMEOUT, 'Timeouts for Chat related APIs calls, in seconds, max 60s', 'timeout'),
-    'API_LOGS_TIMEOUT': (API_LOGS_TIMEOUT, 'Timeouts for Logs related APIs calls, in seconds, max 60s', 'timeout'),
-    'API_FACEBOOK_TIMEOUT': (API_FACEBOOK_TIMEOUT, 'Timeouts for Facebook related APIs calls, in seconds, max 60s', 'timeout'),
+    'API_DEFAULT_TIMEOUT': (
+        API_DEFAULT_TIMEOUT,
+        'Timeouts for most of the API calls, in seconds, max 60s. Please be '
+        'careful. Nothing is safe - @davidmg',
+        'timeout'
+    ),
+    'API_CHAT_TIMEOUT': (
+        API_CHAT_TIMEOUT,
+        'Timeouts for Chat related APIs calls, in seconds, max 60s',
+        'timeout'
+    ),
+    'API_LOGS_TIMEOUT': (
+        API_LOGS_TIMEOUT,
+        'Timeouts for Logs related APIs calls, in seconds, max 60s',
+        'timeout'
+    ),
+    'API_FACEBOOK_TIMEOUT': (
+        API_FACEBOOK_TIMEOUT,
+        'Timeouts for Facebook related APIs calls, in seconds, max 60s',
+        'timeout'
+    ),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -610,7 +627,6 @@ elif ENVIRONMENT == 'test':
     DEBUG = False
     DJANGO_LOG_LEVEL = 'DEBUG'
     TEMPLATES[0]['OPTIONS']['debug'] = False
-
 
     # Statics
     #

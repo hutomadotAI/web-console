@@ -23,7 +23,8 @@ def has_info(function):
         except Exception as e:
             messages.warning(
                 request,
-                _('This is your first bot. Before publishing this to our store we need to collect some developer details.')
+                _('This is your first bot. Before publishing this to our store '
+                    'we need to collect some developer details.')
             )
             return HttpResponseRedirect(
                 '{path}?next={next}'.format(

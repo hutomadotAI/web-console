@@ -19,9 +19,7 @@
         path('blog/', include('blog.urls'))
 """
 
-from django.conf import settings
 from django.urls import path, re_path
-from django.views.decorators.cache import cache_page
 
 from botstore.views import (
     BotDetailView,
@@ -44,7 +42,9 @@ urlpatterns = [
 
     # Get a list of all bots for one category
     re_path(
-        r'^(?P<category>entertainment|education|events|finance|fitness|games|health%20%26%20beauty|internet%20of%20things|news|personal|other|shopping|social|travel|virtual%20assistants)$',
+        r'^(?P<category>entertainment|education|events|finance|fitness|games|'
+        'health%20%26%20beauty|internet%20of%20things|news|personal|other|'
+        'shopping|social|travel|virtual%20assistants)$',
         BotListView.as_view(),
         name='category'
     ),

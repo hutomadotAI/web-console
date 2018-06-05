@@ -186,7 +186,8 @@ urlpatterns = [
 
     # Perform actions for facebook integration
     re_path(
-        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/(?P<action>connect|page|disconnect)$',
+        r'^bots/edit/(?P<aiid>[0-9a-f-]+)/integrations/facebook/'
+        '(?P<action>connect|page|disconnect)$',
         FacebookActionView.as_view(),
         name='facebook_actions'
     ),

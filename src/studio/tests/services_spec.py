@@ -1,11 +1,9 @@
 import factory
 
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 from test_plus.test import TestCase
 
-from users.tests.factories import AnonymousUserFactory, UserFactory
-
-from studio.services import get_ai_list, post_ai, post_import_ai
+from studio.services import get_ai_list, post_import_ai
 from studio.tests.factories import (
     AiFactory,
     AIImportJSON,

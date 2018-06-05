@@ -1,5 +1,4 @@
 import logging
-import pytz
 
 from django import forms, template
 from django.conf import settings
