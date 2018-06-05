@@ -40,7 +40,7 @@ SOURCE_DIR="${ROOT_DIR}/src"
 VE_DIR="${ROOT_DIR}/venv/django_unix"
 if [ ! -d $VE_DIR ]; then
   echo Initializing virtualenv at $VE_DIR
-	python3.5 -m venv $VE_DIR
+	python3 -m venv $VE_DIR
   check_return_code
 fi
 

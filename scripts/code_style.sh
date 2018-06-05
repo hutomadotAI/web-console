@@ -1,19 +1,16 @@
 #!/bin/bash
-function check_return_code {
-    return_code=$?;
-    if [[ $return_code != 0 ]]; then
-        echo "*** code_style.sh: previous command failed, exiting ***"
-        exit $return_code;
-    fi
+on_error() {
+    echo "Error at $(caller), aborting"
+    exit 1
 }
+trap on_error ERR
 
 SCRIPT_DIR=`dirname $BASH_SOURCE`
 ROOT_DIR="${SCRIPT_DIR}/.."
 SOURCE_DIR="${ROOT_DIR}/src"
 
-. ${SCRIPT_DIR}/setup_python.sh --style-only
+source ${SCRIPT_DIR}/setup_python.sh --style-only || exit $?
 pushd ${SOURCE_DIR}
 echo "Running flake8"
 flake8 --count
-check_return_code
 popd
