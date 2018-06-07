@@ -16,6 +16,7 @@ var waiting = false;
 document.getElementById('action.logs:toggle').addEventListener('click', toggleLogs);
 document.getElementById('action.logs:wrap').addEventListener('click', wrapLines);
 document.getElementById('action.handle:reset').addEventListener('click', resetHandle);
+document.getElementById('action.context:reset').addEventListener('click', resetHandle);
 document.getElementById('action.history:clear').addEventListener('click', clearHistory);
 document.addEventListener('keyup', function historyStepsHandler(event) {
   if (event.target == CHAT_INPUT){
@@ -59,28 +60,32 @@ if ('speechSynthesis' in window) {
 loadHistory();
 
 function resetHandle() {
-  fetch(this.getAttribute('action'), {
-    credentials: 'same-origin',
-    method: 'post',
-    headers: {
-      'X-CSRFToken': Cookies.get('csrftoken'),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      chatId: sessionStorage.getItem(CHAT_ID_KEY)
+  if(sessionStorage.getItem(CHAT_ID_KEY)) {
+    fetch(this.getAttribute('action'), {
+      credentials: 'same-origin',
+      method: 'post',
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken'),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        chatId: sessionStorage.getItem(CHAT_ID_KEY)
+      })
     })
-  })
-    .then(resolveStatus)
-    .catch(handleErrors)
-    .then(response => response.json())
-    .then(response => [ response.status.info, 'success', 1, response ])
-    .catch(error => error.response.json().then(response => [
-      response.status ? response.status.info : error.message,
-      'warning',
-      -1,
-      response || error
-    ]))
-    .then(data => createBotMessage(...data));
+      .then(resolveStatus)
+      .catch(handleErrors)
+      .then(response => response.json())
+      .then(response => [ response.status.info, 'success', 1, response ])
+      .catch(error => error.response.json().then(response => [
+        response.status ? response.status.info : error.message,
+        'warning',
+        -1,
+        response || error
+      ], response => ['Internal server error', 'error']))
+      .then(data => createBotMessage(...data));
+    } else {
+      createBotMessage('Chat session is missing, start chatting first', 'error', -1)
+    }
 }
 
 function historyStepper(shift) {
@@ -113,6 +118,7 @@ function clearHistory() {
   sessionStorage.removeItem(HISTORY_KEY);
   sessionStorage.removeItem(CHAT_ID_KEY);
   document.getElementById('CHAT_MESSAGES').innerHTML = '';
+  document.getElementById('action.context:reset').click();
 }
 
 function toggleSpeech(event) {

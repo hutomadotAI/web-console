@@ -22,16 +22,21 @@
         title="{% trans 'Select bot voice' %}"
         id="action.speech:getVoices">{% trans 'Voices' %}</button>
       <div class="dropdown-menu" id="VOICE_LIST"></div>
-      <div class="dropdown-divider"></div>
       <button class="dropdown-item"
+        action="{% url 'studio:proxy.context.reset' ai.aiid %}"
         data-toggle="tooltip"
-        title="{% trans 'Removes the history and resets chat session' %}"
-        id="action.history:clear">{% trans 'Clear history' %}</button>
+        title="{% trans 'Reset context for this chat session' %}"
+        id="action.context:reset">{% trans 'Reset context' %}</button>
       <button class="dropdown-item"
         action="{% url 'studio:proxy.handover.reset' ai.aiid %}"
         data-toggle="tooltip"
         title="{% trans 'Handle back chat to bot instad of human agant' %}"
         id="action.handle:reset">{% trans 'Reset handover to human' %}</button>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item"
+        data-toggle="tooltip"
+        title="{% trans 'Removes the history and resets chat session' %}"
+        id="action.history:clear">{% trans 'Clear history' %}</button>
     </div>
   </div>
 

@@ -56,6 +56,7 @@ from studio.services import (
     post_chat,
     post_facebook_connect_token,
     post_facebook_customisations,
+    post_context_reset,
     post_handover_reset,
 )
 from studio.decorators import json_login_required
@@ -932,6 +933,20 @@ class ProxyHandoverResetView(View):
     def post(self, request, aiid, *args, **kwargs):
 
         response = post_handover_reset(
+            self.request.session.get('token', False),
+            aiid,
+            chatId=json.loads(request.body).get('chatId', '')
+        )
+        return JsonResponse(response, status=response['status']['code'])
+
+
+@method_decorator(json_login_required, name='dispatch')
+class ProxyContextResetView(View):
+    """Reset handover to human state"""
+
+    def post(self, request, aiid, *args, **kwargs):
+
+        response = post_context_reset(
             self.request.session.get('token', False),
             aiid,
             chatId=json.loads(request.body).get('chatId', '')

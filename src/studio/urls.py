@@ -45,6 +45,7 @@ from studio.views import (
     ProxyAiExportView,
     ProxyAiView,
     ProxyChatView,
+    ProxyContextResetView,
     ProxyHandoverResetView,
     ProxyInsightsChartView,
     ProxyInsightsLogsView,
@@ -244,6 +245,12 @@ urlpatterns = [
         'proxy/ai/<uuid:aiid>/handover/reset',
         ProxyHandoverResetView.as_view(),
         name='proxy.handover.reset'
+    ),
+
+    path(
+        'proxy/ai/<uuid:aiid>/context/reset',
+        ProxyContextResetView.as_view(),
+        name='proxy.context.reset'
     ),
 
     path(

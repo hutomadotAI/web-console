@@ -301,7 +301,17 @@ def post_handover_reset(token, aiid, chatId, target='ai'):
         aiid=aiid,
         chatId=chatId,
         target=target,
-        timeout=API_FACEBOOK_TIMEOUT,
+        method='post'
+    )
+
+
+def post_context_reset(token, aiid, chatId):
+    """Reset chat context"""
+    return fetch_api(
+        '/ai/{aiid}/chat/reset?chatId={chatId}',
+        token=token,
+        aiid=aiid,
+        chatId=chatId,
         method='post'
     )
 
