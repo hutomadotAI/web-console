@@ -286,7 +286,7 @@ class IntentForm(forms.Form):
     )
 
     conditions_default_response = forms.CharField(
-        label=_('Fall-back response (optional)'),
+        label=_('Fallback response (optional)'),
         help_text=_('Bot would use it if any of the conditions fails'),
         required=False,
         widget=forms.TextInput(attrs={
@@ -295,7 +295,7 @@ class IntentForm(forms.Form):
             'data-maxlength': 250,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
-            'placeholder': _('ex. Please provide X…'),
+            'placeholder': _('ex. Please provide a fallback response'),
         })
     )
 
