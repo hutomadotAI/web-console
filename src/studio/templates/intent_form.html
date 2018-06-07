@@ -44,6 +44,8 @@
 
           {% include 'forms/field.html' with field=form.intent_name %}
 
+          {% include 'forms/checkbox.html' with field=form.reset_context_on_exit %}
+
           <hr/>
 
           <h5>
@@ -255,8 +257,6 @@
             <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
               title="{% trans 'Add a new variable' %}"
               data-formset="CONTEXT_OUT">{% trans 'Add variable' %}</button>
-
-            {% include 'forms/checkbox.html' with field=form.reset_context_on_exit %}
 
           </div>
 
