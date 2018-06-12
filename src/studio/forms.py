@@ -22,8 +22,7 @@ from studio.services import (
     post_import_ai,
     post_intent,
     post_regenerate_webhook_secret,
-    post_training,
-    put_training_start
+    post_training
 )
 from botstore.services import get_purchased
 
@@ -560,10 +559,7 @@ class TrainingForm(forms.Form):
 
         training = post_training(token, aiid, training_data)
 
-        if training['status']['code'] in [200, 201]:
-            return put_training_start(token, aiid)
-        else:
-            return training
+        return training
 
 
 class SkillsForm(forms.Form):

@@ -51,7 +51,6 @@ from studio.services import (
     get_intent,
     get_intent_list,
     post_regenerate_webhook_secret,
-    put_training_start,
     put_training_update,
     post_chat,
     post_facebook_connect_token,
@@ -767,13 +766,6 @@ class RetrainView(RedirectView):
             self.request.session.get('token'),
             kwargs['aiid']
         )
-
-        # Start training if succesfully  updated
-        if training['status']['code'] in [200, 201]:
-            training = put_training_start(
-                self.request.session.get('token'),
-                kwargs['aiid']
-            )
 
         if training['status']['code'] in [200, 201]:
             level = messages.SUCCESS
