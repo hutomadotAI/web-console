@@ -4,10 +4,11 @@ const CHAT_INPUT = document.getElementById('CHAT_INPUT');
 const VOICE_LIST = document.getElementById('VOICE_LIST');
 const CHAT_ID_KEY = `${ AI.id }_chat_id`;
 const HISTORY_KEY = `${ AI.id }_history`;
+const SPEECH_KEY = 'speech_response';
 const HISTORY = JSON.parse(sessionStorage.getItem(HISTORY_KEY)) || [];
 var historyIndex = 0;
 
-var speechResponse = false;
+var speechResponse = sessionStorage.getItem(SPEECH_KEY) || false;
 var recording = false;
 
 var waiting = false;
@@ -33,6 +34,9 @@ if ('speechSynthesis' in window) {
   document.getElementById('action.speech:toggle').classList.remove('disabled');
   document.getElementById('action.speech:getVoices').classList.remove('disabled');
   document.getElementById('action.speech:toggle').addEventListener('click', toggleSpeech);
+  if (speechResponse) {
+    document.getElementById('action.speech:toggle').classList.add('checked');
+  }
 
   if ('onvoiceschanged' in window.speechSynthesis) {
     window.speechSynthesis.addEventListener('voiceschanged', getVoices);
@@ -124,6 +128,7 @@ function clearHistory() {
 function toggleSpeech(event) {
   event.target.classList.toggle('checked');
   speechResponse = !speechResponse;
+  speechResponse ? sessionStorage.setItem(SPEECH_KEY, true) : sessionStorage.removeItem(SPEECH_KEY);
 }
 
 /**
@@ -292,9 +297,16 @@ function wrapLines(event) {
 }
 
 function getVoices() {
+  var [ GoogleUSEnglishVoice ] = speechSynthesis.getVoices().filter(voice => voice.name === 'Google US English');
+
+  function isDefault(voice) {
+    // If there is Google US English use it as default, otherwise use standard default
+    return GoogleUSEnglishVoice ? voice === GoogleUSEnglishVoice : voice.default;
+  }
+
   VOICE_LIST.innerHTML = speechSynthesis.getVoices().map((voice, index) => `
     <label class=dropdown-item title="${ voice.name } (${ voice.lang })">
-      <input type=radio name=voices ${ voice.default ? 'checked' : '' } value=${ index }> ${ voice.name } (${ voice.lang })
+      <input type=radio name=voices ${ isDefault(voice) ? 'checked' : '' } value=${ index }> ${ voice.name } (${ voice.lang })
     </label>
   `).join('');
 }
