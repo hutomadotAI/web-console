@@ -87,9 +87,9 @@ function resetHandle() {
         response || error
       ], response => ['Internal server error', 'error']))
       .then(data => createBotMessage(...data));
-    } else {
-      createBotMessage('Chat session is missing, start chatting first', 'error', -1)
-    }
+  } else {
+    console.warn('Chat session is missing');
+  }
 }
 
 function historyStepper(shift) {
