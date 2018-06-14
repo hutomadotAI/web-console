@@ -102,6 +102,10 @@
   margin: 0 0 1.5rem;
 }
 
+#FIELD_ID_RESET_CONTEXT_ON_EXIT label {
+  font-weight: normal;
+}
+
 .intents.table .expressions-column {
   width: 30%;
 }
