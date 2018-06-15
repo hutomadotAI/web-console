@@ -27,6 +27,7 @@ from studio.forms import (
     EntityFormset,
     ImportAIForm,
     IntentForm,
+    IntentBulkUpload,
     ProxyDeleteAIForm,
     ProxyRegenerateWebhookSecretForm,
     SettingsAIForm,
@@ -445,6 +446,13 @@ class IntentsView(StudioViewMixin, ListView):
     context_object_name = 'intents'
     template_name = 'intents_list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(IntentsView, self).get_context_data(**kwargs)
+
+        context['bulk_upload_form'] = IntentBulkUpload()
+
+        return context
+
     def get_queryset(self, **kwargs):
         intents = get_intent_list(
             self.request.session.get('token', False),
@@ -656,6 +664,45 @@ class IntentsUpdateView(IntentsEditView):
         context['intent_name'] = self.initial['intent_name']
 
         return context
+
+
+@method_decorator(login_required, name='dispatch')
+class IntentsBulkUploadView(FormView):
+    form_class = IntentBulkUpload
+
+    def form_valid(self, form):
+
+        upload = form.save(
+            token=self.request.session.get('token', False),
+            aiid=self.kwargs['aiid']
+        )
+
+        # Check if save was successful
+        if upload['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+        else:
+            level = messages.ERROR
+            messages.add_message(self.request, level, upload['status']['info'])
+
+        if (upload['warnings']):
+            message_template = loader.get_template('messages/list_exceptions.html')
+            messages.add_message(
+                self.request,
+                messages.WARNING,
+                message_template.render({'issues': upload['warnings']})
+            )
+
+        if (upload['errors']):
+            message_template = loader.get_template('messages/list_exceptions.html')
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                message_template.render({'issues': upload['errors']})
+            )
+
+        redirect_url = self.request.META.get('HTTP_REFERER')
+
+        return HttpResponseRedirect(redirect_url)
 
 
 @method_decorator(login_required, name='dispatch')

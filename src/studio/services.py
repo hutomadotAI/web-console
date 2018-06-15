@@ -255,6 +255,17 @@ def post_intent(payload, token, aiid):
     )
 
 
+def post_intent_bulk(token, aiid, intents_file):
+    """Save bulk intents in CSV format"""
+    return fetch_api(
+        '/intents/{aiid}/csv',
+        token=token,
+        aiid=aiid,
+        files={'file': intents_file},
+        method='post'
+    )
+
+
 def post_chat(token, aiid, payload):
     """Send chat message"""
     return fetch_api(

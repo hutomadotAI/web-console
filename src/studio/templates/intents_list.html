@@ -1,6 +1,6 @@
 {% extends 'studio_base.html' %}
 
-{% load i18n widget_tweaks static tz studio_tags %}
+{% load i18n static tz studio_tags widget_tweaks %}
 
 {% block title %}{% trans 'Bot intents' %}{% endblock %}
 
@@ -19,6 +19,28 @@
         </h2>
 
         <a href="{% url 'studio:intents.add' ai.aiid %}" class="btn btn-success">{% trans 'New intent' %}</a>
+
+        <form action="{% url 'studio:intents.bulk.upload' ai.aiid %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% with field=bulk_upload_form.intents_file %}
+              <label class="btn btn-primary" for="{{ field.id_for_label }}">
+                {{ field.label|safe  }}
+              </label>
+
+              {% render_field field|add_class:'button-file-input' %}
+          {% endwith %}
+
+        </form>
+
+        <a href="https://help.hutoma.ai/article/11n0g7gjv1-adding-simple-intents-mapping-questions-and-answers"
+          class="documentation link"
+          target="_blank"
+          data-toggle="tooltip"
+          title="{% trans 'Documentation' %}">
+            <i class="fa fa-question-circle"></i>
+        </a>
+
       </div>
 
       <div id="INTENTS_LIST" class="box-body">
@@ -125,6 +147,13 @@
 
 {% block javascripts %}
   {{ block.super }}
+
+  <script>
+    document.getElementById('id_intents_file').addEventListener('change', function changeHandler() {
+      this.labels.forEach(label => label.classList.add('loading'));
+      this.form.submit();
+    });
+  </script>
 
   <script src="{% static 'js/elements.js' %}"></script>
 

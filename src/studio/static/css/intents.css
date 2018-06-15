@@ -98,6 +98,14 @@
   text-align: center;
 }
 
+#WELCOME .actions {
+  display: flex;
+}
+
+#WELCOME .actions .btn {
+  margin: 0 1px;
+}
+
 #FIELD_ID_RESET_CONTEXT_ON_EXIT {
   margin: 0 0 1.5rem;
 }

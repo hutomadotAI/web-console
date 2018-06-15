@@ -1,0 +1,9 @@
+<p>While uploading the following issues occurred:</p>
+<ul>
+  {% for issue in issues|slice:':10'  %}
+    <li><b>{{ issue.error }}{{ issue.warning }}</b></li>
+  {% endfor %}
+  {% if issues|length > 10 %}
+    <li>And {{issues|length|add:-10 }} more</li>
+  {% endif %}
+</ul>

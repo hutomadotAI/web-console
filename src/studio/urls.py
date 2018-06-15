@@ -23,8 +23,8 @@ from django.urls import path, re_path
 
 from django.views.generic.base import RedirectView
 from studio.views import (
-    AICreateView,
     AICloneView,
+    AICreateView,
     AIDetailView,
     AIImportView,
     AIListView,
@@ -36,9 +36,10 @@ from studio.views import (
     FacebookActionView,
     FacebookCustomiseView,
     InsightsView,
-    IntentsEditView,
     IntegrationView,
     IntentDeleteView,
+    IntentsBulkUploadView,
+    IntentsEditView,
     IntentsUpdateView,
     IntentsView,
     OAuthView,
@@ -169,6 +170,13 @@ urlpatterns = [
         'bots/edit/<uuid:aiid>/intents/edit/<slug:intent_name>',
         IntentsUpdateView.as_view(),
         name='intents.edit'
+    ),
+
+    # Upload intents in CSV format
+    path(
+        'bots/edit/<uuid:aiid>/intents/bulk/upload',
+        IntentsBulkUploadView.as_view(),
+        name='intents.bulk.upload'
     ),
 
     # List the integration options for an existing AI

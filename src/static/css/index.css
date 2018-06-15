@@ -169,9 +169,7 @@ input::selection {
 
 .documentation.link {
   color: #999;
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
+  margin-left: 1rem;
 }
 
 .smallprint {
@@ -352,6 +350,12 @@ form h5 button {
   background-color: transparent;
   border: none;
   text-align: left;
+}
+
+.button-file-input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
 }
 
 .errorlist {
@@ -976,7 +980,8 @@ select:not([multiple]) {
 }
 
 .box-footer .btn + .btn,
-.box-header .btn + .btn {
+.box-header .btn + .btn,
+.box-header .btn + form {
   margin-left: 0.2rem;
 }
 
@@ -988,8 +993,7 @@ select:not([multiple]) {
   color: #98A8BA;
   font-weight: bold;
   font-size: 18px;
-  flex-grow: 1;
-  max-width: calc(100% - 88px);
+  flex-grow: 2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1049,6 +1053,10 @@ select:not([multiple]) {
   border: 1px solid transparent;
   box-shadow: none;
   min-width: 5.5rem;
+}
+
+label.btn {
+  margin: 0;
 }
 
 .btn-group-sm > .btn,

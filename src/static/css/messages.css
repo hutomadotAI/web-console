@@ -9,19 +9,23 @@
 }
 
 .alert {
-  align-items: baseline;
   color: #fff;
-  display: flex;
   border: none;
   border-radius: 0;
 }
 
-.box .alert {
-  display: block;
+.inline {
+  align-items: baseline;
+  display: flex;
 }
 
 .alert p {
   margin: 0;
+}
+
+.alert ul {
+  list-style: disc;
+  padding: 1.5rem 1rem 0;
 }
 
 .alert h4 {

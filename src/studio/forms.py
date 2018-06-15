@@ -16,11 +16,12 @@ from app.validators import MaxSelectedValidator
 from studio.services import (
     delete_ai,
     post_ai,
-    post_clone_ai,
     post_ai_skill,
+    post_clone_ai,
     post_entity,
     post_import_ai,
     post_intent,
+    post_intent_bulk,
     post_regenerate_webhook_secret,
     post_training
 )
@@ -560,6 +561,25 @@ class TrainingForm(forms.Form):
         training = post_training(token, aiid, training_data)
 
         return training
+
+
+class IntentBulkUpload(forms.Form):
+
+    intents_file = forms.FileField(
+        label=_('Upload CSV file'),
+        widget=forms.FileInput(attrs={
+            'accept': '.csv, application/csv',
+            'placeholder': 'intents.csv',
+            'class': 'form-control'
+        })
+    )
+
+    def save(self, token, aiid):
+        """Upload a file and start a new training"""
+
+        intents_file = self.cleaned_data['intents_file']
+
+        return post_intent_bulk(token, aiid, intents_file)
 
 
 class SkillsForm(forms.Form):

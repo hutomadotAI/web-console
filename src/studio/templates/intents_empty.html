@@ -30,8 +30,21 @@
           {% blocktrans %}Use intents to map questions with answers, build complex dialogues, or connect to external business logic & services.{% endblocktrans %}
         </p>
 
-        <div class="actiones">
-          <a href="{% url 'studio:intents.add' ai.aiid %}" class="btn btn-success btn-lg" title="{% trans 'Add a new intent' %}">{% trans 'Add intent' %}</a>
+        <div class="actions">
+          <a href="{% url 'studio:intents.add' ai.aiid %}" class="btn btn-success" title="{% trans 'Add a new intent' %}">{% trans 'Add intent' %}</a>
+
+          <form action="{% url 'studio:intents.bulk.upload' ai.aiid %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% with field=bulk_upload_form.intents_file %}
+                <label class="btn btn-primary" for="{{ field.id_for_label }}">
+                  {{ field.label|safe  }}
+                </label>
+
+                {% render_field field|add_class:'button-file-input' %}
+            {% endwith %}
+
+          </form>
         </div>
 
       </div>
@@ -46,4 +59,16 @@
   {{ block.super }}
 
   <link rel="stylesheet" href="{% static 'css/intents.css' %}">
+{% endblock %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script>
+    document.getElementById('id_intents_file').addEventListener('change', function changeHandler() {
+      this.labels.forEach(label => label.classList.add('loading'));
+      this.form.submit();
+    });
+  </script>
+
 {% endblock %}

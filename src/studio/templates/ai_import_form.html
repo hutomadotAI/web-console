@@ -29,7 +29,7 @@
 
       <div class="box-body">
 
-        <form action="{{ request.build_absolute_uri }}" method="post" id="IMPORT_FORM" enctype="multipart/form-data">
+        <form action="{{ request.build_absolute_uri }}" id="IMPORT_FORM" method="post"enctype="multipart/form-data">
           {% csrf_token %}
 
           {{ form | crispy }}
