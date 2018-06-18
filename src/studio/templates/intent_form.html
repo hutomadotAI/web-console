@@ -346,7 +346,7 @@
 
             {% if formset.empty_form.nested %}
 
-              <div class="form-formset-group">
+              <div class="form-formset-group" id="{{ formset.empty_form.prefix }}">
 
                 {% include 'formset.html' with prefix=formset.empty_form.prefix fields=formset.empty_form  %}
 
@@ -355,7 +355,7 @@
                   <div id="{{ form.prefix }}_FORMSET">
 
                     {% with form.prefix|add:'-0' as prefix %}
-                      {% include 'formset.html' with prefix=prefix formset=form.prefix fields=form.nested.empty_form nested=True %}
+                      {% include 'formset.html' with prefix=prefix formset=form.prefix fields=form.nested.forms.0 nested=True %}
                     {% endwith %}
 
                   </div>

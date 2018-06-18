@@ -1,24 +1,14 @@
-$(document)
-  .on('change', '.form-formset .delete', function () {
-    // Don’t validate removed formsets
+$(document).on('change', '.form-formset .delete', function () {
+  // Don’t validate removed formsets, use disable state to prevent it
+  document.querySelectorAll(`[name^=${ this.dataset.prefix }]:not(.delete)`).forEach(
+    node => node.disabled = this.checked
+  );
 
-    if (this.checked) {
-      if ($(this).parents('.form-formset-group').length && !$(this).parent().hasClass('nested')) {
-        $(this).parents('.form-formset-group').find('[required]').removeAttr('required');
-        $(this).parents('.form-formset-group').addClass('removed');
-      } else {
-        $(this).parent().find('[required]').removeAttr('required').addClass('was-required');
-      }
-    } else {
-      if ($(this).parents('.form-formset-group').length && !$(this).parent().hasClass('nested')) {
-        $(this).parents('.form-formset-group').find('.was-required').attr('required');
-        $(this).parents('.form-formset-group').removeClass('removed');
-      } else {
-        $(this).parent().find('.was-required').attr('required');
-      }
-    }
-
-  });
+  // Show removed for the nested formset group
+  if (document.getElementById(this.dataset.prefix)) {
+    document.getElementById(this.dataset.prefix).classList.toggle('removed');
+  }
+});
 
 $(document).on('click', '.formset-button', function () {
   // Get elements
@@ -26,15 +16,14 @@ $(document).on('click', '.formset-button', function () {
   const TEMPLATE = document.getElementById(`${ this.dataset.formset }_TEMPLATE`);
   const TOTAL = document.getElementById(`id_${ this.dataset.formset }-TOTAL_FORMS`);
 
-  // creat new form html
+  // Create new form html
   var form = document.createElement('div');
 
-  // replace prefix with entities forms counter
-  var template = TEMPLATE.innerHTML.replace( /__prefix__-__prefix__/g, '__prefix__-0');
+  // Prepare nested formsets prefixes and update current counter
+  var template = TEMPLATE.innerHTML.replace( /__prefix__-__prefix__/g, '__prefix__-__nested-prefix__');
   template = template.replace( /__prefix__/g, TOTAL.value);
-
+  template = template.replace( /__nested-prefix__/g, '__prefix__');
   form.innerHTML = template;
-
 
   // Append new form to the formset
   var newForm = FORMSET.appendChild(form.firstElementChild);

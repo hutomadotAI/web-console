@@ -2,7 +2,7 @@
 
 <div class="form-formset{% if nested %} nested{% endif %}">
 
-  <input type="checkbox" class="delete" name="{{ prefix }}-DELETE" id="id_{{ prefix }}-DELETE">
+  <input type="checkbox" class="delete" name="{{ prefix }}-DELETE" id="id_{{ prefix }}-DELETE" data-prefix="{{ prefix }}">
 
   {% for field in fields %}
 
