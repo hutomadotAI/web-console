@@ -1,5 +1,8 @@
 import logging
 
+from allauth.account.forms import ResetPasswordForm
+from allauth.account.utils import filter_users_by_email
+
 from django import forms, template
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -11,6 +14,14 @@ from captcha.fields import ReCaptchaField
 from users.services import post_info
 
 logger = logging.getLogger(__name__)
+
+
+class ResetPasswordForm(ResetPasswordForm):
+    def clean_email(self):
+        """Don't reveal if the user exist"""
+        email = self.cleaned_data.get('email')
+        self.users = filter_users_by_email(email)
+        return email
 
 
 class SignupForm(forms.Form):

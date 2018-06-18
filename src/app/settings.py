@@ -157,9 +157,11 @@ ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 # Retyping passwords is annoying!
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
-# A string pointing to a custom form class that is used during signup to ask
-# the user for additional input.
-ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
+# Overide Allauth forms
+ACCOUNT_FORMS = {
+    'signup': 'users.forms.SignupForm',
+    'reset_password': 'users.forms.ResetPasswordForm'
+}
 
 # Usernames are setup by application, longer are always harder to guess
 ACCOUNT_USERNAME_MIN_LENGTH = 8
