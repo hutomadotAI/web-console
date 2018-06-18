@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
 
 NAME_PATTERN = '[-a-zA-Z0-9_ ]+'
 SLUG_PATTERN = '^[-a-zA-Z0-9_]+$'
+VARIABLE_PATTERN = '^[-a-zA-Z0-9_\.]+$'
 
 
 class SkillsMultipleWidget(forms.widgets.CheckboxSelectMultiple):
@@ -91,13 +92,15 @@ class ContextFormset(forms.Form):
 
     variable = forms.CharField(
         label=_('Variable'),
-        validators=[RegexValidator(regex=SLUG_PATTERN)],
+        validators=[RegexValidator(regex=VARIABLE_PATTERN)],
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'pattern': SLUG_PATTERN,
+            'pattern': VARIABLE_PATTERN,
             'maxlength': 250,
             'required': True,
-            'placeholder': _('ex. variable_1')
+            'placeholder': _('ex. variable_1'),
+            'title': _('A valid “Variable” consisting of letters, numbers, '
+                       'dots, underscores or hyphens.')
         }),
         required=True
     )
@@ -106,7 +109,6 @@ class ContextFormset(forms.Form):
         label=_('Value'),
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'pattern': SLUG_PATTERN,
             'maxlength': 250,
             'required': True,
         }),
@@ -119,15 +121,15 @@ class ConditionsFormset(forms.Form):
 
     variable = forms.CharField(
         label=_('Variable'),
-        validators=[RegexValidator(regex=SLUG_PATTERN)],
+        validators=[RegexValidator(regex=VARIABLE_PATTERN)],
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'pattern': SLUG_PATTERN,
+            'pattern': VARIABLE_PATTERN,
             'maxlength': 250,
             'required': True,
             'placeholder': _('ex. variable_1'),
             'title': _('A valid “Variable” consisting of letters, numbers, '
-                       'underscores or hyphens.')
+                       'dots, underscores or hyphens.')
         }),
         required=True
     )
@@ -153,7 +155,6 @@ class ConditionsFormset(forms.Form):
         label=_('Value'),
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'pattern': SLUG_PATTERN,
             'maxlength': 250,
             'required': True,
             'placeholder': _('ex. true')
@@ -169,7 +170,6 @@ class FollowUpFormset(forms.Form):
         label=_('Intent'),
         widget=forms.Select(attrs={
             'class': 'form-control',
-            'pattern': SLUG_PATTERN,
             'required': True
         }),
         required=True
