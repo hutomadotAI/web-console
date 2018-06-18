@@ -162,6 +162,53 @@ class ConditionsFormset(forms.Form):
     )
 
 
+class FollowUpFormset(forms.Form):
+    """Used for adding follow up on Intents tab"""
+
+    intent_to_execute = forms.ChoiceField(
+        label=_('Intent'),
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'pattern': SLUG_PATTERN,
+            'required': True
+        }),
+        required=True
+    )
+
+    def __init__(self, *args, **kwargs):
+        """Get initial choices for the form and add conditions formset"""
+
+        intents = kwargs.pop('intents', [])
+        current_intent = kwargs.pop('current_intent', {})
+        initial = kwargs.get('initial', {})
+        conditions = initial.get('conditions', [])
+
+        super(FollowUpFormset, self).__init__(*args, **kwargs)
+
+        self.fields['intent_to_execute'].choices = [
+            (intent, intent) for intent in intents
+            if not current_intent or not intent == current_intent['intent_name']
+        ]
+
+        conditions_formset = forms.formset_factory(
+            ConditionsFormset,
+            extra=0 if conditions else 1,
+            can_delete=True
+        )
+
+        self.nested = conditions_formset(
+            initial=conditions,
+            data=kwargs.get('data'),
+            prefix=kwargs.get('prefix')
+        )
+
+    def clean(self, *args, **kwargs):
+        """Pass nested formset data if instance is not removed"""
+        cleaned = super(FollowUpFormset, self).clean(*args, **kwargs)
+        cleaned['conditions'] = [] if cleaned['DELETE'] else self.nested.cleaned_data
+        return cleaned
+
+
 class EntityFormset(forms.Form):
     """Used as base for formset on Intents tab"""
 
@@ -340,13 +387,14 @@ class IntentForm(forms.Form):
     def save(self, *args, **kwargs):
         """Combine form data with entities coming from formset"""
 
-        # TODO: Remove after we refactor Intent API code
         self.cleaned_data['webhook']['aiid'] = str(kwargs['aiid'])
 
-        # TODO: remove deleted formsets
-
         self.cleaned_data['conditions_in'] = [
-            condition for condition in kwargs.pop('conditions') if not condition['DELETE']
+            condition for condition in kwargs.pop('conditions_in') if not condition['DELETE']
+        ]
+
+        self.cleaned_data['variables'] = [
+            entity for entity in kwargs.pop('entities') if not entity['DELETE']
         ]
 
         self.cleaned_data['context_in'] = {
@@ -359,8 +407,14 @@ class IntentForm(forms.Form):
             for variable in kwargs.pop('context_out') if not variable['DELETE']
         }
 
-        self.cleaned_data['variables'] = [
-            entity for entity in kwargs.pop('entities') if not entity['DELETE']
+        self.cleaned_data['conditions_out'] = [
+            {
+                'intent_to_execute': condition_out['intent_to_execute'],
+                'conditions': [
+                    condition for condition in condition_out['conditions']
+                    if not condition['DELETE']
+                ]
+            } for condition_out in kwargs.pop('conditions_out') if not condition_out['DELETE']
         ]
 
         return {

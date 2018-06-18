@@ -224,3 +224,7 @@
   justify-content: center;
   width: 6rem;
 }
+
+.form-group.intent_to_execute-group {
+  flex-grow: 2;
+}

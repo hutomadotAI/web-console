@@ -21,6 +21,15 @@
   position: relative;
 }
 
+.form-formset-group {
+  margin: 0 0 2rem;
+  position: relative;
+}
+
+.form-formset-group .form-formset {
+  margin-bottom: 1rem;
+}
+
 .form-formset .form-group {
   margin: 1px;
   display: flex;
@@ -32,6 +41,10 @@
   background-color: var(--INPUT_BACKGROUND);
   min-height: 2.25rem;
   margin-top: auto;
+}
+
+.form-formset .form-group.actions-group .controls {
+  background-color: transparent;
 }
 
 .form-formset .control-label {
@@ -50,24 +63,42 @@
   display: none;
 }
 
-.form-formset .delete-group .btn {
+.form-formset .actions-group .btn {
   background-color: #333;
   border-radius: 0;
+  color: #ADADAD;
 }
 
 .form-formset .formset-remove:hover,
 .form-formset .formset-remove:focus {
   color: #fff;
   background-color: var(--DANGER);
+}
 
+.form-formset .formset-add:hover,
+.form-formset .formset-add:focus {
+  color: #fff;
+  background-color: var(--SUCCESS);
 }
 
 .form-formset .delete:checked ~ .form-group .control-label,
 .form-formset .delete:checked ~ .form-group .controls,
-.form-formset .delete:checked ~ .form-group .controls .form-control {
+.form-formset .delete:checked ~ .form-group .controls .form-control,
+.form-formset-group.removed .control-label,
+.form-formset-group.removed .controls,
+.form-formset-group.removed .controls .form-control {
   opacity: 0.2;
 }
 
+.form-formset .delete:checked ~ select,
+.form-formset .delete:checked ~ input,
+.form-formset-group.removed select,
+.form-formset-group.removed input,
+.form-formset-group.removed .controls.nested .btn  {
+  pointer-events: none;
+}
+
+.form-formset-group.removed::after,
 .form-formset .delete:checked ~ .form-group:last-of-type::after {
   content: 'will be deleted';
   position: absolute;
@@ -75,10 +106,14 @@
   font-weight: bold;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, -50%);
 }
 
-.form-formset .delete-group .controls {
+.form-formset-group.removed .form-formset .delete:checked ~ .form-group:last-of-type::after {
+  display: none;
+}
+
+.form-formset .actions-group .controls:not(.nested) {
   opacity: 1 !important;
 }
 
@@ -87,3 +122,24 @@
   border-radius: 0;
 }
 
+/* Nested formsets */
+
+.form-formset.nested {
+  margin: 0 1.5rem 0 -1rem;
+}
+
+.form-formset.nested + .form-formset.nested .control-label {
+  display: none;
+}
+
+.form-formset.nested .formset-add {
+  display: none;
+}
+
+.form-formset.nested:last-of-type .formset-add {
+  display: initial;
+}
+
+.form-formset.nested:last-of-type .formset-remove {
+  display: none;
+}

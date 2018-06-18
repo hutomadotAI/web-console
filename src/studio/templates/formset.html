@@ -1,8 +1,8 @@
 {% load i18n %}
 
-<div class="form-formset">
+<div class="form-formset{% if nested %} nested{% endif %}">
 
-  <input type="checkbox" class="delete" name="{{ formset }}-{{ id }}-DELETE" id="id_{{ formset }}-{{ id }}-DELETE">
+  <input type="checkbox" class="delete" name="{{ prefix }}-DELETE" id="id_{{ prefix }}-DELETE">
 
   {% for field in fields %}
 
@@ -19,10 +19,18 @@
 
   {% endfor %}
 
-  <div class="form-group delete-group">
-    <div class="controls">
-      <label class="btn formset-remove fa fa-trash" for="id_{{ formset }}-{{ id }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove' %}"></label>
-    </div>
+  <div class="form-group actions-group">
+    {% if nested %}
+      <div class="controls nested">
+        <label class="btn formset-remove fa fa-minus" for="id_{{ prefix }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove' %}"></label>
+        <button type="button" class="btn formset-add fa fa-plus formset-button" data-toggle="tooltip" title="{% trans 'Add' %}"
+        data-formset="{{ formset }}"></button>
+      </div>
+    {% else %}
+      <div class="controls">
+        <label class="btn formset-remove fa fa-trash" for="id_{{ prefix }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove' %}"></label>
+      </div>
+    {% endif %}
   </div>
 
 </div>

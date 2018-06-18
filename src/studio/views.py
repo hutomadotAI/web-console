@@ -25,6 +25,7 @@ from studio.forms import (
     ContextFormset,
     EntityForm,
     EntityFormset,
+    FollowUpFormset,
     ImportAIForm,
     IntentForm,
     IntentBulkUpload,
@@ -472,14 +473,15 @@ class IntentsEditView(StudioViewMixin, FormView):
     form_class = IntentForm
     template_name = 'intent_form.html'
     formsets = {
-        'CONDITIONS': formset_factory(ConditionsFormset, extra=0, can_delete=True),
+        'CONDITIONS_IN': formset_factory(ConditionsFormset, extra=0, can_delete=True),
         'ENTITIES': formset_factory(EntityFormset, extra=0, can_delete=True),
         'CONTEXT_IN': formset_factory(ContextFormset, extra=0, can_delete=True),
         'CONTEXT_OUT': formset_factory(ContextFormset, extra=0, can_delete=True),
+        'CONDITIONS_OUT': formset_factory(FollowUpFormset, extra=0, can_delete=True),
     }
 
     def get_context_data(self, **kwargs):
-        """Update context with Intents list and Entities formset"""
+        """Update context with Intents list and Entities formsets"""
 
         context = super(IntentsEditView, self).get_context_data(**kwargs)
 
@@ -494,10 +496,15 @@ class IntentsEditView(StudioViewMixin, FormView):
             entity['entity_name']
         ))
 
-        # And pass it to formset initial choice
+        intents = [intent['intent_name'] for intent in get_intent_list(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        ).get('intents')]
+
+        # And pass it to formsets initial choice
         context['formsets'] = {
-            'conditions': kwargs.get('conditions_formset', self.get_formset(
-                prefix='CONDITIONS',
+            'conditions_in': kwargs.get('conditions_in', self.get_formset(
+                prefix='CONDITIONS_IN',
                 initial=self.initial.get('conditions_in', []),
             )),
             'entities': kwargs.get('entities', self.get_formset(
@@ -505,15 +512,19 @@ class IntentsEditView(StudioViewMixin, FormView):
                 initial=self.initial.get('variables', []),
                 form_kwargs={'entities': entities},
             )),
-            'context_in': kwargs.get('entities', self.get_formset(
+            'context_in': kwargs.get('context_in', self.get_formset(
                 prefix='CONTEXT_IN',
                 initial=self.initial.get('context_in', [])
             )),
-            'context_out': kwargs.get('entities', self.get_formset(
+            'context_out': kwargs.get('context_out', self.get_formset(
                 prefix='CONTEXT_OUT',
                 initial=self.initial.get('context_out', [])
+            )),
+            'conditions_out': kwargs.get('conditions_out', self.get_formset(
+                prefix='CONDITIONS_OUT',
+                initial=self.initial.get('conditions_out', []),
+                form_kwargs={'intents': intents, 'current_intent': self.initial},
             ))
-
         }
 
         return context
@@ -524,10 +535,11 @@ class IntentsEditView(StudioViewMixin, FormView):
         intent = form.save(
             aiid=self.kwargs['aiid'],
             token=self.request.session.get('token', False),
-            conditions=formsets['conditions'].cleaned_data,
+            conditions_in=formsets['conditions_in'].cleaned_data,
             entities=formsets['entities'].cleaned_data,
             context_in=formsets['context_in'].cleaned_data,
-            context_out=formsets['context_out'].cleaned_data
+            context_out=formsets['context_out'].cleaned_data,
+            conditions_out=formsets['conditions_out'].cleaned_data
         )
 
         # Check if save was successful
@@ -575,14 +587,12 @@ class IntentsEditView(StudioViewMixin, FormView):
 
     def form_invalid(self, form, formsets):
         """If the form or entities_formset is invalid, render the invalid form."""
-
         return self.render_to_response(
             self.get_context_data(form=form, formsets=formsets)
         )
 
     def get_formset(self, **kwargs):
         """Return an instance of the entities_formset to be used in this view."""
-
         return self.formsets[kwargs.get('prefix')](
             data=self.get_form_kwargs().get('data'),
             **kwargs
@@ -596,15 +606,25 @@ class IntentsEditView(StudioViewMixin, FormView):
             self.request.session.get('token', False)
         ).get('entities')
 
+        intents = [intent['intent_name'] for intent in get_intent_list(
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
+        ).get('intents')]
+
         form = self.get_form()
+
         formsets = {
-            'conditions': self.get_formset(prefix='CONDITIONS'),
+            'conditions_in': self.get_formset(prefix='CONDITIONS_IN'),
             'entities': self.get_formset(
                 prefix='ENTITIES',
                 form_kwargs={'entities': entities}
             ),
             'context_in': self.get_formset(prefix='CONTEXT_IN'),
-            'context_out': self.get_formset(prefix='CONTEXT_OUT')
+            'context_out': self.get_formset(prefix='CONTEXT_OUT'),
+            'conditions_out': self.get_formset(
+                prefix='CONDITIONS_OUT',
+                form_kwargs={'intents': intents, 'current_intent': self.initial}
+            )
         }
 
         if form.is_valid() and all(formset.is_valid() for key, formset in formsets.items()):
@@ -633,12 +653,8 @@ class IntentsUpdateView(IntentsEditView):
 
             # Prepare data for the form
             intent['webhook'] = '' if intent['webhook'] is None else intent['webhook']['endpoint']
-            intent['responses'] = settings.TOKENFIELD_DELIMITER.join(
-                intent['responses']
-            )
-            intent['user_says'] = settings.TOKENFIELD_DELIMITER.join(
-                intent['user_says']
-            )
+            intent['responses'] = settings.TOKENFIELD_DELIMITER.join(intent['responses'])
+            intent['user_says'] = settings.TOKENFIELD_DELIMITER.join(intent['user_says'])
 
             intent['context_in'] = [
                 {'variable': key, 'value': value} for key, value in intent['context_in'].items()
@@ -659,7 +675,6 @@ class IntentsUpdateView(IntentsEditView):
 
     def get_context_data(self, **kwargs):
         """Provide intent name for the template"""
-
         context = super(IntentsUpdateView, self).get_context_data(**kwargs)
         context['intent_name'] = self.initial['intent_name']
 

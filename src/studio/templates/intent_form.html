@@ -48,11 +48,11 @@
 
           <h5>
 
-            <button class="text advanced-toggle {% if not formsets.conditions.forms|length %}collapsed{% endif %}"
+            <button class="text advanced-toggle {% if not formsets.conditions_in.forms|length %}collapsed{% endif %}"
               tabindex="-1"
               type="button"
               data-toggle="collapse"
-              data-target="#CONDITIONS">{% trans 'Conditions' %}</button>
+              data-target="#CONDITIONS_IN">{% trans 'Conditions' %}</button>
 
             <a href="#"
               class="fa fa-question-circle"
@@ -62,7 +62,7 @@
 
           </h5>
 
-          <div id="CONDITIONS" class="form-section collapse {% if formsets.conditions.forms|length %}show{% endif %}">
+          <div id="CONDITIONS_IN" class="form-section collapse {% if formsets.conditions_in.forms|length %}show{% endif %}">
 
             <div class="alert alert-info">
               {% blocktrans %}
@@ -70,23 +70,23 @@
               {% endblocktrans %}
             </div>
 
-            <div class="formset" id="CONDITIONS_FORMSET">
+            <div class="formset" id="CONDITIONS_IN_FORMSET">
 
-              {% for form in formsets.conditions.forms %}
+              {% for form in formsets.conditions_in.forms %}
 
-                {% include 'formset.html' with formset='CONDITIONS' id=forloop.counter0 fields=form %}
+                {% include 'formset.html' with prefix=form.prefix fields=form %}
 
                 {{ form.errors }}
 
               {% endfor %}
 
-              {{ formsets.conditions.management_form }}
+              {{ formsets.conditions_in.management_form }}
 
             </div>
 
             <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
               title="{% trans 'Add a new Condition' %}"
-              data-formset="CONDITIONS">{% trans 'Add Condition' %}</button>
+              data-formset="CONDITIONS_IN">{% trans 'Add Condition' %}</button>
 
             {% include 'forms/field.html' with field=form.conditions_default_response %}
 
@@ -132,7 +132,7 @@
 
               {% for form in formsets.context_in.forms %}
 
-                {% include 'formset.html' with formset='CONTEXT_IN' id=forloop.counter0 fields=form %}
+                {% include 'formset.html' with prefix=form.prefix fields=form %}
 
                 {{ form.errors }}
 
@@ -172,7 +172,7 @@
 
               {% for form in formsets.entities.forms %}
 
-                {% include 'formset.html' with formset='ENTITIES' id=forloop.counter0 fields=form %}
+                {% include 'formset.html' with prefix=form.prefix fields=form %}
 
                 {{ form.errors }}
 
@@ -242,7 +242,7 @@
 
               {% for form in formsets.context_out.forms %}
 
-                {% include 'formset.html' with formset='CONTEXT_OUT' id=forloop.counter0 fields=form %}
+                {% include 'formset.html' with prefix=form.prefix fields=form %}
 
                 {{ form.errors }}
 
@@ -262,7 +262,6 @@
 
           <h5>
             <span class="text">{% trans 'Reset Context' %}</span>
-
             <a href="#"
               class="fa fa-question-circle"
               target="_blank"
@@ -272,23 +271,117 @@
 
           {% include 'forms/checkbox.html' with field=form.reset_context_on_exit %}
 
+          <hr/>
+
+          <h5>
+            <button class="text advanced-toggle {% if not formsets.conditions_out.forms|length %}collapsed{% endif %}"
+              tabindex="-1"
+              type="button"
+              data-toggle="collapse"
+              data-target="#CONDITIONS_OUT">{% trans 'Follow-up intents' %}</button>
+
+            <a href="#"
+              class="fa fa-question-circle"
+              target="_blank"
+              data-toggle="tooltip"
+              title="{% trans 'Documentation' %}"></a>
+
+          </h5>
+
+          <div id="CONDITIONS_OUT" class="form-section collapse {% if formsets.conditions_out.forms|length %}show{% endif %}">
+
+            <div class="alert alert-info">
+              {% blocktrans %}
+                Trigger an other intent after this one
+              {% endblocktrans %}
+            </div>
+
+            <div class="formset" id="CONDITIONS_OUT_FORMSET">
+
+              {% for form in formsets.conditions_out.forms %}
+
+                <div class="form-formset-group">
+
+                  {% include 'formset.html' with prefix=form.prefix fields=form %}
+
+                  <div id="{{ form.prefix }}_FORMSET">
+
+                    {% for formset in form.nested.forms %}
+
+                      {% include 'formset.html' with prefix=formset.prefix formset=form.prefix fields=formset nested=True %}
+
+                    {% endfor %}
+
+                  </div>
+
+                  <template id="{{ form.prefix }}_TEMPLATE">
+                    {% with form.prefix|add:'-__prefix__' as prefix %}
+                      {% include 'formset.html' with prefix=prefix formset=form.prefix fields=form.nested.empty_form nested=True %}
+                    {% endwith %}
+                  </template>
+
+                  {{ form.nested.management_form }}
+
+                {{ form.errors }}
+
+                </div>
+
+              {% endfor %}
+
+              {{ formsets.conditions_out.management_form }}
+
+            </div>
+
+            <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
+              title="{% trans 'Add a new follow up intent' %}"
+              data-formset="CONDITIONS_OUT">{% trans 'Add follow up intent' %}</button>
+
+          </div>
+
         </form>
 
-        <script id="CONDITIONS_TEMPLATE" type="text/template">
-          {% include 'formset.html' with formset='CONDITIONS' id='__prefix__' fields=formsets.conditions.empty_form  %}
-        </script>
+        {% for key, formset in formsets.items %}
 
-        <script id="ENTITIES_TEMPLATE" type="text/template">
-          {% include 'formset.html' with formset='ENTITIES' id='__prefix__' fields=formsets.entities.empty_form  %}
-        </script>
+          <template id="{{ key|upper }}_TEMPLATE">
 
-        <script id="CONTEXT_IN_TEMPLATE" type="text/template">
-          {% include 'formset.html' with formset='CONTEXT_IN' id='__prefix__' fields=formsets.context_in.empty_form  %}
-        </script>
+            {% if formset.empty_form.nested %}
 
-        <script id="CONTEXT_OUT_TEMPLATE" type="text/template">
-          {% include 'formset.html' with formset='CONTEXT_OUT' id='__prefix__' fields=formsets.context_out.empty_form  %}
-        </script>
+              <div class="form-formset-group">
+
+                {% include 'formset.html' with prefix=formset.empty_form.prefix fields=formset.empty_form  %}
+
+                {% with formset.empty_form as form %}
+
+                  <div id="{{ form.prefix }}_FORMSET">
+
+                    {% with form.prefix|add:'-0' as prefix %}
+                      {% include 'formset.html' with prefix=prefix formset=form.prefix fields=form.nested.empty_form nested=True %}
+                    {% endwith %}
+
+                  </div>
+
+                  <template id="{{ form.prefix }}_TEMPLATE">
+                    {% with form.prefix|add:'-__prefix__' as prefix %}
+                      {% include 'formset.html' with prefix=prefix formset=form.prefix fields=form.nested.empty_form nested=True %}
+                    {% endwith %}
+                  </template>
+
+                {% endwith %}
+
+                {{ formset.empty_form.nested.management_form }}
+
+              </div>
+
+            {% else %}
+
+              {% include 'formset.html' with prefix=formset.empty_form.prefix fields=formset.empty_form  %}
+
+            {% endif %}
+
+          </template>
+
+        {% endfor %}
+
 
       </div>
 
