@@ -63,6 +63,38 @@ if ('speechSynthesis' in window) {
 // Read the chat history
 loadHistory();
 
+/**
+ * Preparers data for chat message from provided error response
+ *
+ * @param  {Object} error   Error object thrown during Promise resolving
+ * @return {Promise}        Promise that returns array of chat data
+ */
+function chatErrorHandle(error) {
+
+  // If error response is an JSON object pass it's data to the chat
+  function onFulfilled(response) {
+    return {
+      message: response.status ? response.status.info : error.message,
+      level: response.status && response.status.code == 400 ? 'warning' : 'error',
+      score: -1,
+      log: response || error
+    };
+  }
+
+  // If error response is anything else provide a fallback error to the chat
+  function onRejected(response) {
+    return {
+      message: 'Internal server error',
+      level: 'error',
+      score: -1,
+      log: response
+    };
+  }
+
+  return error.response.json().then(onFulfilled, onRejected);
+
+}
+
 function resetHandle() {
   if(sessionStorage.getItem(CHAT_ID_KEY)) {
     fetch(this.getAttribute('action'), {
@@ -79,14 +111,14 @@ function resetHandle() {
       .then(resolveStatus)
       .catch(handleErrors)
       .then(response => response.json())
-      .then(response => [ response.status.info, 'success', 1, response ])
-      .catch(error => error.response.json().then(response => [
-        response.status ? response.status.info : error.message,
-        'warning',
-        -1,
-        response || error
-      ], response => ['Internal server error', 'error']))
-      .then(data => createBotMessage(...data));
+      .then(response => ({
+        message: response.status.info,
+        level: 'success',
+        score: 1,
+        log: response
+      }))
+      .catch(chatErrorHandle)
+      .then(data => createBotMessage(data.message, data.level, data.score, data.log));
   } else {
     console.warn('Chat session is missing');
   }
@@ -242,14 +274,14 @@ function requestAnswerAI(message) {
     .then(response => response.json())
     .then(resolveChatID)
     .then(printLog)
-    .then(response => [
-      response.result.answer || 'Chat disabled — handed over to external agent',
-      response.result.chatTarget === 'ai' ? 'normal' : 'warning',
-      response.result.score,
-      response
-    ])
-    .catch(error => [ error.message, 'error', -1, error ])
-    .then(data => createBotMessage(...data))
+    .then(response => ({
+      message: response.result.answer || 'Chat disabled — handed over to external agent',
+      level: response.result.chatTarget === 'ai' ? 'normal' : 'warning',
+      score: response.result.score,
+      log: response
+    }))
+    .catch(chatErrorHandle)
+    .then(data => createBotMessage(data.message, data.level, data.score, data.log))
     .then(() => {
       waiting = enableChat();
     });
