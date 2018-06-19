@@ -5,7 +5,16 @@
   <div class="sidebar-header">
     <h2>{% trans 'Chat' %}</h2>
 
-    <button class="btn btn-default fa fa-ellipsis-v text-gray settings"
+    <button class="btn btn-default fa fa-refresh"
+      action="{% url 'studio:proxy.context.reset' ai.aiid %}"
+      data-toggle="tooltip"
+      title="{% trans 'Reset chat — context variables, intents state and handover will be reseted' %}"
+      id="action.context:reset">
+      <span class="sr-only">{% trans 'Reset chat' %}</span>
+    </button>
+
+    <button class="btn btn-default fa fa-ellipsis-v"
+      action="{% url 'studio:proxy.context.reset' ai.aiid %}"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false">
@@ -22,11 +31,6 @@
         title="{% trans 'Select bot voice' %}"
         id="action.speech:getVoices">{% trans 'Voices' %}</button>
       <div class="dropdown-menu" id="VOICE_LIST"></div>
-      <button class="dropdown-item"
-        action="{% url 'studio:proxy.context.reset' ai.aiid %}"
-        data-toggle="tooltip"
-        title="{% trans 'Reset context for this chat session' %}"
-        id="action.context:reset">{% trans 'Reset context' %}</button>
       <button class="dropdown-item"
         action="{% url 'studio:proxy.handover.reset' ai.aiid %}"
         data-toggle="tooltip"
