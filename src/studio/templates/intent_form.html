@@ -290,6 +290,12 @@
 
           <div id="CONDITIONS_OUT" class="form-section collapse {% if formsets.conditions_out.forms|length %}show{% endif %}">
 
+            <div class="alert alert-info">
+              {% blocktrans %}
+                Trigger another intent after this one.
+              {% endblocktrans %}
+            </div>
+
             <div class="formset" id="CONDITIONS_OUT_FORMSET">
 
               {% for form in formsets.conditions_out.forms %}
