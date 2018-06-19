@@ -1,6 +1,6 @@
 import logging
 
-from allauth.account.forms import ResetPasswordForm
+from allauth.account.forms import ResetPasswordForm, SignupForm
 from allauth.account.utils import filter_users_by_email
 
 from django import forms, template
@@ -24,7 +24,7 @@ class ResetPasswordForm(ResetPasswordForm):
         return email
 
 
-class SignupForm(forms.Form):
+class SignupForm(SignupForm):
 
     label = template.loader.get_template(
         'messages/signup_form_agree_label.txt'
