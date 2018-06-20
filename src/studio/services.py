@@ -195,8 +195,7 @@ def post_import_ai(token, ai_data, aiid=''):
         '/ai/import',
         token=token,
         method='post',
-        headers={'Content-type': 'application/json'},
-        data=ai_data
+        json=ai_data
     )
 
 

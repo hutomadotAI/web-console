@@ -586,8 +586,17 @@ class ImportAIForm(forms.Form):
         })
     )
 
+    def clean_ai_data(self):
+        """Check if imported data is a valid JSON"""
+        ai_data = self.cleaned_data['ai_data']
+        try:
+            ai_data = json.loads(ai_data.read().decode('utf8'))
+        except json.JSONDecodeError:
+            raise forms.ValidationError('Invalid JSON file')
+        return ai_data
+
     def save(self, *args, **kwargs):
-        data = self.cleaned_data['ai_data'].read().decode('utf8')
+        data = self.cleaned_data['ai_data']
         return post_import_ai(ai_data=data, **kwargs)
 
 

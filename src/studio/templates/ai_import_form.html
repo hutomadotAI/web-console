@@ -32,6 +32,12 @@
         <form action="{{ request.build_absolute_uri }}" id="IMPORT_FORM" method="post"enctype="multipart/form-data">
           {% csrf_token %}
 
+          {% for field, errors in form.errors.items %}
+            <div class="alert alert-danger">
+              {{ errors|join:', ' }}.
+            </div>
+          {% endfor %}
+
           {{ form | crispy }}
 
         </form>

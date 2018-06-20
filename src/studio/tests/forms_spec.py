@@ -28,15 +28,14 @@ from botstore.tests.factories import MetadataFactory
 class TestImportAIForm(TestCase):
 
     def test_a_valid_import_json(self):
-        """
-        Provide a valid AI JSON import file
-        """
+        """Provide a valid AI JSON import file"""
+
         data = factory.build(dict, FACTORY_CLASS=AIImportJSON)
         json_file = tempfile.NamedTemporaryFile()
         json_file.write(json.dumps(data).encode('gbk'))
 
         # First seek to a non zero offset.
-        json_file.seek(2)
+        json_file.seek(0)
         self.form = ImportAIForm({}, {
             'ai_data': SimpleUploadedFile('ai.json', json_file.read())
         })
