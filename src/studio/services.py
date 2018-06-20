@@ -157,7 +157,7 @@ def post_ai(token, ai_data, aiid=''):
         'voice': 1,
         'is_private': False,
         'personality': 0,
-        'confidence': 0.4,
+        'confidence': 0.3,
         'locale': 'en-US'
     }
 
