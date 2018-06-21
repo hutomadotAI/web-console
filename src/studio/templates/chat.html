@@ -8,7 +8,7 @@
     <button class="btn btn-default fa fa-refresh"
       action="{% url 'studio:proxy.context.reset' ai.aiid %}"
       data-toggle="tooltip"
-      title="{% trans 'Reset chat — context variables, intents state and handover will be reseted' %}"
+      title="{% trans 'Reset all chat state for this session, including variables, intents and bot handover.' %}"
       id="action.context:reset">
       <span class="sr-only">{% trans 'Reset chat' %}</span>
     </button>
