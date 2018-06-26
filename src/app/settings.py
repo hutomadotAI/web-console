@@ -745,6 +745,10 @@ elif ENVIRONMENT == 'production':
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
+    # A dotted path to the view function to be used when an incoming request is
+    # rejected by the CSRF protection.
+    CSRF_FAILURE_VIEW = 'app.errors.handler403_csrf'
+
     # By default, is_secure() is able to determine whether a request is secure
     # by looking at whether the requested URL uses “https://”. This is
     # important for Django’s CSRF protection, and may be used by your own code

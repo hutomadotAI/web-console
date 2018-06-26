@@ -41,11 +41,12 @@ services:
     env_file: secrets.env
     environment:
       ENVIRONMENT: production
-      DJANGO_STATIC_HOST: //0.0.0.0.xip.io
+      DJANGO_STATIC_HOST: http://0.0.0.0.xip.io:8080
+      ALLOWED_HOSTS: '["*"]'
     volumes:
       - .:/usr/src/app
     ports:
-      - "80:8000"
+      - "8080:8000"
 
   #
   # Database container used for local development only, ports exposed for

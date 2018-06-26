@@ -165,3 +165,14 @@ if settings.DEBUG:
                 include(debug_toolbar.urls)
             ),
         ]
+else:
+    """
+    By default Django errors are missing context, this allows the error
+    pages to get request object in error templates.
+    """
+    from django.conf import urls
+
+    urls.handler400 = 'app.errors.handler400'
+    urls.handler403 = 'app.errors.handler403'
+    urls.handler404 = 'app.errors.handler404'
+    urls.handler500 = 'app.errors.handler500'

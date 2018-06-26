@@ -74,7 +74,7 @@
 
 
     <div>
-      <a href="{% url 'home' %}"><img src="{% static 'images/blue.svg' %}" alt="Hu:toma Logo" height="72" width="178" /></a>
+      <a href="/"><img src="{% static 'images/blue.svg' %}" alt="Hu:toma Logo" height="72" width="178" /></a>
       <h1>{% block code %}{% endblock code %}</h1>
     </div>
 
@@ -84,9 +84,11 @@
 
     </div>
 
-    {% url 'home' as default_url %}
-
-    <a class="button inverse big" href="{{ request.META.HTTP_REFERER|default:default_url }}">Go back</a>
+    {% if request.META.HTTP_REFERER %}
+      <a class="button inverse big" href="{{ request.META.HTTP_REFERER }}">{% trans 'Go back' %}</a>
+    {% else %}
+      <a class="button inverse big" href="/">{% trans 'home' %}</a>
+    {% endif %}
 
     <footer>Copyright © 2018 Hu:toma. All rights reserved.</footer>
 
