@@ -38,7 +38,7 @@
         </div>
 
         <div class="box-body">
-          <i class="fa fa-comments icon-image"></i>
+          <a href="{% url 'studio:ai.add' %}?next=studio:training" class="btn btn-link"><i class="fa fa-comments icon-image"></i></a>
           <p>
             {% blocktrans %}Build a bot from text based simple Q&A using our in-line editor.{% endblocktrans %}
           </p>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="box-body">
-          <i class="fa fa-sitemap icon-image"></i>
+          <a href="{% url 'studio:ai.add' %}?next=studio:intents" class="btn btn-link"><i class="fa fa-sitemap icon-image"></i></a>
           <p>
             {% blocktrans %}Want to structure your dialog or build more complex Q&A.{% endblocktrans %}
           </p>
@@ -79,7 +79,7 @@
 
         <div class="box-body">
 
-          <i class="fa fa-plus icon-image"></i>
+          <a href="{% url 'studio:ai.add' %}?next=studio:skills" class="btn btn-link"><i class="fa fa-plus icon-image"></i></a>
           <p>
             {% blocktrans %}Speed up your bot building process by starting with one of our templates.{% endblocktrans %}
           </p>
@@ -101,7 +101,7 @@
 
         <div class="box-body">
 
-          <i class="fa fa-upload icon-image"></i>
+          <a href="{% url 'studio:ai.import' %}?next=studio:ai.dashboard" class="btn btn-link"><i class="fa fa-upload icon-image"></i></a>
 
           <p>
             {% blocktrans %}Start here if you want to edit an existing bot that you have exported from the platform.{% endblocktrans %}
@@ -125,8 +125,7 @@
 
         <div class="box-body">
 
-          <i class="fa fa-cog icon-image"></i>
-
+          <a href="{% url 'studio:ai.add' %}" class="btn btn-link"><i class="fa fa-cog icon-image"></i></a>
           <p>
             {% blocktrans %}Want full control and a blank canvas? Start here.{% endblocktrans %}
           </p>
