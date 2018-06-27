@@ -424,6 +424,9 @@ API_CHAT_TIMEOUT = 8
 # allow a much longer timeout for async chart loading
 API_LOGS_TIMEOUT = 20
 
+# Limit size of uploaded files, default 2 megabytes is reflecting natural
+# limits of Tomcat
+MAX_UPLOAD_SIZE = os.getenv('MAX_UPLOAD_SIZE', 2097152)
 
 # ------------------------------------------------------------------------------
 #

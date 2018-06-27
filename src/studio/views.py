@@ -685,6 +685,12 @@ class IntentsUpdateView(IntentsEditView):
 class IntentsBulkUploadView(FormView):
     form_class = IntentBulkUpload
 
+    def form_invalid(self, form):
+        """Add error message and go back to where you've came from"""
+        messages.add_message(self.request, messages.ERROR, form.errors.as_text())
+
+        return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+
     def form_valid(self, form):
 
         upload = form.save(
@@ -715,9 +721,7 @@ class IntentsBulkUploadView(FormView):
                 message_template.render({'issues': upload['errors']})
             )
 
-        redirect_url = self.request.META.get('HTTP_REFERER')
-
-        return HttpResponseRedirect(redirect_url)
+        return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
 
 
 @method_decorator(login_required, name='dispatch')

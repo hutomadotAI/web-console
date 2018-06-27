@@ -11,7 +11,7 @@ from django.core.validators import (
 )
 from django.utils.translation import ugettext_lazy as _
 
-from app.validators import MaxSelectedValidator
+from app.validators import MaxSelectedValidator, MaxSizeValidator
 
 from studio.services import (
     delete_ai,
@@ -579,6 +579,7 @@ class ImportAIForm(forms.Form):
 
     ai_data = forms.FileField(
         label=_('Exported Bot JSON file'),
+        validators=[MaxSizeValidator()],
         widget=forms.FileInput(attrs={
             'accept': '.json, application/json',
             'placeholder': 'YourBotConfig.json',
@@ -591,7 +592,7 @@ class ImportAIForm(forms.Form):
         ai_data = self.cleaned_data['ai_data']
         try:
             ai_data = json.loads(ai_data.read().decode('utf8'))
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError) as error:
             raise forms.ValidationError('Invalid JSON file')
         return ai_data
 
@@ -629,6 +630,7 @@ class IntentBulkUpload(forms.Form):
 
     intents_file = forms.FileField(
         label=_('Upload CSV file'),
+        validators=[MaxSizeValidator()],
         widget=forms.FileInput(attrs={
             'accept': '.csv, application/csv',
             'placeholder': 'intents.csv',
