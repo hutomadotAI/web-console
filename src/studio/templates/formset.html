@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n widget_tweaks %}
 
 <div class="form-formset{% if nested %} nested{% endif %}">
 
@@ -8,28 +8,23 @@
 
     {% if not forloop.last %}
 
-      <div class="form-group {{ field.name }}-group">
-        <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-        <div class="controls">
-          {{ field }}
-        </div>
-      </div>
+      {{field.type}}
+
+      {% include 'forms/field.html' with field=field %}
 
     {% endif %}
 
   {% endfor %}
 
-  <div class="form-group actions-group">
+  <div class="form-actions">
     {% if nested %}
-      <div class="controls nested">
-        <label class="btn formset-remove fa fa-minus" for="id_{{ prefix }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove' %}"></label>
-        <button type="button" class="btn formset-add fa fa-plus formset-button" data-toggle="tooltip" title="{% trans 'Add' %}"
+      <label class="btn formset-remove fa fa-minus" for="id_{{ prefix }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove' %}"></label>
+      <button type="button" class="btn formset-add fa fa-plus formset-button"
+        data-toggle="tooltip"
+        title="{% trans 'Add' %}"
         data-formset="{{ formset }}"></button>
-      </div>
     {% else %}
-      <div class="controls">
-        <label class="btn formset-remove fa fa-trash" for="id_{{ prefix }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove' %}"></label>
-      </div>
+      <label class="btn formset-remove fa fa-trash" for="id_{{ prefix }}-DELETE" data-toggle="tooltip" title="{% trans 'Remove' %}"></label>
     {% endif %}
   </div>
 

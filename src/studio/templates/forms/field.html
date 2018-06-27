@@ -5,11 +5,24 @@
     <label for="{{ field.id_for_label }}">{{ field.label|safe  }}</label>
   {% endif %}
 
-  {% render_field field|add_class:'form-control' %}
+  <div class="controls">
+    {% if field.errors %}
+      {% render_field field|add_class:'form-control is-invalid' %}
+    {% else %}
+      {% render_field field|add_class:'form-control' %}
+    {% endif %}
 
-  {% if field.help_text %}
+  {% if field.help_text and not field.errors %}
     <small class="form-text text-muted">
       {{ field.help_text }}
     </small>
   {% endif %}
+
+  {% if field.errors %}
+    <div class="invalid-feedback">
+      {{ field.errors|join:', ' }}
+    </div>
+  {% endif %}
+
+  </div>
 </div>

@@ -20,9 +20,9 @@ $(document).on('click', '.formset-button', function () {
   var form = document.createElement('div');
 
   // Prepare nested formsets prefixes and update current counter
-  var template = TEMPLATE.innerHTML.replace( /__prefix__-__prefix__/g, '__prefix__-__nested-prefix__');
-  template = template.replace( /__prefix__/g, TOTAL.value);
-  template = template.replace( /__nested-prefix__/g, '__prefix__');
+  var template = TEMPLATE.innerHTML.replace( /__prefix__-__prefix__/ig, '__prefix__-__nested-prefix__');
+  template = template.replace( /__prefix__/ig, TOTAL.value);
+  template = template.replace( /__nested-prefix__/ig, '__prefix__');
   form.innerHTML = template;
 
   // Append new form to the formset

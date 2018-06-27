@@ -30,7 +30,8 @@
   margin-bottom: 1rem;
 }
 
-.form-formset .form-group {
+.form-formset .form-group,
+.form-formset .form-actions {
   margin: 1px;
   display: flex;
   flex-direction: column;
@@ -38,17 +39,17 @@
 }
 
 .form-formset .form-group .controls {
-  background-color: var(--INPUT_BACKGROUND);
   min-height: 2.25rem;
   margin-top: auto;
 }
 
-.form-formset .form-group.actions-group .controls {
-  background-color: transparent;
+.form-formset .form-group label {
+  font-size: smaller;
 }
 
-.form-formset .control-label {
-  font-size: smaller;
+.form-formset .form-control:disabled,
+.form-formset .form-control[readonly] {
+  background-color: #515151;
 }
 
 .form-formset .btn {
@@ -63,10 +64,14 @@
   display: none;
 }
 
-.form-formset .actions-group .btn {
+.form-formset .form-actions .btn {
   background-color: #333;
   border-radius: 0;
   color: #ADADAD;
+  font-size: normal;
+  font-weight: normal;
+  margin-top: auto;
+  width: 2.25rem;
 }
 
 .form-formset .formset-remove:hover,
@@ -81,12 +86,8 @@
   background-color: var(--SUCCESS);
 }
 
-.form-formset .delete:checked ~ .form-group .control-label,
-.form-formset .delete:checked ~ .form-group .controls,
-.form-formset .delete:checked ~ .form-group .controls .form-control,
-.form-formset-group.removed .control-label,
-.form-formset-group.removed .controls,
-.form-formset-group.removed .controls .form-control {
+.form-formset .delete:checked ~ .form-group,
+.form-formset-group.removed .form-control {
   opacity: 0.2;
 }
 
@@ -99,7 +100,7 @@
 }
 
 .form-formset-group.removed::after,
-.form-formset .delete:checked ~ .form-group:last-of-type::after {
+.form-formset .delete:checked ~ .form-actions::after {
   content: 'will be deleted';
   position: absolute;
   font-size: 1.2em;
@@ -109,7 +110,7 @@
   transform: translate(-50%, -50%);
 }
 
-.form-formset-group.removed .form-formset .delete:checked ~ .form-group:last-of-type::after {
+.form-formset-group.removed .form-formset .delete:checked ~ .form-actions::after {
   display: none;
 }
 
@@ -117,9 +118,10 @@
   opacity: 1 !important;
 }
 
-.form-formset .controls,
-.form-formset .controls .form-control {
-  border-radius: 0;
+.form-formset .text-muted,
+.form-formset .invalid-feedback {
+  bottom: -1.5rem;
+  position: absolute;
 }
 
 /* Nested formsets */
@@ -132,7 +134,7 @@
   margin-bottom: 1.5rem;
 }
 
-.form-formset.nested + .form-formset.nested .control-label {
+.form-formset.nested + .form-formset.nested .form-group label {
   display: none;
 }
 

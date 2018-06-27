@@ -76,7 +76,7 @@
 
                 {% include 'formset.html' with prefix=form.prefix fields=form %}
 
-                {{ form.errors }}
+
 
               {% endfor %}
 
@@ -134,8 +134,6 @@
 
                 {% include 'formset.html' with prefix=form.prefix fields=form %}
 
-                {{ form.errors }}
-
               {% endfor %}
 
               {{ formsets.context_in.management_form }}
@@ -173,8 +171,6 @@
               {% for form in formsets.entities.forms %}
 
                 {% include 'formset.html' with prefix=form.prefix fields=form %}
-
-                {{ form.errors }}
 
               {% endfor %}
 
@@ -230,7 +226,7 @@
 
           </h5>
 
-          <div id="CONTEXT_OUT" class="form-section collapse {% if formsets.context_in.forms|length %}show{% endif %}">
+          <div id="CONTEXT_OUT" class="form-section collapse {% if formsets.context_out.forms|length %}show{% endif %}">
 
             <div class="alert alert-info">
               {% blocktrans %}
@@ -243,8 +239,6 @@
               {% for form in formsets.context_out.forms %}
 
                 {% include 'formset.html' with prefix=form.prefix fields=form %}
-
-                {{ form.errors }}
 
               {% endfor %}
 
@@ -325,8 +319,6 @@
                   </template>
 
                   {{ form.nested.management_form }}
-
-                {{ form.errors }}
 
                 </div>
 

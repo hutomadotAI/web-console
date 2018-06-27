@@ -757,6 +757,10 @@ a:focus {
   box-shadow: none;
 }
 
+.form-control.is-invalid {
+  border: var(--DANGER) solid 1px;
+}
+
 .text-muted {
   color: #737373 !important;
 }
@@ -2179,8 +2183,8 @@ label.btn {
     box-shadow: 3px 3px 5px 6px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
-.form-group input[type="checkbox"] {
-    /*display: none;*/
+.form-group .form-control[type="checkbox"] {
+  width: auto;
 }
 
 .form-group input[type="checkbox"] + .btn-group > label span {

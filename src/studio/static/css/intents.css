@@ -191,40 +191,41 @@
   display: inline-block;
 }
 
-.form-group.variable-group,
-.form-group.value-group {
+.form-group[id$='-VARIABLE'],
+.form-group[id$='-VALUE'] {
   flex-grow: 2;
 }
 
-.form-group.entity_name-group {
+.form-group[id$='-ENTITY_NAME'] {
   max-width: 30%;
 }
 
-.form-group.n_prompts-group {
+.form-group[id$='-N_PROMPTS'] {
   width: 7rem;
 }
 
-.form-group.entity-name-group,
-.form-group.label-group {
+.form-group[id$='-ENTITY_NAME'],
+.form-group[id$='-LABEL'] {
   flex-grow: 2;
 }
 
-.form-group.prompts-group {
+.form-group[id$='-PROMPTS'] {
   order: 1;
   width: 100%;
 }
 
-.form-group.prompts-group .control-label {
+.form-group[id$='-PROMPTS'] label {
   display: none;
 }
 
-.form-group.required-group .controls {
+.form-group[id$='-REQUIRED'] .controls {
   align-items: center;
+  background-color: #515151;
   display: flex;
   justify-content: center;
   width: 6rem;
 }
 
-.form-group.intent_to_execute-group {
+.form-group[id$='-INTENT_TO_EXECUTE'] {
   flex-grow: 2;
 }

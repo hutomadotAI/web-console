@@ -97,7 +97,6 @@ class ContextFormset(forms.Form):
         label=_('Variable'),
         validators=[RegexValidator(regex=VARIABLE_PATTERN)],
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
             'pattern': VARIABLE_PATTERN,
             'maxlength': 250,
             'required': True,
@@ -111,7 +110,6 @@ class ContextFormset(forms.Form):
     value = forms.CharField(
         label=_('Value'),
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
             'maxlength': 250,
             'required': True,
         }),
@@ -126,15 +124,13 @@ class ConditionsFormset(forms.Form):
         label=_('Variable'),
         validators=[RegexValidator(regex=VARIABLE_PATTERN)],
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
             'pattern': VARIABLE_PATTERN,
             'maxlength': 250,
             'required': True,
             'placeholder': _('ex. variable_1'),
             'title': _('A valid “Variable” consisting of letters, numbers, '
                        'dots, underscores or hyphens.')
-        }),
-        required=True
+        })
     )
 
     operator = forms.ChoiceField(
@@ -147,23 +143,32 @@ class ConditionsFormset(forms.Form):
             ('SMALLER_THAN', _('Smaller Than')),
             ('GREATER_THAN', _('Greater Than'))
         ],
-        widget=forms.Select(attrs={
-            'class': 'form-control',
-            'required': True
-        }),
-        required=True
+        widget=forms.Select()
     )
 
     value = forms.CharField(
-        label=_('Value'),
+        label=_('Value (optional)'),
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
             'maxlength': 250,
-            'required': True,
             'placeholder': _('ex. true')
         }),
-        required=True
+        required=False
     )
+
+    def clean_value(self):
+        data = self.cleaned_data['value']
+        cleaned_data = super().clean()
+        variable = cleaned_data.get('variable')
+        operator = cleaned_data.get('operator')
+        value = cleaned_data.get('value')
+
+        if operator not in ['SET', 'NOT_SET'] and not value:
+            # Only do something if both fields are valid so far.
+            raise forms.ValidationError(
+                'Variable {variable_name} value is missing '.format(variable_name=variable)
+            )
+
+        return data
 
 
 class FollowUpFormset(forms.Form):
@@ -171,10 +176,7 @@ class FollowUpFormset(forms.Form):
 
     intent_to_execute = forms.ChoiceField(
         label=_('Intent'),
-        widget=forms.Select(attrs={
-            'class': 'form-control',
-            'required': True
-        }),
+        widget=forms.Select(),
         required=True
     )
 
@@ -238,10 +240,7 @@ class EntityFormset(forms.Form):
 
     entity_name = forms.ChoiceField(
         label=_('Entity name'),
-        widget=forms.Select(attrs={
-            'class': 'form-control',
-            'required': True,
-        })
+        widget=forms.Select()
     )
 
     n_prompts = forms.IntegerField(
@@ -252,7 +251,6 @@ class EntityFormset(forms.Form):
             MinValueValidator(1)
         ],
         widget=forms.NumberInput(attrs={
-            'class': 'form-control',
             'max': 16,
             'min': 1,
             'required': True,
@@ -264,7 +262,6 @@ class EntityFormset(forms.Form):
         label=_('Label'),
         validators=[RegexValidator(regex=SLUG_PATTERN)],
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
             'pattern': SLUG_PATTERN,
             'maxlength': 250,
             'required': True,
@@ -281,7 +278,6 @@ class EntityFormset(forms.Form):
             'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
-            'class': 'form-control',
             'required': True,
             'placeholder': _('Add a user prompt'),
         })
