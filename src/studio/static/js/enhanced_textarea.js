@@ -16,11 +16,15 @@
    * info:
    * https://medium.com/the-everyday-developer/detect-file-mime-type-using-magic-numbers-and-javascript-16bc513d4e1e
    *
+   * Update: Transform to normal array and add padding zeros
+   *
    * @param  {[type]}  bytesArray   First bytes used to match the file signature
    * @return {Boolean}              Binary or not :)
    */
   function isBinary(bytesArray) {
-    const HEX = bytesArray.map(byte => byte.toString(16)).join('').toUpperCase();
+    const HEX = Array.from(bytesArray).map(
+      byte => byte.toString(16).padStart(2, '0')
+    ).join('').toUpperCase();
     return HEX in MIMETYPE_BIANRY;
   }
 
@@ -64,6 +68,9 @@
    * @param  {Event object} event
    */
   function fileHandler(event) {
+
+    // Prevent events, for Firefox
+    event.stopPropagation();
     event.preventDefault();
     messageClear();
 
@@ -95,6 +102,16 @@
   function syntheticChange() {
     TEXTAREA.dispatchEvent(new Event('change', { 'bubbles': true }));
   }
+
+  function preventDefault(event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  // Prevent events, for Firefox
+  TEXTAREA.addEventListener('drop', preventDefault);
+  TEXTAREA.addEventListener('dragenter', preventDefault);
+  TEXTAREA.addEventListener('dragover', preventDefault);
 
   TEXTAREA.addEventListener('drop', fileHandler);
   TEXTAREA.addEventListener('paste', syntheticChange);
