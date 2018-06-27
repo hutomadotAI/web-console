@@ -23,7 +23,7 @@
   margin: 0;
 }
 
-.alert ul {
+.alert:not(.alert-block) ul {
   list-style: disc;
   padding: 1.5rem 1rem 0;
 }
