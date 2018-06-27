@@ -86,8 +86,17 @@
   font-size: 1rem;
 }
 
+
 .tokenfield .token.invalid {
   background-color: var(--DANGER);
+  border: none;
+  border-radius: 1rem;
+}
+
+.tokenfield .token.invalid.active {
+  background-color: var(--HUTOMA-RED-900);
+  border: none;
+  border-radius: 1rem;
 }
 
 .tokenfield [data-tokenfield] {

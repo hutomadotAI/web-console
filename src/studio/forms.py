@@ -33,6 +33,9 @@ NAME_PATTERN = '[-a-zA-Z0-9_ ]+'
 SLUG_PATTERN = '^[-a-zA-Z0-9_]+$'
 VARIABLE_PATTERN = '^[-a-zA-Z0-9_\.]+$'
 
+DEFAULT_TOKEN_CHARACTERS_LIMIT = 250
+INTENT_TOKEN_CHARACTERS_LIMIT = 1000
+
 
 class SkillsMultipleWidget(forms.widgets.CheckboxSelectMultiple):
     """Custom form widget for skill cards"""
@@ -67,7 +70,7 @@ class EntityForm(forms.Form):
         help_text=_('To create a new value press enter'),
         widget=forms.TextInput(attrs={
             'data-minLength': 1,
-            'data-maxlength': 250,
+            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'class': 'form-control',
@@ -275,7 +278,7 @@ class EntityFormset(forms.Form):
         label=_('Prompts'),
         widget=forms.TextInput(attrs={
             'data-minLength': 1,
-            'data-maxlength': 250,
+            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'class': 'form-control',
@@ -286,9 +289,11 @@ class EntityFormset(forms.Form):
 
     def clean_prompts(self):
         """Split prompts"""
-        return self.cleaned_data['prompts'].split(
+        prompts = self.cleaned_data['prompts'].split(
             settings.TOKENFIELD_DELIMITER
         )
+        stripped_list = [item.strip() for item in prompts]
+        return stripped_list
 
 
 class IntentForm(forms.Form):
@@ -311,7 +316,7 @@ class IntentForm(forms.Form):
         help_text=_('To create a new expression press enter'),
         widget=forms.TextInput(attrs={
             'data-minLength': 1,
-            'data-maxlength': 250,
+            'data-maxlength': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a user expression'),
@@ -325,7 +330,7 @@ class IntentForm(forms.Form):
         help_text=_('To create a new response press enter'),
         widget=forms.TextInput(attrs={
             'data-minLength': 1,
-            'data-maxlength': 250,
+            'data-maxlength': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a sample bot response'),
@@ -339,7 +344,7 @@ class IntentForm(forms.Form):
         widget=forms.TextInput(attrs={
             'data-limit': 1,
             'data-minLength': 1,
-            'data-maxlength': 250,
+            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('ex. Please provide a fallback response'),
@@ -363,15 +368,19 @@ class IntentForm(forms.Form):
 
     def clean_user_says(self):
         """Split expressions"""
-        return self.cleaned_data['user_says'].split(
+        user_says = self.cleaned_data['user_says'].split(
             settings.TOKENFIELD_DELIMITER
         )
+        stripped_list = [item.strip() for item in user_says]
+        return stripped_list
 
     def clean_responses(self):
         """Split expressions"""
-        return self.cleaned_data['responses'].split(
+        responses = self.cleaned_data['responses'].split(
             settings.TOKENFIELD_DELIMITER
         )
+        stripped_list = [item.strip() for item in responses]
+        return stripped_list
 
     def clean_webhook(self):
         """Build webhook object"""
@@ -467,7 +476,7 @@ class AddAIForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             'data-minLength': 1,
-            'data-maxlength': 250,
+            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'required': True,
@@ -530,7 +539,7 @@ class SettingsAIForm(AddAIForm):
         widget=forms.TextInput(attrs={
             'data-limit': 1,
             'data-minLength': 1,
-            'data-maxlength': 250,
+            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'required': False,

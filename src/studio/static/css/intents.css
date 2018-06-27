@@ -65,7 +65,7 @@
   content: '\f078';
 }
 
-#FIELD_ID_USER_SAYS .token {
+#FIELD_ID_USER_SAYS .token:not(.invalid) {
   background-color: var(--HUTOMA-BLUE-500);
 }
 
