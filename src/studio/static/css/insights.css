@@ -30,3 +30,7 @@
 .chart .alert {
   transition: opacity 400ms ease-in;
 }
+
+#DOWNLOAD_LOGS {
+  display: none;
+}

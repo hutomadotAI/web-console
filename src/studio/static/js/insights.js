@@ -1,15 +1,12 @@
 $(document).ready(function(){
-  const LINK = document.createElement('a');
+  const LINK = document.getElementById('DOWNLOAD_LOGS');
   const OPTIONS = {
     todayHighlight: true,
     autoclose: true,
     format: 'yyyy-mm-dd',
     todayBtn: 'linked',
-    todayHighlight: true,
     endDate: new Date()
-  }
-
-  LINK.download = `${ AI.id }_logs.csv`;
+  };
 
   function changeDateHandler(selected) {
     var picker = $('#chatlogsDateTo').data('datepicker');
@@ -23,8 +20,8 @@ $(document).ready(function(){
 
   function updateUI(id) {
     for(let button of document.querySelectorAll(`[form=${ id }]`)) {
-      button.disabled = false
-      button.classList.remove('loading')
+      button.disabled = false;
+      button.classList.remove('loading');
     }
   }
 
@@ -34,7 +31,7 @@ $(document).ready(function(){
 
   // Fix updating loading state
   $('#LOGS_FORM').on('submit', function submitHandler(event){
-    event.preventDefault()
+    event.preventDefault();
 
     fetch(this.getAttribute('action'), {
       credentials: 'same-origin',
@@ -46,8 +43,8 @@ $(document).ready(function(){
       .then(downloadData)
       .then(() => updateUI(event.target.id))
       .catch(error => {
-        console.error(error)
-      })
-  })
+        console.error(error);
+      });
+  });
 
 });
