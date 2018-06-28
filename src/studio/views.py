@@ -705,7 +705,7 @@ class IntentsBulkUploadView(FormView):
             level = messages.ERROR
             messages.add_message(self.request, level, upload['status']['info'])
 
-        if (upload['warnings']):
+        if (upload.get('warnings')):
             message_template = loader.get_template('messages/list_exceptions.html')
             messages.add_message(
                 self.request,
@@ -713,7 +713,7 @@ class IntentsBulkUploadView(FormView):
                 message_template.render({'issues': upload['warnings']})
             )
 
-        if (upload['errors']):
+        if (upload.get('errors')):
             message_template = loader.get_template('messages/list_exceptions.html')
             messages.add_message(
                 self.request,
