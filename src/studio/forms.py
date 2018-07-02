@@ -69,8 +69,8 @@ class EntityForm(forms.Form):
         label=_('Values'),
         help_text=_('To create a new value press enter'),
         widget=forms.TextInput(attrs={
-            'data-minLength': 1,
-            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
+            'data-min-length': 1,
+            'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'class': 'form-control',
@@ -274,8 +274,8 @@ class EntityFormset(forms.Form):
     prompts = forms.CharField(
         label=_('Prompts'),
         widget=forms.TextInput(attrs={
-            'data-minLength': 1,
-            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
+            'data-min-length': 1,
+            'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'required': True,
@@ -311,8 +311,8 @@ class IntentForm(forms.Form):
         label=_('Human Says'),
         help_text=_('To create a new expression press enter'),
         widget=forms.TextInput(attrs={
-            'data-minLength': 1,
-            'data-maxlength': INTENT_TOKEN_CHARACTERS_LIMIT,
+            'data-min-length': 1,
+            'data-max-length': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a user expression'),
@@ -325,8 +325,8 @@ class IntentForm(forms.Form):
         label=_('Bot Responds'),
         help_text=_('To create a new response press enter'),
         widget=forms.TextInput(attrs={
-            'data-minLength': 1,
-            'data-maxlength': INTENT_TOKEN_CHARACTERS_LIMIT,
+            'data-min-length': 1,
+            'data-max-length': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a sample bot response'),
@@ -339,10 +339,11 @@ class IntentForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             'data-limit': 1,
-            'data-minLength': 1,
-            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
+            'data-min-length': 1,
+            'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
+            'data-min-width': 240,
             'placeholder': _('ex. Please provide a fallback response'),
         })
     )
@@ -471,8 +472,8 @@ class AddAIForm(forms.Form):
         max_length=255,
         required=False,
         widget=forms.TextInput(attrs={
-            'data-minLength': 1,
-            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
+            'data-min-length': 1,
+            'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'required': True,
@@ -534,8 +535,8 @@ class SettingsAIForm(AddAIForm):
         required=False,
         widget=forms.TextInput(attrs={
             'data-limit': 1,
-            'data-minLength': 1,
-            'data-maxlength': DEFAULT_TOKEN_CHARACTERS_LIMIT,
+            'data-min-length': 1,
+            'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'required': False,
