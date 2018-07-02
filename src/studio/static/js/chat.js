@@ -5,6 +5,7 @@ const VOICE_LIST = document.getElementById('VOICE_LIST');
 const CHAT_ID_KEY = `${ AI.id }_chat_id`;
 const HISTORY_KEY = `${ AI.id }_history`;
 const SPEECH_KEY = 'speech_response';
+const VOICE_KEY = 'speech_response_voice';
 const HISTORY = JSON.parse(sessionStorage.getItem(HISTORY_KEY)) || [];
 var historyIndex = 0;
 
@@ -216,7 +217,7 @@ function createUserMessage(message, level='normal') {
       waiting = false;
       enableChat();
     }
-    // reset history steping index
+    // reset history stepping index
     historyIndex = 0;
   }
 }
@@ -328,17 +329,49 @@ function wrapLines(event) {
   Prism.highlightAll();
 }
 
+/**
+ * Prepares the voice list and enables one that should be used.
+ *
+ * @return {undefined}
+ */
 function getVoices() {
-  var [ GoogleUSEnglishVoice ] = speechSynthesis.getVoices().filter(voice => voice.name === 'Google US English');
+  var voices = speechSynthesis.getVoices();
+  var [ GoogleUSEnglishVoice ] = voices.filter(voice => voice.name === 'Google US English');
+  var [ defaultVoice ] = voices.filter(voice => voice.default);
 
-  function isDefault(voice) {
-    // If there is Google US English use it as default, otherwise use standard default
-    return GoogleUSEnglishVoice ? voice === GoogleUSEnglishVoice : voice.default;
+  function hashCode(string='') {
+    return [...string].reduce(
+      (accumulator, currentValue) => (((accumulator << 5) - accumulator) + currentValue.charCodeAt(0)) | 0,
+      0
+    );
   }
 
-  VOICE_LIST.innerHTML = speechSynthesis.getVoices().map((voice, index) => `
+  VOICE_LIST.innerHTML = voices.map((voice, index) => `
     <label class=dropdown-item title="${ voice.name } (${ voice.lang })">
-      <input type=radio name=voices ${ isDefault(voice) ? 'checked' : '' } value=${ index }> ${ voice.name } (${ voice.lang })
+      <input type=radio name=voices id="VOICE_${ hashCode(voice.name) }" value=${ index }> ${ voice.name } (${ voice.lang })
     </label>
   `).join('');
+
+  if (voices.length) {
+
+    // Selected Voice, if there is one selected use it, otherwise if there is a
+    // “Google US English” use it, if not use default, finally if neither is available
+    // use first one available.
+    var voiceId = sessionStorage.getItem(VOICE_KEY) || 'VOICE_' + hashCode((GoogleUSEnglishVoice || defaultVoice || voices[0]).name);
+
+    // Enable chosen voice
+    document.getElementById(voiceId).click();
+  } else {
+    // If there are no voices disable TTS
+    document.getElementById('action.speech:toggle').classList.add('disabled');
+    document.getElementById('action.speech:getVoices').classList.add('disabled');
+    document.getElementById('action.speech:toggle').removeEventListener('click', toggleSpeech);
+  }
+
 }
+
+VOICE_LIST.addEventListener('change', function(event) {
+  if (event.target.value) {
+    sessionStorage.setItem(VOICE_KEY, event.target.id);
+  }
+});
