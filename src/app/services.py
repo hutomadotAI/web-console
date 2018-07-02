@@ -6,19 +6,11 @@ from constance import config
 from django.conf import settings
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-from redis.exceptions import ResponseError, ConnectionError
-
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 
 logger = logging.getLogger(__name__)
 packages.urllib3.disable_warnings(InsecureRequestWarning)
-
-try:
-    TIMEOUT = config.API_DEFAULT_TIMEOUT
-except (ConnectionError, ResponseError) as e:
-    logger.warning('Django constance failed to use Redis, falling back to Settings')
-    TIMEOUT = settings.API_DEFAULT_TIMEOUT
 
 VERIFY = not settings.DEBUG
 
@@ -34,11 +26,12 @@ def set_headers(token):
 
 def fetch_api(
     path, token, method='GET', data={}, json={}, files={}, headers={}, params={},
-    timeout=TIMEOUT, verify=VERIFY, **kwargs
+    timeout=0, verify=VERIFY, **kwargs
 ):
-
     url = settings.API_URL + path.format(**kwargs)
     headers = {**headers, **set_headers(token)}
+
+    timeout = timeout or config.API_DEFAULT_TIMEOUT
 
     session = Session()
     request = Request(
