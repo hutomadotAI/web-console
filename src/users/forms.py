@@ -51,7 +51,7 @@ class SignupForm(SignupForm):
         })
     )
 
-    # This sorcery is needed for overwriting default Placholders
+    # This sorcery is needed for overwriting default Placeholders
     email = forms.EmailField()
     password1 = forms.CharField()
 
@@ -67,7 +67,7 @@ class SignupForm(SignupForm):
 
     def __init__(self, *args, **kwargs):
 
-        # Part 2 of sorcery needed to overwriting default Placholders
+        # Part 2 of sorcery needed to overwriting default Placeholders
         super(SignupForm, self).__init__(*args, **kwargs)
         self.fields['email'] = self.fields['emailAddress']
         self.fields['password1'] = self.fields['password']
@@ -75,6 +75,17 @@ class SignupForm(SignupForm):
 
     def signup(self, request, user):
         user.save()
+
+    def clean_email(self):
+        """
+            Checks if white-list domains is enabled, and if so check if email
+            domain is on the list
+        """
+        data = self.cleaned_data['email']
+        domains = settings.WHITELISTED_EMAIL_DOMAINS
+        if domains and data.split('@')[1].lower() not in domains:
+            raise forms.ValidationError(_('Your email domain is not allowed'))
+        return data
 
 
 class DeveloperInfoForm(forms.Form):

@@ -166,6 +166,11 @@ ACCOUNT_FORMS = {
 # Usernames are setup by application, longer are always harder to guess
 ACCOUNT_USERNAME_MIN_LENGTH = 8
 
+# WHITELISTED_EMAIL_DOMAINS (default=[])
+# If set restricts registration to emails from the given domains, otherwise do
+# nothing. Should be a JSON encoded list: `["example.com", "hutoma.com", "hutoma.ai"]`
+WHITELISTED_EMAIL_DOMAINS = json.loads(os.environ.get('WHITELISTED_EMAIL_DOMAINS', '[]'))
+
 # ------------------------------------------------------------------------------
 #
 # Email
