@@ -77,7 +77,8 @@
       </div>
 
       <div class="box-footer">
-        <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" class="btn btn-primary" download="bot-{{ ai.aiid }}.json" >{% trans 'Export bot' %}</a>
+        <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" class="btn btn-primary"
+          download="bot-{{ ai.name }}_{{ ai.aiid }}.json" >{% trans 'Export bot' %}</a>
         <button type="submit" form="SETTINGS_FORM" class="btn btn-success">{% trans 'Save' %}</button>
       </div>
 
