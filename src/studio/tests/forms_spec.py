@@ -268,7 +268,7 @@ class TestIntentForm(TestCase):
         )
 
     def test_an_invalid_intent_without_responses(self):
-        """Responses are required"""
+        """Responses are optional"""
 
         data = factory.build(
             dict,
@@ -278,13 +278,13 @@ class TestIntentForm(TestCase):
 
         form = IntentForm(data)
 
-        self.assertFalse(
+        self.assertTrue(
             form.is_valid(),
-            'Responses is missing, form is invalid'
+            'Responses are optional, form is valid'
         )
 
     def test_an_invalid_intent_without_user_says(self):
-        """Users says is required"""
+        """Users says is optional"""
 
         data = factory.build(
             dict,
@@ -294,9 +294,9 @@ class TestIntentForm(TestCase):
 
         form = IntentForm(data)
 
-        self.assertFalse(
+        self.assertTrue(
             form.is_valid(),
-            'User say is missing, form is invalid'
+            'User say are optional, form is valid'
         )
 
     def test_clean_response(self):

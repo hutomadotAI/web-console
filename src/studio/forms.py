@@ -310,29 +310,29 @@ class IntentForm(forms.Form):
     )
 
     user_says = forms.CharField(
-        label=_('Human Says'),
+        label=_('Human Says <small>optional</small>'),
         help_text=_('To create a new expression press enter'),
         widget=forms.TextInput(attrs={
-            'data-min-length': 1,
             'data-max-length': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a user expression'),
             'title': _('Enter a valid input consisting of letters, numbers, '
                        'spaces, underscores or hyphens.')
-        })
+        }),
+        required=False
     )
 
     responses = forms.CharField(
-        label=_('Bot Responds'),
+        label=_('Bot Responds <small>optional</small>'),
         help_text=_('To create a new response press enter'),
         widget=forms.TextInput(attrs={
-            'data-min-length': 1,
             'data-max-length': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a sample bot response'),
-        })
+        }),
+        required=False
     )
 
     conditions_default_response = forms.CharField(
