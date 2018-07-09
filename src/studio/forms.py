@@ -141,7 +141,9 @@ class ConditionsFormset(forms.Form):
             ('EQUALS', _('Equals')),
             ('NOT_EQUALS', _('Not Equals')),
             ('SMALLER_THAN', _('Smaller Than')),
-            ('GREATER_THAN', _('Greater Than'))
+            ('SMALLER_THAN_OR_EQUALS', _('Smaller Than or Equals')),
+            ('GREATER_THAN', _('Greater Than')),
+            ('GREATER_THAN_OR_EQUALS', _('Greater Than or Equals'))
         ],
         widget=forms.Select()
     )
