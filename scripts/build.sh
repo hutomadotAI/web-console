@@ -1,17 +1,15 @@
 #!/bin/bash
 # A script to build a Python package, requiring venv to install some build tools
 
-function check_return_code {
-    return_code=$?;
-    if [[ $return_code != 0 ]]; then
-        exit $return_code;
-    fi
+on_error() {
+    echo "Error at $(caller), aborting"
+    exit 1
 }
+trap on_error ERR
+
 
 SCRIPT_DIR=`dirname $BASH_SOURCE`
-echo "*** Setting up venv ***"
-source "${SCRIPT_DIR}/setup_python.sh" --build-only
-check_return_code
 
-echo "*** Doing build ***"
-python "${SCRIPT_DIR}/build.py" $*
+pushd $SCRIPT_DIR
+python3 -m pipenv sync --dev
+python3 -m pipenv run python build.py $*

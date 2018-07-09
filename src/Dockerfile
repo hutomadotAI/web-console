@@ -1,10 +1,8 @@
-FROM python:3.6.5-slim-jessie
+FROM python:3.6.6-slim-stretch
 
 
-# With Debian jessie slim image, need to install the mysql libs
-# Don't be tempted to move to Debian stretch as that will use MariaDB
 # Install translation tools, we build translations locally
-RUN echo "2018-03-20" > /os_patch_date.txt
+RUN echo "2018-07-06" > /os_patch_date.txt
 
 RUN apt-get update \
  && apt upgrade -y \
@@ -12,8 +10,14 @@ RUN apt-get update \
   build-essential \
   gettext \
   libgettextpo-dev \
-  libmysqlclient-dev \
   && rm -rf /var/lib/apt/lists/*
+
+# Install MySql libraries from MySQL apt repo
+RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5 \
+ && echo "deb http://repo.mysql.com/apt/debian stretch mysql-5.7" | tee /etc/apt/sources.list.d/mysql.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends \
+  libmysqlclient-dev
 
 # Update pip
 RUN pip install --no-cache-dir --upgrade pip
@@ -34,7 +38,7 @@ COPY requirements.ini /usr/src/app
 COPY $ENVIRONMENT.ini /usr/src/app
 
 # Install dependencies
-RUN pip install --no-cache-dir -r $ENVIRONMENT.ini
+RUN pip install --no-cache-dir -r $ENVIRONMENT.ini --trusted-host pypi.hutoma.ai
 
 # switch to non root user
 # define user IDs as ARG
