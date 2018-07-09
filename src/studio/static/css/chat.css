@@ -50,7 +50,7 @@
   width: 100%;
 }
 
-.sidebar-footer .btn{
+.sidebar-footer .btn {
   margin: 0.75rem auto;
 }
 
@@ -223,16 +223,20 @@
   cursor: not-allowed;
 }
 
-.chat-warning{
+.chat-warning {
     background-color: var(--HUTOMA-YELLOW-500);
 }
 
-.chat-success{
+.chat-success {
     background-color: var(--SUCCESS);
 }
 
-.chat-error{
+.chat-error {
     background-color: var(--HUTOMA-RED-500);
+}
+
+.chat-empty {
+    background-color: #333;
 }
 
 .logs {

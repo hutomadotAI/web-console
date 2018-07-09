@@ -258,6 +258,25 @@ function requestAnswerAI(message) {
 
   console.debug(message);
 
+  /**
+   * Displays messages levels, based on incomming response, if the message text
+   * is missing we use a custom level empty. By default returns level `normal`
+   *
+   * @param {object} response   Incomming response from the API
+   * @return {string}           Message level
+   */
+  function setLevel(response) {
+
+    if (!response.result.answer) {
+      return 'empty';
+    } else if (response.result.chatTarget !== 'ai') {
+      return 'warning';
+    } else {
+      return 'normal';
+    }
+
+  }
+
   fetch(`/proxy/ai/${ AI.id }/chat`, {
     credentials: 'same-origin',
     method: 'post',
@@ -276,8 +295,8 @@ function requestAnswerAI(message) {
     .then(resolveChatID)
     .then(printLog)
     .then(response => ({
-      message: response.result.answer || 'Chat disabled — handed over to external agent',
-      level: response.result.chatTarget === 'ai' ? 'normal' : 'warning',
+      message: response.result.answer || EMPTY_CHAT_MESSAGE,
+      level: setLevel(response),
       score: response.result.score,
       log: response
     }))
