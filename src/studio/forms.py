@@ -370,7 +370,7 @@ class IntentForm(forms.Form):
         user_says = self.cleaned_data['user_says'].split(
             settings.TOKENFIELD_DELIMITER
         )
-        stripped_list = [item.strip() for item in user_says]
+        stripped_list = [item.strip() for item in user_says if item]
         return stripped_list
 
     def clean_responses(self):
@@ -378,7 +378,7 @@ class IntentForm(forms.Form):
         responses = self.cleaned_data['responses'].split(
             settings.TOKENFIELD_DELIMITER
         )
-        stripped_list = [item.strip() for item in responses]
+        stripped_list = [item.strip() for item in responses if item]
         return stripped_list
 
     def clean_webhook(self):

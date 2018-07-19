@@ -317,6 +317,25 @@ class TestIntentForm(TestCase):
             'Responses needs to be a list'
         )
 
+    def test_clean_empty_response(self):
+        """Empty responses are converted to an empty list"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            responses=''
+        )
+
+        form = IntentForm(data)
+
+        form.is_valid()
+
+        self.assertSequenceEqual(
+            form.cleaned_data['responses'],
+            [],
+            'Responses should be an empty list'
+        )
+
     def test_clean_user_says(self):
         """User say are converted to a list"""
 
@@ -333,6 +352,25 @@ class TestIntentForm(TestCase):
             form.cleaned_data['user_says'],
             ['User say 1', 'User say 2', 'User say 3'],
             'User say needs to be a list'
+        )
+
+    def test_clean_empty_user_says(self):
+        """Empty User say are converted to an empty list"""
+
+        data = factory.build(
+            dict,
+            FACTORY_CLASS=IntentFactory,
+            user_says=''
+        )
+
+        form = IntentForm(data)
+
+        form.is_valid()
+
+        self.assertSequenceEqual(
+            form.cleaned_data['user_says'],
+            [],
+            'User say should be an empty list'
         )
 
     def test_clean_empty_webhook(self):
