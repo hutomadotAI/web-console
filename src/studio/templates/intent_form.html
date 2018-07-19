@@ -328,9 +328,14 @@
 
             </div>
 
-            <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
+            {# We need to remove that in 1.3.2 #}
+            {% if intents %}
+              <button class="btn btn-success formset-button" data-toggle="tooltip" type="button"
               title="{% trans 'Add a new follow up intent' %}"
               data-formset="CONDITIONS_OUT">{% trans 'Add follow up intent' %}</button>
+            {% else %}
+              <span>{% trans 'You need to have at least one other intent to build follow up' %}</span>
+            {% endif %}
 
           </div>
 
