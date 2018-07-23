@@ -119,11 +119,27 @@
 }
 
 .intents.table .responses-column {
-  width: 35%;
+  width: 30%;
 }
 
 .intents.table .name-column {
-  width: 15%;
+  width: 20%;
+  word-wrap: break-word;
+  white-space: initial;
+}
+
+@media (max-width: 1272px) {
+  .intents.table .webhook-column,
+  .intents.table .lables-column,
+  .intents.table .updated-column {
+    display: none;
+  }
+}
+
+@media (max-width: 1440px) {
+  .aside.show ~ .content-wrapper .intents.table .updated-column {
+    display: none;
+  }
 }
 
 @media (max-width: 1272px) {
