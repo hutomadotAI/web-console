@@ -499,7 +499,7 @@ class IntentsEditView(StudioViewMixin, FormView):
         intents = [intent['intent_name'] for intent in get_intent_list(
             self.request.session.get('token', False),
             self.kwargs['aiid']
-        ).get('intents')]
+        ).get('intents', [])]
 
         # We need to remove that in 1.3.2
         context['intents'] = intents
