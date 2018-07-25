@@ -52,6 +52,23 @@ class SkillsMultipleWidget(forms.widgets.CheckboxSelectMultiple):
         return context
 
 
+class DatalistTextInputWidget(forms.widgets.ChoiceWidget):
+    """Custom form widget for input with options"""
+    input_type = 'text'
+    template_name = 'forms/widgets/datalist_text.html'
+    option_template_name = 'django/forms/widgets/select_option.html'
+    add_id_index = False
+    checked_attribute = {'selected': True}
+    option_inherits_attrs = False
+
+    def get_context(self, name, value, attrs):
+        """Preper list id and unpac value fromn the list"""
+        context = super().get_context(name, value, attrs)
+        context['widget']['attrs']['list'] = '{name}_datalist'.format(name=name)
+        context['widget']['value'] = context['widget']['value'].pop()
+        return context
+
+
 class EntityForm(forms.Form):
 
     entity_name = forms.CharField(
@@ -176,10 +193,18 @@ class ConditionsFormset(forms.Form):
 class FollowUpFormset(forms.Form):
     """Used for adding follow up on Intents tab"""
 
-    intent_to_execute = forms.ChoiceField(
+    intent_to_execute = forms.CharField(
         label=_('Intent'),
-        widget=forms.Select(),
-        required=True
+        validators=[RegexValidator(regex=SLUG_PATTERN)],
+        widget=DatalistTextInputWidget(attrs={
+            'class': 'form-control',
+            'required': True,
+            'pattern': SLUG_PATTERN,
+            'maxlength': 32,
+            'placeholder': _('Intent name'),
+            'title': _('Enter a valid “Name” consisting of letters, numbers, '
+                       'underscores or hyphens.')
+        })
     )
 
     def __init__(self, *args, **kwargs):
@@ -192,7 +217,7 @@ class FollowUpFormset(forms.Form):
 
         super(FollowUpFormset, self).__init__(*args, **kwargs)
 
-        self.fields['intent_to_execute'].choices = [
+        self.fields['intent_to_execute'].widget.choices = [
             (intent, intent) for intent in intents
             if not current_intent or not intent == current_intent['intent_name']
         ]

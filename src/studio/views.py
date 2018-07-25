@@ -501,9 +501,6 @@ class IntentsEditView(StudioViewMixin, FormView):
             self.kwargs['aiid']
         ).get('intents', [])]
 
-        # We need to remove that in 1.3.2
-        context['intents'] = intents
-
         # And pass it to formsets initial choice
         context['formsets'] = {
             'conditions_in': kwargs.get('conditions_in', self.get_formset(
@@ -680,9 +677,6 @@ class IntentsUpdateView(IntentsEditView):
         """Provide intent name for the template"""
         context = super(IntentsUpdateView, self).get_context_data(**kwargs)
         context['intent_name'] = self.initial['intent_name']
-
-        # We need to remove that in 1.3.2
-        context['intents'].remove(context['intent_name'])
 
         return context
 
