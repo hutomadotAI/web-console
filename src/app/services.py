@@ -1,14 +1,13 @@
 import logging
 
-from requests import Request, Session, packages
 from constance import config
-
 from django.conf import settings
 from django.core.cache import cache
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
+from json import JSONDecodeError
+from requests import Request, Session, packages
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 logger = logging.getLogger(__name__)
 packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -21,6 +20,10 @@ LEVELS = {
     4: logging.ERROR,
     5: logging.ERROR
 }
+
+
+class ResponseFormatError(Exception):
+    pass
 
 
 def set_headers(token):
@@ -87,7 +90,15 @@ def fetch_api(
     if kwargs.get('raw'):
         return response
     else:
-        return response.json()
+        try:
+            json_response = response.json()
+            status = json_response.get('status')
+            if not status or not status.get('code') or not status.get('info'):
+                raise ResponseFormatError('API response is missing missing mandatory properties')
+            else:
+                return json_response
+        except (AttributeError, JSONDecodeError) as error:
+            raise ResponseFormatError('API response should be a JSON response')
 
 
 def to_curl(request, level):
