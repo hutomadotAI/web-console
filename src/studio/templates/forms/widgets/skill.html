@@ -2,9 +2,20 @@
 
 <div class="box-card">
 
-  <a href="{% url 'botstore:detail' widget.label.botId %}" target="_blank"><img class="card-icon" src="{{ MEDIA_URL }}boticon/{{ widget.label.botIcon }}"></a>
+  {% if 'data-templates' in widget.attrs %}
+  {# We use data for checking condition as there is no user object in the field rendering context #}
 
-  <div class="card-title no-shadow"><a href="{% url 'botstore:detail' widget.label.botId %}" target="_blank">{{ widget.label.name }}</a></div>
+    <img class="card-icon" src="{{ MEDIA_URL }}boticon/{{ widget.label.botIcon }}">
+
+    <div class="card-title no-shadow">{{ widget.label.name }}</div>
+
+  {% else %}
+
+    <a href="{% url 'botstore:detail' widget.label.botId %}" target="_blank"><img class="card-icon" src="{{ MEDIA_URL }}boticon/{{ widget.label.botIcon }}"></a>
+
+    <div class="card-title no-shadow"><a href="{% url 'botstore:detail' widget.label.botId %}" target="_blank">{{ widget.label.name }}</a></div>
+
+  {% endif %}
 
   <div class="switch-checkbox">
     {% include "django/forms/widgets/input.html" %}

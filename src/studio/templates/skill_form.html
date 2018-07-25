@@ -1,6 +1,6 @@
 {% extends 'studio_base.html' %}
 
-{% load i18n crispy_forms_tags %}
+{% load studio_tags i18n widget_tweaks %}
 
 {% block title %}{% trans 'Edit your bot skills' %}{% endblock %}
 
@@ -31,7 +31,11 @@
         <form method="post" class="form-skills persistent" id="SKILLS_FORM">
           {% csrf_token %}
 
-          {{ form }}
+          {% if request.user|has_group:'feature.templates' %}
+            {% render_field form.skills|set_data:'templates:true' %}
+          {% else %}
+            {% render_field form.skills %}
+          {% endif %}
 
         </form>
       </div>

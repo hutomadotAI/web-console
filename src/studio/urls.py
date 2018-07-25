@@ -286,4 +286,14 @@ urlpatterns = [
         EntityDeleteView.as_view(),
         name='entity.delete'
     ),
+
+    # Templates redirect
+    path(
+        'templates',
+        RedirectView.as_view(
+            url='https://www.hutoma.ai/templates',
+            permanent=True
+        ),
+        name='templates'
+    ),
 ]

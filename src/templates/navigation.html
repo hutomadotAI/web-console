@@ -1,4 +1,4 @@
-{% load botstore_tags i18n %}
+{% load botstore_tags studio_tags i18n %}
 
 <aside class="main-sidebar navigation" id="NAVIGATION">
 
@@ -8,9 +8,12 @@
 
     {% block studio %}{% endblock studio %}
 
-    <li><a data-toggle="collapse" data-target="#categories"><i class="fa fa-shopping-cart text-green"></i> <span>{% trans 'Botstore' %}</span><i class="fa fa-ellipsis-v pull-right"></i></a>
-
-    {% botstore_navigation category botstore %}
+    {% if request.user|has_group:'feature.templates' %}
+      <li><a href="{% url 'studio:templates' %}"><i class="fa fa-rocket text-green"></i> <span>{% trans 'Templates' %}</span></a>
+    {% else %}
+      <li><a data-toggle="collapse" data-target="#categories"><i class="fa fa-shopping-cart text-green"></i> <span>{% trans 'Botstore' %}</span><i class="fa fa-ellipsis-v pull-right"></i></a>
+      {% botstore_navigation category botstore %}
+    {% endif %}
 
     </li>
 

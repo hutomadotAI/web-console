@@ -2586,12 +2586,11 @@ label.btn {
     font-weight: bold;
     text-align: center;
     height: 30px;
-    color: #000000; !important;
+    color: #555; !important;
     padding-top: 10px;
     margin:0 3px 0 3px;
     white-space: nowrap ;
     overflow: hidden;
-    cursor: pointer;
     text-overflow: clip;
 }
 
