@@ -81,6 +81,7 @@ class SignupForm(SignupForm):
             Checks if white-list domains is enabled, and if so check if email
             domain is on the list
         """
+        super(SignupForm, self).clean_email()
         data = self.cleaned_data['email']
         domains = settings.WHITELISTED_EMAIL_DOMAINS
         if domains and data.split('@')[1].lower() not in domains:
