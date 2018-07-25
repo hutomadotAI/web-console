@@ -34,7 +34,7 @@ SLUG_PATTERN = '^[-a-zA-Z0-9_]+$'
 VARIABLE_PATTERN = '^[-a-zA-Z0-9_\.]+$'
 
 DEFAULT_TOKEN_CHARACTERS_LIMIT = 250
-INTENT_TOKEN_CHARACTERS_LIMIT = 1000
+INTENT_TOKEN_CHARACTERS_LIMIT = 5000
 
 
 class SkillsMultipleWidget(forms.widgets.CheckboxSelectMultiple):
@@ -302,7 +302,7 @@ class EntityFormset(forms.Form):
         label=_('Prompts'),
         widget=forms.TextInput(attrs={
             'data-min-length': 1,
-            'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
+            'data-max-length': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'required': True,
