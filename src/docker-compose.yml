@@ -20,6 +20,8 @@ services:
       ENVIRONMENT: development
       DJANGO_STATIC_HOST: https://0.0.0.0.xip.io
       LOG_LEVEL: DEBUG
+      API_RESPONSE_BODY_LOGS: 1
+      # LOGGING_ES_URL: http://dev.hutoma.com:8083/
     volumes:
       - .:/usr/src/app
     ports:

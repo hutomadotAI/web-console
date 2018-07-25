@@ -4,6 +4,7 @@ from requests import Request, Session, packages
 from constance import config
 
 from django.conf import settings
+from django.core.cache import cache
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 from django.http import Http404
@@ -13,6 +14,13 @@ logger = logging.getLogger(__name__)
 packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 VERIFY = not settings.DEBUG
+
+LEVELS = {
+    2: logging.INFO,
+    3: logging.INFO,
+    4: logging.ERROR,
+    5: logging.ERROR
+}
 
 
 def set_headers(token):
@@ -28,6 +36,11 @@ def fetch_api(
     path, token, method='GET', data={}, json={}, files={}, headers={}, params={},
     timeout=0, verify=VERIFY, **kwargs
 ):
+    """
+    Fetches data from the API using token (if provided),logs request and
+    response data, if in debug mode also logs CURL command
+    """
+
     url = settings.API_URL + path.format(**kwargs)
     headers = {**headers, **set_headers(token)}
 
@@ -39,23 +52,37 @@ def fetch_api(
     )
     response = session.send(request.prepare(), timeout=timeout, verify=verify)
 
-    to_curl(response.request)
-    logger.debug(response)
+    level = LEVELS.get(int(response.status_code / 100), logging.ERROR)
+
+    extra = {
+        'request_dev_id': cache.get(token, None),
+        'request_method': method,
+        'request_url': url,
+        'response_status_code': response.status_code,
+        'response_time_in_seconds': response.elapsed.total_seconds()
+    }
+
+    if settings.API_RESPONSE_BODY_LOGS:
+        if kwargs.get('raw'):
+            extra['response_raw'] = response
+        else:
+            extra['response_json'] = response.json()
+
+    if settings.DEBUG:
+        # Print curl for debug purpose
+        to_curl(response.request, level)
+
+    if settings.DEBUG:
+        message = 'API %(request_method)s request %(request_url)s: '
+        '(%(response_status_code)s) in %(response_time_in_seconds)ss'
+    else:
+        message = 'API request'
+
+    logger.log(level, message, extra, extra=extra)
 
     if response.status_code in [401, 403, 404]:
         # We don't reveal if Resource exists
-        logger.warning('Failed ({code}) request {url} using headers {headers}'.format(
-            code=response.status_code,
-            headers=headers,
-            url=url
-        ))
         raise Http404(_('Resource doesn’t exist'))
-
-    if response.status_code == 400:
-        logger.warning('Bad Request for {url}, using headers {headers}'.format(
-            url=url,
-            headers=headers)
-        )
 
     if kwargs.get('raw'):
         return response
@@ -63,7 +90,7 @@ def fetch_api(
         return response.json()
 
 
-def to_curl(request):
+def to_curl(request, level):
     """Log a CURL command for better debugging"""
 
     command = "curl --request {method} --header {headers} --data '{data}' '{uri}' {insecure}"
@@ -75,7 +102,7 @@ def to_curl(request):
     headers = ' --header '.join(headers)
     insecure = '--insecure' if settings.DEBUG else ''
 
-    logger.debug(command.format(
+    logger.log(level, command.format(
         method=method,
         headers=headers,
         data=data,

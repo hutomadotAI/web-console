@@ -4,6 +4,7 @@ from hashlib import blake2b
 from allauth.account.signals import password_changed, password_reset
 
 from django.conf import settings
+from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.contrib.auth.signals import (
     user_logged_in,
@@ -33,6 +34,9 @@ def user_logged_in(sender, user, request, **kwargs):
     request.session['token'] = api_user['dev_token']
     request.session['dev_id'] = profile.dev_id
 
+    # Store token for API logging, set TTL to session length, cleared at logout
+    cache.set(request.session['token'], profile.dev_id, timeout=request.session.get_expiry_age())
+
     logger.info('User {dev_id} has logged in'.format(
         dev_id=user.profile.dev_id
     ))
@@ -46,6 +50,9 @@ def user_logged_out(sender, user, request, **kwargs):
     """
 
     if user:
+        # Clear stored token:dev_id pair
+        cache.delete(request.session['token'])
+
         logger.info('User {dev_id} has logged out'.format(
             dev_id=user.profile.dev_id
         ))
