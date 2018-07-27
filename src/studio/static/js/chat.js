@@ -14,6 +14,19 @@ var recording = false;
 
 var waiting = false;
 
+const URLS = {
+  'studio:intent': {
+    path: (aiid, intent) => `/bots/edit/${ aiid }/intents/edit/${ intent }`
+  },
+  'studio:chat': {
+    path: (aiid) => `/proxy/ai/${ aiid }/chat`
+  }
+}
+
+function url(name, ...arguments) {
+  return URLS[name].path(...arguments);
+}
+
 // Attach listeners
 document.getElementById('action.logs:toggle').addEventListener('click', toggleLogs);
 document.getElementById('action.logs:wrap').addEventListener('click', wrapLines);
@@ -239,19 +252,27 @@ function createBotMessage(resonse, level, score, log) {
 }
 
 function renderMessage(author, name, message, timestamp, level, score=false, log=false) {
+  var { intents } = {...log.result};
   return Object.assign(document.createElement('div'), {
     className: `direct-chat-msg ${ author.toLowerCase() }`,
     innerHTML: `
       <div class="direct-chat-meta">
         <span class="direct-chat-name" data-toggle="tooltip" title="${ name }">${ name }</span>
-        ${ score !== false ? `<span class="slug score-${ score * 10}" data-toggle="tooltip" title="score: ${ score }">■■■■■■■■■■</span>` : '' }
+        ${ score !== false ? `<span class="slug score-${ score * 10 }" data-toggle="tooltip" title="score: ${ score }">■■■■■■■■■■</span>` : '' }
         <span class="direct-chat-timestamp" data-toggle="tooltip" title="${ new Date(timestamp).toDateString() } ${ new Date(timestamp).toLocaleTimeString() }">${ new Date(timestamp).toLocaleTimeString() }</span>
+        <span class="direct-chat-actions">
+          ${ intents ? renderIntent(intents[0]) : '' }
+        </span>
       </div>
       <div class="direct-chat-text chat-${ level }">
         ${ sanitize(message) }
       </div>
     `
   });
+}
+
+function renderIntent(intent) {
+  return `<a href="${ url('studio:intent', AI.id, intent.name) }" data-toggle="tooltip" title="Edit ${ intent.name }"><i class="fa fa-sitemap"></i></a>`;
 }
 
 function requestAnswerAI(message) {
@@ -277,7 +298,7 @@ function requestAnswerAI(message) {
 
   }
 
-  fetch(`/proxy/ai/${ AI.id }/chat`, {
+  fetch(url('studio:chat', AI.id), {
     credentials: 'same-origin',
     method: 'post',
     headers: {
@@ -316,8 +337,18 @@ function resolveChatID(response) {
   }
 }
 
+/**
+ * Decorates intents if any with links and prints a log using Prism.
+ * @param  {Object} entry   Log entry to be printed
+ * @return {Object}         Returns log for future needs
+ */
 function printLog(entry) {
-  document.getElementById('MSG_JSON').textContent = JSON.stringify(entry, null, 2);
+  // We ❤️ Javascript, dirty but efective object cloning
+  var newEntry = JSON.parse(JSON.stringify(entry));
+  if (newEntry.result && newEntry.result.intents) {
+    newEntry.result.intents.forEach(intent => intent.name = `[${ intent.name }](${ location.origin + url('studio:intent', AI.id, intent.name) })`)
+  }
+  document.getElementById('MSG_JSON').textContent = JSON.stringify(newEntry, null, 2);
   Prism.highlightAll();
   return entry;
 }

@@ -134,3 +134,8 @@ pre[class*="language-"] {
 .token.inserted {
   color: green;
 }
+
+.token a {
+  color: inherit;
+  text-decoration: underline;
+}

@@ -130,6 +130,14 @@
   content: '■■■■■■■■■■'
 }
 
+.direct-chat-actions {
+  margin-left: auto;
+}
+
+.direct-chat-actions a {
+  color: white;
+}
+
 .direct-chat-input {
   margin: 1rem;
 }
