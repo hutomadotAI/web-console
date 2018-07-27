@@ -136,7 +136,7 @@ input::selection {
 }
 
 .workspace .content-wrapper {
-  min-height: calc(100vh - 10rem);
+  min-height: calc(100vh - 9rem);
   padding: 0 1rem;
 }
 
