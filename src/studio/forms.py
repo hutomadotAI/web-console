@@ -337,7 +337,7 @@ class IntentForm(forms.Form):
     user_says = forms.CharField(
         label=_('Human Says <small>optional</small>'),
         help_text=_('To create a new expression press enter'),
-        widget=forms.TextInput(attrs={
+        widget=forms.Textarea(attrs={
             'data-max-length': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
@@ -351,7 +351,7 @@ class IntentForm(forms.Form):
     responses = forms.CharField(
         label=_('Bot Responds <small>optional</small>'),
         help_text=_('To create a new response press enter'),
-        widget=forms.TextInput(attrs={
+        widget=forms.Textarea(attrs={
             'data-max-length': INTENT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,

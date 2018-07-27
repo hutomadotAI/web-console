@@ -33,6 +33,11 @@
   padding: 1px 0;
 }
 
+.tokenfield textarea.token-input {
+  height: 24px;
+  resize: none;
+}
+
 .tokenfield .token-input::placeholder {
   color: #999;
 }
