@@ -28,7 +28,7 @@
           pre-trained bots from our Botstore. You can add up to 5 bots.{% endblocktrans %}
         </div>
 
-        <form method="post" class="form-skills persistent" id="SKILLS_FORM">
+        <form method="post" id="SKILLS_FORM" class="form-skills persistent">
           {% csrf_token %}
 
           {% if request.user|has_group:'feature.templates' %}

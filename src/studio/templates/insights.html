@@ -21,7 +21,7 @@
     </div>
 
     <div class="box-body">
-      <form action="insights/logs" class="form-inline" method="post" id="LOGS_FORM">
+      <form method="post" id="LOGS_FORM" action="insights/logs" class="form-inline">
         {% csrf_token %}
 
         <div class="form-group col-4">
@@ -45,7 +45,7 @@
         </div>
 
         <div class="col-4">
-          <a id="DOWNLOAD_LOGS" download="{{ ai.aiid }}_logs.csv"></a>
+          <a id="DOWNLOAD_LOGS_ACTION" action="send" download="{{ ai.aiid }}_logs.csv"></a>
           <button style="min-width: 100px" form="LOGS_FORM" class="btn btn-success flat pull-right"><b>{% trans 'Download Logs' %}</b></button>
         </div>
       </form>

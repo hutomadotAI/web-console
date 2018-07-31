@@ -12,7 +12,7 @@
 
       <p class="login-box-msg"><b>{% trans 'Login to Hu:toma' %}</b></p>
 
-      <form class="login form-signin" id="login_form" method="POST" action="{% url 'account_login' %}">
+      <form method="post" id="LOGIN_FORM" class="login form-signin" action="{% url 'account_login' %}">
 
         {% csrf_token %}
 
@@ -25,7 +25,7 @@
       </form>
 
       <div class="form-group">
-        <button type="submit" form="login_form" class="btn btn-primary btn-block btn-flat">{% trans 'Log in' %}</button>
+        <button type="submit" form="LOGIN_FORM" class="btn btn-primary btn-block btn-flat">{% trans 'Log in' %}</button>
       </div>
 
       <a class="new-link" href="{% url 'account_reset_password' %}">{% trans 'I forgot my password' %}</a><br>

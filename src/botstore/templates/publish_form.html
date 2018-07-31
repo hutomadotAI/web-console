@@ -33,7 +33,7 @@
 
       <div class="box-body">
 
-        <form method="post" class="persistent form-publish" id="publish_form" enctype="multipart/form-data">
+        <form method="post" id="PUBLISH_FORM" class="persistent form-publish" enctype="multipart/form-data">
           {% csrf_token %}
 
           {{ form | crispy }}
@@ -48,7 +48,7 @@
 
       <div class="box-footer">
         <a href="{% url 'studio:index' %}" class="btn btn-primary flat">{% trans 'Cancel' %}</a>
-        <button form="publish_form" class="btn btn-success flat pull-right">{% trans 'Publish' %}</button>
+        <button form="PUBLISH_FORM" class="btn btn-success flat pull-right">{% trans 'Publish' %}</button>
       </div>
 
     </div>
@@ -76,6 +76,7 @@
 {% endblock %}
 
 {% block javascripts %}
+  {{ block.super }}
 
   <script src="{% static 'js/forms.js' %}"></script>
   <script src="{% static 'js/image_upload.js' %}"></script>

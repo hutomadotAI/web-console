@@ -27,7 +27,7 @@
 
       <div class="box-body">
 
-        <form {% if next %}action="?next={{ next }}"{% endif %} method="post" class="form-info" id="info_form">
+        <form method="post" id="INFO_FORM" {% if next %}action="?next={{ next }}"{% endif %} class="form-info">
           {% csrf_token %}
 
           {{ form | crispy }}
@@ -37,7 +37,7 @@
       </div>
 
       <div class="box-footer">
-        <button form="info_form" class="btn btn-success flat pull-right">{% trans 'Save' %}</button>
+        <button form="INFO_FORM" class="btn btn-success flat pull-right">{% trans 'Save' %}</button>
       </div>
 
     </div>

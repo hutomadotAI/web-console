@@ -6,11 +6,11 @@
 
 {% block body %}
   <p>{% blocktrans %}Are you sure you want to permanently delete <span class="element-id"></span>?{% endblocktrans %}</p>
-  <form method="post" id="delete_element_form">{% csrf_token %}</form>
+  <form method="post" id="DELETE_ELEMENT_FORM">{% csrf_token %}</form>
 
 {% endblock body %}
 
 {% block footer %}
   <button class="btn btn-primary flat" data-dismiss="modal">{% trans 'Cancel' %}</button>
-  <button form="delete_element_form" class="btn btn-danger flat">{% trans 'Delete' %}</button>
+  <button form="DELETE_ELEMENT_FORM" class="btn btn-danger flat">{% trans 'Delete' %}</button>
 {% endblock footer %}

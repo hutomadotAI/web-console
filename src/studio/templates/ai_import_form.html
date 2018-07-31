@@ -29,7 +29,7 @@
 
       <div class="box-body">
 
-        <form action="{{ request.build_absolute_uri }}" id="IMPORT_FORM" method="post"enctype="multipart/form-data">
+        <form method="post" id="IMPORT_BOT_FORM" action="{{ request.build_absolute_uri }}" enctype="multipart/form-data">
           {% csrf_token %}
 
           {% for field, errors in form.errors.items %}
@@ -46,7 +46,7 @@
 
       <div class="box-footer">
         <a href="{% url 'studio:ai.wizard' %}" class="btn btn-primary">{% trans 'Back' %}</a>
-        <button form="IMPORT_FORM" class="btn btn-success">{% trans 'Import' %}</button>
+        <button form="IMPORT_BOT_FORM" class="btn btn-success">{% trans 'Import' %}</button>
       </div>
 
     </div>
@@ -62,5 +62,6 @@
 
 
 {% block javascripts %}
+  {{ block.super }}
   <script src="{% static 'js/forms.js' %}"></script>
 {% endblock javascripts %}

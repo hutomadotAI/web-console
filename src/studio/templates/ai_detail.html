@@ -17,7 +17,7 @@
         <h2 class="box-title">{{ ai.name }}</h2>
 
         {% if ai_details.intents|length or ai_details.training_file %}
-          <a href="{% url 'studio:retrain' aiid %}" class="btn btn-default">{% trans 'Restart Training' %}</a>
+          <a id="RETRAIN_ACTION" action="send" href="{% url 'studio:retrain' aiid %}" class="btn btn-default">{% trans 'Restart Training' %}</a>
         {% endif %}
         <a href="{% url 'studio:settings' ai.aiid %}" class="btn btn-primary">{% trans 'Settings' %}</a>
       </div>

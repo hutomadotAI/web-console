@@ -1,4 +1,4 @@
-document.getElementById('regenerate_webhook').addEventListener('submit', function getSecret(event) {
+document.getElementById('REGENERATE_WEBHOOK_FORM').addEventListener('submit', function getSecret(event) {
   event.preventDefault();
   const SUBMIT_BUTTONS = document.querySelectorAll(`[form=${event.target.id}]`);
 

@@ -267,6 +267,7 @@ class AICreateView(FormView):
     form_class = AddAIForm
     template_name = 'ai_add_form.html'
     success_url = 'studio:ai.dashboard'
+    action = 'add'
 
     def form_valid(self, form):
         """

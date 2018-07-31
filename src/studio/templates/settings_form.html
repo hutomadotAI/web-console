@@ -18,7 +18,7 @@
 
       <div class="box-body">
 
-        <form method="post" class="persistent" id="SETTINGS_FORM">
+        <form method="post" id="SETTINGS_FORM" class="persistent">
           {% csrf_token %}
 
           {% for hidden in form.hidden_fields %}
@@ -77,7 +77,7 @@
       </div>
 
       <div class="box-footer">
-        <a href="{% url 'studio:proxy.ai.export' ai.aiid %}" class="btn btn-primary"
+        <a id="EXPORT_BOT_ACTION" action="send" href="{% url 'studio:proxy.ai.export' ai.aiid %}" class="btn btn-primary"
           download="bot-{{ ai.name }}_{{ ai.aiid }}.json" >{% trans 'Export bot' %}</a>
         <button type="submit" form="SETTINGS_FORM" class="btn btn-success">{% trans 'Save' %}</button>
       </div>

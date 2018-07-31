@@ -28,7 +28,7 @@
 
       <div class="box-body">
 
-        <form action="{{ request.build_absolute_uri }}" method="post" class="persistent" id="add_form">
+        <form method="post" id="{{ form.form_id }}" action="{{ request.build_absolute_uri }}" class="persistent">
           {% csrf_token %}
 
           {{ form | crispy }}
@@ -38,7 +38,7 @@
 
       <div class="box-footer">
         <a href="{% url 'studio:ai.wizard' %}" class="btn btn-primary">{% trans 'Back' %}</a>
-        <button form="add_form" class="btn btn-success" tabindex="6">{% trans 'Create' %}</button>
+        <button form="{{ form.form_id }}" class="btn btn-success" tabindex="6">{% trans 'Create' %}</button>
       </div>
 
     </div>

@@ -28,11 +28,11 @@ function url(name, ...arguments) {
 }
 
 // Attach listeners
-document.getElementById('action.logs:toggle').addEventListener('click', toggleLogs);
-document.getElementById('action.logs:wrap').addEventListener('click', wrapLines);
-document.getElementById('action.handle:reset').addEventListener('click', resetHandle);
-document.getElementById('action.context:reset').addEventListener('click', resetHandle);
-document.getElementById('action.history:clear').addEventListener('click', clearHistory);
+document.getElementById('LOGS_TOGGLE_ACTION').addEventListener('click', toggleLogs);
+document.getElementById('LOGS_WRAP_ACTION').addEventListener('click', wrapLines);
+document.getElementById('HANDOVER_RESET_ACTION').addEventListener('click', resetHandle);
+document.getElementById('CONTEXT_RESET_ACTION').addEventListener('click', resetHandle);
+document.getElementById('HISTORY_CLEAR_ACTION').addEventListener('click', clearHistory);
 document.addEventListener('keyup', function historyStepsHandler(event) {
   if (event.target == CHAT_INPUT){
     switch (event.key) {
@@ -45,11 +45,11 @@ document.addEventListener('keyup', function historyStepsHandler(event) {
 
 // Enable features
 if ('speechSynthesis' in window) {
-  document.getElementById('action.speech:toggle').classList.remove('disabled');
-  document.getElementById('action.speech:getVoices').classList.remove('disabled');
-  document.getElementById('action.speech:toggle').addEventListener('click', toggleSpeech);
+  document.getElementById('SPEECH_TOGGLE_ACTION').classList.remove('disabled');
+  document.getElementById('SPEECH_GETVOICES_ACTION').classList.remove('disabled');
+  document.getElementById('SPEECH_TOGGLE_ACTION').addEventListener('click', toggleSpeech);
   if (speechResponse) {
-    document.getElementById('action.speech:toggle').classList.add('checked');
+    document.getElementById('SPEECH_TOGGLE_ACTION').classList.add('checked');
   }
 
   if ('onvoiceschanged' in window.speechSynthesis) {
@@ -61,8 +61,8 @@ if ('speechSynthesis' in window) {
 }
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-  document.getElementById('action.speech:dictate').disabled = false;
-  document.getElementById('action.speech:dictate').addEventListener('click', dictateSpeech);
+  document.getElementById('SPEECH_DICTATE_ACTION').disabled = false;
+  document.getElementById('SPEECH_DICTATE_ACTION').addEventListener('click', dictateSpeech);
 }
 
 if ('speechSynthesis' in window) {
@@ -133,6 +133,19 @@ function resetHandle() {
       }))
       .catch(chatErrorHandle)
       .then(data => createBotMessage(data.message, data.level, data.score, data.log));
+
+    // Trigger GTM event
+    if(dataLayer) {
+      dataLayer.push({
+        event: 'abstractEvent',
+        eventCategory: 'action',
+        eventAction: 'send',
+        eventLabel: this.getAttribute('id'),
+        eventMetadata: {
+          timestamp: Date.now()
+        }
+      });
+    }
   } else {
     console.warn('Chat session is missing');
   }
@@ -168,7 +181,7 @@ function clearHistory() {
   sessionStorage.removeItem(HISTORY_KEY);
   sessionStorage.removeItem(CHAT_ID_KEY);
   document.getElementById('CHAT_MESSAGES').innerHTML = '';
-  document.getElementById('action.context:reset').click();
+  document.getElementById('CONTEXT_RESET_ACTION').click();
 }
 
 function toggleSpeech(event) {
@@ -187,7 +200,7 @@ function dictateSpeech() {
   button.classList.toggle('record');
 
   if (!speechResponse) {
-    document.getElementById('action.speech:toggle').click();
+    document.getElementById('SPEECH_TOGGLE_ACTION').click();
   }
 
   if (recording) {
@@ -326,6 +339,19 @@ function requestAnswerAI(message) {
     .then(() => {
       waiting = enableChat();
     });
+
+  // Trigger GTM event
+  if(dataLayer) {
+    dataLayer.push({
+      event: 'abstractEvent',
+      eventCategory: 'action',
+      eventAction: 'send',
+      eventLabel: 'CHAT_ACTION',
+      eventMetadata: {
+        timestamp: Date.now()
+      }
+    });
+  }
 }
 
 function resolveChatID(response) {
@@ -413,9 +439,9 @@ function getVoices() {
     document.getElementById(voiceId).click();
   } else {
     // If there are no voices disable TTS
-    document.getElementById('action.speech:toggle').classList.add('disabled');
-    document.getElementById('action.speech:getVoices').classList.add('disabled');
-    document.getElementById('action.speech:toggle').removeEventListener('click', toggleSpeech);
+    document.getElementById('SPEECH_TOGGLE_ACTION').classList.add('disabled');
+    document.getElementById('SPEECH_GETVOICES_ACTION').classList.add('disabled');
+    document.getElementById('SPEECH_TOGGLE_ACTION').removeEventListener('click', toggleSpeech);
   }
 
 }

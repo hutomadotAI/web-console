@@ -1,4 +1,4 @@
-$(document).on('click', '#fb-connect', function handleFacebookConnect() {
+$(document).on('click', '#FB_CONNECT_ACTION', function handleFacebookConnect() {
   // https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow
 
   var state = {
@@ -15,7 +15,7 @@ $(document).on('click', '#fb-connect', function handleFacebookConnect() {
 });
 
 
-$(document).on('submit', '#FB_SETTINGS', function saveFacebookCustomisations(event) {
+$(document).on('submit', '#FB_SETTINGS_FORM', function saveFacebookCustomisations(event) {
 
   event.preventDefault();
 
@@ -24,7 +24,7 @@ $(document).on('submit', '#FB_SETTINGS', function saveFacebookCustomisations(eve
   var page_greeting = $('#fb_page_greeting').val();
   var get_started_payload = $('#fb_get_started_payload').val();
 
-  $('[form=FB_SETTINGS]').text('Saving…');
+  $('[form=FB_SETTINGS_FORM]').text('Saving…');
 
   $.ajax({
     url: './integrations/facebook/customise',
@@ -38,16 +38,16 @@ $(document).on('submit', '#FB_SETTINGS', function saveFacebookCustomisations(eve
       'get_started_payload': get_started_payload
     }),
     complete: function () {
-      $('[form=FB_SETTINGS]').removeClass('loading');
-      $('[form=FB_SETTINGS]').removeAttr('disabled');
+      $('[form=FB_SETTINGS_FORM]').removeClass('loading');
+      $('[form=FB_SETTINGS_FORM]').removeAttr('disabled');
     },
     success: function () {
-      $('[form=FB_SETTINGS]').text('Save customisations');
+      $('[form=FB_SETTINGS_FORM]').text('Save customisations');
       custom_greeting = page_greeting;
       custom_get_started = get_started_payload;
     },
     error: function () {
-      $('[form=FB_SETTINGS]').text('Save failed. Retry?');
+      $('[form=FB_SETTINGS_FORM]').text('Save failed. Retry?');
     }
   });
 });

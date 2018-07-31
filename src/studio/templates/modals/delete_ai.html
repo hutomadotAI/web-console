@@ -6,7 +6,7 @@
 
 {% block body %}
   <p>{% blocktrans %}Are you sure you want to permanently delete{% endblocktrans %} {{ ai.name }}?</p>
-  <form method="post" action="{% url 'studio:proxy.ai' ai.aiid %}" id="delete_bot">
+  <form method="post" id="DELETE_BOT_FORM" action="{% url 'studio:proxy.ai' ai.aiid %}">
     {% csrf_token %}
     <input type="hidden" name="aiid" value="{{ ai.aiid }}">
     <input type="hidden" name="action" value="delete">
@@ -15,5 +15,5 @@
 
 {% block footer %}
   <button type="button" class="btn btn-primary flat" data-dismiss="modal">{% trans 'Cancel' %}</button>
-  <button type="submit" form="delete_bot" class="btn btn-danger flat">{% trans 'Delete' %}</button>
+  <button type="submit" form="DELETE_BOT_FORM" class="btn btn-danger flat">{% trans 'Delete' %}</button>
 {% endblock footer %}

@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="chat" id ="CHAT">
+<div class="chat" id="CHAT">
 
   <script>
     const EMPTY_CHAT_MESSAGE = '{% trans "[Empty chat response]" %}';
@@ -13,7 +13,7 @@
       action="{% url 'studio:proxy.context.reset' ai.aiid %}"
       data-toggle="tooltip"
       title="{% trans 'Reset all chat state for this session, including variables, intents and bot handover.' %}"
-      id="action.context:reset">
+      id="CONTEXT_RESET_ACTION">
       <span class="sr-only">{% trans 'Reset chat' %}</span>
     </button>
 
@@ -29,22 +29,22 @@
       <button class="dropdown-item disabled"
         data-toggle="tooltip"
         title="{% trans 'Will read bot responses' %}"
-        id="action.speech:toggle">{% trans 'Speech synthesis' %}</button>
+        id="SPEECH_TOGGLE_ACTION">{% trans 'Speech synthesis' %}</button>
       <button class="dropdown-item sub-menu disabled"
         data-toggle="tooltip"
         title="{% trans 'Select bot voice' %}"
-        id="action.speech:getVoices">{% trans 'Voices' %}</button>
+        id="SPEECH_GETVOICES_ACTION">{% trans 'Voices' %}</button>
       <div class="dropdown-menu" id="VOICE_LIST"></div>
       <button class="dropdown-item"
         action="{% url 'studio:proxy.handover.reset' ai.aiid %}"
         data-toggle="tooltip"
         title="{% trans 'Handle back chat to bot instad of human agant' %}"
-        id="action.handle:reset">{% trans 'Reset handover to human' %}</button>
+        id="HANDOVER_RESET_ACTION">{% trans 'Reset handover to human' %}</button>
       <div class="dropdown-divider"></div>
       <button class="dropdown-item"
         data-toggle="tooltip"
         title="{% trans 'Removes the history and resets chat session' %}"
-        id="action.history:clear">{% trans 'Clear history' %}</button>
+        id="HISTORY_CLEAR_ACTION">{% trans 'Clear history' %}</button>
     </div>
   </div>
 
@@ -60,7 +60,7 @@
 
       <div class="input-group-append">
         <button class="btn direct-chat-dictate"
-          id="action.speech:dictate"
+          id="SPEECH_DICTATE_ACTION"
           disabled
           data-toggle="tooltip"
           title="{% trans 'Click to record' %}" >

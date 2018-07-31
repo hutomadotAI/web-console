@@ -44,7 +44,7 @@
               </div>
 
               <div class="text-center" style="padding-bottom: 20px">
-                <a href="{% url 'studio:facebook_actions' aiid=ai.aiid action='disconnect' %}" class="btn btn-primary" style="width: 260px;">{% trans 'Disconnect' %}</a>
+                <a id="FB_DISCONNECT_ACTION" action="send" href="{% url 'studio:facebook_actions' aiid=ai.aiid action='disconnect' %}" class="btn btn-primary" style="width: 260px;">{% trans 'Disconnect' %}</a>
               </div>
 
               {% if integration.page_integrated_id %}
@@ -55,7 +55,7 @@
                   {% endblocktrans %}
                 </div>
 
-                <form action="{% url 'studio:facebook_customise' aiid=ai.aiid %}" id="FB_SETTINGS">
+                <form method="post" id="FB_SETTINGS_FORM" action="{% url 'studio:facebook_customise' aiid=ai.aiid %}">
 
                   <div class="form-group">
                     <label for="fb_page_greeting">
@@ -142,7 +142,7 @@
               </div>
 
               <div class="text-center" style="padding-bottom: 20px;">
-                <button class="btn btn-primary" id="fb-connect" style="width: 260px;"><i class="fa fa-facebook text-blue"></i> {% trans 'Connect to Facebook' %}</button>
+                <button id="FB_CONNECT_ACTION" action="send" class="btn btn-primary" style="width: 260px;"><i class="fa fa-facebook text-blue"></i> {% trans 'Connect to Facebook' %}</button>
               </div>
 
             {% endif %}

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  const LINK = document.getElementById('DOWNLOAD_LOGS');
+  const LINK = document.getElementById('DOWNLOAD_LOGS_ACTION');
   const OPTIONS = {
     todayHighlight: true,
     autoclose: true,

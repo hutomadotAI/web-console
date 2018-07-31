@@ -459,6 +459,8 @@ class IntentForm(forms.Form):
 class AddAIForm(forms.Form):
     TIMEZONES = [(tz, tz) for tz in pytz.common_timezones]
 
+    form_id = 'ADD_BOT_FORM'
+
     name = forms.CharField(
         help_text=_('Consisting of letters, numbers, spaces, underscores or hyphens.'),
         label=_('Name'),
@@ -523,6 +525,9 @@ class AddAIForm(forms.Form):
 
 
 class CloneAIForm(AddAIForm):
+
+    form_id = 'CLONE_BOT_FORM'
+
     def save(self, *args, **kwargs):
         return post_clone_ai(ai_data=self.cleaned_data, **kwargs)
 

@@ -43,7 +43,7 @@
           You could list further entities under food.{% endblocktrans %}
         </div>
 
-        <form method="post" class="persistent" id="ENTITY_FORM">
+        <form method="post" id="ENTITY_FORM" class="persistent">
           {% csrf_token %}
 
           {{ form | crispy }}

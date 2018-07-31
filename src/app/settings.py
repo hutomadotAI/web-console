@@ -501,6 +501,12 @@ CONSTANCE_CONFIG_FIELDSETS = {
 
 EMAIL_BACKEND = 'app.mail.backends.smtp.EmailBackend'
 
+# The purpose of identity verification is to verify that your users are who they
+# claim to be. More info:
+#
+# https://docs.intercom.com/configure-intercom-for-your-product-or-site/staying-secure/enable-identity-verification-on-your-web-product
+INTERCOM_SECRET_KEY = os.getenv('INTERCOM_SECRET_KEY', 'RZ3r1T4SI6V7MU480a0R4PuoLjse6T7yswLBQ4aO')
+
 # ------------------------------------------------------------------------------
 #
 # Environments specific settings

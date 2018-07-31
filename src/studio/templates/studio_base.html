@@ -63,6 +63,8 @@
 {% endblock %}
 
 {% block javascripts %}
+  {{ block.super }}
+
   <script>
     const AI = {
       id: '{{ ai.aiid }}',

@@ -1,6 +1,9 @@
 import logging
 import uuid
+import hmac
+import hashlib
 
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -25,6 +28,17 @@ class Profile(models.Model):
         max_length=36,
         unique=True
     )
+
+    def getIntercomHash(self):
+        """
+        Generats Intercom Hash from users ID. More info:
+        https://docs.intercom.com/configure-intercom-for-your-product-or-site/staying-secure/enable-identity-verification-on-your-web-product
+        """
+        return hmac.new(
+            settings.INTERCOM_SECRET_KEY.encode(),
+            self.dev_id.encode(),       # user's id
+            digestmod=hashlib.sha256    # hash function
+        ).hexdigest()
 
     def __str__(self):
         """

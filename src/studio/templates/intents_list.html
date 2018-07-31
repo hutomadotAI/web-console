@@ -20,7 +20,7 @@
 
         <a href="{% url 'studio:intents.add' ai.aiid %}" class="btn btn-success">{% trans 'New intent' %}</a>
 
-        <form action="{% url 'studio:intents.bulk.upload' ai.aiid %}" method="post" enctype="multipart/form-data">
+        <form method="post" id="BULK_UPLOAD_FORM" action="{% url 'studio:intents.bulk.upload' ai.aiid %}" enctype="multipart/form-data">
           {% csrf_token %}
 
           {% with field=bulk_upload_form.intents_file %}
