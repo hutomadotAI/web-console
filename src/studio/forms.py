@@ -704,7 +704,7 @@ class SkillsForm(forms.Form):
         self.aiid = kwargs.pop('aiid', None)
         bots = get_purchased(self.token).get('bots', [])
         skills = [
-            (skill['botId'], skill) for skill in bots
+            (skill['botId'], skill) for skill in bots if skill['publishingType'] == 'SKILL'
         ]
         super(SkillsForm, self).__init__(*args, **kwargs)
         self.fields['skills'].choices = skills

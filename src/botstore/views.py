@@ -27,26 +27,31 @@ logger = logging.getLogger(__name__)
 @method_decorator(login_required, name='dispatch')
 class PurchaseView(RedirectView):
     """Purchase a bot"""
-    permanent = False
-    query_string = True
     pattern_name = 'botstore:detail'
 
     def get_redirect_url(self, *args, **kwargs):
 
-        purchased = post_purchase(
-            self.request.session.get('token'),
-            kwargs['bot_id']
-        )
+        purchased = post_purchase(self.request.session.get('token'), kwargs['bot_id'])
+        if self.request.user.groups.filter(name='feature.templates').exists():
+            # new template flow
 
-        # Check if save was successful
-        if purchased['status']['code'] in [200, 201]:
-            level = messages.SUCCESS
-            message = _('Skill successfully added! You can now add this skill to your bots.')
+            if purchased['status']['code'] not in [200, 201]:
+                messages.error(self.request, purchased['status']['info'])
+                self.pattern_name = 'studio:summary'
+                kwargs = {}
+            else:
+                self.pattern_name = 'studio:template.clone'
+
         else:
-            level = messages.ERROR
-            message = purchased['status']['info']
+            # old skills flow
+            if purchased['status']['code'] in [200, 201]:
+                level = messages.SUCCESS
+                message = _('Skill successfully added! You can now add this skill to your bots.')
+            else:
+                level = messages.ERROR
+                message = purchased['status']['info']
 
-        messages.add_message(self.request, level, message)
+            messages.add_message(self.request, level, message)
 
         return super(PurchaseView, self).get_redirect_url(*args, **kwargs)
 

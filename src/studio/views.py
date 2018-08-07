@@ -5,7 +5,7 @@ import datetime
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import redirect
@@ -61,6 +61,8 @@ from studio.services import (
     post_handover_reset,
 )
 from studio.decorators import json_login_required
+
+from botstore.services import get_purchased
 
 logger = logging.getLogger(__name__)
 
@@ -320,6 +322,36 @@ class AICloneView(AICreateView):
         self.initial = ai
 
         return super(AICloneView, self).get_initial(**kwargs)
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(
+    lambda user: user.groups.filter(name='feature.templates').exists(),
+    login_url='/'
+), name='dispatch')
+class TemplateCloneView(RedirectView):
+    """
+    Check if user has purchased template, if so move to cloning, otherwise
+    purchase template and go back
+    """
+
+    pattern_name = 'botstore:purchase'
+
+    def get_redirect_url(self, *args, **kwargs):
+        purchased = get_purchased(
+            self.request.session.get('token', False)
+        ).get('bots', [])
+
+        template = [
+            template['aiid'] for template in purchased if template['botId'] == kwargs.get('bot_id')
+        ]
+
+        if (template):
+            self.pattern_name = 'studio:ai.clone'
+            kwargs['aiid'] = template.pop()
+            kwargs.pop('bot_id')
+
+        return super().get_redirect_url(*args, **kwargs)
 
 
 @method_decorator(login_required, name='dispatch')

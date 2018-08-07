@@ -53,6 +53,7 @@ from studio.views import (
     ProxyRegenerateWebhookSecretView,
     RetrainView,
     SkillsView,
+    TemplateCloneView,
     TrainingView,
 )
 
@@ -295,5 +296,12 @@ urlpatterns = [
             permanent=True
         ),
         name='templates'
+    ),
+
+    # Clone a template
+    path(
+        'templates/clone/<int:bot_id>',
+        TemplateCloneView.as_view(),
+        name='template.clone'
     ),
 ]

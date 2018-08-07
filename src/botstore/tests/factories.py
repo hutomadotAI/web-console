@@ -30,6 +30,7 @@ class MetadataFactory(factory.Factory):
     botIcon = '_chat.png'
     dev_id = 'd14b441b-e2a2-4b9f-be9b-4301647e1265'
     publishingState = 'PUBLISHED'
+    publishingType = 'SKILL'
     aiid = 'e1bb8226-e8ce-467a-8305-bc2fcb89dd7f'
     botId = 1
 
