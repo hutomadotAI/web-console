@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   flex: 7;
+  position: relative;
 }
 
 .sidebar-header {
@@ -18,6 +19,7 @@
   display: flex;
   padding: 0 1rem;
   justify-content: flex-end;
+  min-height: 3rem;
 }
 
 .sidebar-header .btn {
@@ -248,25 +250,22 @@
 }
 
 .logs {
-  display: flex;
+  display: none;
   flex-direction: column;
+  position: relative;
 }
 
 /* Logs */
 
 .logs.open {
   flex: 3;
+      display: flex;
   height: auto;
-}
-
-.logs .sidebar-footer {
-  height: 0;
 }
 
 .logs .output {
   background-color: #333;
   height: 8rem;
-  display: none;
   margin: 0 1rem;
 }
 
@@ -275,6 +274,17 @@
   display: block;
 }
 
-.logs.open .sidebar-footer {
-  height: auto;
+/* Fullscreen view */
+
+.aside.show.wide {
+  width: calc(100% - 13rem);
+  flex-direction: row;
+}
+
+.aside.show.wide .chat {
+  flex: 3;
+}
+
+.sidebar-header #CHAT_TOGGLE_WIDE_VIEW {
+  margin-right: auto;
 }

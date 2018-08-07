@@ -1,3 +1,4 @@
+const ASIDE = document.getElementById('ASIDE');
 const LOGS = document.getElementById('LOGS');
 const CHAT_MESSAGES = document.getElementById('CHAT_MESSAGES');
 const CHAT_INPUT = document.getElementById('CHAT_INPUT');
@@ -28,6 +29,7 @@ function url(name, ...arguments) {
 }
 
 // Attach listeners
+document.getElementById('CHAT_TOGGLE_WIDE_VIEW').addEventListener('click', toggleWideView);
 document.getElementById('LOGS_TOGGLE_ACTION').addEventListener('click', toggleLogs);
 document.getElementById('LOGS_WRAP_ACTION').addEventListener('click', wrapLines);
 document.getElementById('HANDOVER_RESET_ACTION').addEventListener('click', resetHandle);
@@ -379,6 +381,12 @@ function printLog(entry) {
   return entry;
 }
 
+function toggleWideView(event) {
+  event.target.classList.toggle('fa-window-maximize');
+  event.target.classList.toggle('fa-window-restore');
+  ASIDE.classList.toggle('wide');
+}
+
 function enableChat() {
   CHAT_MESSAGES.style.cursor = 'auto';
   CHAT_INPUT.disabled = false;
@@ -400,9 +408,9 @@ function toggleLogs(event) {
 }
 
 function wrapLines(event) {
-  event.target.classList.toggle('checked');
+  event.target.classList.toggle('fa-indent');
+  event.target.classList.toggle('fa-outdent');
   $('#LOGS .output').toggleClass('wrap-lines');
-  Prism.highlightAll();
 }
 
 /**

@@ -4,26 +4,23 @@
 
   <div class="sidebar-header">
     <h2>{% trans 'Chat logs' %}</h2>
-
-    <button class="btn btn-default fa fa-ellipsis-v text-gray settings"
-      data-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="false">
-      <span class="sr-only">{% trans 'Toggle options' %}</span>
-    </button>
-
-    <div class="dropdown-menu">
-      <a id="LOGS_TOGGLE_ACTION" class="dropdown-item checked">{% trans 'JSON logs' %}</a>
-      <a id="LOGS_WRAP_ACTION" class="dropdown-item checked">{% trans 'Wrap lines' %}</a>
-    </div>
   </div>
 
   <pre class="text-gray output line-numbers wrap-lines"><code class="language-json" id="MSG_JSON"></code></pre>
 
-  <div class="sidebar-footer text-center">
-    <button class="btn btn-success btn-sm"
+  <div class="code-actions">
+    <button class="btn btn-default fa fa-indent"
+      id="LOGS_WRAP_ACTION"
+      data-toggle="tooltip"
+      title="{% trans 'Wrap lines' %}">
+      <span class="sr-only">{% trans 'Wrap lines' %}</span>
+    </button>
+
+    <button class="btn btn-default fa fa-clipboard"
       data-toggle="tooltip"
       title="{% trans 'Copy to clipboard' %}"
-      data-clipboard-target="#MSG_JSON">{% trans 'Copy' %}</button>
+      data-clipboard-target="#MSG_JSON">
+      <span class="sr-only">{% trans 'Copy' %}</span>
+    </button>
   </div>
 </div>

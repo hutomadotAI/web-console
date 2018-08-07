@@ -3093,6 +3093,28 @@ label.btn {
   margin-left: auto;
 }
 
+.code-actions {
+  background-color: #222;
+  height: 2rem;
+  opacity: 0.6;
+  position: absolute;
+  right: 1.5rem;
+  top: 3.5rem;
+  transition: opacity 200ms linear;
+}
+
+.code-actions:hover {
+  opacity: 1;
+}
+
+.code-actions .btn {
+  background-color: transparent;
+  border: none;
+  height: 100%;
+  padding: 0;
+  width: 2rem;
+}
+
 @media (min-width: 1024px) {
   .navbar .toggle-navigation {
     display: none;

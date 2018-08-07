@@ -7,6 +7,13 @@
   </script>
 
   <div class="sidebar-header">
+    <button class="btn btn-default fa fa-window-maximize"
+      data-toggle="tooltip"
+      title="{% trans 'Switch beatwen sidbar and fullscren view' %}"
+      id="CHAT_TOGGLE_WIDE_VIEW">
+      <span class="sr-only">{% trans 'Toggle fullscren view' %}</span>
+    </button>
+
     <h2>{% trans 'Chat' %}</h2>
 
     <button class="btn btn-default fa fa-refresh"
@@ -45,6 +52,7 @@
         data-toggle="tooltip"
         title="{% trans 'Removes the history and resets chat session' %}"
         id="HISTORY_CLEAR_ACTION">{% trans 'Clear history' %}</button>
+      <button id="LOGS_TOGGLE_ACTION" class="dropdown-item checked">{% trans 'JSON logs' %}</button>
     </div>
   </div>
 
