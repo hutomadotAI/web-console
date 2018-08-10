@@ -511,6 +511,13 @@ class AddAIForm(forms.Form):
         })
     )
 
+    def __init__(self, *args, **kwargs):
+        """Hide fields in create a bot form"""
+        super(AddAIForm, self).__init__(*args, **kwargs)
+        if self.form_id == 'ADD_BOT_FORM':
+            self.fields['timezone'].widget = forms.HiddenInput()
+            self.fields['default_chat_responses'].widget = forms.HiddenInput()
+
     def clean_default_chat_responses(self):
         """Split responses and build a list string"""
 
@@ -533,6 +540,8 @@ class CloneAIForm(AddAIForm):
 
 
 class SettingsAIForm(AddAIForm):
+
+    form_id = 'SETTINGS_BOT_FORM'
 
     aiid = forms.CharField(
         label=_('Bot ID'),
