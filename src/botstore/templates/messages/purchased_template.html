@@ -1,0 +1,18 @@
+{% load i18n %}
+<p>
+  {% blocktrans %}Template successfully added!{% endblocktrans %}
+</p>
+
+<script>
+  if ('dataLayer' in window) {
+    dataLayer.push({
+      event: 'abstractEvent',
+      eventCategory: 'template',
+      eventAction: 'purchased',
+      eventLabel: '{{bot_id}}',
+      eventMetadata: {
+        timestamp: Date.now()
+      }
+    })
+  }
+</script>

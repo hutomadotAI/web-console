@@ -1,0 +1,18 @@
+{% load i18n %}
+<p>
+  {% blocktrans %}Skill successfully added! You can now add this skill to your bots.{% endblocktrans %}
+</p>
+
+<script>
+  if ('dataLayer' in window) {
+    dataLayer.push({
+      event: 'abstractEvent',
+      eventCategory: 'skill',
+      eventAction: 'purchased',
+      eventLabel: '{{bot_id}}',
+      eventMetadata: {
+        timestamp: Date.now()
+      }
+    })
+  }
+</script>

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _
+from django.template import loader
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
@@ -32,26 +32,29 @@ class PurchaseView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
 
         purchased = post_purchase(self.request.session.get('token'), kwargs['bot_id'])
+        template = 'messages/purchased_skill.html'
+
         if self.request.user.groups.filter(name='feature.templates').exists():
             # new template flow
+            template = 'messages/purchased_template.html'
 
-            if purchased['status']['code'] not in [200, 201]:
+            if purchased['status']['code'] in [200, 201]:
+                self.pattern_name = 'studio:template.clone'
+            else:
                 messages.error(self.request, purchased['status']['info'])
                 self.pattern_name = 'studio:summary'
                 kwargs = {}
-            else:
-                self.pattern_name = 'studio:template.clone'
+
+        if purchased['status']['code'] in [200, 201]:
+            level = messages.SUCCESS
+            message_template = loader.get_template(template)
+            message = message_template.render({'bot_id': kwargs['bot_id']})
 
         else:
-            # old skills flow
-            if purchased['status']['code'] in [200, 201]:
-                level = messages.SUCCESS
-                message = _('Skill successfully added! You can now add this skill to your bots.')
-            else:
-                level = messages.ERROR
-                message = purchased['status']['info']
+            level = messages.ERROR
+            message = purchased['status']['info']
 
-            messages.add_message(self.request, level, message)
+        messages.add_message(self.request, level, message)
 
         return super(PurchaseView, self).get_redirect_url(*args, **kwargs)
 
