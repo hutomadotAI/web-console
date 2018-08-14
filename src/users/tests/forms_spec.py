@@ -17,6 +17,10 @@ class TestRegistrationForm(TestCase):
             'last_name': 'Doe',
             'email': 'j.doe@company.com',
             'password1': '12345678',
+            'company_website': 'https://hutoma.ai',
+            'job_role': 'marketer',
+            'use_case': 'other',
+            'company_size': '1 to 10',
             'agree': 1,
             'g-recaptcha-response': 'PASSED'
         }
@@ -62,7 +66,7 @@ class TestRegistrationForm(TestCase):
 
         self.assertFalse(
             self.form.is_valid(),
-            'Form is not valid if reCaptcha is missing'
+            'Form is not valid ToS agreement is required'
         )
 
     def tearDown(self):

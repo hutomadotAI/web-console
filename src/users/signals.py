@@ -4,20 +4,44 @@ from hashlib import blake2b
 from allauth.account.signals import password_changed, password_reset
 
 from django.conf import settings
-from django.core.cache import cache
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.signals import (
     user_logged_in,
     user_logged_out,
     user_login_failed
 )
+from django.core.cache import cache
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from django.template import loader
 
 from users.models import Profile
 from users.services import get_user_token, post_user
 
 logger = logging.getLogger(__name__)
+
+
+@receiver(user_logged_in)
+def update_login_count(sender, user, request, **kwargs):
+    """
+    Increment the login counter in users profile, if user first logged in
+    trigger registration message
+    """
+
+    if user.profile.login_count == 0:
+        cache_key = settings.CRM_DATA_KEY.format(user_id=user.profile.dev_id)
+        crm_data = cache.get(cache_key, {})
+
+        template = loader.get_template('messages/registred.html')
+        messages.success(request, template.render(crm_data))
+
+        if crm_data:
+            cache.delete(cache_key)
+
+    Profile.objects.filter(dev_id=user.profile.dev_id).update(
+        login_count=user.profile.login_count + 1
+    )
 
 
 @receiver(user_logged_in)

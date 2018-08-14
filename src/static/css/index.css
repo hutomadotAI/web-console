@@ -2983,9 +2983,9 @@ label.btn {
 }
 
 .web-body .messages {
-  margin: 0 auto;
+  margin: 5rem auto 0;
   max-width: 96rem;
-  right: 0;
+  position: static;
 }
 
 .web-footer {

@@ -1,0 +1,34 @@
+{% load i18n %}
+{% blocktrans %}<p>Welcome to Hu:toma AI.</p>{% endblocktrans %}
+
+{# Trigger registered event #}
+<script>
+  if ('dataLayer' in window) {
+    dataLayer.push({
+      event: 'abstractEvent',
+      eventCategory: 'user',
+      eventAction: 'register',
+      eventMetadata: {
+        timestamp: Date.now()
+      }
+    });
+  }
+</script>
+
+{% if company_website and job_role and use_case and company_size %}
+  {# Push CRM data if they exist #}
+  <script>
+    if ('dataLayer' in window) {
+      dataLayer.push({
+        event: 'ai.hutoma.console.user.update',
+        data: {
+          'company_website': '{{ company_website }}',
+          'job_role': '{{ job_role }}',
+          'use_case': '{{ use_case }}',
+          'company_size': '{{ company_size }}'
+        }
+      });
+    }
+  </script>
+
+{% endif %}

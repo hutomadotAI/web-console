@@ -344,6 +344,8 @@ CACHES = {
     }
 }
 
+# Key strings:
+CRM_DATA_KEY = 'user.crm_data:{user_id}'
 
 # Don't cache templates for development
 TEMPLATES_CACHE_AGE = 0

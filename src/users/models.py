@@ -23,11 +23,14 @@ class Profile(models.Model):
         User,
         on_delete=models.CASCADE,
     )
+
     dev_id = models.CharField(
         default=uuid.uuid4,
         max_length=36,
         unique=True
     )
+
+    login_count = models.PositiveIntegerField(default=0)
 
     def getIntercomHash(self):
         """

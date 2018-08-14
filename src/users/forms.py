@@ -5,6 +5,7 @@ from allauth.account.utils import filter_users_by_email
 
 from django import forms, template
 from django.conf import settings
+from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _
 
 from django_countries import countries
@@ -26,60 +27,125 @@ class ResetPasswordForm(ResetPasswordForm):
 
 class SignupForm(SignupForm):
 
+    JOB_ROLE = [
+        ('marketer', _('Marketer')),
+        ('product manager', _('Product Manager')),
+        ('developer', _('Developer')),
+        ('Business Owner', _('Business Owner')),
+        ('customer success / support', _('Customer Success / Support')),
+        ('other', _('Other'))
+    ]
+
+    COMPANY_SIZE = [
+        ('1 to 10', _('1 to 10')),
+        ('10 to 50', _('10 to 50')),
+        ('50 to 200', _('50 to 200')),
+        ('200 to 1000', _('200 to 1000')),
+        ('1000 and more', _('1000 and more'))
+    ]
+
+    USE_CASE = [
+        (
+            'Automate repetitive customer conversations ',
+            _('Automate repetitive customer conversations ')
+        ),
+        (
+            'Make internal knowledge easy to access for your team',
+            _('Make internal knowledge easy to access for your team')
+        ),
+        (
+            'Convert website visitors into leads or sales',
+            _('Convert website visitors into leads or sales')
+        ),
+        (
+            'Build a conversational experience for a client  ',
+            _('Build a conversational experience for a client  ')
+        ),
+        ('other', _('Other'))
+    ]
+
     label = template.loader.get_template(
         'messages/signup_form_agree_label.txt'
     )
-    first_name = forms.CharField(
-        max_length=64,
-        widget=forms.TextInput(attrs={'placeholder': 'John'})
-    )
-    last_name = forms.CharField(
-        max_length=64,
-        widget=forms.TextInput(attrs={'placeholder': 'Doe'})
-    )
-    emailAddress = forms.EmailField(
+
+    email = forms.EmailField(
         label=_('Email'),
         widget=forms.TextInput(attrs={
             'type': 'email',
             'placeholder': 'j.doe@company.com'
         })
     )
-    password = forms.CharField(
+
+    password1 = forms.CharField(
         label=_('Password'),
-        widget=forms.PasswordInput(attrs={
-            'placeholder': _('Minimum 8 characters')
-        })
+        help_text=_('Minimum 8 characters'),
+        widget=forms.PasswordInput()
     )
 
-    # This sorcery is needed for overwriting default Placeholders
-    email = forms.EmailField()
-    password1 = forms.CharField()
+    first_name = forms.CharField(
+        max_length=64,
+        widget=forms.TextInput(attrs={'placeholder': 'John'})
+    )
+
+    last_name = forms.CharField(
+        max_length=64,
+        widget=forms.TextInput(attrs={'placeholder': 'Doe'})
+    )
+
+    company_website = forms.URLField(
+        label=_('Company website'),
+        max_length=128,
+        widget=forms.URLInput(attrs={'placeholder': 'ex. https://hutoma.ai'})
+    )
+
+    company_size = forms.ChoiceField(
+        label=_('Company size'),
+        choices=COMPANY_SIZE,
+        widget=forms.Select()
+    )
+
+    job_role = forms.ChoiceField(
+        label=_('Job role'),
+        choices=JOB_ROLE,
+        initial='developer',
+        widget=forms.Select()
+    )
+
+    use_case = forms.ChoiceField(
+        label=_('Use case'),
+        choices=USE_CASE,
+        widget=forms.Select()
+    )
 
     agree = forms.BooleanField(
         required=True,
         label=label.render(),
         widget=forms.CheckboxInput
     )
+
     if settings.RECAPTCHA_PUBLIC_KEY and settings.RECAPTCHA_PRIVATE_KEY:
         captcha = ReCaptchaField(label='', attrs={
             'theme': 'dark',
         })
 
-    def __init__(self, *args, **kwargs):
-
-        # Part 2 of sorcery needed to overwriting default Placeholders
-        super(SignupForm, self).__init__(*args, **kwargs)
-        self.fields['email'] = self.fields['emailAddress']
-        self.fields['password1'] = self.fields['password']
-        del self.fields['password'], self.fields['emailAddress']
-
-    def signup(self, request, user):
-        user.save()
+    def save(self, request):
+        """Cache CRM data so they can be used on registration"""
+        user = super(SignupForm, self).save(request)
+        crm_data = {
+            'company_website': self.cleaned_data['company_website'],
+            'job_role': self.cleaned_data['job_role'],
+            'use_case': self.cleaned_data['use_case'],
+            'company_size': self.cleaned_data['company_size']
+        }
+        cache_key = settings.CRM_DATA_KEY.format(user_id=user.profile.dev_id)
+        timeout = None  # Keep forever
+        cache.set(cache_key, crm_data, timeout=timeout)
+        return user
 
     def clean_email(self):
         """
-            Checks if white-list domains is enabled, and if so check if email
-            domain is on the list
+        Checks if white-list domains is enabled, and if so check if email
+        domain is on the list
         """
         super(SignupForm, self).clean_email()
         data = self.cleaned_data['email']
