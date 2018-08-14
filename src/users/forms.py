@@ -31,8 +31,8 @@ class SignupForm(SignupForm):
         ('marketer', _('Marketer')),
         ('product manager', _('Product Manager')),
         ('developer', _('Developer')),
-        ('Business Owner', _('Business Owner')),
-        ('customer success / support', _('Customer Success / Support')),
+        ('business owner', _('Business Owner')),
+        ('customer success', _('Customer Success / Support')),
         ('other', _('Other'))
     ]
 
@@ -45,22 +45,10 @@ class SignupForm(SignupForm):
     ]
 
     USE_CASE = [
-        (
-            'Automate repetitive customer conversations ',
-            _('Automate repetitive customer conversations ')
-        ),
-        (
-            'Make internal knowledge easy to access for your team',
-            _('Make internal knowledge easy to access for your team')
-        ),
-        (
-            'Convert website visitors into leads or sales',
-            _('Convert website visitors into leads or sales')
-        ),
-        (
-            'Build a conversational experience for a client  ',
-            _('Build a conversational experience for a client  ')
-        ),
+        ('automation', _('Automate repetitive customer conversations')),
+        ('knowledge base', _('Make internal knowledge easy to access for your team')),
+        ('lead generation', _('Convert website visitors into leads or sales')),
+        ('working for client', _('Build a conversational experience for a client')),
         ('other', _('Other'))
     ]
 
