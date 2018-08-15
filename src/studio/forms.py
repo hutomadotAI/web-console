@@ -265,6 +265,12 @@ class EntityFormset(forms.Form):
         required=False,
     )
 
+    clear_on_entry = forms.BooleanField(
+        label=_('Clear on entry'),
+        initial=True,
+        required=False,
+    )
+
     entity_name = forms.ChoiceField(
         label=_('Entity name'),
         widget=forms.Select()

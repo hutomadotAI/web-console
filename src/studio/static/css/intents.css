@@ -234,7 +234,8 @@
   display: none;
 }
 
-.form-group[id$='-REQUIRED'] .controls {
+.form-group[id$='-REQUIRED'] .controls,
+.form-group[id$='-CLEAR_ON_ENTRY'] .controls {
   align-items: center;
   background-color: #515151;
   display: flex;
