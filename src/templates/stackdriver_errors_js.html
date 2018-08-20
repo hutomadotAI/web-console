@@ -1,0 +1,19 @@
+<!-- Warning: This is an experimental library, do not use it on production environments -->
+<script src="https://cdn.jsdelivr.net/npm/stackdriver-errors-js@0.4.0/dist/stackdriver-errors-concat.min.js" integrity="sha256-CsPMUS+Lh/ERYZzd9mirJxB3bms09ddYfo5Vq5GhPno=" crossorigin="anonymous"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', function HandleDOMContentLoaded() {
+    var errorHandler = new StackdriverErrorReporter();
+
+    errorHandler.start({
+      key: '{{ STACKDRIVER_ERRORS_JS_KEY }}',
+      projectId: '{{ GCP_PROJECT_ID }}',
+      service: '{{ CONSOLE_SERVICE }}',
+      version: '{{ CONSOLE_VERSION }}'
+    });
+
+    if (USER && USER.devId) {
+      errorHandler.setUser(USER.devId);
+    }
+  });
+</script>

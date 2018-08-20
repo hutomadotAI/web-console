@@ -12,6 +12,9 @@ import os           # for ENV_VARs and path
 
 # General
 
+CONSOLE_VERSION = os.environ.get('CONSOLE_VERSION')
+CONSOLE_SERVICE = os.environ.get('CONSOLE_SERVICE', 'ai.hutoma.console.local')
+
 # Set environment
 
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'development')
@@ -242,8 +245,15 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
+
+                # Insert dynamic configuration
                 'constance.context_processors.config',
+
+                # Insert Google tag manager Environment
                 'app.context_processors.tag_manager',
+
+                # Insert stackdriver errors js configuration
+                'app.context_processors.stackdriver_errors_js',
             ],
         },
     },
@@ -272,6 +282,18 @@ TAG_MANAGER_ENVIRONMENT = base64.b64decode(
     os.environ.get('TAG_MANAGER_ENVIRONMENT', '')
 ).decode('utf-8')
 TAG_MANAGER_ID = os.environ.get('TAG_MANAGER_ID', '')
+
+
+# ------------------------------------------------------------------------------
+#
+# Javascript error reporting
+#
+# Stackdriver errors js configuration
+#
+# see: https://github.com/GoogleCloudPlatform/stackdriver-errors-js
+
+GCP_PROJECT_ID = os.environ.get('GCP_PROJECT_ID')
+STACKDRIVER_ERRORS_JS_KEY = os.environ.get('STACKDRIVER_ERRORS_JS_KEY')
 
 
 # ------------------------------------------------------------------------------

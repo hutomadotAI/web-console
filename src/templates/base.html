@@ -10,6 +10,7 @@
 
     <!-- Prefetch DNS for Third-party files -->
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 
     <meta charset="utf-8">
@@ -72,6 +73,10 @@
 
       </script>
     {% endblock %}
+
+    {% if STACKDRIVER_ERRORS_JS_KEY and GCP_PROJECT_ID %}
+      {% include 'stackdriver_errors_js.html' %}
+    {% endif %}
 
     {% if tag_manager_id %}
       {% include 'tag_manager_head.html' %}
