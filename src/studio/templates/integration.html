@@ -15,8 +15,16 @@
       <div class="box">
         <div class="box-header">
           <h2 class="box-title">
-            <i class="fa fa-puzzle-piece text-blue"></i> {% trans 'Integrations' %}
+            <i class="fa fa-puzzle-piece"></i> {% trans 'Integrations' %}
           </h2>
+
+          <a href="https://help.hutoma.ai/category/l3y899u5mn-integrate-hutoma-with-your-workflow"
+            class="documentation link"
+            target="_blank"
+            data-toggle="tooltip"
+            title="{% trans 'Documentation' %}">
+              <i class="fa fa-question-circle"></i>
+          </a>
         </div>
       </div>
 
@@ -153,6 +161,28 @@
 
       {% endif %}
 
+      <div class="box">
+        <div class="box-header with-border">
+          <h2 class="box-title">
+            {% trans 'Using API' %}
+          </h2>
+        </div>
+
+        <div class="box-body">
+          <div class="alert alert-info">
+            {% blocktrans %}Integrate your Bot wherever you like using the Hu:toma API. Follow the link to see our API documentation. Or if you’d like to suggest our next integration click the button below and let us know by dropping us a message in the chat.{% endblocktrans %}
+          </div>
+
+          <div class="text-center" style="padding-bottom: 20px">
+            <a href="https://help.hutoma.ai/category/u2usf5r4br-the-hutoma-api" class="btn btn-primary" target="_blank">{% trans 'API documentation' %}</a>
+
+            <button class="btn btn-default" id="REQUEST_INTEGRATION"
+              data-message="{% trans 'I’d really like Hu:toma AI to integrate with: ' %}">{% trans 'Request an Integration' %}</button>
+          </div>
+        </div>
+
+      </div>
+
   </div>
 {% endblock %}
 
@@ -192,6 +222,6 @@
 
   </script>
 
-  <script src="{% static 'js/facebook.js' %}"></script>
+  <script src="{% static 'js/integration.js' %}"></script>
 
 {% endblock %}

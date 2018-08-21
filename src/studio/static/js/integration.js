@@ -51,3 +51,9 @@ $(document).on('submit', '#FB_SETTINGS_FORM', function saveFacebookCustomisation
     }
   });
 });
+
+$(document).on('click', '#REQUEST_INTEGRATION', function handleRequestIntegration() {
+  if ('Intercom' in window) {
+    Intercom('showNewMessage', this.dataset.message);
+  }
+});
