@@ -103,10 +103,6 @@ input::selection {
   height: 100%;
 }
 
-.sidebar-menu > li > .slack-community {
-  display: none;
-}
-
 .workspace {
   padding-top: 5rem;
 }
