@@ -880,6 +880,10 @@ elif ENVIRONMENT == 'production':
                 'handlers': ['console', 'elastic'],
                 'level': os.environ.get('LOG_LEVEL', 'INFO'),
             },
+            'app': {
+                'handlers': ['console', 'elastic'],
+                'level': os.environ.get('LOG_LEVEL', 'INFO'),
+            },
             'botstore': {
                 'handlers': ['console', 'elastic'],
                 'level': os.environ.get('LOG_LEVEL', 'INFO'),
