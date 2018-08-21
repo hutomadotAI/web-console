@@ -9,7 +9,13 @@ logger = logging.getLogger(__name__)
 
 def delete_ai(token, aiid):
     """Deletes a particular AI"""
-    return fetch_api('/ai/{aiid}', token=token, aiid=aiid, method='delete')
+    return fetch_api(
+        '/ai/{aiid}',
+        token=token,
+        aiid=aiid,
+        method='delete',
+        timeout=config.API_LONG_POLLING
+    )
 
 
 def delete_entity(token, entity_name):
@@ -320,7 +326,11 @@ def post_context_reset(token, aiid, chatId):
 def put_training_update(token, aiid):
     """Update AI training"""
     return fetch_api(
-        '/ai/{aiid}/training/update', token=token, aiid=aiid, method='put'
+        '/ai/{aiid}/training/update',
+        token=token,
+        aiid=aiid,
+        method='put',
+        timeout=config.API_LONG_POLLING
     )
 
 

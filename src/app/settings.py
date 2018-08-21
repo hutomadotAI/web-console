@@ -453,6 +453,9 @@ API_CHAT_TIMEOUT = 8
 # allow a much longer timeout for async chart loading
 API_LOGS_TIMEOUT = 20
 
+# allow a much longer timeout for actions like retraining and deletion
+API_LONG_POLLING = 30
+
 # Enables logging of API payloads coming from the API, disabled by default,
 # should be used extremely careful as it can potentially log sensitive data
 API_RESPONSE_BODY_LOGS = os.environ.get('API_RESPONSE_BODY_LOGS', False)
@@ -514,10 +517,15 @@ CONSTANCE_CONFIG = {
         'Timeouts for Facebook related APIs calls, in seconds, max 60s',
         'timeout'
     ),
+    'API_LONG_POLLING': (
+        API_LONG_POLLING,
+        'Timeouts for long API actions, Training and bot deletion, in seconds, max 60s',
+        'timeout'
+    ),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
-    'API': ['API_DEFAULT_TIMEOUT', 'API_CHAT_TIMEOUT', 'API_LOGS_TIMEOUT'],
+    'API': ['API_DEFAULT_TIMEOUT', 'API_CHAT_TIMEOUT', 'API_LOGS_TIMEOUT', 'API_LONG_POLLING'],
     'Facebook integration': [
         'FACEBOOK_INTEGRATION', 'FACEBOOK_WARNING', 'API_FACEBOOK_TIMEOUT',
     ]
