@@ -66,8 +66,9 @@ class TestAddAIForm(TestCase):
         self.data = {
             'name': 'AI name',
             'description': 'AI description',
-            'voice': 0,
-            'timezone': 'Europe/London'
+            'timezone': 'Europe/London',
+            'default_chat_responses': 'Dummy responses',
+            'handover_message': 'Dummy message',
         }
 
     def test_a_valid_form(self):

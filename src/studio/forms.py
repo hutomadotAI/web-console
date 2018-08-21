@@ -505,7 +505,6 @@ class AddAIForm(forms.Form):
                 'understand the user.</small>'),
         initial=_('Sorry I didn\'t understand, can you try rephrasing the question?'),
         max_length=255,
-        required=False,
         widget=forms.TextInput(attrs={
             'data-min-length': 1,
             'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
@@ -517,12 +516,32 @@ class AddAIForm(forms.Form):
         })
     )
 
+    handover_message = forms.CharField(
+        help_text=_('This is sent when the bot doesn\'t understand the user and '
+                    'will no longer respond until a human takes over.'),
+        initial=_('Chat disabled — handed over to external agent'),
+        label='',
+        max_length=255,
+        widget=forms.TextInput(attrs={
+            'data-limit': 1,
+            'data-min-length': 1,
+            'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
+            'data-delimiter': settings.TOKENFIELD_DELIMITER,
+            'data-tokenfield': True,
+            'required': True,
+            'placeholder': _('add bot handover message'),
+            'tabindex': 5
+        })
+    )
+
     def __init__(self, *args, **kwargs):
         """Hide fields in create a bot form"""
         super(AddAIForm, self).__init__(*args, **kwargs)
         if self.form_id == 'ADD_BOT_FORM':
             self.fields['timezone'].widget = forms.HiddenInput()
             self.fields['default_chat_responses'].widget = forms.HiddenInput()
+        if self.form_id == 'ADD_BOT_FORM' or self.form_id == 'CLONE_BOT_FORM':
+            self.fields['handover_message'].widget = forms.HiddenInput()
 
     def clean_default_chat_responses(self):
         """Split responses and build a list string"""
@@ -570,25 +589,6 @@ class SettingsAIForm(AddAIForm):
             'readonly': True,
             'title': _('Enter a valid “Name” consisting of letters, numbers, '
                        'spaces, underscores or hyphens.')
-        })
-    )
-
-    handover_message = forms.CharField(
-        help_text=_('This is sent when the bot doesn\'t understand the user and '
-                    'will no longer respond until a human takes over.'),
-        initial=_('Chat disabled — handed over to external agent'),
-        label='',
-        max_length=255,
-        required=False,
-        widget=forms.TextInput(attrs={
-            'data-limit': 1,
-            'data-min-length': 1,
-            'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
-            'data-delimiter': settings.TOKENFIELD_DELIMITER,
-            'data-tokenfield': True,
-            'required': False,
-            'placeholder': _('add bot handover message'),
-            'tabindex': 5
         })
     )
 
