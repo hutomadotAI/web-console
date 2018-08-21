@@ -1,9 +1,9 @@
-$('#delete_element').on('show.bs.modal', function (event) {
-  var action = $(event.relatedTarget).data('action')
-  var id = $(event.relatedTarget).data('id')
+$('#delete_element').on('show.bs.modal', function setElementData(event) {
+  var action = $(event.relatedTarget).data('action');
+  var id = $(event.relatedTarget).data('id');
 
-  $(this).find('#delete_element_form')
+  $(this).find('#DELETE_ELEMENT_FORM')
     .attr('action', action)
-    .data('id', id)
-  $(this).find('.element-id').text(id)
-})
+    .data('id', id);
+  $(this).find('.element-id').text(id);
+});
