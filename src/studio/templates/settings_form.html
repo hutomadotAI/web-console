@@ -138,6 +138,30 @@
 
     </div>
 
+    <div class="box">
+      <div class="box-header with-border">
+        <h2 class="box-title">{% trans 'Overwrite your bot' %}</h2>
+      </div>
+
+      <div class="box-body">
+
+        <div class="alert alert-info">
+          {% blocktrans %}Import a previous version of your bot from a previously exported file{% endblocktrans %}
+        </div>
+
+        <form method="post" id="IMPORT_BOT_FORM" action="{% url 'studio:re_import' ai.aiid %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% include 'forms/field.html' with field=import_form.ai_data %}
+        </form>
+
+      </div>
+
+      <div class="box-footer">
+        <button form="IMPORT_BOT_FORM" class="btn btn-success">{% trans 'Import' %}</button>
+      </div>
+
+    </div>
+
     <div class="box box-danger">
       <div class="box-header with-border">
         <h2 class="box-title" id="danger-zone">{% trans 'Danger zone' %}</h2>

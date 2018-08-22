@@ -196,6 +196,17 @@ def post_import_ai(token, ai_data, aiid=''):
     )
 
 
+def post_re_import_ai(token, ai_data, aiid=''):
+    """Updates an AI instance based on provided JSON file"""
+    return fetch_api(
+        '/ai/{aiid}/import',
+        token=token,
+        aiid=aiid,
+        method='post',
+        json=ai_data
+    )
+
+
 def post_ai_skill(token, aiid, skills_data):
     """Updates skills linked with an AI"""
     return fetch_api(

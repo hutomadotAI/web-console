@@ -27,6 +27,7 @@ from studio.views import (
     AICreateView,
     AIDetailView,
     AIImportView,
+    AIReImportView,
     AIListView,
     AIUpdateView,
     AIWizardView,
@@ -235,6 +236,13 @@ urlpatterns = [
         'bots/edit/<uuid:aiid>/settings',
         AIUpdateView.as_view(),
         name='settings'
+    ),
+
+    # Re import bot into an existing one
+    path(
+        'bots/edit/<uuid:aiid>/import',
+        AIReImportView.as_view(),
+        name='re_import'
     ),
 
     # Proxy ajax AI calls

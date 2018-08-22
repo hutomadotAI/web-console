@@ -20,6 +20,7 @@ from studio.services import (
     post_clone_ai,
     post_entity,
     post_import_ai,
+    post_re_import_ai,
     post_intent,
     post_intent_bulk,
     post_regenerate_webhook_secret,
@@ -652,6 +653,12 @@ class ImportAIForm(forms.Form):
     def save(self, *args, **kwargs):
         data = self.cleaned_data['ai_data']
         return post_import_ai(ai_data=data, **kwargs)
+
+
+class ReImportAIForm(ImportAIForm):
+    def save(self, *args, **kwargs):
+        data = self.cleaned_data['ai_data']
+        return post_re_import_ai(ai_data=data, **kwargs)
 
 
 class TrainingForm(forms.Form):

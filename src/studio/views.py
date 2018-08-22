@@ -27,6 +27,7 @@ from studio.forms import (
     EntityFormset,
     FollowUpFormset,
     ImportAIForm,
+    ReImportAIForm,
     IntentForm,
     IntentBulkUpload,
     ProxyDeleteAIForm,
@@ -356,11 +357,20 @@ class TemplateCloneView(RedirectView):
 
 @method_decorator(login_required, name='dispatch')
 class AIImportView(AICreateView):
-    """Create a new AI or import one from an export JSON file"""
+    """Import an AI from an export JSON file"""
 
     form_class = ImportAIForm
     template_name = 'ai_import_form.html'
     success_url = 'studio:ai.dashboard'
+
+
+@method_decorator(login_required, name='dispatch')
+class AIReImportView(AIImportView):
+    """Updates an existing AI from an export JSON file"""
+
+    form_class = ReImportAIForm
+    template_name = 'ai_import_form.html'
+    success_url = 'studio:settings'
 
 
 @method_decorator(login_required, name='dispatch')
@@ -370,6 +380,13 @@ class AIUpdateView(StudioViewMixin, AICreateView):
     form_class = SettingsAIForm
     template_name = 'settings_form.html'
     success_url = 'studio:settings'
+
+    def get_context_data(self, **kwargs):
+        """Update context adding import form"""
+
+        context = super(AIUpdateView, self).get_context_data(**kwargs)
+        context['import_form'] = ImportAIForm
+        return context
 
     def get_initial(self):
         """Returns the initial data to use for forms on this view."""
