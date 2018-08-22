@@ -115,14 +115,15 @@
   <script src="{% static 'js/insights.js' %}"></script>
 
   <script>
-
-    google.charts.load('current', { packages: [ 'corechart' ] });
-
-    google.charts.setOnLoadCallback(function loadHandler() {
-      fetchData('SESSIONS', '{{from_date}}', '{{to_date}}', '#ffa31a');
-      fetchData('INTERACTIONS', '{{from_date}}', '{{to_date}}', '#4d94ff');
+    window.addEventListener('load', function deferChartLoading() {
+      if ('google' in window) {
+        google.charts.load('current', { packages: [ 'corechart' ] });
+        google.charts.setOnLoadCallback(function loadHandler() {
+          fetchData('SESSIONS', '{{from_date}}', '{{to_date}}', '#ffa31a');
+          fetchData('INTERACTIONS', '{{from_date}}', '{{to_date}}', '#4d94ff');
+        });
+      }
     });
-
   </script>
 
 {% endblock javascripts %}
