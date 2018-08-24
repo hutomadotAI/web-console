@@ -77,3 +77,19 @@ function handleChange(event) {
 
 document.addEventListener('change', handleChange)
 document.addEventListener('tokenfield:changed', handleChange)
+
+/**
+ * Updates form action if clicked Element has a Form and `formaction` attributes
+ * (is a submit button). We do so as assigning `formaction` as `action` is done
+ * after `submit` event has been triggered and couldn't be used in JS form
+ * submission.
+ *
+ * @param  {Event object} event dispatched submit event
+ *
+ * @return {undefined}
+ */
+document.addEventListener('click', function handleClick(event) {
+  if (event.target.form && event.target.hasAttribute('formaction')) {
+    event.target.form.action = event.target.getAttribute('formaction');
+  }
+});
