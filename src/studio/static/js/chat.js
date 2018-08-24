@@ -371,13 +371,15 @@ function resolveChatID(response) {
  * @return {Object}         Returns log for future needs
  */
 function printLog(entry) {
-  // We ❤️ Javascript, dirty but efective object cloning
-  var newEntry = JSON.parse(JSON.stringify(entry));
-  if (newEntry.result && newEntry.result.intents) {
-    newEntry.result.intents.forEach(intent => intent.name = `[${ intent.name }](${ location.origin + url('studio:intent', AI.id, intent.name) })`)
+  if (entry) {
+    // We ❤️ Javascript, dirty but efective object cloning
+    var newEntry = JSON.parse(JSON.stringify(entry));
+    if (newEntry.result && newEntry.result.intents) {
+      newEntry.result.intents.forEach(intent => intent.name = `[${ intent.name }](${ location.origin + url('studio:intent', AI.id, intent.name) })`)
+    }
+    document.getElementById('MSG_JSON').textContent = JSON.stringify(newEntry, null, 2);
+    Prism.highlightAll();
   }
-  document.getElementById('MSG_JSON').textContent = JSON.stringify(newEntry, null, 2);
-  Prism.highlightAll();
   return entry;
 }
 
