@@ -175,7 +175,7 @@ def post_clone_ai(token, ai_data, aiid=''):
 
     # Monkey patching API request details:
     # https://hutoma.visualstudio.com/Hutoma%20API/_workitems/edit/5649
-    ai_data['default_responses'] = ai_data['default_chat_responses']
+    ai_data['default_responses'] = ai_data.get('default_chat_responses')
 
     return fetch_api(
         '/ai/{aiid}/clone',

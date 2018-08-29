@@ -55,6 +55,7 @@ from studio.views import (
     RetrainView,
     SkillsView,
     TemplateCloneView,
+    TemplateGetView,
     TrainingView,
 )
 
@@ -306,9 +307,16 @@ urlpatterns = [
         name='templates'
     ),
 
+    # Get a template
+    path(
+        'templates/get/<int:bot_id>',
+        TemplateGetView.as_view(),
+        name='template.get'
+    ),
+
     # Clone a template
     path(
-        'templates/clone/<int:bot_id>',
+        'templates/clone/<uuid:aiid>',
         TemplateCloneView.as_view(),
         name='template.clone'
     ),
