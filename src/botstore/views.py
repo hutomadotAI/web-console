@@ -39,7 +39,7 @@ class PurchaseView(RedirectView):
             template = 'messages/purchased_template.html'
 
             if purchased['status']['code'] in [200, 201]:
-                self.pattern_name = 'studio:template.clone'
+                self.pattern_name = 'studio:template.get'
             else:
                 messages.error(self.request, purchased['status']['info'])
                 self.pattern_name = 'studio:summary'
