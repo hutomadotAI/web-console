@@ -27,11 +27,11 @@ from studio.forms import (
     EntityFormset,
     FollowUpFormset,
     ImportAIForm,
-    ReImportAIForm,
-    IntentForm,
     IntentBulkUpload,
+    IntentForm,
     ProxyDeleteAIForm,
     ProxyRegenerateWebhookSecretForm,
+    ReImportAIForm,
     SettingsAIForm,
     SkillsForm,
     TrainingForm,
@@ -326,11 +326,16 @@ class AICloneView(AICreateView):
 
 
 @method_decorator(login_required, name='dispatch')
+class TemplateCloneView(AICreateView):
+    form_class = CloneAIForm
+
+
+@method_decorator(login_required, name='dispatch')
 @method_decorator(user_passes_test(
     lambda user: user.groups.filter(name='feature.templates').exists(),
     login_url='/'
 ), name='dispatch')
-class TemplateCloneView(RedirectView):
+class TemplateGetView(RedirectView):
     """
     Check if user has purchased template, if so move to cloning, otherwise
     purchase template and go back
@@ -348,7 +353,7 @@ class TemplateCloneView(RedirectView):
         ]
 
         if (template):
-            self.pattern_name = 'studio:ai.clone'
+            self.pattern_name = 'studio:template.clone'
             kwargs['aiid'] = template.pop()
             kwargs.pop('bot_id')
 
