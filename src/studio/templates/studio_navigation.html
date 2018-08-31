@@ -6,7 +6,7 @@
   <li class="active">
     <a href="{% url 'studio:edit_bot' ai.aiid %}"><i class="fa fa-user text-olive"></i><span>{{ ai.name|title }}</span> <i id="AI_TRAINING" data-toggle="tooltip" title="Training status: {{ ai.training.status }}" class="fa {% if ai.training.status == 'empty' %}fa-circle-o{% elif ai.training.status == 'training' %}fa-cog fa-spin{% else %}fa-circle{% endif %} training status-{{ ai.training.status }} pull-right"></i></a>
     <ul class="treeview-menu">
-      <li{% if active == 'training' %} class="active"{% endif %}><a href="{% url 'studio:training' ai.aiid %}"><i class="fa fa-comments"></i> <span>{% trans 'Simple Q&A' %}</span></a></li>
+      <li{% if active == 'Simple Q&A' %} class="active"{% endif %}><a href="{% url 'studio:training' ai.aiid %}"><i class="fa fa-comments"></i> <span>{% trans 'Simple Q&A' %}</span></a></li>
       <li{% if active == 'intents' %} class="active"{% endif %}><a href="{% url 'studio:intents' ai.aiid %}"><i class="fa fa-sitemap"></i> <span>{% trans 'Intents' %}</span></a></li>
       <li{% if active == 'entities' %} class="active"{% endif %}><a href="{% url 'studio:entities' ai.aiid %}"><i class="fa fa-tag"></i> <span>{% trans 'Entities' %}</span></a></li>
       <li{% if active == 'skills' %} class="active"{% endif %}><a href="{% url 'studio:skills' ai.aiid %}"><i class="fa fa-plus"></i> <span>{% trans 'Skills' %}</span></a></li>
