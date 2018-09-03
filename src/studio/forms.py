@@ -36,6 +36,10 @@ VARIABLE_PATTERN = '^[-a-zA-Z0-9_\.]+$'
 
 DEFAULT_TOKEN_CHARACTERS_LIMIT = 250
 INTENT_TOKEN_CHARACTERS_LIMIT = 5000
+# 0 mean no more turns, so it will never be used it needs to be 1+ — @pedrotei
+LIFETIME_TURNS_MIN_LIMIT = 1
+# Some sane max limit so we don't have API errors — @karol
+LIFETIME_TURNS_MAX_LIMIT = 256
 
 
 class SkillsMultipleWidget(forms.widgets.CheckboxSelectMultiple):
@@ -305,6 +309,23 @@ class EntityFormset(forms.Form):
         })
     )
 
+    lifetime_turns = forms.IntegerField(
+        label=_('Lifetime <small class="fa fa-info-circle" data-toggle="tooltip"'
+                ' title="This determines how many conversation turns this entity'
+                ' will be stored in memory for.  Leave this empty if you would '
+                'like it to stored indefinitely."></small>'),
+        validators=[
+            MaxValueValidator(LIFETIME_TURNS_MAX_LIMIT),
+            MinValueValidator(LIFETIME_TURNS_MIN_LIMIT)
+        ],
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'max': LIFETIME_TURNS_MAX_LIMIT,
+            'min': LIFETIME_TURNS_MIN_LIMIT,
+            'placeholder': _('∞'),
+        })
+    )
+
     prompts = forms.CharField(
         label=_('Prompts'),
         widget=forms.TextInput(attrs={
@@ -316,6 +337,11 @@ class EntityFormset(forms.Form):
             'placeholder': _('Add a user prompt'),
         })
     )
+
+    def clean_lifetime_turns(self):
+        """If field is empty treat it as -1 for limitless lifetime"""
+        turns = self.cleaned_data['lifetime_turns']
+        return -1 if turns == '' else turns
 
     def clean_prompts(self):
         """Split prompts"""

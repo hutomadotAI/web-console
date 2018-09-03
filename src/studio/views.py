@@ -723,6 +723,9 @@ class IntentsUpdateView(IntentsEditView):
                 entity['prompts'] = settings.TOKENFIELD_DELIMITER.join(
                     entity['prompts']
                 )
+                # If field is -1 (limitless lifetime) we leave it empty in UI
+                turns = entity.get('lifetime_turns', -1)
+                entity['lifetime_turns'] = '' if turns == -1 else turns
 
             self.initial = intent
 

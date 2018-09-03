@@ -246,3 +246,28 @@
 .form-group[id$='-INTENT_TO_EXECUTE'] {
   flex-grow: 2;
 }
+
+@media (max-width: 1280px) {
+  /* Better entity presentation on smaller screens */
+  .form-group[id$='-ENTITY_NAME'] {
+    order: 1;
+    width: 100%;
+  }
+  .form-group[id$='-ENTITY_NAME'] label {
+    display: none;
+  }
+}
+
+@media (max-width: 1440px) {
+  /* Better entity presentation on smaller screens */
+  .form-group[id$='-LABEL'] {
+    order: 1;
+    width: 100%;
+  }
+  .form-group[id$='-LABEL'] label {
+    display: none;
+  }
+  .form-group[id$='-ENTITY_NAME'] {
+    max-width: none;
+  }
+}
