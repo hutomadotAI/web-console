@@ -28,6 +28,7 @@ class ResetPasswordForm(ResetPasswordForm):
 class SignupForm(SignupForm):
 
     JOB_ROLE = [
+        ('', _('Please select one')),
         ('marketer', _('Marketer')),
         ('product manager', _('Product Manager')),
         ('developer', _('Developer')),
@@ -37,6 +38,7 @@ class SignupForm(SignupForm):
     ]
 
     COMPANY_SIZE = [
+        ('', _('Please select one')),
         ('1 to 10', _('1 to 10')),
         ('10 to 50', _('10 to 50')),
         ('50 to 200', _('50 to 200')),
@@ -45,6 +47,7 @@ class SignupForm(SignupForm):
     ]
 
     USE_CASE = [
+        ('', _('Please select one')),
         ('automation', _('Automate repetitive customer conversations')),
         ('knowledge base', _('Make internal knowledge easy to access for your team')),
         ('lead generation', _('Convert website visitors into leads or sales')),
@@ -95,7 +98,6 @@ class SignupForm(SignupForm):
     job_role = forms.ChoiceField(
         label=_('Job role'),
         choices=JOB_ROLE,
-        initial='developer',
         widget=forms.Select()
     )
 
