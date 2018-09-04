@@ -48,28 +48,29 @@
 {% endblock javascripts.vendors %}
 
 {% block javascripts %}
+  {{ block.super }}
+
   <script>
-    {{ block.super }}
 
-    const PASSWORD_FIELD = document.getElementById('id_password1')
-    const SHOW_BUTTON = document.createElement('button')
+    const PASSWORD_FIELD = document.getElementById('id_password1');
+    const SHOW_BUTTON = document.createElement('button');
 
-    SHOW_BUTTON.classList.add('toggle-password', 'fa', 'fa-eye')
-    SHOW_BUTTON.setAttribute('tabindex', -1)
+    SHOW_BUTTON.classList.add('toggle-password', 'fa', 'fa-eye');
+    SHOW_BUTTON.setAttribute('tabindex', -1);
 
     PASSWORD_FIELD.parentNode.appendChild(SHOW_BUTTON)
       .addEventListener('click', function (event) {
-        event.preventDefault()
+        event.preventDefault();
 
         if (PASSWORD_FIELD.getAttribute('type') == 'password') {
-          PASSWORD_FIELD.setAttribute('type', 'text')
-          event.target.classList.replace('fa-eye', 'fa-eye-slash')
+          PASSWORD_FIELD.setAttribute('type', 'text');
+          event.target.classList.replace('fa-eye', 'fa-eye-slash');
         } else {
-          PASSWORD_FIELD.setAttribute('type', 'password')
-          event.target.classList.replace('fa-eye-slash', 'fa-eye')
+          PASSWORD_FIELD.setAttribute('type', 'password');
+          event.target.classList.replace('fa-eye-slash', 'fa-eye');
         }
 
-      })
+      });
 
   </script>
 {% endblock javascripts %}
