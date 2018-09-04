@@ -12,4 +12,4 @@ SCRIPT_DIR=`dirname $BASH_SOURCE`
 echo "Running flake8 via pipenv"
 pushd $SCRIPT_DIR
 python3 -m pipenv sync
-python3 -m pipenv run flake8 --count
+python3 -m pipenv run bash -c ./code_style_run.sh
