@@ -24,7 +24,8 @@ from studio.services import (
     post_intent,
     post_intent_bulk,
     post_regenerate_webhook_secret,
-    post_training
+    post_training,
+    put_intent
 )
 from botstore.services import get_purchased
 
@@ -452,7 +453,6 @@ class IntentForm(forms.Form):
 
     def save(self, *args, **kwargs):
         """Combine form data with entities coming from formset"""
-
         self.cleaned_data['webhook']['aiid'] = str(kwargs['aiid'])
 
         self.cleaned_data['conditions_in'] = [
@@ -483,8 +483,20 @@ class IntentForm(forms.Form):
             } for condition_out in kwargs.pop('conditions_out') if not condition_out['DELETE']
         ]
 
+        return self.send(*args, **kwargs)
+
+    def send(self, *args, **kwargs):
         return {
-            **post_intent(self.cleaned_data, **kwargs),
+            **post_intent(self.cleaned_data, kwargs['token'], kwargs['aiid']),
+            'cleaned_data': self.cleaned_data
+        }
+
+
+class IntentUpdateForm(IntentForm):
+    """Form used for updating an existing intent"""
+    def send(self, *args, **kwargs):
+        return {
+            **put_intent(self.cleaned_data, **kwargs),
             'cleaned_data': self.cleaned_data
         }
 

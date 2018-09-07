@@ -29,6 +29,7 @@ from studio.forms import (
     ImportAIForm,
     IntentBulkUpload,
     IntentForm,
+    IntentUpdateForm,
     ProxyDeleteAIForm,
     ProxyRegenerateWebhookSecretForm,
     ReImportAIForm,
@@ -594,7 +595,8 @@ class IntentsEditView(StudioViewMixin, FormView):
             entities=formsets['entities'].cleaned_data,
             context_in=formsets['context_in'].cleaned_data,
             context_out=formsets['context_out'].cleaned_data,
-            conditions_out=formsets['conditions_out'].cleaned_data
+            conditions_out=formsets['conditions_out'].cleaned_data,
+            intent_name=self.kwargs.get('intent_name', ''),
         )
 
         # Check if save was successful
@@ -692,6 +694,7 @@ class IntentsEditView(StudioViewMixin, FormView):
 class IntentsUpdateView(IntentsEditView):
     """Single Intent view"""
 
+    form_class = IntentUpdateForm
     success_url = 'studio:intents.edit'
 
     def get_initial(self, **kwargs):

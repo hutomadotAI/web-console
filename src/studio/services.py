@@ -334,6 +334,18 @@ def post_context_reset(token, aiid, chatId):
     )
 
 
+def put_intent(payload, intent_name, token, aiid):
+    """Updates an Intent"""
+    return fetch_api(
+        '/intent/{aiid}/{intent_name}',
+        token=token,
+        aiid=aiid,
+        json=payload,
+        intent_name=intent_name,
+        method='put'
+    )
+
+
 def put_training_update(token, aiid):
     """Update AI training"""
     return fetch_api(
