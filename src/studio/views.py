@@ -761,10 +761,15 @@ class IntentsBulkUploadView(FormView):
 
         # Check if save was successful
         if upload['status']['code'] in [200, 201]:
-            level = messages.SUCCESS
+            level = messages.WARNING
+            template = 'messages/retrain.html'
+            message_template = loader.get_template(template)
+            message = message_template.render({'aiid': self.kwargs['aiid']})
         else:
             level = messages.ERROR
-            messages.add_message(self.request, level, upload['status']['info'])
+            message = upload['status']['info']
+
+        messages.add_message(self.request, level, message)
 
         if (upload.get('warnings')):
             message_template = loader.get_template('messages/list_exceptions.html')
