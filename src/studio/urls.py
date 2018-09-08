@@ -213,7 +213,7 @@ urlpatterns = [
 
     # Insights: download chat logs for an existing AI
     path(
-        'bots/edit/<uuid:aiid>/insights/logs',
+        'bots/edit/<uuid:aiid>/insights/logs/<int:token>/<slug:from_date>/<slug:to_date>',
         ProxyInsightsLogsView.as_view(),
         name='insights_log_data'
     ),

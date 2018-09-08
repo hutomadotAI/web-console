@@ -185,8 +185,12 @@ class ProxyAiExportView(View):
         bot = get_ai_export(
             self.request.session.get('token', False),
             aiid
-        )['bot']
-        return JsonResponse(bot, json_dumps_params={'indent': 2})
+        )
+        return JsonResponse(
+            bot.get('bot'),
+            json_dumps_params={'indent': 2},
+            status=bot['status']['code']
+        )
 
 
 @method_decorator(login_required, name='dispatch')
@@ -1010,23 +1014,20 @@ class FacebookCustomiseView(View):
 
 @method_decorator(login_required, name='dispatch')
 class ProxyInsightsLogsView(View):
-    """Get logs from the api and relay them as an attachment"""
+    """Get logs from the api and send them as an attachment. To detect download
+    has ended we use a cookie token in the UI"""
 
-    def post(self, request, aiid, *args, **kwargs):
-
-        # get date params from the request body
-        fromDate = request.POST.get('from', '')
-        toDate = request.POST.get('to', '')
-
+    def get(self, request, aiid, token, from_date, to_date):
         logs = get_insights_chatlogs(
             self.request.session.get('token', False),
             aiid,
-            fromDate,
-            toDate
+            from_date,
+            to_date
         )
 
-        response = HttpResponse(logs, content_type='application/csv')
+        response = HttpResponse(logs, content_type='application/csv', status=logs.status_code)
         response['Content-Disposition'] = 'attachment; filename="chatlogs.csv"'
+        response.set_cookie('logs_download_token', token)
         return response
 
 
@@ -1047,7 +1048,7 @@ class ProxyInsightsChartView(View):
         # relay request to the api
         response = get_insights_chart(token, aiid, metric, fromDate, toDate)
 
-        return JsonResponse(response)
+        return JsonResponse(response, status=response['status']['code'])
 
 
 @method_decorator(json_login_required, name='dispatch')

@@ -1,5 +1,7 @@
 $(document).ready(function(){
   const LINK = document.getElementById('DOWNLOAD_LOGS_ACTION');
+  const LOGS_FORM = document.getElementById('LOGS_FORM');
+  const LOGS_DOWNLOAD_TOKEN = 'logs_download_token';
   const OPTIONS = {
     todayHighlight: true,
     autoclose: true,
@@ -9,13 +11,8 @@ $(document).ready(function(){
   };
 
   function changeDateHandler(selected) {
-    var picker = $('#chatlogsDateTo').data('datepicker');
+    var picker = $('#DATE_TO').data('datepicker');
     picker.setStartDate(new Date(selected.date.valueOf()));
-  }
-
-  function downloadData(data) {
-    LINK.href = window.URL.createObjectURL(data);
-    LINK.click();
   }
 
   function updateUI(id) {
@@ -30,21 +27,22 @@ $(document).ready(function(){
     .on('changeDate', changeDateHandler);
 
   // Fix updating loading state
-  $('#LOGS_FORM').on('submit', function submitHandler(event){
+  LOGS_FORM.addEventListener('submit', function submitHandler(event){
     event.preventDefault();
+    var form = new FormData(event.target);
+    var token = Date.now(); // Token is used for detecting dovnload completition in a single pageview
+    LINK.href = [this.getAttribute('action'), token, form.get('from'), form.get('to')].join('/');
+    LINK.click();
 
-    fetch(this.getAttribute('action'), {
-      credentials: 'same-origin',
-      method: 'post',
-      headers: { 'X-CSRFToken': Cookies.get('csrftoken') },
-      body: new FormData(this)
-    })
-      .then(response => response.blob())
-      .then(downloadData)
-      .then(() => updateUI(event.target.id))
-      .catch(error => {
-        console.error(error);
-      });
+    // We use cookies to detect if download has eneded
+    var timer = window.setInterval(function cookieChecker() {
+      if (Cookies.get(LOGS_DOWNLOAD_TOKEN) == token) {
+        window.clearInterval(timer);
+        Cookies.remove(LOGS_DOWNLOAD_TOKEN);
+        updateUI(event.target.id);
+        console.debug('Logs has been downloaded');
+      }
+    }, 1000);
   });
 
 });
