@@ -10,9 +10,14 @@ $(document).ready(function(){
     endDate: new Date()
   };
 
-  function changeDateHandler(selected) {
+  function changeFromDateHandler(selected) {
     var picker = $('#DATE_TO').data('datepicker');
     picker.setStartDate(new Date(selected.date.valueOf()));
+  }
+
+  function changeToDateHandler(selected) {
+    var picker = $('#DATE_FROM').data('datepicker');
+    picker.setEndDate(new Date(selected.date.valueOf()));
   }
 
   function updateUI(id) {
@@ -22,9 +27,10 @@ $(document).ready(function(){
     }
   }
 
-  $('#DATE_TO').datepicker(OPTIONS);
+  $('#DATE_TO').datepicker(OPTIONS)
+    .on('changeDate', changeToDateHandler);
   $('#DATE_FROM').datepicker(OPTIONS)
-    .on('changeDate', changeDateHandler);
+    .on('changeDate', changeFromDateHandler);
 
   // Fix updating loading state
   LOGS_FORM.addEventListener('submit', function submitHandler(event){
