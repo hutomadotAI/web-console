@@ -47,11 +47,14 @@
 
           {% if user.is_authenticated %}
             const USER =  {
-              name: '{{ user.first_name }}',
+              full_name: '{{ user.first_name }} {{ user.last_name }}',
+              first_name: '{{ user.first_name }}',
+              last_name: '{{ user.last_name }}',
               email: '{{ user.email }}',
               username: '{{ user.username }}',
-              token: '{{ request.session.token }}',
-              devId: '{{ request.session.dev_id }}'
+              devId: '{{ request.session.dev_id }}',
+              user_hash: '{{ user.profile.getIntercomHash }}',
+              name: '{{ user.first_name }}' // Legacy property to be removed in 1.4.0
             }
             dataLayer.push({'user': USER})
           {% else %}

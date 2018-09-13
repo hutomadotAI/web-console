@@ -64,7 +64,7 @@
             username: '{{ user.username }}',
             devId: '{{ request.session.dev_id }}',
             user_hash: '{{ user.profile.getIntercomHash }}',
-            name: '{{ user.first_name }}' // Legacy property to be removed in 1.3.3
+            name: '{{ user.first_name }}' // Legacy property to be removed in 1.4.0
           }
           dataLayer.push({'user': USER})
         {% else %}
