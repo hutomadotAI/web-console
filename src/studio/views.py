@@ -188,7 +188,10 @@ class ProxyAiExportView(View):
         )
         return JsonResponse(
             bot.get('bot'),
-            json_dumps_params={'indent': 2},
+            json_dumps_params={
+                'indent': 2,
+                'ensure_ascii': False   # We use literal UTF-8 chars not encode entities
+            },
             status=bot['status']['code']
         )
 
