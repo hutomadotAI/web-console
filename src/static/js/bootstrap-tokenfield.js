@@ -100,6 +100,9 @@
     if (this.$element.hasClass('input-sm')) this.$wrapper.addClass('input-sm');
     if (this.textDirection === 'rtl') this.$wrapper.addClass('rtl');
 
+    this.$wrapper.tokens = [];
+    this.$wrapper.page = 1;
+
     // Create a new input
     var id = this.$element.prop('id') || new Date().getTime() + '' + Math.floor((1 + Math.random()) * 100);
     this.$input = $(this.$element.is('textarea') ? '<textarea class="token-input" autocomplete="off" />' : '<input type="'+this.options.inputType+'" class="token-input" autocomplete="off" />')
@@ -199,7 +202,7 @@
   Tokenfield.prototype = {
 
     constructor: Tokenfield,
-    createToken: function (attrs, triggerChange) {
+    createToken: function (attrs, triggerChange, index, reverse = false) {
       var _self = this;
 
       if (typeof attrs === 'string') {
@@ -216,6 +219,7 @@
       // Normalize label and value
       attrs.value = $.trim(attrs.value.toString());
       attrs.label = attrs.label && attrs.label.length ? $.trim(attrs.label) : attrs.value;
+      attrs.index = index;
 
       // Bail out if has no value or label, or label is too short
       if (!attrs.value.length || !attrs.label.length || attrs.label.length <= this.options.minLength) return;
@@ -235,12 +239,14 @@
         .append('<a href="#" class="close" tabindex="-1">&times;</a>')
         .data('attrs', attrs);
 
+      $token.attr('data-index', index);
+
       // Insert token into HTML
       if (this.$input.hasClass('tt-input')) {
         // If the input has typeahead enabled, insert token before it's parent
         this.$input.parent().before( $token );
       } else {
-        this.$input.before( $token );
+        reverse ? this.$wrapper.find('.token:first').before( $token ) : this.$input.before( $token );
       }
 
       // Temporarily set input width to minimum
@@ -338,12 +344,64 @@
         }
       }
 
+      this.$wrapper.tokens = add ? this.$wrapper.tokens.concat(tokens) : tokens;
+      this.$wrapper.pages = Math.ceil(this.$wrapper.tokens.length / this.options.tokenElementsLimit);
+
       var _self = this;
-      $.each(tokens, function (i, attrs) {
-        _self.createToken(attrs, triggerChange);
+
+      $.each(tokens.slice(0 - this.options.tokenElementsLimit), function (index, attrs) {
+        index = add ? _self.$wrapper.tokens.length : (Math.max(tokens.length - _self.options.tokenElementsLimit, 0) + index);
+        _self.createToken(attrs, triggerChange, index);
       });
 
+      if (!this.$more && this.$wrapper.tokens.length > this.options.tokenElementsLimit) {
+        this.$more = $('<button class="more-tokens btn btn-default" type=button>' + _self.options.moreLabel + '</button>')
+          .on('click', function () {
+            _self.$wrapper.page = _self.addTokens(_self.$wrapper.page);
+            if (_self.$wrapper.pages <= _self.$wrapper.page) {
+              _self.$more.remove();
+            }
+          })
+          .on('mousedown', function preventDefault(e) {
+            e.preventDefault();
+            e.stopPropagation();
+          })
+          .appendTo( this.$wrapper );
+      }
+
       return this.$element.get(0);
+    },
+
+    updateToken: function (token, index) {
+      var attrs = {
+        label: token,
+        value: token,
+        index: index
+      };
+
+      // Update existing tokens list
+      this.$wrapper.tokens[index] = token;
+
+      // Save it to original field
+      this.$element.val( this.getTokensList() ).trigger( $.Event('change', { initiator: 'tokenfield' }) );
+
+      // Render HTML token
+      this.createToken(attrs, false, index);
+    },
+
+    addTokens: function (page, offset = this.options.tokenElementsLimit) {
+      var start = page * offset;
+      var end = (page + 1) * offset;
+      var tokens = this.$wrapper.tokens.map(token => token).reverse();
+
+      var _self = this;
+
+      $.each(tokens.slice(start, end), function (index, attrs) {
+        index = (Math.max(_self.$wrapper.tokens.length - _self.options.tokenElementsLimit, 0) + index);
+        _self.createToken(attrs, false, index, true);
+      });
+
+      return page + 1;
     },
 
     getTokenData: function($token) {
@@ -359,14 +417,8 @@
       return data;
     },
 
-    getTokens: function(active) {
-      var self = this
-        , tokens = []
-        , activeClass = active ? '.active' : ''; // get active tokens only
-      this.$wrapper.find( '.token' + activeClass ).each( function() {
-        tokens.push( self.getTokenData( $(this) ) );
-      });
-      return tokens;
+    getTokens: function() {
+      return this.$wrapper.tokens;
     },
 
     getTokensList: function(delimiter, beautify, active) {
@@ -374,9 +426,10 @@
       beautify = ( typeof beautify !== 'undefined' && beautify !== null ) ? beautify : this.options.beautify;
 
       var separator = delimiter + ( beautify && delimiter !== ' ' ? ' ' : '');
-      return $.map( this.getTokens(active), function (token) {
-        return token.value;
-      }).join(separator);
+      return this.getTokens(active)
+        .map(token => token.trim()) // Cleanup white spaces
+        .filter(token => token) // No empty tokens
+        .join(separator);
     },
 
     getInput: function() {
@@ -658,10 +711,13 @@
         return; // No input, simply return
 
       var tokensBefore = this.getTokensList();
-      this.setTokens( this.$input.val(), true );
 
-      if (tokensBefore == this.getTokensList() && this.$input.val().length)
-        return false; // No tokens were added, do nothing (prevent form submit)
+      if (this.$input.data( 'index' ) || this.$input.data( 'index' ) === 0) {
+        this.updateToken( this.$input.val(), this.$input.data( 'index' ));
+        this.$input.removeData( 'index' );
+      } else {
+        this.setTokens( this.$input.val(), true );
+      }
 
       this.setInput('');
 
@@ -723,8 +779,6 @@
 
       if (multi) var add = true;
 
-      this.$copyHelper.focus();
-
       if (!add) {
         this.$wrapper.find('.active').removeClass('active');
         if (remember) {
@@ -782,7 +836,7 @@
       var editEvent = $.Event('tokenfield:edittoken', options);
       this.$element.trigger( editEvent );
 
-      // Edit event can be cancelled if default is prevented
+      // Edit event can be canceled if default is prevented
       if (editEvent.isDefaultPrevented()) return;
 
       $token.find('.token-label').text(attrs.value);
@@ -797,6 +851,7 @@
       this.$input.val( attrs.value )
         .select()
         .data( 'edit', true )
+        .data( 'index', options.attrs.index )
         .width( tokenWidth );
 
       // Trigger
@@ -858,6 +913,9 @@
       var removedEvent = $.Event('tokenfield:removedtoken', options);
       var changeEvent = $.Event('change', { initiator: 'tokenfield' });
 
+      // Empty token in array placeholder to keep index numbers
+      this.$wrapper.tokens[options.attrs.index] = '';
+
       // Remove token from DOM
       $token.remove();
 
@@ -866,8 +924,8 @@
 
       // Focus, when necessary:
       // When there are no more tokens, or if this was the first token
-      // and it was removed with backspace or it was clicked on
-      if (!this.$wrapper.find('.token').length || e.type === 'click' || firstToken) this.$input.focus();
+      // and it was removed with backspace
+      if (!this.$wrapper.find('.token').length || firstToken) this.$input.focus();
 
       // Adjust input width
       this.$input.css('width', this.options.minWidth + 'px');
@@ -886,8 +944,6 @@
       var inputPaddingLeft = parseInt(this.$input.css('padding-left'), 10);
       var inputPaddingRight = parseInt(this.$input.css('padding-right'), 10);
       var inputPadding = inputPaddingLeft + inputPaddingRight;
-
-
 
       if (this.$input.data('edit')) {
 
@@ -922,15 +978,6 @@
 
     focusInput: function (e) {
       if ( $(e.target).closest('.token').length || $(e.target).closest('.token-input').length || $(e.target).closest('.tt-dropdown-menu').length ) return;
-      // Focus only after the current call stack has cleared,
-      // otherwise has no effect.
-      // Reason: mousedown is too early - input will lose focus
-      // after mousedown. However, since the input may be moved
-      // in DOM, there may be no click or mouseup event triggered.
-      var _self = this;
-      setTimeout(function() {
-        _self.$input.focus();
-      }, 0);
     },
 
     search: function () {
@@ -1038,7 +1085,9 @@
     createTokensOnBlur: false,
     delimiter: ',',
     beautify: true,
-    inputType: 'text'
+    inputType: 'text',
+    tokenElementsLimit: 100,
+    moreLabel: 'More tokens'
   };
 
   $.fn.tokenfield.Constructor = Tokenfield;

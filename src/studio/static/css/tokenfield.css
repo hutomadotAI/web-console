@@ -48,6 +48,7 @@
   line-height: 1.5rem;
   padding: 0.25rem 0.75rem;
   color: white;
+  cursor: text;
   height: auto;
   border-radius: 1rem;
   font-size: 0.875rem;
@@ -55,6 +56,12 @@
   padding-right: 2rem;
   position: relative;
   animation: heightGrow 100ms ease forwards;
+}
+
+.tokenfield .more-tokens {
+  order: -1;
+  width: 50%;
+  margin: 1rem auto;
 }
 
 .tokenfield .token .token-label {
@@ -105,7 +112,8 @@
 }
 
 .tokenfield [data-tokenfield] {
-  left: 0 !important; /* Overwrites in-line styling */
+  /* Overwrites in-line styling */
+  left: 0 !important;
   opacity: 0;
   top: 0;
   z-index: -1;

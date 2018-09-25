@@ -91,12 +91,13 @@ class EntityForm(forms.Form):
     entity_values = forms.CharField(
         label=_('Values'),
         help_text=_('To create a new value press enter'),
-        widget=forms.TextInput(attrs={
+        widget=forms.Textarea(attrs={
             'data-min-length': 1,
+            'data-more-label': _('Load more values'),
             'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
-            'class': 'form-control',
+            'class': 'form-control loading',
             'placeholder': _('Add an entity value'),
         })
     )
