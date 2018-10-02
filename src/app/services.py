@@ -75,13 +75,17 @@ def fetch_api(
         # Print curl for debug purpose
         to_curl(response.request, level)
 
-    if settings.DEBUG:
-        message = 'API %(request_method)s request %(request_url)s: '
-        '(%(response_status_code)s) in %(response_time_in_seconds)ss'
-    else:
-        message = 'API request'
+    message = ('API responded with %(response_status_code)s in %(response_time_in_seconds)s for '
+               '%(request_method)s request %(request_url)s')
 
     logger.log(level, message, extra, extra=extra)
+
+    logger.info(
+        '[METRIC][CONSOLE.API_REQUEST.RESPONSE] DURATION:%(response_time_in_seconds)s '
+        'STATUS:%(response_status_code)s',
+        extra,
+        extra=extra
+    )
 
     if response.status_code in [401, 403, 404]:
         # We don't reveal if Resource exists
