@@ -92,7 +92,6 @@ class EntityForm(forms.Form):
         label=_('Values'),
         help_text=_('To create a new value press enter'),
         widget=forms.Textarea(attrs={
-            'data-min-length': 1,
             'data-more-label': _('Load more values'),
             'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
