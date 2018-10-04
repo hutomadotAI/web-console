@@ -45,16 +45,6 @@
 
             {% if integration.has_access_token %}
 
-              <div class="alert alert-base">
-                <p>
-                  {% blocktrans with username=integration.facebook_username %}Connected to <b>{{ username }}</b> Facebook account{% endblocktrans %}
-                </p>
-              </div>
-
-              <div class="text-center" style="padding-bottom: 20px">
-                <a id="FB_DISCONNECT_ACTION" action="send" href="{% url 'studio:facebook_actions' aiid=ai.aiid action='disconnect' %}" class="btn btn-primary" style="width: 260px;">{% trans 'Disconnect' %}</a>
-              </div>
-
               {% if integration.page_integrated_id %}
 
                 <div class="alert alert-base">
@@ -127,7 +117,7 @@
                     </p>
                   </div>
 
-                  <ul style="padding: 0.75rem 1.25rem; background-color: #424242;">
+                  <ul style="padding: 0.75rem 1.25rem; background-color: #424242; margin: 0 0 1rem;">
                     {% for fb_page_id, fb_page_name in integration.page_list.items %}
                       <li>
                         <a href="{% url 'studio:facebook_actions' aiid=ai.aiid action='page' %}?id={{ fb_page_id }}"
@@ -139,6 +129,13 @@
                 {% endif %}
 
               {% endif %}
+
+              <div class="alert alert-base" style="display: flex; align-items: baseline;">
+                <p>
+                  {% blocktrans with username=integration.facebook_username %}Connected to <b>{{ username }}</b> Facebook account{% endblocktrans %}
+                </p>
+                <a id="FB_DISCONNECT_ACTION" action="send" href="{% url 'studio:facebook_actions' aiid=ai.aiid action='disconnect' %}" class="btn btn-default" style="width: 260px;">{% trans 'Disconnect' %}</a>
+              </div>
 
             {% else %}
 
