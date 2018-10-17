@@ -1,0 +1,14 @@
+#div_id_entity_values .tokenfield {
+  flex-direction: row-reverse;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-end;
+}
+
+#div_id_entity_values .tokenfield .more-tokens,
+#div_id_entity_values .tokenfield textarea.token-input {
+  flex-basis: 100%;
+}
+
+#div_id_entity_values .tokenfield .token {
+  margin: 0.25rem;
+}

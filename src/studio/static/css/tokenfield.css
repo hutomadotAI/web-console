@@ -117,6 +117,7 @@
   opacity: 0;
   top: 0;
   z-index: -1;
+  resize: none;
 }
 
 /* Hide input for single token fields */

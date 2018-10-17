@@ -117,9 +117,6 @@
       $label.prop( 'for', this.$input.prop('id') );
     }
 
-    // Set up a copy helper to handle copy & paste
-    this.$copyHelper = $('<input type="text" />').css('position', 'absolute').css(hidingPosition, '-10000px').prop('tabindex', -1).prependTo( this.$wrapper )
-
     // Set wrapper width
     if (elStyleWidth) {
       this.$wrapper.css('width', elStyleWidth);
@@ -222,7 +219,7 @@
       attrs.index = index;
 
       // Bail out if has no value or label, or label is too short
-      if (!attrs.value.length || !attrs.label.length || attrs.label.length <= this.options.minLength) return;
+      if (!attrs.value.length || !attrs.label.length || attrs.label.length < this.options.minLength) return;
 
       // Bail out if maximum number of tokens is reached
       if (this.options.limit && this.getTokens().length >= this.options.limit) return;
@@ -468,12 +465,6 @@
         .on('keypress', $.proxy(this.keypress, this))
         .on('keyup',    $.proxy(this.keyup, this));
 
-      this.$copyHelper
-        .on('focus',    $.proxy(this.focus, this))
-        .on('blur',     $.proxy(this.blur, this))
-        .on('keydown',  $.proxy(this.keydown, this))
-        .on('keyup',    $.proxy(this.keyup, this));
-
       // Secondary listeners for input width calculation
       this.$input
         .on('keypress', $.proxy(this.update, this))
@@ -565,7 +556,6 @@
 
         // Edit token
         if (e.keyCode === 13) {
-          if (!this.$copyHelper.is(document.activeElement) || this.$wrapper.find('.token.active').length !== 1) break;
           if (!_self.options.allowEditing) break;
           this.edit( this.$wrapper.find('.token.active') );
         }
@@ -801,7 +791,6 @@
       }
 
       $token.addClass('active');
-      this.$copyHelper.val( this.getTokensList( null, null, true ) ).select();
     },
 
     activateAll: function() {
@@ -816,14 +805,12 @@
       if (!$token) return;
 
       $token.removeClass('active');
-      this.$copyHelper.val( this.getTokensList( null, null, true ) ).select();
     },
 
     toggle: function($token) {
       if (!$token) return;
 
       $token.toggleClass('active');
-      this.$copyHelper.val( this.getTokensList( null, null, true ) ).select();
     },
 
     edit: function ($token) {
@@ -845,8 +832,6 @@
       var $_input = this.$input.hasClass('tt-input') ? this.$input.parent() : this.$input;
 
       $token.replaceWith( $_input );
-
-      this.preventCreateTokens = true;
 
       this.$input.val( attrs.value )
         .select()
@@ -1086,7 +1071,7 @@
     delimiter: ',',
     beautify: true,
     inputType: 'text',
-    tokenElementsLimit: 100,
+    tokenElementsLimit: 32,
     moreLabel: 'More tokens'
   };
 

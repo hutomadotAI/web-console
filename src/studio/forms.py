@@ -376,6 +376,7 @@ class IntentForm(forms.Form):
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a user expression'),
+            'class': 'form-control loading',
             'title': _('Enter a valid input consisting of letters, numbers, '
                        'spaces, underscores or hyphens.')
         }),
@@ -390,6 +391,7 @@ class IntentForm(forms.Form):
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
             'placeholder': _('Add a sample bot response'),
+            'class': 'form-control loading',
         }),
         required=False
     )
