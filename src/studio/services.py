@@ -192,7 +192,8 @@ def post_import_ai(token, ai_data, aiid=''):
         '/ai/import',
         token=token,
         method='post',
-        json=ai_data
+        json=ai_data,
+        timeout=config.API_LONG_POLLING
     )
 
 
@@ -203,7 +204,8 @@ def post_re_import_ai(token, ai_data, aiid=''):
         token=token,
         aiid=aiid,
         method='post',
-        json=ai_data
+        json=ai_data,
+        timeout=config.API_LONG_POLLING
     )
 
 

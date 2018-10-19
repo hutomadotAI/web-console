@@ -60,8 +60,11 @@ class TestImportAI(TestCase):
         }
 
     @patch('studio.services.fetch_api')
-    def test_anonymous(self, mock_get):
+    @patch('studio.services.config')
+    def test_anonymous(self, mock_config, mock_get):
         """Anonymous user shouldn't be able to POST"""
+
+        mock_config.return_value = {'API_LONG_POLLING': 300}
 
         # Configure the mock
         mock_get.return_value = factory.build(
@@ -74,8 +77,11 @@ class TestImportAI(TestCase):
         self.assertEqual(response['status']['code'], 401)
 
     @patch('studio.services.fetch_api')
-    def test_registered(self, mock_get):
+    @patch('studio.services.config')
+    def test_registered(self, mock_config, mock_get):
         """Registered user can POST an Import JSON"""
+
+        mock_config.return_value = {'API_LONG_POLLING': 300}
 
         # Configure the mock
         mock_get.return_value = factory.build(
@@ -88,11 +94,13 @@ class TestImportAI(TestCase):
         self.assertEqual(response['status']['code'], 201)
 
     @patch('studio.services.fetch_api')
-    def test_import_success(self, mock_get):
+    @patch('studio.services.config')
+    def test_import_success(self, mock_config, mock_get):
         """If the bot is created we return 201 and bot info with AIID."""
 
         # Configure the mock
         mock_get.return_value = self.created
+        mock_config.return_value = {'API_LONG_POLLING': 300}
 
         response = post_import_ai(self.token, factory.build(
             dict,
@@ -103,10 +111,13 @@ class TestImportAI(TestCase):
         self.assertEqual(self.created['aiid'], response['aiid'])
 
     @patch('studio.services.fetch_api')
-    def test_import_existing_name(self, mock_get):
+    @patch('studio.services.config')
+    def test_import_existing_name(self, mock_config, mock_get):
         """
         If a bot with the same name exists, API returns information about it
         """
+
+        mock_config.return_value = {'API_LONG_POLLING': 300}
 
         # Configure the mock
         mock_get.return_value = factory.build(
