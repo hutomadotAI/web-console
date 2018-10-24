@@ -1,6 +1,6 @@
 {% extends 'studio_base.html' %}
 
-{% load i18n crispy_forms_tags static %}
+{% load i18n widget_tweaks static %}
 
 {% block title %}{% trans 'Bot entities' %} {{ entity_name }}{% endblock %}
 
@@ -46,9 +46,48 @@
         <form method="post" id="ENTITY_FORM" class="persistent">
           {% csrf_token %}
 
-          {{ form | crispy }}
+          {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+
+          {% include 'forms/field.html' with field=form.entity_name %}
+
+          {# T1 means ON C is OFF #}
+          {% if allow_regex == 'T1' %}
+
+            <div class="alert alert-info">
+              {% blocktrans %}You can now set an entity as a regular expression,
+              please check <a href="https://help.hutoma.ai/article/xc5zkhbg3a-adding-entities" target="_blank">our documentation</a>
+              for more details.{% endblocktrans %}
+            </div>
+
+            <div id="FIELD_ID_ENTITY_TYPE" class="form-group">
+              <label>{% trans 'Entity type' %}</label>
+              <div>
+                {% render_field form.value_type %}
+              </div>
+            </div>
+
+          {% endif %}
+
+
+          {% include 'forms/field.html' with field=form.entity_values %}
 
         </form>
+
+        <template id="LIST_TEMPLATE">
+          <label for="{{ form.list_template.id_for_label }}">{{ form.list_template.label|safe  }}</label>
+          <div class="controls">
+            {% render_field form.list_template|add_class:'form-control' %}
+          </div>
+        </template>
+
+        <template id="REGEX_TEMPLATE">
+          <label for="{{ form.regex_template.id_for_label }}">{{ form.regex_template.label|safe  }}</label>
+          <div class="controls">
+            {% render_field form.regex_template|add_class:'form-control' %}
+          </div>
+        </template>
 
       </div>
 
@@ -118,5 +157,22 @@
   <script src="{% static 'js/bootstrap-tokenfield.js' %}"></script>
   <script src="{% static 'js/elements.js' %}"></script>
   <script src="{% static 'js/tokenfield.js' %}"></script>
+
+  <script>
+    // Manage template switching
+    document.addEventListener('change', function (event) {
+      if (event.target.name === 'value_type') {
+
+        document.getElementById('FIELD_ID_ENTITY_VALUES').innerHTML = document.getElementById(event.target.value + '_TEMPLATE')
+          .innerHTML.replace(
+            new RegExp(event.target.value.toLowerCase() + '_template', 'ig'),
+            'entity_values'
+          );
+
+        $('[data-tokenfield]').tokenfield(TOKENFIELD_OPTIONS);
+
+      }
+    });
+  </script>
 
 {% endblock %}

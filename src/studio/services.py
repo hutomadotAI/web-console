@@ -83,6 +83,16 @@ def get_entity(token, entity_name):
     )
 
 
+def get_experiments_list(token, aiid, feature_name):
+    """Get all the experiments toggled for a single AI"""
+    return fetch_api(
+        '/experiment/{aiid}?feature={feature_name}',
+        token=token,
+        aiid=aiid,
+        feature_name=feature_name
+    )
+
+
 def get_intent_list(token, aiid):
     """Returns a list of all intents for a particular AI"""
     return fetch_api('/intents/{aiid}', token=token, aiid=aiid)

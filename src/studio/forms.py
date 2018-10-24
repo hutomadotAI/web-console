@@ -88,9 +88,33 @@ class EntityForm(forms.Form):
         })
     )
 
-    entity_values = forms.CharField(
-        label=_('Values'),
-        help_text=_('To create a new value press enter'),
+    value_type = forms.ChoiceField(
+        initial='LIST',
+        label=_('Type'),
+        choices=[
+            ('LIST', 'Values list'),
+            ('REGEX', 'Regular expression')
+        ],
+        required=False,
+        widget=forms.RadioSelect()
+    )
+
+    # We set it based on value_type on form init
+    entity_values = forms.CharField()
+
+    # We keep fields base data as templates
+    regex_template = forms.CharField(
+        label=_('Regular expression pattern'),
+        required=False,
+        widget=forms.TextInput(attrs={
+            'maxlength': 128,
+            'placeholder': _('ex. ^[a-z]{0,4}$')
+        })
+    )
+
+    list_template = forms.CharField(
+        label=_('Load more values'),
+        required=False,
         widget=forms.Textarea(attrs={
             'data-more-label': _('Load more values'),
             'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
@@ -101,12 +125,24 @@ class EntityForm(forms.Form):
         })
     )
 
+    def __init__(self, *args, **kwargs):
+        """Hide fields in create a bot form"""
+        super(EntityForm, self).__init__(*args, **kwargs)
+
+        initial = kwargs.get('initial', {})
+
+        if initial.get('value_type') == 'REGEX':
+            self.fields['entity_values'] = self.fields['regex_template']
+        else:
+            self.fields['entity_values'] = self.fields['list_template']
+
     def clean_entity_values(self):
         """Split values"""
         split_list = self.cleaned_data['entity_values'].split(
             settings.TOKENFIELD_DELIMITER
         )
-        stripped_list = [item.strip() for item in split_list]
+        stripped_list = list(filter(None, [item.strip() for item in split_list]))
+
         return stripped_list
 
     def save(self, *args, **kwargs):

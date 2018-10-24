@@ -337,14 +337,17 @@ class TestEntitiesView(TestCase):
 
     @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_entities_list')
+    @patch('studio.views.get_experiments_list')
     @patch('studio.views.get_ai')
     @patch('studio.views.get_ai_details')
     def test_registred(
-        self, mock_get_ai_details, mock_get_ai, mock_get_entities_list, mock_get_categories
+        self, mock_get_ai_details, mock_get_ai, mock_get_experiments_list,
+        mock_get_entities_list, mock_get_categories
     ):
 
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
+        mock_get_experiments_list.return_value.json.return_value = []
         mock_get_entities_list.return_value.json.return_value = []
         mock_get_categories.return_value = []
 

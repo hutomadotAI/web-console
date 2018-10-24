@@ -48,6 +48,7 @@ from studio.services import (
     get_ai_training,
     get_entities_list,
     get_entity,
+    get_experiments_list,
     get_facebook_connect_state,
     get_facebook_customisations,
     get_insights_chart,
@@ -437,6 +438,12 @@ class EntitiesView(StudioViewMixin, FormView):
             self.request.session.get('token', False)
         ).get('entities')
 
+        context['allow_regex'] = get_experiments_list(
+            self.request.session.get('token', False),
+            self.kwargs.get('aiid', False),
+            'regex-entity'
+        ).get('state')
+
         return context
 
     def form_valid(self, form):
@@ -480,18 +487,18 @@ class EntitiesUpdateView(EntitiesView):
         """Get and prepare Entity data"""
 
         # Get an entity
-        intent = get_entity(
+        entity = get_entity(
             self.request.session.get('token', False),
             self.kwargs['entity_name']
         )
 
         # Prepare data for the form
         # TODO: should be a better way to do it in the form itself?
-        intent['entity_values'] = settings.TOKENFIELD_DELIMITER.join(
-            intent['entity_values']
+        entity['entity_values'] = settings.TOKENFIELD_DELIMITER.join(
+            entity['entity_values']
         )
 
-        self.initial = intent
+        self.initial = entity
 
         return super(EntitiesUpdateView, self).get_initial(**kwargs)
 
