@@ -222,7 +222,7 @@
       if (!attrs.value.length || !attrs.label.length || attrs.label.length < this.options.minLength) return;
 
       // Bail out if maximum number of tokens is reached
-      if (this.options.limit && this.getTokens().length >= this.options.limit) return;
+      if (this.options.limit && this.countTokens() > this.options.limit) return;
 
       // Allow changing token data before creating it
       var createEvent = $.Event('tokenfield:createtoken', { attrs: attrs });
@@ -347,7 +347,7 @@
       var _self = this;
 
       $.each(tokens.slice(0 - this.options.tokenElementsLimit), function (index, attrs) {
-        index = add ? _self.$wrapper.tokens.length : (Math.max(tokens.length - _self.options.tokenElementsLimit, 0) + index);
+        index = add ? _self.$wrapper.tokens.length - 1 : (Math.max(tokens.length - _self.options.tokenElementsLimit, 0) + index);
         _self.createToken(attrs, triggerChange, index);
       });
 
@@ -416,6 +416,13 @@
 
     getTokens: function() {
       return this.$wrapper.tokens;
+    },
+
+    countTokens: function() {
+      return this.getTokens()
+        .map(token => token.trim()) // Cleanup white spaces
+        .filter(token => token) // No empty tokens
+        .lenght
     },
 
     getTokensList: function(delimiter, beautify, active) {
