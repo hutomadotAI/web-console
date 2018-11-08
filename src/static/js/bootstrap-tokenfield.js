@@ -422,7 +422,7 @@
       return this.getTokens()
         .map(token => token.trim()) // Cleanup white spaces
         .filter(token => token) // No empty tokens
-        .lenght
+        .length;
     },
 
     getTokensList: function(delimiter, beautify, active) {
