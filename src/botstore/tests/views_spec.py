@@ -71,15 +71,20 @@ class TestPublishView(TestCase):
             )
         )
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('botstore.views.get_ai')
     @patch('botstore.views.get_info')
     @patch('users.decorators.get_info')
-    def test_publish_has_info(self, mock_get_info, mock_get_info_2, mock_get_ai):
+    def test_publish_has_info(
+        self, mock_get_info, mock_get_info_2, mock_get_ai, mock_get_categories
+    ):
         """For user with dev info show publish form"""
 
         ai = factory.build(dict, FACTORY_CLASS=AiFactory)
 
         mock_get_info.return_value = {'status': {'code': 200}}
+
+        mock_get_categories.return_value = {}
 
         mock_get_ai.return_value.json.return_value = [
             factory.build(dict, FACTORY_CLASS=AiFactory)

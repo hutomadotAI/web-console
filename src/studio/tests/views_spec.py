@@ -38,8 +38,9 @@ class TestSummaryView(TestCase):
             reverse('account_login') + '?next=/summary'
         )
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_summary_registred(self, mock_get):
+    def test_summary_registred(self, mock_get, mock_get_categories):
         """If user is logged in he can access summary"""
 
         # We mock ai_list
@@ -47,8 +48,9 @@ class TestSummaryView(TestCase):
         response = self.client.get(reverse('studio:summary'))
         self.assertEqual(response.status_code, 200)
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_summary_no_ais(self, mock_get):
+    def test_summary_no_ais(self, mock_get, mock_get_categories):
         """
         If user have no AIs instead of AIs list there should be a training
         video
@@ -67,8 +69,9 @@ class TestSummaryView(TestCase):
         )
         self.assertNotContains(response, 'Your Bots')
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_summary_ais(self, mock_get):
+    def test_summary_ais(self, mock_get, mock_get_categories):
         """
         If user have AIs there should be a list of AIs, as well as there
         shouldn't be the training video
@@ -92,8 +95,9 @@ class TestSummaryView(TestCase):
         )
         self.assertContains(response, 'Your Bots')
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_ai_training_complete(self, mock_get):
+    def test_ai_training_complete(self, mock_get, mock_get_categories):
         """Label should reflect AIs training status"""
 
         # We mock ai_list
@@ -109,8 +113,9 @@ class TestSummaryView(TestCase):
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Completed')
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_ai_undefined(self, mock_get):
+    def test_ai_undefined(self, mock_get, mock_get_categories):
         """Label should reflect AIs training status"""
 
         # We mock ai_list
@@ -126,8 +131,9 @@ class TestSummaryView(TestCase):
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Not Started')
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_ai_training_queued(self, mock_get):
+    def test_ai_training_queued(self, mock_get, mock_get_categories):
         """Label should reflect AIs training status"""
 
         # We mock ai_list
@@ -143,8 +149,9 @@ class TestSummaryView(TestCase):
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Queued')
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_ai_training(self, mock_get):
+    def test_ai_training(self, mock_get, mock_get_categories):
         """Label should reflect AIs training status"""
 
         # We mock ai_list
@@ -160,8 +167,9 @@ class TestSummaryView(TestCase):
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'In Progress')
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_ai_training_stopped(self, mock_get):
+    def test_ai_training_stopped(self, mock_get, mock_get_categories):
         """Label should reflect AIs training status"""
 
         # We mock ai_list
@@ -177,8 +185,9 @@ class TestSummaryView(TestCase):
         response = self.client.get(reverse('studio:summary'))
         self.assertContains(response, 'Stopped')
 
+    @patch('botstore.templatetags.botstore_tags.get_categories')
     @patch('studio.views.get_ai_list')
-    def test_ai_error(self, mock_get):
+    def test_ai_error(self, mock_get, mock_get_categories):
         """Label should reflect AIs training status"""
 
         # We mock ai_list
@@ -220,10 +229,10 @@ class TestAICreateView(TestCase):
             reverse('account_login') + '?next=/bots/wizard'
         )
 
-    def test_ai_create_registred(self):
+    @patch('botstore.templatetags.botstore_tags.get_categories')
+    def test_ai_create_registred(self, mock_get_categories):
         """Logged-in users can access create view"""
 
-        # We mock ai_list
         response = self.client.get(reverse('studio:ai.wizard'))
         self.assertEqual(response.status_code, 200)
 
@@ -266,7 +275,6 @@ class TestTrainingView(TestCase):
     ):
 
         mock_get_ai.return_value = self.ai
-        mock_get_categories.return_value = []
         mock_get_ai_training.return_value = {}
         mock_get_ai_details.return_value = self.ai_details
 
@@ -287,7 +295,6 @@ class TestTrainingView(TestCase):
     ):
 
         mock_get_ai.return_value = self.ai
-        mock_get_categories.return_value = []
         mock_get_ai_training.return_value = {}
         mock_get_ai_details.return_value = self.ai_details
 
@@ -349,7 +356,6 @@ class TestEntitiesView(TestCase):
         mock_get_ai_details.return_value = self.ai_details
         mock_get_experiments_list.return_value.json.return_value = []
         mock_get_entities_list.return_value.json.return_value = []
-        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:entities',
@@ -398,7 +404,6 @@ class TestAIDetailView(TestCase):
 
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
-        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:edit_bot',
@@ -417,7 +422,6 @@ class TestAIDetailView(TestCase):
 
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
-        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:edit_bot',
@@ -438,7 +442,6 @@ class TestAIDetailView(TestCase):
 
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
-        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:edit_bot',
@@ -464,7 +467,6 @@ class TestAIDetailView(TestCase):
 
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
-        mock_get_categories.return_value = []
 
         mock_get_ai_details.return_value['training_file'] = 'This is my training file'
 
@@ -487,7 +489,6 @@ class TestAIDetailView(TestCase):
 
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
-        mock_get_categories.return_value = []
 
         mock_get_ai_details.return_value['intents'] = [
             'intent_1', 'intent_2', 'intent_3', 'intent_4', 'intent_5', 'intent_6'
@@ -517,7 +518,6 @@ class TestAIDetailView(TestCase):
 
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
-        mock_get_categories.return_value = []
 
         mock_get_ai_details.return_value['skills'] = [
             {'name': 'bot 1'},
@@ -579,7 +579,6 @@ class TestAIUpdateView(TestCase):
 
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
-        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:settings',
@@ -641,7 +640,6 @@ class TestSkillsUpdateView(TestCase):
             factory.build(dict, FACTORY_CLASS=AiFactory),
             factory.build(dict, FACTORY_CLASS=AiFactory)
         ]
-        mock_get_categories.return_value = []
 
         response = self.client.get(reverse(
             'studio:skills',
@@ -703,7 +701,6 @@ class TestIntentsView(TestCase):
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
         mock_get_entities_list.return_value.json.return_value = []
-        mock_get_categories.return_value = []
         mock_get_intent_list.return_value = {'intent_name': []}
 
         response = self.client.get(reverse(
@@ -733,7 +730,6 @@ class TestIntentsView(TestCase):
         mock_get_ai.return_value = self.ai
         mock_get_ai_details.return_value = self.ai_details
         mock_get_entities_list.return_value.json.return_value = []
-        mock_get_categories.return_value = []
 
         mock_get_intent_list.return_value = {'intents': [
             {'intent_name': 'intent_1'},

@@ -16,6 +16,4 @@ def json_login_required(function):
                 {'message': 'Requires authentication'}, status=401
             )
 
-    wrap.__doc__ = function.__doc__
-    wrap.__name__ = function.__name__
     return wrap
