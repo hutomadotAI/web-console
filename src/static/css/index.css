@@ -778,6 +778,7 @@ select:not([multiple]) {
   font-size: 0.8rem;
   height: auto;
   min-height: 2rem;
+  overflow: hidden;
 }
 
 .form-control[readonly] {
