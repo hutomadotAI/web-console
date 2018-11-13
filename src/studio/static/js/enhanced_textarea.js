@@ -74,22 +74,29 @@
     event.preventDefault();
     messageClear();
 
-    TEXTAREA.value = '';
+    TEXTAREA.classList.add('loading');
 
     let files = (event.dataTransfer || event.target).files;
 
-    TEXTAREA.classList.add('loading');
+    if (files && files.length) {
 
-    for (let file of files) {
-      try {
-        processFile(file);
-      }
-      catch(error) {
-        messageAdd('error', error);
-        console.error(error);
+      TEXTAREA.value = '';
 
-        TEXTAREA.classList.remove('loading');
+      for (let file of files) {
+        try {
+          processFile(file);
+        }
+        catch(error) {
+          messageAdd('error', error);
+          console.error(error);
+
+          TEXTAREA.classList.remove('loading');
+        }
       }
+    } else {
+      let text = event.dataTransfer.getData('Text');
+      TEXTAREA.value = text;
+      TEXTAREA.classList.remove('loading');
     }
 
   }
