@@ -116,7 +116,7 @@ class EntityForm(forms.Form):
         label=_('Load more values'),
         required=False,
         widget=forms.Textarea(attrs={
-            'data-more-label': _('Load more values'),
+            'data-more-label': _('Values'),
             'data-max-length': DEFAULT_TOKEN_CHARACTERS_LIMIT,
             'data-delimiter': settings.TOKENFIELD_DELIMITER,
             'data-tokenfield': True,
