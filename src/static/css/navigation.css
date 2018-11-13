@@ -66,7 +66,8 @@
   position: relative;
 }
 
-.sidebar-menu > li > a {
+.sidebar-menu > li > a,
+.sidebar-menu > li > span {
   display: block;
   padding: 12px 5px 12px 15px;
   border-left: 3px solid transparent;
@@ -80,9 +81,7 @@
   vertical-align: middle;
 }
 
-.sidebar-menu > li > a > .fa,
-.sidebar-menu > li > a > .glyphicon,
-.sidebar-menu > li > a > .ion {
+.sidebar-menu > li .fa {
   width: 20px;
 }
 
@@ -149,8 +148,11 @@
   overflow: visible;
 }
 
-.sidebar-menu li > a {
+.sidebar-menu li > a,
+.sidebar-menu li > span {
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar-menu li > a > .pull-right {
