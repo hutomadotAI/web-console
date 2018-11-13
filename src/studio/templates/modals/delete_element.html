@@ -5,7 +5,7 @@
 {% block title %}{% trans 'Delete element' %}{% endblock title %}
 
 {% block body %}
-  <p>{% blocktrans %}Are you sure you want to permanently delete <span class="element-id"></span>?{% endblocktrans %}</p>
+  <p>{% blocktrans %}Are you sure you want to permanently delete “<span class="element-id"></span>”?{% endblocktrans %}</p>
   <form method="post" id="DELETE_ELEMENT_FORM">{% csrf_token %}</form>
 
 {% endblock body %}
