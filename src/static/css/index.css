@@ -742,6 +742,7 @@ a:focus {
   border: none;
   color: #ADADAD;
   font-size: 0.875rem;
+  height: auto;
   min-height: 2.25rem;
 }
 

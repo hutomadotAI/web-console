@@ -18,10 +18,11 @@ def delete_ai(token, aiid):
     )
 
 
-def delete_entity(token, entity_name):
+def delete_entity(token, aiid, entity_name):
     """Delete an entity"""
     return fetch_api(
-        '/entity?entity_name={entity_name}',
+        '/entity/{aiid}?entity_name={entity_name}',
+        aiid=aiid,
         token=token,
         entity_name=entity_name,
         method='delete'
@@ -69,16 +70,17 @@ def get_ai_training(token, aiid):
     return fetch_api('/ai/{aiid}/training/materials', token=token, aiid=aiid)
 
 
-def get_entities_list(token):
-    """Returns a list of all entities for a user"""
-    return fetch_api('/entities', token=token)
+def get_entities_list(token, aiid):
+    """Returns a list of all entities for an AI"""
+    return fetch_api('/entities/{aiid}', token=token, aiid=aiid)
 
 
-def get_entity(token, entity_name):
+def get_entity(token, aiid, entity_name):
     """Returns a particular entity data"""
     return fetch_api(
-        '/entity?entity_name={entity_name}',
+        '/entity/{aiid}?entity_name={entity_name}',
         token=token,
+        aiid=aiid,
         entity_name=entity_name
     )
 
@@ -252,12 +254,13 @@ def post_regenerate_webhook_secret(token, aiid):
     )
 
 
-def post_entity(payload, token, **kwargs):
-    """Create or update an entity"""
+def post_entity(payload, token, aiid, **kwargs):
+    """Create an entity for an AI"""
     return fetch_api(
-        '/entity?entity_name={entity_name}',
+        '/entity/{aiid}?entity_name={entity_name}',
         token=token,
-        entity_name=kwargs.get('entity_name', payload.get('entity_name')),
+        aiid=aiid,
+        entity_name=payload.get('entity_name'),
         json=payload,
         method='post'
     )
@@ -343,6 +346,18 @@ def post_context_reset(token, aiid, chatId):
         aiid=aiid,
         chatId=chatId,
         method='post'
+    )
+
+
+def put_entity(payload, entity_name, token, aiid):
+    """Updates an entity"""
+    return fetch_api(
+        '/entity/{aiid}?entity_name={entity_name}',
+        token=token,
+        aiid=aiid,
+        json=payload,
+        entity_name=entity_name,
+        method='put'
     )
 
 

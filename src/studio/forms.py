@@ -25,6 +25,7 @@ from studio.services import (
     post_intent_bulk,
     post_regenerate_webhook_secret,
     post_training,
+    put_entity,
     put_intent
 )
 from botstore.services import get_purchased
@@ -146,7 +147,19 @@ class EntityForm(forms.Form):
         return stripped_list
 
     def save(self, *args, **kwargs):
+        return self.send(*args, **kwargs)
+
+    def send(self, *args, **kwargs):
         return post_entity(self.cleaned_data, **kwargs)
+
+
+class EntityUpdateForm(EntityForm):
+    """Form used for updating an existing entity"""
+    def send(self, *args, **kwargs):
+        return {
+            **put_entity(self.cleaned_data, **kwargs),
+            'cleaned_data': self.cleaned_data
+        }
 
 
 class ContextFormset(forms.Form):

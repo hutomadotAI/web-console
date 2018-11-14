@@ -24,6 +24,7 @@ from studio.forms import (
     ConditionsFormset,
     ContextFormset,
     EntityForm,
+    EntityUpdateForm,
     EntityFormset,
     FollowUpFormset,
     ImportAIForm,
@@ -233,6 +234,7 @@ class EntityDeleteView(RedirectView):
 
         deleted_intent = delete_entity(
             self.request.session.get('token', False),
+            aiid,
             entity_name
         )
 
@@ -435,7 +437,8 @@ class EntitiesView(StudioViewMixin, FormView):
 
         # Get entities
         context['entities'] = get_entities_list(
-            self.request.session.get('token', False)
+            self.request.session.get('token', False),
+            self.kwargs.get('aiid')
         ).get('entities')
 
         context['allow_regex'] = get_experiments_list(
@@ -483,12 +486,15 @@ class EntitiesView(StudioViewMixin, FormView):
 class EntitiesUpdateView(EntitiesView):
     """Single Entity view"""
 
+    form_class = EntityUpdateForm
+
     def get_initial(self, **kwargs):
         """Get and prepare Entity data"""
 
         # Get an entity
         entity = get_entity(
             self.request.session.get('token', False),
+            self.kwargs['aiid'],
             self.kwargs['entity_name']
         )
 
@@ -557,7 +563,8 @@ class IntentsEditView(StudioViewMixin, FormView):
 
         # Get entities
         entities = get_entities_list(
-            self.request.session.get('token', False)
+            self.request.session.get('token', False),
+            self.kwargs['aiid']
         ).get('entities')
 
         # Custom entities goes first, sort alphabetically
@@ -674,12 +681,13 @@ class IntentsEditView(StudioViewMixin, FormView):
 
         # Get entities
         entities = get_entities_list(
-            self.request.session.get('token', False)
+            self.request.session.get('token', False),
+            self.kwargs.get('aiid')
         ).get('entities')
 
         intents = [intent['intent_name'] for intent in get_intent_list(
             self.request.session.get('token', False),
-            self.kwargs['aiid']
+            self.kwargs.get('aiid')
         ).get('intents')]
 
         form = self.get_form()

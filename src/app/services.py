@@ -65,15 +65,15 @@ def fetch_api(
         'response_time_in_seconds': response.elapsed.total_seconds()
     }
 
+    if settings.DEBUG:
+        # Print curl for debug purpose
+        to_curl(response.request, level)
+
     if settings.API_RESPONSE_BODY_LOGS:
         if kwargs.get('raw'):
             extra['response_raw'] = response
         else:
             extra['response_json'] = response.json()
-
-    if settings.DEBUG:
-        # Print curl for debug purpose
-        to_curl(response.request, level)
 
     message = ('API responded with %(response_status_code)s in %(response_time_in_seconds)s for '
                '%(request_method)s request %(request_url)s')
