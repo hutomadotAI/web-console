@@ -36,6 +36,7 @@ echo "Running migrations"
 python manage.py migrate
 check_return_code
 
-# Launch serve app
+# Launch serve app, we run 3 workers, each will be restarted after 1024 requests
+# to free the memmory.
 echo "Starting Django"
-gunicorn -b :8000 app.wsgi
+gunicorn --max-requests 1024 --workers 3 --bind :8000 app.wsgi
