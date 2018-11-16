@@ -21,7 +21,7 @@
 
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.views import defaults, generic
 from django.views.generic.base import RedirectView
 
@@ -93,8 +93,8 @@ urlpatterns = [
     ),
 
     # loader io key
-    path(
-        'loaderio-beeabb3d964411d8b9bf497039873568',
+    re_path(
+        r'^loaderio-(?P<loader_io_id>[0-9a-f-]{32})/',
         generic.base.TemplateView.as_view(
             content_type='text/plain',
             template_name='loaderio.txt'
