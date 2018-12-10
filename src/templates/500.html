@@ -42,7 +42,19 @@
 
     <div class="messages">
 
-      <div class="message">{% blocktrans %}This service is temporarily unavailable, we’re already working on the fix.{% endblocktrans %}</div>
+      <div class="message">
+        {% if error_type == 'ReadTimeout' %}
+          {% blocktrans %}
+            We’re trying to serve your request but it’s taking longer than
+            expected. Please retry later.
+          {% endblocktrans %}
+        {% else %}
+          {% blocktrans %}
+            This service is temporarily unavailable, we’re already working on the fix.
+          {% endblocktrans %}
+        {% endif %}
+
+      </div>
 
     </div>
 
