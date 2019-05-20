@@ -1,13 +1,9 @@
 # Introduction 
-Console service stores informations about users, take care of registration, login and users managements.
+Console service stores informations about users, take care of registration, login and users managements. 
 
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+You can familiarize yourself with the Hu:toma console by going over our [documentation](https://help.hutoma.ai/) or by checking a brief [intro video](https://www.youtube.com/watch?v=uFj73npjhbk). You can also check our [live demo](https://console.hutoma.ai/accounts/login). For further questions or issues [visit us here](https://community.hutoma.ai/).
 
 # Build and Test
 
