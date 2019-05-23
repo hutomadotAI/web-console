@@ -38,7 +38,7 @@ COPY requirements.ini /usr/src/app
 COPY $ENVIRONMENT.ini /usr/src/app
 
 # Install dependencies
-RUN pip install --no-cache-dir -r $ENVIRONMENT.ini --trusted-host pypi.hutoma.ai
+RUN pip install --no-cache-dir -r $ENVIRONMENT.ini
 
 # switch to non root user
 # define user IDs as ARG
