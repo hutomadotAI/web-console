@@ -600,39 +600,31 @@ if ENVIRONMENT == 'development':
             'console': {
                 'class': 'logging.StreamHandler',
                 'formatter': 'colored',
-            },
-            'elastic': {
-                'class': 'hu_logging.HuLogHandler',
-                'log_path': '/tmp/hu_log',
-                'log_tag': 'django',
-                'es_log_index': 'webconsole-v2',
-                'elastic_search_url': os.environ.get('LOGGING_ES_URL'),
-                'multi_process': True
-            },
+            }
         },
         'loggers': {
             'django': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('DJANGO_LOG_LEVEL', LOG_LEVEL),
             },
             'app': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             },
             'botstore': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             },
             'studio': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             },
             'users': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             },
             'hu_logging': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', LOG_LEVEL),
             }
         },
@@ -865,39 +857,31 @@ elif ENVIRONMENT == 'production':
         'handlers': {
             'console': {
                 'class': 'logging.StreamHandler',
-            },
-            'elastic': {
-                'class': 'hu_logging.HuLogHandler',
-                'log_path': '/tmp/hu_log',
-                'log_tag': 'django',
-                'es_log_index': 'webconsole-v2',
-                'elastic_search_url': os.environ.get('LOGGING_ES_URL'),
-                'multi_process': True
-            },
+            }
         },
         'loggers': {
             'django': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', 'INFO'),
             },
             'app': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', 'INFO'),
             },
             'botstore': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', 'INFO'),
             },
             'studio': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', 'INFO'),
             },
             'users': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', 'INFO'),
             },
             'hu_logging': {
-                'handlers': ['console', 'elastic'],
+                'handlers': ['console'],
                 'level': os.environ.get('LOG_LEVEL', 'INFO'),
             }
         },
