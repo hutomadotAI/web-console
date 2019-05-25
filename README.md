@@ -1,9 +1,7 @@
 # Introduction 
-Console service stores informations about users, take care of registration, login and users managements. 
+Console service stores informations about users, take care of registration, login and users/bots managements.  You can familiarize yourself with the Hu:toma console by going over our [documentation](https://help.hutoma.ai/) or by checking a brief [intro video](https://www.youtube.com/watch?v=uFj73npjhbk). You can also check our [live demo](https://console.hutoma.ai/accounts/login). For further questions or issues [visit us here](https://community.hutoma.ai/).
 
-
-# Getting Started
-You can familiarize yourself with the Hu:toma console by going over our [documentation](https://help.hutoma.ai/) or by checking a brief [intro video](https://www.youtube.com/watch?v=uFj73npjhbk). You can also check our [live demo](https://console.hutoma.ai/accounts/login). For further questions or issues [visit us here](https://community.hutoma.ai/).
+The Bot Console is part of the Conversational AI Platform and can be also installed if you follow the instructions posted in our [main repo](https://github.com/hutomadotAI/Hutoma-Conversational-AI-Platform)
 
 # Build and Test
 
