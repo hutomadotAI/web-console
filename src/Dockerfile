@@ -12,8 +12,10 @@ RUN apt-get update \
   libgettextpo-dev \
   && rm -rf /var/lib/apt/lists/*
 
+# Use MySQL's PGP signature from https://dev.mysql.com/doc/refman/5.7/en/checking-gpg-signature.html
+COPY mysql-gpg-sig /tmp
 # Install MySql libraries from MySQL apt repo
-RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5 \
+RUN apt-key add /tmp/mysql-gpg-sig \
  && echo "deb http://repo.mysql.com/apt/debian stretch mysql-5.7" | tee /etc/apt/sources.list.d/mysql.list \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
