@@ -78,9 +78,9 @@ def fetch_api(
     message = ('API responded with %(response_status_code)s in %(response_time_in_seconds)s for '
                '%(request_method)s request %(request_url)s')
 
-    logger.log(level, message, extra, extra=extra)
+    logger.debug(message, extra, extra=extra)
 
-    logger.info(
+    logger.debug(
         '[METRIC][CONSOLE.API_REQUEST.RESPONSE] DURATION:%(response_time_in_seconds)s '
         'STATUS:%(response_status_code)s',
         extra,
