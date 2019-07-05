@@ -12,5 +12,5 @@ steps:
          'src']
 
 # Push the image to the internal repo
-images: ['eu.gcr.io/hutoma-backend/web/dev_console2:$BRANCH_NAME-$SHORT_SHA',
+images: ['eu.gcr.io/hutoma-backend/web/mediaserver:$BRANCH_NAME-$SHORT_SHA',
          'eu.gcr.io/hutoma-backend/web/mediaserver:latest']
