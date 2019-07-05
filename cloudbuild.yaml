@@ -6,10 +6,15 @@ steps:
   
 # Build the docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--build-arg', 'ENVIRONMENT=production', '-t', 'eu.gcr.io/hutoma-backend/web/dev_console2:$BRANCH_NAME-$SHORT_SHA', 'src']
+  args: ['build',
+         '--build-arg', 'ENVIRONMENT=production', 
+         '-t', 'eu.gcr.io/hutoma-backend/web/dev_console2:$BRANCH_NAME-$SHORT_SHA', 
+         '-t', 'eu.gcr.io/hutoma-backend/web/dev_console2:$latest',
+         'src']
 
 # Push the image to the internal repo
-images: ['eu.gcr.io/hutoma-backend/web/dev_console2:$BRANCH_NAME-$SHORT_SHA']
+images: ['eu.gcr.io/hutoma-backend/web/dev_console2:$BRANCH_NAME-$SHORT_SHA',
+         'eu.gcr.io/hutoma-backend/web/dev_console2:$latest']
 
 
 
