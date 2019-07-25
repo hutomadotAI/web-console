@@ -1,0 +1,69 @@
+{% extends 'studio_base.html' %}
+
+{% load i18n crispy_forms_tags static %}
+
+{% block title %}{% trans 'Knowledge Base' %}{% endblock %}
+
+{% block navigation %}
+  {% include 'studio_navigation.html' with ai=ai active='knowledge_base' %}
+{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+
+    <div class="box">
+      <div class="box-header with-border">
+
+        <h2 class="box-title">
+          <i class="fa fa-graduation-cap"></i> {% trans 'Manage Knowledge Base data' %}
+        </h2>
+
+      </div>
+
+      <p class="enhanced-textarea" id="id_training_data">
+                  
+        <table style="width:100%; borderspacing: 5px; border-collapse: separate">
+        <tr>
+          <th>{% trans 'Filename' %}</th>
+          <th>{% trans 'Size' %}</th>
+          <th>{% trans 'Last modified' %}</th>
+          <th></th>
+        </tr>
+        {% for file in files %}
+          <tr>
+            <td style="background-color: #515151;">{{file.name}}</td>
+            <td style="background-color: #515151;text-align:right">{{file.size}}</td>
+            <td style="background-color: #515151;text-align:center">{{file.last_update}}</td>
+            <td><button class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="#delete_element" data-action="{% url 'studio:knowledge_base.delete' aiid file.name %}" data-id="{{ file.name }}"></button></td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan=4 style="background-color: #515151;font-style: italic;">{% trans '(empty)' %}</td>
+          </tr>
+        {% endfor %}
+        </table>
+      </p>
+     
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block modals %}
+
+  {% include 'modals/delete_element.html' with id='delete_element' %}
+
+{% endblock modals %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'css/enhanced_textarea.css' %}">
+{% endblock %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script src="{% static 'js/enhanced_textarea.js' %}"></script>
+  <script src="{% static 'js/elements.js' %}"></script>
+{% endblock %}

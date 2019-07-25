@@ -30,6 +30,9 @@ from studio.services import (
 )
 from botstore.services import get_purchased
 
+from .models import KnowledgeBaseFileBundle
+
+
 logger = logging.getLogger(__name__)
 
 NAME_PATTERN = '[-a-zA-Z0-9_ ]+'
@@ -735,7 +738,7 @@ class ImportAIForm(forms.Form):
         ai_data = self.cleaned_data['ai_data']
         try:
             ai_data = json.loads(ai_data.read().decode('utf8'))
-        except (json.JSONDecodeError, UnicodeDecodeError) as error:
+        except (json.JSONDecodeError, UnicodeDecodeError):
             raise forms.ValidationError('Invalid JSON file')
         return ai_data
 
@@ -854,3 +857,14 @@ class ProxyRegenerateWebhookSecretForm(forms.Form):
             kwargs['token'],
             self.cleaned_data['aiid']
         )
+
+
+class KnowledgeBaseForm(forms.Form):
+    pass
+
+
+class KnowledgeBaseRemoveFileForm(forms.Form):
+
+    def save(self, *args, **kwargs):
+        bundle = KnowledgeBaseFileBundle.create(kwargs['devid'], kwargs['aiid'])
+        return bundle.delete(filename=kwargs['filename'])

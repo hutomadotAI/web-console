@@ -464,6 +464,14 @@ API_RESPONSE_BODY_LOGS = os.environ.get('API_RESPONSE_BODY_LOGS', False)
 # limits of Tomcat
 MAX_UPLOAD_SIZE = os.getenv('MAX_UPLOAD_SIZE', 2097152)
 
+# --------------------------------------------------------------------------
+#
+# Knowledge Base
+#
+KB_BASE_DIR = os.environ.get('KB_BASE_DIR', '/kb')
+
+# --------------------------------------------------------------------------
+
 # ------------------------------------------------------------------------------
 #
 # Dynamic settings, can be change without deploy. Remember that they are kept in

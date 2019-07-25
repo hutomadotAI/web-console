@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 
 import datetime
 
@@ -18,6 +19,9 @@ from django.views.generic import ListView
 from django.views.generic.base import ContextMixin, TemplateView, RedirectView
 from django.views.generic.edit import FormView
 
+from .models import KnowledgeBaseFileBundle
+
+
 from studio.forms import (
     AddAIForm,
     CloneAIForm,
@@ -31,6 +35,8 @@ from studio.forms import (
     IntentBulkUpload,
     IntentForm,
     IntentUpdateForm,
+    KnowledgeBaseForm,
+    KnowledgeBaseRemoveFileForm,
     ProxyDeleteAIForm,
     ProxyRegenerateWebhookSecretForm,
     ReImportAIForm,
@@ -92,6 +98,11 @@ class StudioViewMixin(ContextMixin):
             context['ai_details']['skills'] or
             context['ai_details']['intents']
         )
+        context['show_kb'] = get_experiments_list(
+            self.request.session.get('token', False),
+            self.kwargs.get('aiid', False),
+            'show_knowledge_base'
+        ).get('state')
 
         if not context['chatable']:
             messages.info(self.request, _('To start chatting with your bot '
@@ -1108,3 +1119,69 @@ class ProxyChatView(View):
             payload=json.loads(request.body)
         )
         return JsonResponse(response, status=response['status']['code'])
+
+
+@method_decorator(login_required, name='dispatch')
+class KnowledgeBaseView(StudioViewMixin, FormView):
+    """
+    Knowledge Base file handling
+    """
+    form_class = KnowledgeBaseForm
+    template_name = 'kb_form.html'
+    redirect_url = 'studio:knowledge_base'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        bundle = KnowledgeBaseFileBundle.create(self.request.session.get('dev_id'), self.kwargs['aiid'])
+        context['basepath'] = bundle.basepath
+        context['aiid'] = self.kwargs['aiid']
+        files = bundle.scan_folder()
+        # Transform the file data for rendering
+        files_for_rendering = []
+        for f in files:
+            files_for_rendering.append({
+                'name':f.name, 
+                'size':f.size if f.size<1024 else '{:.2f} Kb'.format(f.size / 1024), 
+                'last_update':datetime.datetime.fromtimestamp(f.last_update)
+            })
+        context['files'] = files_for_rendering
+        return context
+
+    def get_initial(self, **kwargs):    
+        return super(KnowledgeBaseView, self).get_initial(**kwargs)
+
+    def form_valid(self, form):
+        return HttpResponseRedirect(self.redirect_url)
+
+
+
+@method_decorator(login_required, name='dispatch')
+class KnowledgeBaseFileDeleteView(RedirectView):
+    """Removes a file from the KB bundle"""
+
+    def post(self, request, aiid, filename, *args, **kwargs):
+        redirect_url = reverse_lazy('studio:knowledge_base', kwargs={'aiid': aiid})
+
+        """We use forms to secure POST requests"""
+        form = KnowledgeBaseRemoveFileForm(request.POST)
+
+        if form.is_valid():
+            status = form.save(
+                devid=self.request.session.get('dev_id'),
+                aiid=aiid,
+                filename=filename
+            )
+
+            if status:
+                level = messages.SUCCESS
+                message = 'File "{}" deleted'.format(filename)
+            else:
+                level = messages.ERROR
+                message = 'Could not delete file'
+        else:
+            level = messages.ERROR
+            message = 'Something went wrong'
+
+        messages.add_message(self.request, level, message)
+
+        return HttpResponseRedirect(redirect_url)

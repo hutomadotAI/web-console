@@ -43,6 +43,8 @@ from studio.views import (
     IntentsEditView,
     IntentsUpdateView,
     IntentsView,
+    KnowledgeBaseView,
+    KnowledgeBaseFileDeleteView,
     OAuthView,
     ProxyAiExportView,
     ProxyAiView,
@@ -319,5 +321,19 @@ urlpatterns = [
         'templates/clone/<uuid:aiid>',
         TemplateCloneView.as_view(),
         name='template.clone'
+    ),
+
+        # List/manage the Knowledge Base files for an AI
+    path(
+        'bots/edit/<uuid:aiid>/knowledge_base',
+        KnowledgeBaseView.as_view(),
+        name='knowledge_base'
+    ),
+
+    # Remove a file from a KB bundle
+    path(
+        'bots/delete/<uuid:aiid>/knowledge_base/<filename>',
+        KnowledgeBaseFileDeleteView.as_view(),
+        name='knowledge_base.delete',
     ),
 ]
