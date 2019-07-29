@@ -56,6 +56,8 @@ ENV PYTHONUNBUFFERED 1
 # Copy the code
 COPY . /usr/src/app
 RUN chown -R appuser:appuser /usr/src/app
+RUN mkdir /kb && chown appuser:appuser /kb
+
 USER appuser
 
 EXPOSE 8000
