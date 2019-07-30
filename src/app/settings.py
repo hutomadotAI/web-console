@@ -469,6 +469,10 @@ MAX_UPLOAD_SIZE = os.getenv('MAX_UPLOAD_SIZE', 2097152)
 # Knowledge Base
 #
 KB_BASE_DIR = os.environ.get('KB_BASE_DIR', '/kb')
+KB_MAX_NUM_FILES = os.environ.get('KB_MAX_NUM_FILES', 10)
+KB_MAX_FILE_SIZE = os.environ.get('KB_MAX_FILE_SIZE', 1024 * 1024 * 1.0)  # 1.0Mb
+KB_ALLOWED_EXT = ['txt']
+KB_ALLOWED_CONTENT_TYPES = ['text/plain']
 
 # --------------------------------------------------------------------------
 
