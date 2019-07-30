@@ -77,4 +77,16 @@ class KnowledgeBaseFileBundle(models.Model):
                 result = file.delete()
                 if not result:
                     return False
-        return True            
+        return True   
+
+    def upload(self, uploaded_files):
+        for uploaded_file in uploaded_files:
+            destination = '{basepath}/{devid}/{aiid}/{filename}'.format(
+                basepath=settings.KB_BASE_DIR,
+                devid=self.devid,
+                aiid=self.aiid,
+                filename=uploaded_file.name)
+            with open(destination, 'wb+') as f_dest:
+                for chunk in uploaded_file.chunks():
+                    f_dest.write(chunk)
+        return True         

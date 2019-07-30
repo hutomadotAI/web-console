@@ -45,6 +45,7 @@ from studio.views import (
     IntentsView,
     KnowledgeBaseView,
     KnowledgeBaseFileDeleteView,
+    KnowledgeBaseFileUploadView,
     OAuthView,
     ProxyAiExportView,
     ProxyAiView,
@@ -336,4 +337,11 @@ urlpatterns = [
         KnowledgeBaseFileDeleteView.as_view(),
         name='knowledge_base.delete',
     ),
+
+    # Upload a file to a KB bundle
+    path(
+        'bots/upload/<uuid:aiid>/knowlegde_base',
+        KnowledgeBaseFileUploadView.as_view(),
+        name='knowledge_base.upload',
+    )
 ]

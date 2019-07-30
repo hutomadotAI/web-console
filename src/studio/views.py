@@ -37,6 +37,7 @@ from studio.forms import (
     IntentUpdateForm,
     KnowledgeBaseForm,
     KnowledgeBaseRemoveFileForm,
+    KnowledgeBaseUploadFileForm,
     ProxyDeleteAIForm,
     ProxyRegenerateWebhookSecretForm,
     ReImportAIForm,
@@ -1181,6 +1182,41 @@ class KnowledgeBaseFileDeleteView(RedirectView):
         else:
             level = messages.ERROR
             message = 'Something went wrong'
+
+        messages.add_message(self.request, level, message)
+
+        return HttpResponseRedirect(redirect_url)
+
+
+@method_decorator(login_required, name='dispatch')
+class KnowledgeBaseFileUploadView(RedirectView):
+
+    def _get_form_error(self, form, default_msg):
+        form_errors = json.loads(form.errors.as_json())
+        if form_errors and 'kbfiles' in form_errors:
+            return form_errors['kbfiles'][0]['message']
+        return default_msg
+
+    def post(self, request, aiid, *args, **kwargs):
+        redirect_url = reverse_lazy('studio:knowledge_base', kwargs={'aiid': aiid})
+
+        files_to_upload = request.FILES.getlist('kbfiles')
+        form = KnowledgeBaseUploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            status = form.save(
+                devid=self.request.session.get('dev_id'),
+                aiid=aiid,
+                uploaded_files=files_to_upload
+            )
+            if status:
+                level = messages.SUCCESS
+                message = '{} file(s) uploaded'.format(len(files_to_upload))
+            else:
+                message = self._get_form_error(form, 'There was a problem uploading one or more files')
+                level = messages.ERROR
+        else:
+            self._get_form_error(form, 'Something went wrong')
+            level = messages.ERROR
 
         messages.add_message(self.request, level, message)
 

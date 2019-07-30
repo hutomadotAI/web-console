@@ -31,6 +31,8 @@ from studio.services import (
 from botstore.services import get_purchased
 
 from .models import KnowledgeBaseFileBundle
+from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
 
 
 logger = logging.getLogger(__name__)
@@ -868,3 +870,43 @@ class KnowledgeBaseRemoveFileForm(forms.Form):
     def save(self, *args, **kwargs):
         bundle = KnowledgeBaseFileBundle.create(kwargs['devid'], kwargs['aiid'])
         return bundle.delete(filename=kwargs['filename'])
+
+
+def file_size_validator(file):
+    file_size = file.size
+    if file_size > settings.KB_MAX_FILE_SIZE:
+        raise ValidationError(_('"{filename}" exceed max size of {max_size}Kb').format(
+            filename=file.name,
+            max_size=settings.KB_MAX_FILE_SIZE / (1024*1024)), code='max_file_size')
+
+def file_type_validator(file):
+    if file.content_type not in settings.KB_ALLOWED_CONTENT_TYPES:
+        raise ValidationError(_('"{filename}" has an unsupported content type ("{content_type}")').format(
+            filename=file.name,
+            content_type=file.content_type), code='invalid_file_type')
+
+
+class KnowledgeBaseUploadFileForm(forms.Form):
+    kbfiles = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True}),
+        validators=[
+            FileExtensionValidator(allowed_extensions=settings.KB_ALLOWED_EXT),
+            file_size_validator,
+            file_type_validator
+        ])
+    
+
+    def save(self, *args, uploaded_files, **kwargs):
+        
+        bundle = KnowledgeBaseFileBundle.create(kwargs['devid'], kwargs['aiid'])
+        # count how many files we'll end up, considering any files being replaced
+        existing_files = bundle.scan_folder()
+        resulting = set()
+        for f in existing_files:
+            resulting.add(f.name)
+        if len(uploaded_files) > settings.KB_MAX_NUM_FILES or len(resulting) > settings.KB_MAX_NUM_FILES:
+            self.add_error('kbfiles', ValidationError(
+                _('You cannot exceed the maximum number of files ({num_files})').format(num_files=settings.KB_MAX_NUM_FILES),
+                code='max_num_files'))
+            return False
+        return bundle.upload(uploaded_files=uploaded_files)

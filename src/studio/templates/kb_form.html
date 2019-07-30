@@ -20,7 +20,15 @@
 
       </div>
 
-      <p class="enhanced-textarea" id="id_training_data">
+      <form method="post" enctype="multipart/form-data" action="{% url 'studio:knowledge_base.upload' aiid %}">
+        {% csrf_token %}
+        <p class="enhanced-textarea">
+          Attach files by dragging &amp; dropping them here or <span class="btn-link">selecting them</span>
+          <input type="file" name="kbfiles" multiple accept='.txt' onchange="form.submit()">
+          <br/>
+        </p>
+        
+      </form>
                   
         <table style="width:100%; borderspacing: 5px; border-collapse: separate">
         <tr>
@@ -42,7 +50,7 @@
           </tr>
         {% endfor %}
         </table>
-      </p>
+      
      
     </div>
   </div>
