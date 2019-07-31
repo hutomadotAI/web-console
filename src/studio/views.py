@@ -1210,12 +1210,12 @@ class KnowledgeBaseFileUploadView(RedirectView):
             )
             if status:
                 level = messages.SUCCESS
-                message = '{} file(s) uploaded'.format(len(files_to_upload))
+                message = _('{} file(s) uploaded'.format(len(files_to_upload)))
             else:
-                message = self._get_form_error(form, 'There was a problem uploading one or more files')
+                message = self._get_form_error(form, _('There was a problem uploading one or more files'))
                 level = messages.ERROR
         else:
-            self._get_form_error(form, 'Something went wrong')
+            message = self._get_form_error(form, _('Something went wrong'))
             level = messages.ERROR
 
         messages.add_message(self.request, level, message)
