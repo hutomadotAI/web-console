@@ -875,7 +875,7 @@ class KnowledgeBaseRemoveFileForm(forms.Form):
 def file_size_validator(file):
     file_size = file.size
     if file_size > settings.KB_MAX_FILE_SIZE:
-        raise ValidationError(_('"{filename}" exceed max size of {max_size}Kb').format(
+        raise ValidationError(_('"{filename}" exceed max size of {max_size}Mb').format(
             filename=file.name,
             max_size=settings.KB_MAX_FILE_SIZE / (1024*1024)), code='max_file_size')
 
