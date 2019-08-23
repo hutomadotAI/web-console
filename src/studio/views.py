@@ -1174,8 +1174,12 @@ class KnowledgeBaseFileDeleteView(RedirectView):
             )
 
             if status:
-                level = messages.SUCCESS
-                message = 'File "{}" deleted'.format(filename)
+                #level = messages.SUCCESS
+                #message = 'File "{}" deleted'.format(filename)
+                level = messages.WARNING
+                template = 'messages/retrain.html'
+                message_template = loader.get_template(template)
+                message = message_template.render({'aiid': aiid})
             else:
                 level = messages.ERROR
                 message = 'Could not delete file'
@@ -1209,8 +1213,12 @@ class KnowledgeBaseFileUploadView(RedirectView):
                 uploaded_files=files_to_upload
             )
             if status:
-                level = messages.SUCCESS
-                message = _('{} file(s) uploaded'.format(len(files_to_upload)))
+                #level = messages.SUCCESS
+                #message = _('{} file(s) uploaded'.format(len(files_to_upload)))
+                level = messages.WARNING
+                template = 'messages/retrain.html'
+                message_template = loader.get_template(template)
+                message = message_template.render({'aiid': aiid})
             else:
                 message = self._get_form_error(form, _('There was a problem uploading one or more files'))
                 level = messages.ERROR
