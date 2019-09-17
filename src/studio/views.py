@@ -94,11 +94,7 @@ class StudioViewMixin(ContextMixin):
             self.request.session.get('token', False),
             self.kwargs['aiid']
         )
-        context['chatable'] = bool(
-            context['ai_details']['training_file'] or
-            context['ai_details']['skills'] or
-            context['ai_details']['intents']
-        )
+        context['chatable'] = context['ai']['can_chat']
         context['show_kb'] = get_experiments_list(
             self.request.session.get('token', False),
             self.kwargs.get('aiid', False),
