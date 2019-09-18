@@ -9,6 +9,8 @@ const ICONS = {
 // Initial poll
 var timeoutID = setTimeout(pollStatus, INTERVAL);
 
+var was_training = false;
+
 /**
  * Updates HTML
  *
@@ -19,7 +21,6 @@ var timeoutID = setTimeout(pollStatus, INTERVAL);
 function updateUI(ai) {
 
 
-  console.debug(ai);
   AI_TRAINING.className = `fa ${ ICONS[ai.training.status] || 'fa-circle' } circle training status-${ ai.training.status } pull-right`
   AI_TRAINING.title = `Training status: ${ ai.training.status }`;
   $(AI_TRAINING).tooltip('update');
@@ -29,8 +30,15 @@ function updateUI(ai) {
     clearTimeout(timeoutID);
   }
 
+  if (ai.training.status === 'training') {
+    was_training = true;
+  }
+
   if (ai.training.status === 'completed') {
     messageClear('success');
+    if (was_training) {
+      window.location.reload(false);
+    }
   }
 }
 
